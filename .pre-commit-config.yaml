@@ -11,6 +11,7 @@ repos:
     rev: 1.18.2
     hooks:
       - id: prettier
+        files: '\.tsx$'
 
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: v6.1.0
