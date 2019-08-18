@@ -7,5 +7,5 @@ export default function Header() {
         <li>Login</li>
       </ul>
     </div>
-  );
+  )
 }
