@@ -1,0 +1,30 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "eslint-config-prettier",
+    "plugin:react/recommended"
+  ],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "react/react-in-jsx-scope": "off",
+    "no-unused-vars": ["error", {
+      "argsIgnorePattern": "^_$"
+    }]
+  },
+  "globals": {
+    "React": "writable"
+  },
+  "settings": {
+    "react": {
+        "version": "detect"
+    }
+  }
+}
