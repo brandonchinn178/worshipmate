@@ -1,7 +1,7 @@
 import React, { Fragment } from "react"
 import { default as NextApp } from "next/app"
 
-import Header from "components/layout/Header"
+import Header from "@components/layout/Header"
 
 export default class App extends NextApp {
   render() {
