@@ -9,13 +9,16 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@types/styled-components": "^4.1.18",
     "next": "^9.0.3",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "styled-components": "^4.3.2"
   },
   "devDependencies": {
     "@types/node": "^12.7.2",
     "@types/react": "^16.9.2",
+    "babel-plugin-styled-components": "^1.10.6",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-react": "^7.14.3",

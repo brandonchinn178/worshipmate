@@ -1,11 +1,21 @@
+import styled from "styled-components"
+
 export default function Header() {
   return (
-    <div>
-      <h1>WorshipMate</h1>
+    <HeaderContainer>
+      <Title>WorshipMate</Title>
       <ul>
         <li>About</li>
         <li>Login</li>
       </ul>
-    </div>
+    </HeaderContainer>
   )
 }
+
+const HeaderContainer = styled.div`
+  background: blue;
+`
+
+const Title = styled.h1`
+  color: white;
+`
