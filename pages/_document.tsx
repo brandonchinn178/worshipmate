@@ -17,7 +17,7 @@ export default class Document extends NextDocument {
         ...ctx,
         renderPage: () =>
           ctx.renderPage({
-            enhanceApp: App => (props): ReactElement =>
+            enhanceApp: (App) => (props): ReactElement =>
               sheet.collectStyles(<App {...props} />),
           }),
       })
