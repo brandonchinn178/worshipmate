@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC } from 'react'
 
 const Home: FC = () => {
   return <div>Welcome to Next.js!</div>
