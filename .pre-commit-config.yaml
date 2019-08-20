@@ -17,3 +17,5 @@ repos:
     rev: v6.1.0
     hooks:
       - id: eslint
+        types: []
+        files: '\.(tsx|js)$'
