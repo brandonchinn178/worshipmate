@@ -2,9 +2,9 @@ import {
   default as NextDocument,
   DocumentContext,
   DocumentInitialProps,
-} from "next/document"
-import { ReactElement } from "react"
-import { ServerStyleSheet } from "styled-components"
+} from 'next/document'
+import { ReactElement } from 'react'
+import { ServerStyleSheet } from 'styled-components'
 
 export default class Document extends NextDocument {
   static async getInitialProps(
