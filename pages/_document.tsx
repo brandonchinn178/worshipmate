@@ -3,6 +3,7 @@ import {
   DocumentContext,
   DocumentInitialProps,
 } from "next/document"
+import { ReactElement } from "react"
 import { ServerStyleSheet } from "styled-components"
 
 export default class Document extends NextDocument {
@@ -10,15 +11,17 @@ export default class Document extends NextDocument {
     ctx: DocumentContext,
   ): Promise<DocumentInitialProps> {
     const sheet = new ServerStyleSheet()
-    const originalRenderPage = ctx.renderPage
 
     try {
-      ctx.renderPage = () =>
-        originalRenderPage({
-          enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
-        })
+      const initialProps = await NextDocument.getInitialProps({
+        ...ctx,
+        renderPage: () =>
+          ctx.renderPage({
+            enhanceApp: App => (props): ReactElement =>
+              sheet.collectStyles(<App {...props} />),
+          }),
+      })
 
-      const initialProps = await NextDocument.getInitialProps(ctx)
       return {
         ...initialProps,
         styles: (

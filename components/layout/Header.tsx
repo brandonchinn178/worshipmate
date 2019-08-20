@@ -1,6 +1,7 @@
+import { FC } from "react"
 import styled from "styled-components"
 
-export default function Header() {
+const Header: FC = () => {
   return (
     <HeaderContainer>
       <Title>WorshipMate</Title>
@@ -11,6 +12,8 @@ export default function Header() {
     </HeaderContainer>
   )
 }
+
+export default Header
 
 const HeaderContainer = styled.div`
   background: blue;

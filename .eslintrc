@@ -19,7 +19,7 @@
   "rules": {
     "indent": ["error", 2],
     "react/react-in-jsx-scope": "off",
-    "no-unused-vars": ["error", {
+    "@typescript-eslint/no-unused-vars": ["error", {
       "argsIgnorePattern": "^_$"
     }]
   },
