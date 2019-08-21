@@ -11,11 +11,12 @@ repos:
     rev: 1.18.2
     hooks:
       - id: prettier
-        files: '\.tsx$'
+        files: '\.(js|ts|tsx)$'
+        exclude: '^(next\.config\.js)$'
 
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: v6.1.0
     hooks:
       - id: eslint
         types: []
-        files: '\.(tsx|js)$'
+        files: '\.(js|ts|tsx)$'
