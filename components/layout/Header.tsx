@@ -16,7 +16,7 @@ const Header: FC = () => {
 export default Header
 
 const HeaderContainer = styled.div`
-  background: blue;
+  background: ${(props) => props.theme.primary};
 `
 
 const Title = styled.h1`
