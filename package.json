@@ -6,7 +6,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .js,.tsx"
+    "lint": "eslint . --ext .js,.ts,.tsx"
   },
   "dependencies": {
     "@types/styled-components": "^4.1.18",
