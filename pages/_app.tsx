@@ -11,6 +11,30 @@ export default class App extends NextApp {
     return (
       <ThemeProvider theme={theme}>
         <Fragment>
+          <style jsx global>{`
+            * {
+              position: relative;
+              margin: 0;
+              padding: 0;
+              font-size: 100%;
+              font-weight: normal;
+              line-height: 100%;
+            }
+
+            html,
+            body {
+              font-size: 18px;
+            }
+
+            li {
+              list-style-type: none;
+            }
+
+            a {
+              color: inherit;
+              text-decoration: none;
+            }
+          `}</style>
           <Header />
           <Component {...pageProps} />
         </Fragment>
