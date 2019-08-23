@@ -1,4 +1,4 @@
-import { colors, colorNames } from './colors'
+import { colorNames, colors } from './colors'
 import { fontFamilies, fonts } from './fonts'
 
 export default {
