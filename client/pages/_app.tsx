@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react'
 import { default as NextApp } from 'next/app'
+import Head from 'next/head'
 import { ThemeProvider } from 'styled-components'
 
 import Header from '@components/layout/Header'
@@ -11,6 +12,9 @@ export default class App extends NextApp {
     return (
       <ThemeProvider theme={theme}>
         <>
+          <Head>
+            <title>WorshipMate</title>
+          </Head>
           <style jsx global>{`
             * {
               position: relative;
