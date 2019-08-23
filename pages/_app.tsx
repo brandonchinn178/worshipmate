@@ -1,4 +1,4 @@
-import React, { Fragment, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { default as NextApp } from 'next/app'
 import { ThemeProvider } from 'styled-components'
 
@@ -10,7 +10,7 @@ export default class App extends NextApp {
     const { Component, pageProps } = this.props
     return (
       <ThemeProvider theme={theme}>
-        <Fragment>
+        <>
           <style jsx global>{`
             * {
               position: relative;
@@ -37,7 +37,7 @@ export default class App extends NextApp {
           `}</style>
           <Header />
           <Component {...pageProps} />
-        </Fragment>
+        </>
       </ThemeProvider>
     )
   }
