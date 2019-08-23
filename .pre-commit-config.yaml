@@ -11,8 +11,7 @@ repos:
     rev: 1.18.2
     hooks:
       - id: prettier
-        files: '\.(js|ts|tsx)$'
-        exclude: '^(next\.config\.js)$'
+        files: '^client/(components|pages)/'
 
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: v6.1.0

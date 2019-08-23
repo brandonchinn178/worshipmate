@@ -3,9 +3,9 @@
   "version": "0.1",
   "private": true,
   "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
+    "dev": "next client/",
+    "build": "next build client/",
+    "start": "next start client/",
     "lint": "eslint . --ext .js,.ts,.tsx"
   },
   "dependencies": {
