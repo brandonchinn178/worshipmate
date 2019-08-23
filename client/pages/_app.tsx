@@ -1,9 +1,10 @@
-import Header from '@components/layout/Header'
-import theme from '@components/theme'
 import { default as NextApp } from 'next/app'
 import Head from 'next/head'
 import React, { ReactElement } from 'react'
 import { ThemeProvider } from 'styled-components'
+
+import Header from '~/components/layout/Header'
+import theme from '~/components/theme'
 
 export default class App extends NextApp {
   render(): ReactElement {
