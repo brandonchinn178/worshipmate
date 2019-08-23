@@ -24,6 +24,7 @@
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-simple-import-sort": "^4.0.0",
     "typescript": "^3.5.3"
   }
 }
