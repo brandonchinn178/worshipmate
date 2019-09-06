@@ -3,8 +3,8 @@ import Head from 'next/head'
 import React, { ReactElement } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 
-import Header from '~/components/layout/Header'
-import theme from '~/components/theme'
+import Header from '~/layout/Header'
+import theme from '~/theme'
 
 export default class App extends NextApp {
   render(): ReactElement {
