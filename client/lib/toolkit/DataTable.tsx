@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Key, ReactElement, ReactNode } from 'react'
+import { Key, ReactNode } from 'react'
 import styled from 'styled-components'
 
 type DataTableProps<T> = {
@@ -51,7 +51,7 @@ export default function DataTable<T>({
   data,
   columnDefs,
   rowKey,
-}: DataTableProps<T>): ReactElement {
+}: DataTableProps<T>) {
   // Let columns shrink to dictated proportions, without respect to
   // the data in the columns.
   // https://github.com/rachelandrew/cssgrid-ama/issues/25

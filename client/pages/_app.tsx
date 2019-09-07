@@ -1,13 +1,13 @@
 import { default as NextApp } from 'next/app'
 import Head from 'next/head'
-import React, { ReactElement } from 'react'
+import React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 
 import Header from '~/layout/Header'
 import theme from '~/theme'
 
 export default class App extends NextApp {
-  render(): ReactElement {
+  render() {
     const { Component, pageProps } = this.props
     return (
       <ThemeProvider theme={theme}>
