@@ -36,6 +36,8 @@ const renderCell = <T,>(
 
   const cellContent = (() => {
     if (typeof rowData === 'object') {
+      // TODO: fix?
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (rowData as any)[name]
     }
 
