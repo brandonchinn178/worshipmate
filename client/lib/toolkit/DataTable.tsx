@@ -85,7 +85,7 @@ const Table = styled.div`
 
 const TableRow = styled.div<{ columnSizes: string }>`
   display: grid;
-  grid-template-columns: ${(props) => props.columnSizes};
+  grid-template-columns: ${(p) => p.columnSizes};
 `
 
 const TableCell = styled.div`

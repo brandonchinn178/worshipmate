@@ -21,7 +21,7 @@ const HeaderContainer = styled.div`
   display: grid;
   grid-template-columns: auto 75px;
   padding: 20px;
-  background: ${(props) => props.theme.primary};
+  background: ${(p) => p.theme.primary};
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.75);
 `
 
@@ -31,10 +31,10 @@ const Title = styled.a`
   display: inline-block;
   margin: 0;
   padding: 5px 10px;
-  color: ${(props) => props.theme.colors.white};
-  ${(props) => props.theme.fonts.label}
+  color: ${(p) => p.theme.colors.white};
+  ${(p) => p.theme.fonts.label}
   font-size: 3rem;
-  border-color: ${(props) => props.theme.colors.white};
+  border-color: ${(p) => p.theme.colors.white};
   border-width: 3px;
   border-style: solid;
   text-shadow: ${shadow};
@@ -46,14 +46,14 @@ const Links = styled.nav`
   display: grid;
   justify-items: end;
   align-items: center;
-  ${(props) => props.theme.fonts.label}
+  ${(p) => p.theme.fonts.label}
   font-size: 1.5rem;
   text-transform: lowercase;
-  color: ${(props) => props.theme.colors.white};
+  color: ${(p) => p.theme.colors.white};
 `
 
 const Link = styled.a`
   &:hover {
-    color: ${(props) => props.theme.secondary};
+    color: ${(p) => p.theme.secondary};
   }
 `
