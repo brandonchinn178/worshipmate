@@ -1,7 +1,6 @@
-import { FC } from 'react'
 import styled from 'styled-components'
 
-const Header: FC = () => {
+export default function Header() {
   return (
     <HeaderContainer>
       <div>
@@ -14,8 +13,6 @@ const Header: FC = () => {
     </HeaderContainer>
   )
 }
-
-export default Header
 
 const HeaderContainer = styled.div`
   display: grid;
