@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { Key, ReactNode } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 type DataTableProps<T> = {
   // The data to render in the DataTable
@@ -79,21 +79,30 @@ export default function DataTable<T>({
   )
 }
 
+const borderStyle = css`1px solid ${(p) => p.theme.black}`
+
 const Table = styled.div`
   display: grid;
+  border-top: ${borderStyle};
+  border-left: ${borderStyle};
 `
 
 const TableRow = styled.div<{ columnSizes: string }>`
   display: grid;
   grid-template-columns: ${(p) => p.columnSizes};
+  border-right: ${borderStyle};
+  border-bottom: ${borderStyle};
 `
 
 const TableCell = styled.div`
   display: grid;
+  padding: 5px 10px;
 `
 
 const TableHeaderCell = styled(TableCell)`
-  font-weight: bold;
+  ${(p) => p.theme.fonts.label};
+  font-size: 1.2rem;
+  text-align: center;
 `
 
 const CellContent = styled.span`
