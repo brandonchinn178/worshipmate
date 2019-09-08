@@ -79,7 +79,7 @@ export default function DataTable<T>({
   )
 }
 
-const borderStyle = css`1px solid ${(p) => p.theme.black}`
+const borderStyle = css`1px solid ${(p) => p.theme.colors.black}`
 
 const Table = styled.div`
   display: grid;
