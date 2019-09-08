@@ -20,7 +20,6 @@ export default Header
 const HeaderContainer = styled.div`
   display: grid;
   grid-template-columns: auto 75px;
-  margin-bottom: 15px;
   padding: 20px;
   background: ${(props) => props.theme.primary};
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.75);
