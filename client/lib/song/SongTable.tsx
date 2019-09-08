@@ -9,6 +9,7 @@ type SongTableProps = {
 const songTableColumnDefs: ColumnDefs<Song> = [
   {
     name: 'title',
+    header: 'Name',
     size: '2fr',
   },
   {
