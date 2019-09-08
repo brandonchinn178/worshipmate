@@ -39,7 +39,7 @@ Home.getInitialProps = async () => {
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 30% auto;
+  grid-template-columns: 400px auto;
   grid-template-rows: 50px auto;
   grid-template-areas:
     'sidebar search'
