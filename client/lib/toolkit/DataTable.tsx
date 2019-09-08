@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { Key, ReactNode } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 type DataTableProps<T> = {
   // The data to render in the DataTable
@@ -17,14 +17,21 @@ export type ColumnDefs<T> = Array<ColumnDef<T>>
 type ColumnDef<T> = {
   // The name of the column
   name: string
+  // The name of the column to display in the header row (default: `name` capitalized)
+  header?: string
   // The size of the column (default: 1fr)
   size?: string
   // A custom rendering function, if desired
   render?: (rowData: T) => ReactNode
 }
 
-const renderHeader = <T,>({ name }: ColumnDef<T>): ReactNode =>
-  _.capitalize(name)
+const renderHeader = <T,>({ name, header }: ColumnDef<T>): ReactNode => {
+  if (header) {
+    return header
+  }
+
+  return _.capitalize(name)
+}
 
 const renderCell = <T,>(
   { name, render }: ColumnDef<T>,
@@ -34,17 +41,13 @@ const renderCell = <T,>(
     return render(rowData)
   }
 
-  const cellContent = (() => {
-    if (typeof rowData === 'object') {
-      // TODO: fix?
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (rowData as any)[name]
-    }
+  if (typeof rowData === 'object') {
+    // TODO: fix?
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (rowData as any)[name]
+  }
 
-    return null
-  })()
-
-  return <CellContent>{cellContent}</CellContent>
+  return null
 }
 
 export default function DataTable<T>({
@@ -79,26 +82,29 @@ export default function DataTable<T>({
   )
 }
 
+const borderStyle = css`1px solid ${(p) => p.theme.colors.black}`
+
 const Table = styled.div`
   display: grid;
+  border-top: ${borderStyle};
+  border-left: ${borderStyle};
 `
 
 const TableRow = styled.div<{ columnSizes: string }>`
   display: grid;
   grid-template-columns: ${(p) => p.columnSizes};
+  border-right: ${borderStyle};
+  border-bottom: ${borderStyle};
 `
 
 const TableCell = styled.div`
   display: grid;
+  padding: 5px 10px;
+  justify-items: center;
 `
 
 const TableHeaderCell = styled(TableCell)`
-  font-weight: bold;
-`
-
-const CellContent = styled.span`
-  // add ellipsis if cell text too long
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  ${(p) => p.theme.fonts.label};
+  font-size: 1.2rem;
+  text-align: center;
 `

@@ -7,6 +7,6 @@ export const fontFamilies = {
 export const fonts = {
   label: `
     font-family: ${fontFamilies.alegreyaSC};
-    font-variant: small-caps;
+    text-transform: lowercase;
   `,
 }
