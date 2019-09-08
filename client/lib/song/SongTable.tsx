@@ -1,4 +1,5 @@
 import DataTable, { ColumnDefs } from '~/toolkit/DataTable'
+import Link from '~/toolkit/Link'
 
 import { Song } from '.'
 
@@ -11,6 +12,7 @@ const songTableColumnDefs: ColumnDefs<Song> = [
     name: 'title',
     header: 'Name',
     size: '2fr',
+    render: ({ title }) => <Link href="#">{title}</Link>,
   },
   {
     name: 'artist',
