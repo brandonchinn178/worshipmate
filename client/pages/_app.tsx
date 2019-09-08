@@ -1,7 +1,7 @@
 import { default as NextApp } from 'next/app'
 import Head from 'next/head'
 import React from 'react'
-import styled, { ThemeProvider } from 'styled-components'
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
 
 import Header from '~/layout/Header'
 import theme from '~/theme'
@@ -15,30 +15,7 @@ export default class App extends NextApp {
           <Head>
             <title>WorshipMate</title>
           </Head>
-          <style jsx global>{`
-            * {
-              position: relative;
-              margin: 0;
-              padding: 0;
-              font-size: 100%;
-              font-weight: normal;
-              line-height: 100%;
-            }
-
-            html,
-            body {
-              font-size: 18px;
-            }
-
-            li {
-              list-style-type: none;
-            }
-
-            a {
-              color: inherit;
-              text-decoration: none;
-            }
-          `}</style>
+          <GlobalStyle />
           <Header />
           <PageContent>
             <Component {...pageProps} />
@@ -48,6 +25,31 @@ export default class App extends NextApp {
     )
   }
 }
+
+const GlobalStyle = createGlobalStyle`
+  * {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+    font-weight: normal;
+    line-height: 100%;
+  }
+
+  html,
+  body {
+    font-size: 18px;
+  }
+
+  li {
+    list-style-type: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+`
 
 const PageContent = styled.div`
   padding: 15px;
