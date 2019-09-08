@@ -1,5 +1,3 @@
-import { FC } from 'react'
-
 import DataTable, { ColumnDefs } from '~/toolkit/DataTable'
 
 import { Song } from '.'
@@ -24,8 +22,6 @@ const songTableColumnDefs: ColumnDefs<Song> = [
   },
 ]
 
-const SongTable: FC<SongTableProps> = ({ songs }) => (
-  <DataTable data={songs} columnDefs={songTableColumnDefs} />
-)
-
-export default SongTable
+export default function SongTable({ songs }: SongTableProps) {
+  return <DataTable data={songs} columnDefs={songTableColumnDefs} />
+}
