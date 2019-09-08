@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import Link from '~/toolkit/Link'
+
 export default function Header() {
   return (
     <HeaderContainer>
@@ -7,8 +9,12 @@ export default function Header() {
         <Title href="#">WorshipMate</Title>
       </div>
       <Links>
-        <Link href="#">About</Link>
-        <Link href="#">Login</Link>
+        <Link mode="light" href="#">
+          About
+        </Link>
+        <Link mode="light" href="#">
+          Login
+        </Link>
       </Links>
     </HeaderContainer>
   )
@@ -46,10 +52,4 @@ const Links = styled.nav`
   ${(p) => p.theme.fonts.label}
   font-size: 1.2rem;
   color: ${(p) => p.theme.colors.white};
-`
-
-const Link = styled.a`
-  &:hover {
-    color: ${(p) => p.theme.secondary};
-  }
 `
