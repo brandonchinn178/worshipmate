@@ -100,6 +100,7 @@ const TableRow = styled.div<{ columnSizes: string }>`
 const TableCell = styled.div`
   display: grid;
   padding: 5px 10px;
+  justify-items: center;
 `
 
 const TableHeaderCell = styled(TableCell)`
