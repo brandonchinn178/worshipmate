@@ -38,6 +38,7 @@ const GlobalStyle = createGlobalStyle`
 
   html,
   body {
+    font-family: ${(p) => p.theme.fontFamilies.notoSerif};
     font-size: 18px;
   }
 
