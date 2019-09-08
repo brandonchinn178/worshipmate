@@ -21,7 +21,7 @@ const songTableColumnDefs: ColumnDefs<Song> = [
   {
     name: 'themes',
     size: '3fr',
-    render: (song) => song.themes.join(', '),
+    render: ({ themes }) => themes.join(', '),
   },
 ]
 
