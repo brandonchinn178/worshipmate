@@ -17,14 +17,21 @@ export type ColumnDefs<T> = Array<ColumnDef<T>>
 type ColumnDef<T> = {
   // The name of the column
   name: string
+  // The name of the column to display in the header row (default: `name` capitalized)
+  header?: string
   // The size of the column (default: 1fr)
   size?: string
   // A custom rendering function, if desired
   render?: (rowData: T) => ReactNode
 }
 
-const renderHeader = <T,>({ name }: ColumnDef<T>): ReactNode =>
-  _.capitalize(name)
+const renderHeader = <T,>({ name, header }: ColumnDef<T>): ReactNode => {
+  if (header) {
+    return header
+  }
+
+  return _.capitalize(name)
+}
 
 const renderCell = <T,>(
   { name, render }: ColumnDef<T>,
