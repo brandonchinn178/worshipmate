@@ -6,5 +6,9 @@ module.exports = {
   webpack(config, _) {
     config.resolve.alias["~"] = path.join(__dirname, "lib");
     return config;
-  }
+  },
+
+  experimental: {
+    publicDirectory: true,
+  },
 };
