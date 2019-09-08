@@ -41,17 +41,13 @@ const renderCell = <T,>(
     return render(rowData)
   }
 
-  const cellContent = (() => {
-    if (typeof rowData === 'object') {
-      // TODO: fix?
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (rowData as any)[name]
-    }
+  if (typeof rowData === 'object') {
+    // TODO: fix?
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (rowData as any)[name]
+  }
 
-    return null
-  })()
-
-  return <CellContent>{cellContent}</CellContent>
+  return null
 }
 
 export default function DataTable<T>({
@@ -110,11 +106,4 @@ const TableHeaderCell = styled(TableCell)`
   ${(p) => p.theme.fonts.label};
   font-size: 1.2rem;
   text-align: center;
-`
-
-const CellContent = styled.span`
-  // add ellipsis if cell text too long
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
 `
