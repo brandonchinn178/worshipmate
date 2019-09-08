@@ -1,4 +1,3 @@
-import { NextPage } from 'next'
 import styled from 'styled-components'
 
 import { Song } from '~/song'
@@ -8,15 +7,15 @@ type HomeProps = {
   songs: Song[]
 }
 
-const Home: NextPage<HomeProps> = ({ songs }) => (
-  <Grid>
-    <Sidebar>TODO: Sidebar</Sidebar>
-    <SearchBar>TODO: Search</SearchBar>
-    <SongTable songs={songs} />
-  </Grid>
-)
-
-export default Home
+export default function Home({ songs }: HomeProps) {
+  return (
+    <Grid>
+      <Sidebar>TODO: Sidebar</Sidebar>
+      <SearchBar>TODO: Search</SearchBar>
+      <SongTable songs={songs} />
+    </Grid>
+  )
+}
 
 Home.getInitialProps = async () => {
   // TODO: get from graphql api
