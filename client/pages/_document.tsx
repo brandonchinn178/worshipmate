@@ -67,7 +67,7 @@ export default class Document extends NextDocument {
           <meta name="theme-color" content="#134b4e" />
 
           <link
-            href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:500|Alegreya+Sans:500|Noto+Serif:400,400i,700&display=swap"
+            href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:400|Alegreya+Sans:500|Noto+Serif:400,400i,700&display=swap"
             rel="stylesheet"
           />
         </Head>

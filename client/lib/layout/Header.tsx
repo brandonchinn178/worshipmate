@@ -29,8 +29,8 @@ const Title = styled.a`
   margin: 0;
   padding: 5px 10px;
   color: ${(p) => p.theme.colors.white};
-  ${(p) => p.theme.fonts.label}
-  font-size: 3rem;
+  font-family: ${(p) => p.theme.fontFamilies.alegreyaSC};
+  font-size: 2.5rem;
   border-color: ${(p) => p.theme.colors.white};
   border-width: 3px;
   border-style: solid;
@@ -44,8 +44,7 @@ const Links = styled.nav`
   justify-items: end;
   align-items: center;
   ${(p) => p.theme.fonts.label}
-  font-size: 1.5rem;
-  text-transform: lowercase;
+  font-size: 1.2rem;
   color: ${(p) => p.theme.colors.white};
 `
 
