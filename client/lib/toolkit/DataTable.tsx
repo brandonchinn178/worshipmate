@@ -101,6 +101,7 @@ const TableCell = styled.div`
   display: grid;
   padding: 10px;
   justify-items: center;
+  text-align: center;
 `
 
 const TableHeaderCell = styled(TableCell)`
