@@ -25,5 +25,11 @@ const songTableColumnDefs: ColumnDefs<Song> = [
 ]
 
 export default function SongTable({ songs }: SongTableProps) {
-  return <DataTable data={songs} columnDefs={songTableColumnDefs} />
+  return (
+    <DataTable
+      data={songs}
+      columnDefs={songTableColumnDefs}
+      rowKey={({ slug }) => slug}
+    />
+  )
 }
