@@ -47,8 +47,13 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: inherit;
+    color: ${(p) => p.theme.primary};
+    font-weight: bold;
     text-decoration: none;
+
+    &:hover {
+      color: ${(p) => p.theme.secondary};
+    }
   }
 `
 

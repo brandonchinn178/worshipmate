@@ -1,5 +1,4 @@
 import DataTable, { ColumnDefs } from '~/toolkit/DataTable'
-import Link from '~/toolkit/Link'
 
 import { Song } from '.'
 
@@ -12,7 +11,7 @@ const songTableColumnDefs: ColumnDefs<Song> = [
     name: 'title',
     header: 'Name',
     size: '2fr',
-    render: ({ title }) => <Link href="#">{title}</Link>,
+    render: ({ title }) => <a href="#">{title}</a>,
   },
   {
     name: 'artist',
@@ -26,5 +25,11 @@ const songTableColumnDefs: ColumnDefs<Song> = [
 ]
 
 export default function SongTable({ songs }: SongTableProps) {
-  return <DataTable data={songs} columnDefs={songTableColumnDefs} />
+  return (
+    <DataTable
+      data={songs}
+      columnDefs={songTableColumnDefs}
+      rowKey={({ slug }) => slug}
+    />
+  )
 }
