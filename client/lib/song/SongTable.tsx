@@ -1,4 +1,4 @@
-import DataTable, { ColumnDefs } from '~/toolkit/DataTable'
+import DataTable, { ColumnDefs } from '~/ui-kit/DataTable'
 
 import { Song } from '.'
 
