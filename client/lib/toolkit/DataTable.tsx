@@ -99,12 +99,13 @@ const TableRow = styled.div<{ columnSizes: string }>`
 
 const TableCell = styled.div`
   display: grid;
-  padding: 5px 10px;
+  padding: 10px;
   justify-items: center;
 `
 
 const TableHeaderCell = styled(TableCell)`
+  padding: 5px;
   ${(p) => p.theme.fonts.label};
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   text-align: center;
 `
