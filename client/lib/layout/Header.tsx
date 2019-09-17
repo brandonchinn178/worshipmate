@@ -37,6 +37,10 @@ const Title = styled.a`
   text-shadow: ${shadow};
   box-shadow: ${shadow};
   letter-spacing: 1px;
+
+  &:hover {
+    color: ${(p) => p.theme.colors.white};
+  }
 `
 
 const Links = styled.nav`

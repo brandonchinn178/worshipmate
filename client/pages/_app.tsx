@@ -1,10 +1,11 @@
 import { default as NextApp } from 'next/app'
 import Head from 'next/head'
 import React from 'react'
-import styled, { createGlobalStyle, ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 
 import Header from '~/layout/Header'
 import theme from '~/theme'
+import GlobalStyle from '~/theme/global'
 
 export default class App extends NextApp {
   render() {
@@ -25,37 +26,6 @@ export default class App extends NextApp {
     )
   }
 }
-
-const GlobalStyle = createGlobalStyle`
-  * {
-    position: relative;
-    margin: 0;
-    padding: 0;
-    font-size: 100%;
-    font-weight: normal;
-    line-height: 100%;
-  }
-
-  html,
-  body {
-    font-family: ${(p) => p.theme.fontFamilies.notoSerif};
-    font-size: 18px;
-  }
-
-  li {
-    list-style-type: none;
-  }
-
-  a {
-    color: ${(p) => p.theme.primary};
-    font-weight: bold;
-    text-decoration: none;
-
-    &:hover {
-      color: ${(p) => p.theme.secondary};
-    }
-  }
-`
 
 const PageContent = styled.div`
   padding: 15px;
