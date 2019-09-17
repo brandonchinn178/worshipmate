@@ -33,16 +33,60 @@ const narniaData = [
   },
 ]
 
-Story('DataTable').add('Basic DataTable', () => (
-  <DataTable
-    data={narniaData}
-    columnDefs={[
-      {
-        name: 'title',
-      },
-      {
-        name: 'year',
-      },
-    ]}
-  />
-))
+Story('DataTable')
+  .add('Basic DataTable', () => (
+    <DataTable
+      data={narniaData}
+      columnDefs={[
+        {
+          name: 'title',
+        },
+        {
+          name: 'year',
+        },
+      ]}
+    />
+  ))
+  .add('Custom header', () => (
+    <DataTable
+      data={narniaData}
+      columnDefs={[
+        {
+          name: 'title',
+          header: 'Book',
+        },
+        {
+          name: 'year',
+          header: 'Publication year',
+        },
+      ]}
+    />
+  ))
+  .add('Custom size', () => (
+    <DataTable
+      data={narniaData}
+      columnDefs={[
+        {
+          name: 'title',
+        },
+        {
+          name: 'year',
+          size: '200px',
+        },
+      ]}
+    />
+  ))
+  .add('Custom render', () => (
+    <DataTable
+      data={narniaData}
+      columnDefs={[
+        {
+          name: 'title',
+          render: ({ title }) => <i>{title}</i>,
+        },
+        {
+          name: 'year',
+        },
+      ]}
+    />
+  ))
