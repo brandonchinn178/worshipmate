@@ -33,15 +33,16 @@ const narniaData = [
   },
 ]
 
-const narniaColumnDefs = [
-  {
-    name: 'title',
-  },
-  {
-    name: 'year',
-  },
-]
-
 Story('DataTable').add('Basic DataTable', () => (
-  <DataTable data={narniaData} columnDefs={narniaColumnDefs} />
+  <DataTable
+    data={narniaData}
+    columnDefs={[
+      {
+        name: 'title',
+      },
+      {
+        name: 'year',
+      },
+    ]}
+  />
 ))
