@@ -1,9 +1,4 @@
-import { storiesOf } from '@storybook/react'
-import React from 'react'
-import { ThemeProvider } from 'styled-components'
-
-import theme from '~/theme'
-import GlobalStyle from '~/theme/global'
+import Story from '~/stories'
 
 import DataTable from './DataTable'
 
@@ -47,11 +42,6 @@ const narniaColumnDefs = [
   },
 ]
 
-storiesOf('DataTable', module).add('Basic DataTable', () => (
-  <ThemeProvider theme={theme}>
-    <>
-      <GlobalStyle />
-      <DataTable data={narniaData} columnDefs={narniaColumnDefs} />
-    </>
-  </ThemeProvider>
+Story('DataTable').add('Basic DataTable', () => (
+  <DataTable data={narniaData} columnDefs={narniaColumnDefs} />
 ))
