@@ -7,6 +7,7 @@
     "build": "next build client/",
     "start": "next start client/",
     "lint": "eslint . --ext .js,.ts,.tsx --max-warnings=0",
+    "test": "jest -c client/jest/config.js",
     "storybook": "start-storybook -p 6006 -c client/.storybook"
   },
   "dependencies": {
@@ -20,17 +21,22 @@
   },
   "devDependencies": {
     "@storybook/react": "^5.1.11",
+    "@testing-library/jest-dom": "^4.1.0",
+    "@testing-library/react": "^9.1.4",
+    "@types/jest": "^24.0.18",
     "@types/node": "^12.7.2",
     "@types/react": "^16.9.2",
     "@types/storybook__react": "^4.0.2",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
+    "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.6",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-simple-import-sort": "^4.0.0",
+    "jest": "^24.9.0",
     "typescript": "^3.5.3"
   }
 }
