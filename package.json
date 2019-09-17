@@ -6,7 +6,8 @@
     "dev": "next client/",
     "build": "next build client/",
     "start": "next start client/",
-    "lint": "eslint . --ext .js,.ts,.tsx --max-warnings=0"
+    "lint": "eslint . --ext .js,.ts,.tsx --max-warnings=0",
+    "storybook": "start-storybook -p 6006 -c client/.storybook"
   },
   "dependencies": {
     "@types/lodash": "^4.14.138",
@@ -18,10 +19,13 @@
     "styled-components": "^4.3.2"
   },
   "devDependencies": {
+    "@storybook/react": "^5.1.11",
     "@types/node": "^12.7.2",
     "@types/react": "^16.9.2",
+    "@types/storybook__react": "^4.0.2",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
+    "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.6",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
