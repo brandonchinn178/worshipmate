@@ -3,6 +3,7 @@ import React from 'react'
 import { ThemeProvider } from 'styled-components'
 
 import theme from '~/theme'
+import GlobalStyle from '~/theme/global'
 
 import DataTable from './DataTable'
 
@@ -49,7 +50,7 @@ const narniaColumnDefs = [
 storiesOf('DataTable', module).add('Basic DataTable', () => (
   <ThemeProvider theme={theme}>
     <>
-      <h1>Basic DataTable</h1>
+      <GlobalStyle />
       <DataTable data={narniaData} columnDefs={narniaColumnDefs} />
     </>
   </ThemeProvider>
