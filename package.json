@@ -6,9 +6,9 @@
     "dev": "next client/",
     "build": "next build client/",
     "start": "next start client/",
+    "storybook": "start-storybook -p 6006 -c client/.storybook",
     "lint": "eslint . --ext .js,.ts,.tsx --max-warnings=0",
     "test": "jest -c client/jest/config.js",
-    "storybook": "start-storybook -p 6006 -c client/.storybook",
     "typecheck": "tsc --noEmit -p client/tsconfig.typecheck.json"
   },
   "dependencies": {
