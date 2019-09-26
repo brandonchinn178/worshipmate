@@ -8,7 +8,8 @@
     "start": "next start client/",
     "lint": "eslint . --ext .js,.ts,.tsx --max-warnings=0",
     "test": "jest -c client/jest/config.js",
-    "storybook": "start-storybook -p 6006 -c client/.storybook"
+    "storybook": "start-storybook -p 6006 -c client/.storybook",
+    "typecheck": "tsc --noEmit -p client/tsconfig.typecheck.json"
   },
   "dependencies": {
     "@types/lodash": "^4.14.138",
