@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path')
 
 const roots = process.env.STORYSHOTS_DIR ? ['<rootDir>/stories/'] : ['<rootDir>/lib', '<rootDir>/pages']

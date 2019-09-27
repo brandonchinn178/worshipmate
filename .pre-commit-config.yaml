@@ -20,4 +20,4 @@ repos:
         types: []
         args:
           - --max-warnings=0
-        files: '\.(ts|tsx)$'
+        files: '\.(js|ts|tsx)$'
