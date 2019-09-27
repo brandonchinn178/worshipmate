@@ -1,8 +1,10 @@
 const path = require('path')
 
+const roots = process.env.STORYSHOTS_DIR ? ['<rootDir>/stories/'] : ['<rootDir>/lib', '<rootDir>/pages']
+
 module.exports = {
   rootDir: path.join(__dirname, '..'),
-  roots: ['<rootDir>/lib', '<rootDir>/pages'],
+  roots,
   transform: {
     '^.+\\.tsx?$': 'babel-jest',
   },
@@ -11,6 +13,7 @@ module.exports = {
   moduleNameMapper: {
     '^~/(.*)': '<rootDir>/lib/$1',
     '^~jest-utils$': '<rootDir>/jest/utils',
+    '^~stories$': '<rootDir>/stories',
   },
   setupFilesAfterEnv: ['<rootDir>/jest/setup.ts'],
 }

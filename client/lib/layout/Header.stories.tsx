@@ -1,4 +1,4 @@
-import Story from '~/stories'
+import Story from '~stories'
 
 import Header from './Header'
 
