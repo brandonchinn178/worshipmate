@@ -6,9 +6,6 @@ module.exports = ({ config }) => {
     use: [
       {
         loader: 'babel-loader',
-        options: {
-          presets: [require.resolve('babel-preset-react-app')]
-        },
       },
     ],
   })
