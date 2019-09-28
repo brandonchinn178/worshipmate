@@ -6,14 +6,12 @@ module.exports = ({ config }) => {
     use: [
       {
         loader: 'babel-loader',
-        options: {
-          presets: [require.resolve('babel-preset-react-app')]
-        },
       },
     ],
   })
 
   config.resolve.alias['~'] = path.join(__dirname, '..', 'lib')
+  config.resolve.alias['~stories'] = path.join(__dirname, '..', 'stories')
   config.resolve.extensions.push('.ts', '.tsx')
 
   return config
