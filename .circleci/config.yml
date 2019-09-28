@@ -1,0 +1,58 @@
+version: 2.1
+
+aliases:
+  - &yarn_cache_key
+    v1-{{ checksum "yarn.lock" }}
+
+executors:
+  docker-node:
+    docker:
+      - image: circleci/node:12.8.1-stretch
+    working_directory: ~/worship-mate/
+    shell: /bin/bash -eux -o pipefail
+
+commands:
+  install_yarn_and_deps:
+    description: Install yarn dependencies
+    steps:
+      - restore_cache:
+          key: *yarn_cache_key
+      - run:
+          name: Install external dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          key: *yarn_cache_key
+          paths:
+            - node_modules
+
+jobs:
+  build:
+    executor: docker-node
+    steps:
+      - checkout
+      - install_yarn_and_deps
+      - run: yarn build
+
+  lint:
+    executor: docker-node
+    steps:
+      - checkout
+      - install_yarn_and_deps
+      - run: yarn lint
+      - run: yarn typecheck
+
+  test:
+    executor: docker-node
+    steps:
+      - checkout
+      - install_yarn_and_deps
+      - run: yarn test
+
+workflows:
+  version: 2
+
+  build_and_test:
+    jobs:
+      - build
+      - lint
+      - test
