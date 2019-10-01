@@ -7,12 +7,6 @@ repos:
       - id: end-of-file-fixer
       - id: trailing-whitespace
 
-  - repo: https://github.com/prettier/prettier
-    rev: 1.18.2
-    hooks:
-      - id: prettier
-        files: '^client/(lib|pages)/'
-
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: v6.1.0
     hooks:
