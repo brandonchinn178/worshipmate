@@ -6,13 +6,13 @@
   },
   "extends": [
     "eslint:recommended",
-    "eslint-config-prettier",
+    "plugin:prettier/recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "simple-import-sort"],
+  "plugins": ["@typescript-eslint", "simple-import-sort", "prettier"],
   "parserOptions": {
     "sourceType": "module"
   },
