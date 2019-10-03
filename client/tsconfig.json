@@ -18,6 +18,6 @@
       "~/*": ["lib/*"]
     }
   },
-  "exclude": ["node_modules", "**/*.stories.tsx", "**/*.test.ts*", "jest/**/*"],
+  "exclude": ["node_modules", "**/*.stories.*", "**/*.test.*"],
   "include": ["next-env.d.ts", "lib/**/*", "pages/**/*"]
 }
