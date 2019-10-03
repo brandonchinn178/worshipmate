@@ -19,5 +19,5 @@
     }
   },
   "exclude": ["node_modules", "**/*.stories.tsx", "**/*.test.ts*", "jest/**/*"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["next-env.d.ts", "lib/**/*", "pages/**/*"]
 }
