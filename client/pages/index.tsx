@@ -2,17 +2,26 @@ import styled from 'styled-components'
 
 import { Song } from '~/song'
 import SongTableComponent from '~/song/SongTable'
+import { SearchInput, useSearch } from '~/ui-kit/SearchBar'
 
 type HomeProps = {
   songs: Song[]
 }
 
 export default function Home({ songs }: HomeProps) {
+  const [searchResult, searchState] = useSearch(songs, (query, song) => {
+    // TODO: better filter
+    return !!song.title.match(new RegExp(query, 'i'))
+  })
+
   return (
     <Grid>
       <Sidebar>TODO: Sidebar</Sidebar>
-      <SearchBar>TODO: Search</SearchBar>
-      <SongTable songs={songs} />
+      <SearchBar>
+        <SearchInput {...searchState} />
+        <button onClick={searchState.doSearch}>&gt;&gt;</button>
+      </SearchBar>
+      <SongTable songs={searchResult} />
     </Grid>
   )
 }
