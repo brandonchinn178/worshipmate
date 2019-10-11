@@ -3,7 +3,7 @@ import DataTable, { ColumnDefs } from '~/ui-kit/DataTable'
 import { Song } from '.'
 
 type SongTableProps = {
-  songs: Song[]
+  songs: readonly Song[]
 }
 
 const songTableColumnDefs: ColumnDefs<Song> = [
