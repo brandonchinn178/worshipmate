@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 type FilterFunc<T> = (query: string, elem: T) => boolean
 
@@ -8,33 +8,34 @@ type SearchState = {
   doSearch: () => void
 }
 
+// properties that should be attached to the search bar.
+type SearchInputProps = object
+
 export function useSearch<T>(
   data: readonly T[],
   filterFunc: FilterFunc<T>,
-): [readonly T[], SearchState] {
+): [readonly T[], SearchInputProps, SearchState] {
   const [query, setQuery] = useState('')
   const [searchResult, setSearchResult] = useState(data)
+  const doSearch = () => {
+    setSearchResult(data.filter((elem) => filterFunc(query, elem)))
+  }
+
   const searchState = {
     query,
     setQuery,
-    doSearch: () => {
-      setSearchResult(data.filter((elem) => filterFunc(query, elem)))
+    doSearch,
+  }
+
+  const searchInputProps = {
+    value: query,
+    onChange: (e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value),
+    onKeyDown: (e: KeyboardEvent) => {
+      if (e.keyCode === 13) {
+        doSearch()
+      }
     },
   }
 
-  return [searchResult, searchState]
-}
-
-export function SearchInput({ query, setQuery, doSearch }: SearchState) {
-  return (
-    <input
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      onKeyDown={(e) => {
-        if (e.keyCode === 13) {
-          doSearch()
-        }
-      }}
-    />
-  )
+  return [searchResult, searchInputProps, searchState]
 }

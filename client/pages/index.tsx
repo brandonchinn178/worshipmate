@@ -2,23 +2,26 @@ import styled from 'styled-components'
 
 import { Song } from '~/song'
 import SongTable from '~/song/SongTable'
-import { SearchInput, useSearch } from '~/ui-kit/SearchBar'
+import { useSearch } from '~/ui-kit/SearchBar'
 
 type HomeProps = {
   songs: Song[]
 }
 
 export default function Home({ songs }: HomeProps) {
-  const [searchResult, searchState] = useSearch(songs, (query, song) => {
-    // TODO: better filter
-    return !!song.title.match(new RegExp(query, 'i'))
-  })
+  const [searchResult, searchInputProps, searchState] = useSearch(
+    songs,
+    (query, song) => {
+      // TODO: better filter
+      return !!song.title.match(new RegExp(query, 'i'))
+    },
+  )
 
   return (
     <Grid>
       <Sidebar>TODO: Sidebar</Sidebar>
       <SearchBar>
-        <SearchInput {...searchState} />
+        <SearchInput {...searchInputProps} />
         <button onClick={searchState.doSearch}>&gt;&gt;</button>
       </SearchBar>
       <SongTableCell>
@@ -93,6 +96,10 @@ const Sidebar = styled.div`
 
 const SearchBar = styled.div`
   grid-area: search;
+`
+
+const SearchInput = styled.input`
+  width: 100%;
 `
 
 const SongTableCell = styled.div`
