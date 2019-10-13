@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 import { Song } from '~/song'
-import SongTableComponent from '~/song/SongTable'
+import SongTable from '~/song/SongTable'
 import { SearchInput, useSearch } from '~/ui-kit/SearchBar'
 
 type HomeProps = {
@@ -21,7 +21,9 @@ export default function Home({ songs }: HomeProps) {
         <SearchInput {...searchState} />
         <button onClick={searchState.doSearch}>&gt;&gt;</button>
       </SearchBar>
-      <SongTable songs={searchResult} />
+      <SongTableCell>
+        <SongTable songs={searchResult} />
+      </SongTableCell>
     </Grid>
   )
 }
@@ -93,6 +95,6 @@ const SearchBar = styled.div`
   grid-area: search;
 `
 
-const SongTable = styled(SongTableComponent)`
+const SongTableCell = styled.div`
   grid-area: table;
 `
