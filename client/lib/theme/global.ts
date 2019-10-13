@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
     font-weight: normal;
     line-height: 100%;
+    box-sizing: border-box;
   }
 
   html,

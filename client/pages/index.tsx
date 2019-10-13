@@ -84,10 +84,11 @@ Home.getInitialProps = async () => {
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 400px auto;
-  grid-template-rows: 50px auto;
+  grid-template-rows: auto auto;
   grid-template-areas:
     'sidebar search'
     'sidebar table';
+  grid-gap: 10px;
 `
 
 const Sidebar = styled.div`
@@ -96,10 +97,20 @@ const Sidebar = styled.div`
 
 const SearchBar = styled.div`
   grid-area: search;
+
+  display: grid;
+  grid-template-columns: auto 25px;
+  grid-template-areas: 'search-input search-button';
+  grid-gap: 10px;
+  align-items: center;
 `
 
 const SearchInput = styled.input`
+  grid-area: search-input;
   width: 100%;
+  border: 1px solid black;
+  padding: 5px;
+  outline: 0;
 `
 
 const SongTableCell = styled.div`
