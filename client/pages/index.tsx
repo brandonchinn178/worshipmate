@@ -8,6 +8,20 @@ type HomeProps = {
   songs: Song[]
 }
 
+function pluralize(...args: [string, number] | [string, string, number]) {
+  const [singular, plural, count] =
+    args.length === 2 ? [args[0], args[0] + 's', args[1]] : args
+
+  switch (count) {
+    case 0:
+      return plural
+    case 1:
+      return singular
+    default:
+      return plural
+  }
+}
+
 export default function Home({ songs }: HomeProps) {
   const [searchResult, searchInputProps, searchState] = useSearch(
     songs,
@@ -24,6 +38,9 @@ export default function Home({ songs }: HomeProps) {
         <SearchInput {...searchInputProps} />
         <button onClick={searchState.doSearch}>&gt;&gt;</button>
       </SearchBar>
+      <SongCount>
+        {searchResult.length} {pluralize('song', searchResult.length)}
+      </SongCount>
       <SongTableCell>
         <SongTable songs={searchResult} />
       </SongTableCell>
@@ -84,9 +101,10 @@ Home.getInitialProps = async () => {
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 400px auto;
-  grid-template-rows: auto auto;
+  grid-template-rows: auto auto auto;
   grid-template-areas:
     'sidebar search'
+    'sidebar song-count'
     'sidebar table';
   grid-gap: 10px;
 `
@@ -111,6 +129,10 @@ const SearchInput = styled.input`
   border: 1px solid black;
   padding: 5px;
   outline: 0;
+`
+
+const SongCount = styled.p`
+  font-weight: bold;
 `
 
 const SongTableCell = styled.div`
