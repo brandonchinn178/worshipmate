@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 import { Song } from '~/song'
 import SongTable from '~/song/SongTable'
+import { Icon } from '~/ui-kit/Icon'
 import { useSearch } from '~/ui-kit/SearchBar'
 
 type HomeProps = {
@@ -36,7 +37,9 @@ export default function Home({ songs }: HomeProps) {
       <Sidebar>TODO: Sidebar</Sidebar>
       <SearchBar>
         <SearchInput {...searchInputProps} />
-        <button onClick={searchState.doSearch}>&gt;&gt;</button>
+        <IconBox onClick={searchState.doSearch}>
+          <Icon name="search" />
+        </IconBox>
       </SearchBar>
       <SongCount>
         {searchResult.length} {pluralize('song', searchResult.length)}
@@ -109,6 +112,17 @@ const Grid = styled.div`
   grid-gap: 10px;
 `
 
+const IconBox = styled.div`
+  display: grid;
+  align-items: center;
+  justify-items: center;
+
+  height: 33px;
+  width: 33px;
+  border: 1px solid black;
+  cursor: pointer;
+`
+
 const Sidebar = styled.div`
   grid-area: sidebar;
 `
@@ -117,7 +131,7 @@ const SearchBar = styled.div`
   grid-area: search;
 
   display: grid;
-  grid-template-columns: auto 25px;
+  grid-template-columns: auto min-content;
   grid-template-areas: 'search-input search-button';
   grid-gap: 10px;
   align-items: center;
