@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components'
 
 type DataTableProps<T> = {
   // The data to render in the DataTable
-  data: T[]
+  data: readonly T[]
   // The definitions for the columns in the DataTable
   columnDefs: ColumnDefs<T>
 
