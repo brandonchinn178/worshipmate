@@ -1,9 +1,11 @@
+import { NextPageContext } from 'next'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import { Song } from '~/song'
 import SongTable from '~/song/SongTable'
 import { Icon } from '~/ui-kit/Icon'
-import { useSearch } from '~/ui-kit/SearchBar'
 
 type HomeProps = {
   songs: Song[]
@@ -24,36 +26,46 @@ function pluralize(...args: [string, number] | [string, string, number]) {
 }
 
 export default function Home({ songs }: HomeProps) {
-  const [searchResult, searchInputProps, searchState] = useSearch(
-    songs,
-    (query, song) => {
-      // TODO: better filter
-      return !!song.title.match(new RegExp(query, 'i'))
-    },
-  )
+  const router = useRouter()
+  const [query, setQuery] = useState(router.query.search)
+
+  const doSearch = () => {
+    router.push({
+      pathname: router.pathname,
+      query: query && { search: query },
+    })
+  }
 
   return (
     <Grid>
       <Sidebar>TODO: Sidebar</Sidebar>
       <SearchBar>
-        <SearchInput {...searchInputProps} />
-        <IconBox onClick={searchState.doSearch}>
+        <SearchInput
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13) {
+              doSearch()
+            }
+          }}
+        />
+        <IconBox onClick={doSearch}>
           <Icon name="search" />
         </IconBox>
       </SearchBar>
       <SongCount>
-        {searchResult.length} {pluralize('song', searchResult.length)}
+        {songs.length} {pluralize('song', songs.length)}
       </SongCount>
       <SongTableCell>
-        <SongTable songs={searchResult} />
+        <SongTable songs={songs} />
       </SongTableCell>
     </Grid>
   )
 }
 
-Home.getInitialProps = async () => {
-  // TODO: get from graphql api
-  const songs = [
+// TODO: get from graphql api
+const searchSongs = async (query: string) => {
+  const allSongs = [
     {
       slug: 'blessed-be-your-name',
       title: 'Blessed Be Your Name',
@@ -97,6 +109,12 @@ Home.getInitialProps = async () => {
       themes: ['Love', 'Outreach', 'Unity'],
     },
   ]
+
+  return allSongs.filter(({ title }) => title.match(new RegExp(query, 'i')))
+}
+
+Home.getInitialProps = async ({ query }: NextPageContext) => {
+  const songs = await searchSongs(query.search as string)
 
   return { songs }
 }
