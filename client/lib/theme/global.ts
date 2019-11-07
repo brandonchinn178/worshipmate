@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
+import { color, fontFamily } from '~/theme'
+
 const GlobalStyle = createGlobalStyle`
   * {
     position: relative;
@@ -13,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
 
   html,
   body {
-    font-family: ${(p) => p.theme.fontFamilies.notoSerif};
+    font-family: ${fontFamily('notoSerif')};
     font-size: 18px;
   }
 
@@ -22,12 +24,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: ${(p) => p.theme.colors.primary};
+    color: ${color('primary')};
     font-weight: bold;
     text-decoration: none;
 
     &:hover {
-      color: ${(p) => p.theme.colors.secondary};
+      color: ${color('secondary')};
     }
   }
 `
