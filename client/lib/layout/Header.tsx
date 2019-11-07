@@ -18,7 +18,7 @@ const HeaderContainer = styled.div`
   display: grid;
   grid-template-columns: auto 75px;
   padding: 20px;
-  background: ${(p) => p.theme.primary};
+  background: ${(p) => p.theme.colors.primary};
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.75);
 `
 

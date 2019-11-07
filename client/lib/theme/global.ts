@@ -22,12 +22,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: ${(p) => p.theme.primary};
+    color: ${(p) => p.theme.colors.primary};
     font-weight: bold;
     text-decoration: none;
 
     &:hover {
-      color: ${(p) => p.theme.secondary};
+      color: ${(p) => p.theme.colors.secondary};
     }
   }
 `
