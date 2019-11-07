@@ -1,25 +1,71 @@
+import { NextPageContext } from 'next'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 import styled from 'styled-components'
 
 import { Song } from '~/song'
-import SongTableComponent from '~/song/SongTable'
+import SongTable from '~/song/SongTable'
+import { Icon } from '~/ui-kit/Icon'
 
 type HomeProps = {
   songs: Song[]
 }
 
+function pluralize(...args: [string, number] | [string, string, number]) {
+  const [singular, plural, count] =
+    args.length === 2 ? [args[0], args[0] + 's', args[1]] : args
+
+  switch (count) {
+    case 0:
+      return plural
+    case 1:
+      return singular
+    default:
+      return plural
+  }
+}
+
 export default function Home({ songs }: HomeProps) {
+  const router = useRouter()
+  const [query, setQuery] = useState(router.query.search)
+
+  const doSearch = () => {
+    router.push({
+      pathname: router.pathname,
+      query: query && { search: query },
+    })
+  }
+
   return (
     <Grid>
       <Sidebar>TODO: Sidebar</Sidebar>
-      <SearchBar>TODO: Search</SearchBar>
-      <SongTable songs={songs} />
+      <SearchBar>
+        <SearchInput
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13) {
+              doSearch()
+            }
+          }}
+        />
+        <IconBox onClick={doSearch}>
+          <Icon name="search" />
+        </IconBox>
+      </SearchBar>
+      <SongCount>
+        {songs.length} {pluralize('song', songs.length)}
+      </SongCount>
+      <SongTableCell>
+        <SongTable songs={songs} />
+      </SongTableCell>
     </Grid>
   )
 }
 
-Home.getInitialProps = async () => {
-  // TODO: get from graphql api
-  const songs = [
+// TODO: get from graphql api
+const searchSongs = async (query: string) => {
+  const allSongs = [
     {
       slug: 'blessed-be-your-name',
       title: 'Blessed Be Your Name',
@@ -64,16 +110,35 @@ Home.getInitialProps = async () => {
     },
   ]
 
+  return allSongs.filter(({ title }) => title.match(new RegExp(query, 'i')))
+}
+
+Home.getInitialProps = async ({ query }: NextPageContext) => {
+  const songs = await searchSongs(query.search as string)
+
   return { songs }
 }
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 400px auto;
-  grid-template-rows: 50px auto;
+  grid-template-rows: auto auto auto;
   grid-template-areas:
     'sidebar search'
+    'sidebar song-count'
     'sidebar table';
+  grid-gap: 10px;
+`
+
+const IconBox = styled.div`
+  display: grid;
+  align-items: center;
+  justify-items: center;
+
+  height: 33px;
+  width: 33px;
+  border: 1px solid black;
+  cursor: pointer;
 `
 
 const Sidebar = styled.div`
@@ -82,8 +147,26 @@ const Sidebar = styled.div`
 
 const SearchBar = styled.div`
   grid-area: search;
+
+  display: grid;
+  grid-template-columns: auto min-content;
+  grid-template-areas: 'search-input search-button';
+  grid-gap: 10px;
+  align-items: center;
 `
 
-const SongTable = styled(SongTableComponent)`
+const SearchInput = styled.input`
+  grid-area: search-input;
+  width: 100%;
+  border: 1px solid black;
+  padding: 5px;
+  outline: 0;
+`
+
+const SongCount = styled.p`
+  font-weight: bold;
+`
+
+const SongTableCell = styled.div`
   grid-area: table;
 `
