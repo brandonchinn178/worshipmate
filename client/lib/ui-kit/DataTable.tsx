@@ -2,6 +2,8 @@ import _ from 'lodash'
 import { Key, ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 
+import { color, font } from '~/theme'
+
 type DataTableProps<T> = {
   // The data to render in the DataTable
   data: readonly T[]
@@ -82,7 +84,7 @@ export default function DataTable<T>({
   )
 }
 
-const borderStyle = css`1px solid ${(p) => p.theme.colors.black}`
+const borderStyle = css`1px solid ${color('black')}`
 
 const Table = styled.div`
   display: grid;
@@ -106,7 +108,7 @@ const TableCell = styled.div`
 
 const TableHeaderCell = styled(TableCell)`
   padding: 5px;
-  ${(p) => p.theme.fonts.label};
+  ${font('label')}
   font-size: 1.4rem;
   text-align: center;
 `

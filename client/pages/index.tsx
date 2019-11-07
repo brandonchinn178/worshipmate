@@ -85,7 +85,7 @@ const searchSongs = async (query: string) => {
       themes: ['Faithfulness', 'Worship'],
     },
     {
-      slug: 'give-me-fatih',
+      slug: 'give-me-faith',
       title: 'Give Me Faith',
       artist: 'Elevation Worship',
       themes: ['Faith', 'Surrender', 'Comfort'],
