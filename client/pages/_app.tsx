@@ -4,7 +4,7 @@ import React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 
 import Header from '~/layout/Header'
-import theme from '~/theme'
+import { theme } from '~/theme'
 import GlobalStyle from '~/theme/global'
 
 export default class App extends NextApp {

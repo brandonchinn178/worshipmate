@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+import { color, font, fontFamily } from '~/theme'
+
 export default function Header() {
   return (
     <HeaderContainer>
@@ -18,7 +20,7 @@ const HeaderContainer = styled.div`
   display: grid;
   grid-template-columns: auto 75px;
   padding: 20px;
-  background: ${(p) => p.theme.primary};
+  background: ${color('primary')};
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.75);
 `
 
@@ -28,10 +30,10 @@ const Title = styled.a`
   display: inline-block;
   margin: 0;
   padding: 5px 10px;
-  color: ${(p) => p.theme.colors.white};
-  font-family: ${(p) => p.theme.fontFamilies.alegreyaSC};
+  color: ${color('white')};
+  font-family: ${fontFamily('alegreyaSC')};
   font-size: 2.5rem;
-  border-color: ${(p) => p.theme.colors.white};
+  border-color: ${color('white')};
   border-width: 3px;
   border-style: solid;
   text-shadow: ${shadow};
@@ -39,7 +41,7 @@ const Title = styled.a`
   letter-spacing: 1px;
 
   &:hover {
-    color: ${(p) => p.theme.colors.white};
+    color: ${color('white')};
   }
 `
 
@@ -50,7 +52,7 @@ const Links = styled.nav`
 `
 
 const Link = styled.a`
-  ${(p) => p.theme.fonts.label}
+  ${font('label')}
   font-size: 1.2rem;
-  color: ${(p) => p.theme.colors.white};
+  color: ${color('white')};
 `
