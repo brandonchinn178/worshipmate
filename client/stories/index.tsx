@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import React, { ReactElement } from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 
-import theme from '~/theme'
+import { theme } from '~/theme'
 import GlobalStyle from '~/theme/global'
 
 export default function Story(name: string): StoryApi<ReactElement> {
