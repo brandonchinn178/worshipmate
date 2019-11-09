@@ -1,13 +1,16 @@
-import dynamic from 'next/dynamic'
 import React, { FC } from 'react'
 
-type IconName = 'search'
+import SearchIcon from './icons/search.svg'
+
+const icons = {
+  search: SearchIcon,
+}
 
 type Props = {
-  name: IconName
+  name: keyof typeof icons
 }
 
 export const Icon: FC<Props> = ({ name }) => {
-  const IconComponent = dynamic(import(`./icons/${name}.svg`))
+  const IconComponent = icons[name]
   return <IconComponent />
 }
