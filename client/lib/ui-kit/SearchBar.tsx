@@ -1,7 +1,11 @@
-import { useState } from 'react'
+import useForm from 'react-hook-form'
 import styled from 'styled-components'
 
 import Icon from '~/ui-kit/Icon'
+
+type Form = {
+  search: string
+}
 
 type SearchBarProps = {
   initial?: string
@@ -9,25 +13,23 @@ type SearchBarProps = {
 }
 
 export default function SearchBar({ initial = '', onSubmit }: SearchBarProps) {
-  const [query, setQuery] = useState(initial)
+  const { register, handleSubmit } = useForm<Form>({
+    defaultValues: {
+      search: initial,
+    },
+  })
 
-  const doSearch = () => onSubmit(query)
+  const doSubmit = handleSubmit(({ search }) => onSubmit(search))
 
   return (
+    <form onSubmit={doSubmit}>
     <SearchContainer>
-      <SearchInput
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.keyCode === 13) {
-            doSearch()
-          }
-        }}
-      />
-      <SearchBox onClick={doSearch}>
+      <SearchInput name="search" ref={register} />
+      <SearchBox>
         <Icon name="search" />
       </SearchBox>
     </SearchContainer>
+    </form>
   )
 }
 
@@ -47,10 +49,12 @@ const SearchInput = styled.input`
   outline: 0;
 `
 
-const SearchBox = styled.div`
-  display: grid;
-  align-items: center;
-  justify-items: center;
+const SearchBox = styled.button`
+  // HACK cuz grid not working in button
+  // display: grid;
+  // align-items: center;
+  // justify-items: center;
+  padding-top: 4px;
 
   height: 33px;
   width: 33px;
