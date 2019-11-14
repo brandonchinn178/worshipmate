@@ -23,12 +23,12 @@ export default function SearchBar({ initial = '', onSubmit }: SearchBarProps) {
 
   return (
     <form onSubmit={doSubmit}>
-    <SearchContainer>
-      <SearchInput name="search" ref={register} />
-      <SearchBox>
-        <Icon name="search" />
-      </SearchBox>
-    </SearchContainer>
+      <SearchContainer>
+        <SearchInput name="search" ref={register} />
+        <SearchBox>
+          <Icon name="search" />
+        </SearchBox>
+      </SearchContainer>
     </form>
   )
 }
