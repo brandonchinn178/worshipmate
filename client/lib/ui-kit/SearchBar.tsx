@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import { Icon } from '~/ui-kit/Icon'
+import Icon from '~/ui-kit/Icon'
 
 type SearchBarProps = {
   initial?: string

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 
 import SearchIcon from './icons/search.svg'
 
@@ -6,11 +6,11 @@ const icons = {
   search: SearchIcon,
 }
 
-type Props = {
+type IconProps = {
   name: keyof typeof icons
 }
 
-export const Icon: FC<Props> = ({ name }) => {
+export default function Icon({ name }: IconProps) {
   const IconComponent = icons[name]
   return <IconComponent />
 }
