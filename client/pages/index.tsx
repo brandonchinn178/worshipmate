@@ -1,11 +1,10 @@
 import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import styled from 'styled-components'
 
 import { Song } from '~/song'
 import SongTable from '~/song/SongTable'
-import { Icon } from '~/ui-kit/Icon'
+import SearchBar from '~/ui-kit/SearchBar'
 
 type HomeProps = {
   songs: Song[]
@@ -27,32 +26,25 @@ function pluralize(...args: [string, number] | [string, string, number]) {
 
 export default function Home({ songs }: HomeProps) {
   const router = useRouter()
-  const [query, setQuery] = useState(router.query.search)
 
-  const doSearch = () => {
-    router.push({
-      pathname: router.pathname,
-      query: query && { search: query },
-    })
-  }
+  const initialSearch = Array.isArray(router.query.search)
+    ? router.query.search[0]
+    : router.query.search
 
   return (
     <Grid>
       <Sidebar>TODO: Sidebar</Sidebar>
-      <SearchBar>
-        <SearchInput
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              doSearch()
-            }
+      <SongSearch>
+        <SearchBar
+          initial={initialSearch}
+          onSubmit={(query: string) => {
+            router.push({
+              pathname: router.pathname,
+              query: query && { search: query },
+            })
           }}
         />
-        <IconBox onClick={doSearch}>
-          <Icon name="search" />
-        </IconBox>
-      </SearchBar>
+      </SongSearch>
       <SongCount>
         {songs.length} {pluralize('song', songs.length)}
       </SongCount>
@@ -130,37 +122,12 @@ const Grid = styled.div`
   grid-gap: 10px;
 `
 
-const IconBox = styled.div`
-  display: grid;
-  align-items: center;
-  justify-items: center;
-
-  height: 33px;
-  width: 33px;
-  border: 1px solid black;
-  cursor: pointer;
-`
-
 const Sidebar = styled.div`
   grid-area: sidebar;
 `
 
-const SearchBar = styled.div`
+const SongSearch = styled.div`
   grid-area: search;
-
-  display: grid;
-  grid-template-columns: auto min-content;
-  grid-template-areas: 'search-input search-button';
-  grid-gap: 10px;
-  align-items: center;
-`
-
-const SearchInput = styled.input`
-  grid-area: search-input;
-  width: 100%;
-  border: 1px solid black;
-  padding: 5px;
-  outline: 0;
 `
 
 const SongCount = styled.p`
