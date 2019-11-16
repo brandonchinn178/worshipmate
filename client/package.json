@@ -16,7 +16,7 @@
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-hook-form": "^3.27.0",
-    "styled-components": "^4.4.0"
+    "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "@storybook/react": "^5.2.1",
@@ -27,7 +27,7 @@
     "@types/lodash": "^4.14.141",
     "@types/node": "^12.7.9",
     "@types/react": "^16.9.4",
-    "@types/styled-components": "^4.1.19",
+    "@types/styled-components": "^4.4.0",
     "@typescript-eslint/eslint-plugin": "^2.3.2",
     "@typescript-eslint/parser": "^2.3.2",
     "babel-jest": "^24.9.0",
