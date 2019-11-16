@@ -14,7 +14,7 @@
     "@types/lodash": "^4.14.141",
     "@types/styled-components": "^4.1.19",
     "lodash": "^4.17.15",
-    "next": "^9.0.7",
+    "next": "^9.1.3",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-hook-form": "^3.27.0",
