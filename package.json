@@ -1,7 +1,7 @@
 {
   "private": true,
   "workspaces": [
-    "client/"
+    "client"
   ],
   "scripts": {
     "client": "yarn workspace @worship-mate/client",
