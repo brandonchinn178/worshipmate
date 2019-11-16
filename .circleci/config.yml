@@ -2,7 +2,9 @@ version: 2.1
 
 aliases:
   - &yarn_cache_key
-    v1-{{ checksum "yarn.lock" }}
+    v1-yarn-{{ checksum "yarn.lock" }}
+  - &next_cache_key
+    v1-next-{{ checksum "yarn.lock" }}
 
 executors:
   docker-node:
@@ -24,6 +26,7 @@ commands:
           key: *yarn_cache_key
           paths:
             - node_modules
+            - client/node_modules
 
 jobs:
   build:
@@ -31,14 +34,20 @@ jobs:
     steps:
       - checkout
       - install_yarn_and_deps
+      - restore_cache:
+          key: *next_cache_key
       - run: yarn workspaces run build
+      - save_cache:
+          key: *next_cache_key
+          paths:
+            - client/.next/cache
 
   lint:
     executor: docker-node
     steps:
       - checkout
       - install_yarn_and_deps
-      - run: yarn lint
+      - run: yarn lint .
       - run: yarn workspaces run typecheck
 
   test:
