@@ -39,7 +39,7 @@ jobs:
     steps:
       - checkout
       - install_yarn_and_deps
-      - run: yarn lint
+      - run: yarn lint .
       - run: yarn workspaces run typecheck
 
   test:
