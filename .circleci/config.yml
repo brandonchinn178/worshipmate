@@ -31,7 +31,7 @@ jobs:
     steps:
       - checkout
       - install_yarn_and_deps
-      - run: yarn build
+      - run: yarn workspaces run build
 
   lint:
     executor: docker-node
@@ -39,14 +39,14 @@ jobs:
       - checkout
       - install_yarn_and_deps
       - run: yarn lint
-      - run: yarn typecheck
+      - run: yarn workspaces run typecheck
 
   test:
     executor: docker-node
     steps:
       - checkout
       - install_yarn_and_deps
-      - run: yarn test
+      - run: yarn workspaces run test
 
 workflows:
   version: 2
