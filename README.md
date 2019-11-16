@@ -7,6 +7,6 @@ sets.
 ## Quickstart
 
 1. `brew install yarn`
-1. `yarn install`
-1. `yarn dev`
+1. `yarn`
+1. `yarn client dev`
 1. Go to `http://localhost:3000`
