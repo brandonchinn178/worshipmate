@@ -1,0 +1,40 @@
+{
+  "name": "@worship-mate/client",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "storybook": "start-storybook -p 6006",
+    "test": "jest",
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.141",
+    "@types/styled-components": "^4.1.19",
+    "lodash": "^4.17.15",
+    "next": "^9.0.7",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1",
+    "react-hook-form": "^3.27.0",
+    "styled-components": "^4.4.0"
+  },
+  "devDependencies": {
+    "@storybook/react": "^5.2.1",
+    "@svgr/webpack": "^4.3.3",
+    "@testing-library/jest-dom": "^4.1.0",
+    "@testing-library/react": "^9.2.0",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.9",
+    "@types/react": "^16.9.4",
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
+    "@typescript-eslint/parser": "^2.3.2",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-styled-components": "^1.10.6",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "typescript": "^3.6.3"
+  }
+}

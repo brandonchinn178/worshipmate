@@ -1,11 +1,10 @@
-import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import styled from 'styled-components'
 
+import { useSearchSongs } from '~/api'
 import { Song } from '~/song'
 import SongTable from '~/song/SongTable'
-import { Icon } from '~/ui-kit/Icon'
+import SearchBar from '~/ui-kit/SearchBar'
 
 type HomeProps = {
   songs: Song[]
@@ -25,98 +24,39 @@ function pluralize(...args: [string, number] | [string, string, number]) {
   }
 }
 
-export default function Home({ songs }: HomeProps) {
+export default function Home() {
   const router = useRouter()
-  const [query, setQuery] = useState(router.query.search)
 
-  const doSearch = () => {
-    router.push({
-      pathname: router.pathname,
-      query: query && { search: query },
-    })
-  }
+  const search = Array.isArray(router.query.search)
+    ? router.query.search[0]
+    : router.query.search
+
+  const { data } = useSearchSongs({ variables: { search } })
+
+  const numSongs = (data && data.songs && data.songs.length) || 0
 
   return (
     <Grid>
       <Sidebar>TODO: Sidebar</Sidebar>
-      <SearchBar>
-        <SearchInput
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              doSearch()
-            }
+      <SongSearch>
+        <SearchBar
+          initial={search}
+          onSubmit={(query: string) => {
+            router.push({
+              pathname: router.pathname,
+              query: query && { search: query },
+            })
           }}
         />
-        <IconBox onClick={doSearch}>
-          <Icon name="search" />
-        </IconBox>
-      </SearchBar>
+      </SongSearch>
       <SongCount>
-        {songs.length} {pluralize('song', songs.length)}
+        {numSongs} {pluralize('song', numSongs)}
       </SongCount>
       <SongTableCell>
-        <SongTable songs={songs} />
+        <SongTable songs={(data && data.songs) || []} />
       </SongTableCell>
     </Grid>
   )
-}
-
-// TODO: get from graphql api
-const searchSongs = async (query: string) => {
-  const allSongs = [
-    {
-      slug: 'blessed-be-your-name',
-      title: 'Blessed Be Your Name',
-      artist: 'Matt Redman',
-      themes: ['Praise', 'Worship', 'Devotion'],
-    },
-    {
-      slug: 'build-my-life',
-      title: 'Build My Life',
-      artist: 'Housefires',
-      themes: ['Worship', 'Love', 'Witness'],
-    },
-    {
-      slug: 'ever-be',
-      title: 'Ever Be',
-      artist: 'Bethel Music',
-      themes: ['Faithfulness', 'Worship'],
-    },
-    {
-      slug: 'give-me-faith',
-      title: 'Give Me Faith',
-      artist: 'Elevation Worship',
-      themes: ['Faith', 'Surrender', 'Comfort'],
-    },
-    {
-      slug: 'here-i-am-to-worship',
-      title: 'Here I Am to Worship',
-      artist: 'Michael W. Smith',
-      themes: ['Worship'],
-    },
-    {
-      slug: 'i-could-sing-of-your-love-forever',
-      title: 'I Could Sing of Your Love Forever',
-      artist: 'Delirious?',
-      themes: ['Worship', 'Love'],
-    },
-    {
-      slug: "they'll-know-we-are-christians-by-our-love",
-      title: "They'll Know We Are Christians by Our Love",
-      artist: 'Peter Scholtes',
-      themes: ['Love', 'Outreach', 'Unity'],
-    },
-  ]
-
-  return allSongs.filter(({ title }) => title.match(new RegExp(query, 'i')))
-}
-
-Home.getInitialProps = async ({ query }: NextPageContext) => {
-  const songs = await searchSongs(query.search as string)
-
-  return { songs }
 }
 
 const Grid = styled.div`
@@ -130,37 +70,12 @@ const Grid = styled.div`
   grid-gap: 10px;
 `
 
-const IconBox = styled.div`
-  display: grid;
-  align-items: center;
-  justify-items: center;
-
-  height: 33px;
-  width: 33px;
-  border: 1px solid black;
-  cursor: pointer;
-`
-
 const Sidebar = styled.div`
   grid-area: sidebar;
 `
 
-const SearchBar = styled.div`
+const SongSearch = styled.div`
   grid-area: search;
-
-  display: grid;
-  grid-template-columns: auto min-content;
-  grid-template-areas: 'search-input search-button';
-  grid-gap: 10px;
-  align-items: center;
-`
-
-const SearchInput = styled.input`
-  grid-area: search-input;
-  width: 100%;
-  border: 1px solid black;
-  padding: 5px;
-  outline: 0;
 `
 
 const SongCount = styled.p`

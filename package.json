@@ -1,45 +1,17 @@
 {
-  "name": "worship-mate",
-  "version": "0.1",
   "private": true,
+  "workspaces": [
+    "client/"
+  ],
   "scripts": {
-    "dev": "next client/",
-    "build": "next build client/",
-    "start": "next start client/",
-    "storybook": "start-storybook -p 6006 -c client/.storybook",
-    "lint": "eslint . --ext .js,.ts,.tsx --max-warnings=0",
-    "test": "jest -c client/jest/config.js",
-    "typecheck": "tsc --noEmit -p client/tsconfig.typecheck.json"
-  },
-  "dependencies": {
-    "@types/lodash": "^4.14.141",
-    "@types/styled-components": "^4.1.19",
-    "lodash": "^4.17.15",
-    "next": "^9.0.7",
-    "react": "^16.10.1",
-    "react-dom": "^16.10.1",
-    "styled-components": "^4.4.0"
+    "client": "yarn workspace @worship-mate/client",
+    "lint": "eslint . --ext .js,.ts,.tsx --max-warnings=0"
   },
   "devDependencies": {
-    "@storybook/react": "^5.2.1",
-    "@svgr/webpack": "^4.3.3",
-    "@testing-library/jest-dom": "^4.1.0",
-    "@testing-library/react": "^9.2.0",
-    "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.9",
-    "@types/react": "^16.9.4",
-    "@typescript-eslint/eslint-plugin": "^2.3.2",
-    "@typescript-eslint/parser": "^2.3.2",
-    "babel-jest": "^24.9.0",
-    "babel-loader": "^8.0.6",
-    "babel-plugin-styled-components": "^1.10.6",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.15.1",
-    "eslint-plugin-simple-import-sort": "^4.0.0",
-    "jest": "^24.9.0",
-    "prettier": "^1.18.2",
-    "typescript": "^3.6.3"
+    "eslint-plugin-simple-import-sort": "^4.0.0"
   }
 }
