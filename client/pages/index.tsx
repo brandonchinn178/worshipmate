@@ -1,7 +1,7 @@
-import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
+import { useSearchSongs } from '~/api'
 import { Song } from '~/song'
 import SongTable from '~/song/SongTable'
 import SearchBar from '~/ui-kit/SearchBar'
@@ -24,19 +24,23 @@ function pluralize(...args: [string, number] | [string, string, number]) {
   }
 }
 
-export default function Home({ songs }: HomeProps) {
+export default function Home() {
   const router = useRouter()
 
-  const initialSearch = Array.isArray(router.query.search)
+  const search = Array.isArray(router.query.search)
     ? router.query.search[0]
     : router.query.search
+
+  const { data } = useSearchSongs({ variables: { search } })
+
+  const numSongs = (data && data.songs && data.songs.length) || 0
 
   return (
     <Grid>
       <Sidebar>TODO: Sidebar</Sidebar>
       <SongSearch>
         <SearchBar
-          initial={initialSearch}
+          initial={search}
           onSubmit={(query: string) => {
             router.push({
               pathname: router.pathname,
@@ -46,69 +50,13 @@ export default function Home({ songs }: HomeProps) {
         />
       </SongSearch>
       <SongCount>
-        {songs.length} {pluralize('song', songs.length)}
+        {numSongs} {pluralize('song', numSongs)}
       </SongCount>
       <SongTableCell>
-        <SongTable songs={songs} />
+        <SongTable songs={(data && data.songs) || []} />
       </SongTableCell>
     </Grid>
   )
-}
-
-// TODO: get from graphql api
-const searchSongs = async (query: string) => {
-  const allSongs = [
-    {
-      slug: 'blessed-be-your-name',
-      title: 'Blessed Be Your Name',
-      artist: 'Matt Redman',
-      themes: ['Praise', 'Worship', 'Devotion'],
-    },
-    {
-      slug: 'build-my-life',
-      title: 'Build My Life',
-      artist: 'Housefires',
-      themes: ['Worship', 'Love', 'Witness'],
-    },
-    {
-      slug: 'ever-be',
-      title: 'Ever Be',
-      artist: 'Bethel Music',
-      themes: ['Faithfulness', 'Worship'],
-    },
-    {
-      slug: 'give-me-faith',
-      title: 'Give Me Faith',
-      artist: 'Elevation Worship',
-      themes: ['Faith', 'Surrender', 'Comfort'],
-    },
-    {
-      slug: 'here-i-am-to-worship',
-      title: 'Here I Am to Worship',
-      artist: 'Michael W. Smith',
-      themes: ['Worship'],
-    },
-    {
-      slug: 'i-could-sing-of-your-love-forever',
-      title: 'I Could Sing of Your Love Forever',
-      artist: 'Delirious?',
-      themes: ['Worship', 'Love'],
-    },
-    {
-      slug: "they'll-know-we-are-christians-by-our-love",
-      title: "They'll Know We Are Christians by Our Love",
-      artist: 'Peter Scholtes',
-      themes: ['Love', 'Outreach', 'Unity'],
-    },
-  ]
-
-  return allSongs.filter(({ title }) => title.match(new RegExp(query, 'i')))
-}
-
-Home.getInitialProps = async ({ query }: NextPageContext) => {
-  const songs = await searchSongs(query.search as string)
-
-  return { songs }
 }
 
 const Grid = styled.div`
