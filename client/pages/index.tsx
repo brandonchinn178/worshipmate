@@ -33,7 +33,7 @@ export default function Home() {
 
   const { data } = useSearchSongs({ variables: { search } })
 
-  const numSongs = (data && data.songs && data.songs.length) || 0
+  const numSongs = data?.songs?.length ?? 0
 
   return (
     <Grid>
@@ -53,7 +53,7 @@ export default function Home() {
         {numSongs} {pluralize('song', numSongs)}
       </SongCount>
       <SongTableCell>
-        <SongTable songs={(data && data.songs) || []} />
+        <SongTable songs={data?.songs ?? []} />
       </SongTableCell>
     </Grid>
   )
