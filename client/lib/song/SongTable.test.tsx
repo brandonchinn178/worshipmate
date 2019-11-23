@@ -11,6 +11,9 @@ it('displays a song', () => {
           title: 'Amazing Grace',
           artist: 'John Newton',
           themes: ['Grace', 'Comfort'],
+          recommendedKey: 'E',
+          timeSignature: [4, 4] as [number, number],
+          bpm: 64,
         },
       ]}
     />,
