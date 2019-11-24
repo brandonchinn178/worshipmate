@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { useSearchSongs } from '~/api'
 import { Song } from '~/song'
+import SongFilter from '~/song/SongFilter'
 import SongTable from '~/song/SongTable'
 import SearchBar from '~/ui-kit/SearchBar'
 
@@ -37,7 +38,9 @@ export default function Home() {
 
   return (
     <Grid>
-      <Sidebar>TODO: Sidebar</Sidebar>
+      <Sidebar>
+        <SongFilter />
+      </Sidebar>
       <SongSearch>
         <SearchBar
           initial={search}
@@ -67,7 +70,8 @@ const Grid = styled.div`
     'sidebar search'
     'sidebar song-count'
     'sidebar table';
-  grid-gap: 10px;
+  grid-column-gap: 25px;
+  grid-row-gap: 10px;
 `
 
 const Sidebar = styled.div`
