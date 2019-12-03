@@ -29,7 +29,7 @@
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.141",
     "@types/node": "^12.7.9",
-    "@types/react": "^16.9.4",
+    "@types/react": "^16.9.14",
     "@types/styled-components": "^4.4.0",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
