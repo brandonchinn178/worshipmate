@@ -1,14 +1,14 @@
+import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import { useSearchSongs } from '~/api'
-import { Song } from '~/song'
 import SongFilter from '~/song/SongFilter'
 import SongTable from '~/song/SongTable'
 import SearchBar from '~/ui-kit/SearchBar'
 
 type HomeProps = {
-  songs: Song[]
+  search: string
 }
 
 function pluralize(...args: [string, number] | [string, string, number]) {
@@ -25,12 +25,8 @@ function pluralize(...args: [string, number] | [string, string, number]) {
   }
 }
 
-export default function Home() {
+export default function Home({ search }: HomeProps) {
   const router = useRouter()
-
-  const search = Array.isArray(router.query.search)
-    ? router.query.search[0]
-    : router.query.search
 
   const { data } = useSearchSongs({ variables: { search } })
 
@@ -60,6 +56,12 @@ export default function Home() {
       </SongTableCell>
     </Grid>
   )
+}
+
+Home.getInitialProps = ({ query }: NextPageContext) => {
+  return {
+    search: query.search,
+  }
 }
 
 const Grid = styled.div`
