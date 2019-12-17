@@ -21,6 +21,10 @@ export type SearchSongsQuery = {
 
 type SearchSongsQueryVariables = {
   search: string
+  filters: ReadonlyArray<{
+    key: string
+    value: string
+  }>
 }
 
 export const useSearchSongs = ({

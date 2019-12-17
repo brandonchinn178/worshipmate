@@ -3,12 +3,17 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import { useSearchSongs } from '~/api'
+import { setQueryString } from '~/router'
 import SongFilter from '~/song/SongFilter'
 import SongTable from '~/song/SongTable'
 import SearchBar from '~/ui-kit/SearchBar'
 
 type HomeProps = {
   search: string
+  filters: Array<{
+    key: string
+    value: string
+  }>
 }
 
 function pluralize(...args: [string, number] | [string, string, number]) {
@@ -25,10 +30,15 @@ function pluralize(...args: [string, number] | [string, string, number]) {
   }
 }
 
-export default function Home({ search }: HomeProps) {
+export default function Home({ search, filters }: HomeProps) {
   const router = useRouter()
 
-  const { data } = useSearchSongs({ variables: { search } })
+  const { data } = useSearchSongs({
+    variables: {
+      search,
+      filters,
+    },
+  })
 
   const numSongs = data?.songs?.length ?? 0
 
@@ -41,10 +51,7 @@ export default function Home({ search }: HomeProps) {
         <SearchBar
           initial={search}
           onSubmit={(query: string) => {
-            router.push({
-              pathname: router.pathname,
-              query: query && { search: query },
-            })
+            setQueryString(router, 'search', query)
           }}
         />
       </SongSearch>
@@ -59,8 +66,13 @@ export default function Home({ search }: HomeProps) {
 }
 
 Home.getInitialProps = ({ query }: NextPageContext) => {
+  const filters = Array.isArray(query.filters)
+    ? query.filters[0]
+    : query.filters
+
   return {
     search: query.search,
+    filters: filters && JSON.parse(filters),
   }
 }
 
