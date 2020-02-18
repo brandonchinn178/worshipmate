@@ -1,8 +1,7 @@
 import _ from 'lodash'
-import { useRouter } from 'next/router'
 import styled, { css } from 'styled-components'
 
-import { ActiveFilters, addFilter, removeFilter } from '~/router/filters'
+import { ActiveFilters } from '~/router/filters'
 import { color, font } from '~/theme'
 
 type FilterOption = {
@@ -18,14 +17,16 @@ type Filter = {
 type SongFilterProps = {
   filters: readonly Filter[]
   activeFilters: ActiveFilters
+  addFilter: (key: string, value: string) => void
+  removeFilter: (key: string) => void
 }
 
 export default function SongFilter({
   filters,
   activeFilters,
+  addFilter,
+  removeFilter,
 }: SongFilterProps) {
-  const router = useRouter()
-
   return (
     <FilterBox>
       {filters.map(({ key, options }) => (
@@ -41,9 +42,9 @@ export default function SongFilter({
                   key={name}
                   onClick={() => {
                     if (isActive) {
-                      removeFilter(router, key)
+                      removeFilter(key)
                     } else {
-                      addFilter(router, key, name)
+                      addFilter(key, name)
                     }
                   }}
                 >
