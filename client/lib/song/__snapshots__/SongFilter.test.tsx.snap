@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders active options differently 1`] = `
+"Snapshot Diff:
+- First value
++ Second value
+
+@@ -20,11 +20,11 @@
+             (
+            1
+            )
+          </div>
+          <div
+-           class=\\"SongFilter__FilterOption-sc-1nh6vn8-4 ciJMN\\"
++           class=\\"SongFilter__FilterOption-sc-1nh6vn8-4 GStQo\\"
+          >
+            G
+             (
+            2
+            )"
+`;
