@@ -1,19 +1,18 @@
+import _ from 'lodash'
 import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import { useSearchSongs } from '~/api'
 import { setQueryString } from '~/router'
+import { ActiveFilters, loadFilters } from '~/router/filters'
 import SongFilter from '~/song/SongFilter'
 import SongTable from '~/song/SongTable'
 import SearchBar from '~/ui-kit/SearchBar'
 
 type HomeProps = {
   search: string
-  filters: Array<{
-    key: string
-    value: string
-  }>
+  activeFilters: ActiveFilters
 }
 
 function pluralize(...args: [string, number] | [string, string, number]) {
@@ -30,13 +29,13 @@ function pluralize(...args: [string, number] | [string, string, number]) {
   }
 }
 
-export default function Home({ search, filters }: HomeProps) {
+export default function Home({ search, activeFilters }: HomeProps) {
   const router = useRouter()
 
   const { data } = useSearchSongs({
     variables: {
       search,
-      filters,
+      filters: _.toPairs(activeFilters).map(([key, value]) => ({ key, value })),
     },
   })
 
@@ -46,7 +45,7 @@ export default function Home({ search, filters }: HomeProps) {
   return (
     <Grid>
       <Sidebar>
-        <SongFilter filters={songFilters} />
+        <SongFilter filters={songFilters} activeFilters={activeFilters} />
       </Sidebar>
       <SongSearch>
         <SearchBar
@@ -67,13 +66,9 @@ export default function Home({ search, filters }: HomeProps) {
 }
 
 Home.getInitialProps = ({ query }: NextPageContext) => {
-  const filters = Array.isArray(query.filters)
-    ? query.filters[0]
-    : query.filters
-
   return {
     search: query.search,
-    filters: filters && JSON.parse(filters),
+    activeFilters: loadFilters(query),
   }
 }
 
