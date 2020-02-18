@@ -3,6 +3,7 @@ const baseColors = {
   pink: '#FF9797',
   white: '#FFF',
   black: '#000',
+  lightGray: '#999',
 }
 
 const colorNames = {
