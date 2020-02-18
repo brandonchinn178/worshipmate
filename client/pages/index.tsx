@@ -5,7 +5,12 @@ import styled from 'styled-components'
 
 import { useSearchSongs } from '~/api'
 import { setQueryString } from '~/router'
-import { ActiveFilters, loadFilters } from '~/router/filters'
+import {
+  ActiveFilters,
+  addFilter,
+  loadFilters,
+  removeFilter,
+} from '~/router/filters'
 import SongFilter from '~/song/SongFilter'
 import SongTable from '~/song/SongTable'
 import SearchBar from '~/ui-kit/SearchBar'
@@ -45,7 +50,12 @@ export default function Home({ search, activeFilters }: HomeProps) {
   return (
     <Grid>
       <Sidebar>
-        <SongFilter filters={songFilters} activeFilters={activeFilters} />
+        <SongFilter
+          filters={songFilters}
+          activeFilters={activeFilters}
+          addFilter={(key, value) => addFilter(router, key, value)}
+          removeFilter={(key) => removeFilter(router, key)}
+        />
       </Sidebar>
       <SongSearch>
         <SearchBar
