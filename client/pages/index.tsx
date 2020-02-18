@@ -85,7 +85,7 @@ Home.getInitialProps = ({ query }: NextPageContext) => {
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 400px auto;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: max-content max-content auto;
   grid-template-areas:
     'sidebar search'
     'sidebar song-count'
