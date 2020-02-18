@@ -40,12 +40,13 @@ export default function Home({ search, filters }: HomeProps) {
     },
   })
 
-  const numSongs = data?.songs?.length ?? 0
+  const songs = data?.songs ?? []
+  const songFilters = data?.filters ?? []
 
   return (
     <Grid>
       <Sidebar>
-        <SongFilter />
+        <SongFilter filters={songFilters} />
       </Sidebar>
       <SongSearch>
         <SearchBar
@@ -56,10 +57,10 @@ export default function Home({ search, filters }: HomeProps) {
         />
       </SongSearch>
       <SongCount>
-        {numSongs} {pluralize('song', numSongs)}
+        {songs.length} {pluralize('song', songs.length)}
       </SongCount>
       <SongTableCell>
-        <SongTable songs={data?.songs ?? []} />
+        <SongTable songs={songs} />
       </SongTableCell>
     </Grid>
   )
