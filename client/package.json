@@ -15,7 +15,7 @@
     "next": "^9.2.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-hook-form": "^4.9.6",
+    "react-hook-form": "^4.9.8",
     "styled-components": "^4.4.1",
     "typescript": "^3.7.5"
   },
