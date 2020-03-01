@@ -15,9 +15,9 @@
     "next": "^9.2.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-hook-form": "^4.9.6",
+    "react-hook-form": "^4.9.8",
     "styled-components": "^4.4.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.2"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
@@ -26,12 +26,12 @@
     "@storybook/react": "^5.3.13",
     "@svgr/webpack": "^5.1.0",
     "@testing-library/jest-dom": "^5.1.1",
-    "@testing-library/react": "^9.4.0",
+    "@testing-library/react": "^9.4.1",
     "@types/jest": "^25.1.2",
     "@types/lodash": "^4.14.141",
-    "@types/node": "^13.7.2",
+    "@types/node": "^13.7.6",
     "@types/react": "^16.9.23",
-    "@types/styled-components": "^4.4.0",
+    "@types/styled-components": "^5.0.1",
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.7",
