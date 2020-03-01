@@ -8,6 +8,7 @@ module.exports = {
   moduleNameMapper: {
     '^~/(.*)': '<rootDir>/lib/$1',
     '^~jest-utils$': '<rootDir>/jest/utils',
+    '\\.svg$': '<rootDir>/jest/svgMock',
   },
   setupFilesAfterEnv: ['<rootDir>/jest/setup.ts'],
 }

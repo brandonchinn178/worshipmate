@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`displays data 1`] = `
+<div>
+  <div
+    class="DataTable__Table-sc-1xhkibe-0 kfZHQD"
+  >
+    <div
+      class="DataTable__TableRow-sc-1xhkibe-1 kisyNV"
+    >
+      <div
+        class="DataTable__TableCell-sc-1xhkibe-2 DataTable__TableHeaderCell-sc-1xhkibe-3 bPBycO"
+      >
+        Id
+      </div>
+      <div
+        class="DataTable__TableCell-sc-1xhkibe-2 DataTable__TableHeaderCell-sc-1xhkibe-3 bPBycO"
+      >
+        Name
+      </div>
+    </div>
+    <div
+      class="DataTable__TableRow-sc-1xhkibe-1 kisyNV"
+    >
+      <div
+        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
+      >
+        1
+      </div>
+      <div
+        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
+      >
+        Alice
+      </div>
+    </div>
+    <div
+      class="DataTable__TableRow-sc-1xhkibe-1 kisyNV"
+    >
+      <div
+        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
+      >
+        2
+      </div>
+      <div
+        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
+      >
+        Bob
+      </div>
+    </div>
+    <div
+      class="DataTable__TableRow-sc-1xhkibe-1 kisyNV"
+    >
+      <div
+        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
+      >
+        3
+      </div>
+      <div
+        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
+      >
+        Charlie
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`displays no data 1`] = `
+<div>
+  <div
+    class="DataTable__Table-sc-1xhkibe-0 kfZHQD"
+  >
+    <div
+      class="DataTable__TableRow-sc-1xhkibe-1 kisyNV"
+    >
+      <div
+        class="DataTable__TableCell-sc-1xhkibe-2 DataTable__TableHeaderCell-sc-1xhkibe-3 bPBycO"
+      >
+        Id
+      </div>
+      <div
+        class="DataTable__TableCell-sc-1xhkibe-2 DataTable__TableHeaderCell-sc-1xhkibe-3 bPBycO"
+      >
+        Name
+      </div>
+    </div>
+  </div>
+</div>
+`;

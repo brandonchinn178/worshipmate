@@ -43,13 +43,7 @@ const renderCell = <T,>(
     return render(rowData)
   }
 
-  if (typeof rowData === 'object') {
-    // TODO: fix?
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (rowData as any)[name]
-  }
-
-  return null
+  return _.get(rowData, name)
 }
 
 export default function DataTable<T>({

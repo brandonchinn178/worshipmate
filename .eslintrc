@@ -8,11 +8,12 @@
     "eslint:recommended",
     "plugin:prettier/recommended",
     "plugin:react/recommended",
+    "plugin:jest/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "simple-import-sort", "prettier"],
+  "plugins": ["@typescript-eslint", "simple-import-sort", "prettier", "jest"],
   "parserOptions": {
     "sourceType": "module"
   },
