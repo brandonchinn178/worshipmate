@@ -26,7 +26,7 @@
     "@storybook/react": "^5.3.13",
     "@svgr/webpack": "^5.1.0",
     "@testing-library/jest-dom": "^5.1.1",
-    "@testing-library/react": "^9.4.0",
+    "@testing-library/react": "^9.4.1",
     "@types/jest": "^25.1.2",
     "@types/lodash": "^4.14.141",
     "@types/node": "^13.7.6",
