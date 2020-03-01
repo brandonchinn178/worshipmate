@@ -16,6 +16,6 @@
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-simple-import-sort": "^5.0.1",
     "prettier": "^1.19.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.8.2"
   }
 }
