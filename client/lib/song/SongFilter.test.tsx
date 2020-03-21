@@ -1,4 +1,4 @@
-import { fireEvent, wait } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 
 import { renderUI } from '~jest-utils'
 
@@ -65,7 +65,7 @@ it('can add a filter', async () => {
 
   fireEvent.click(getByText('G (2)'))
 
-  await wait(() => expect(mockAddFilter).toHaveBeenCalled())
+  await waitFor(() => expect(mockAddFilter).toHaveBeenCalled())
   expect(mockAddFilter.mock.calls[0]).toEqual(['recommendedKey', 'G'])
 })
 
@@ -83,7 +83,7 @@ it('can change a filter', async () => {
 
   fireEvent.click(getByText('E (3)'))
 
-  await wait(() => expect(mockAddFilter).toHaveBeenCalled())
+  await waitFor(() => expect(mockAddFilter).toHaveBeenCalled())
   expect(mockAddFilter.mock.calls[0]).toEqual(['recommendedKey', 'E'])
 })
 
@@ -101,7 +101,7 @@ it('can remove a filter', async () => {
 
   fireEvent.click(getByText('G (2)'))
 
-  await wait(() => expect(mockRemoveFilter).toHaveBeenCalled())
+  await waitFor(() => expect(mockRemoveFilter).toHaveBeenCalled())
   expect(mockRemoveFilter.mock.calls[0]).toEqual(['recommendedKey'])
 })
 

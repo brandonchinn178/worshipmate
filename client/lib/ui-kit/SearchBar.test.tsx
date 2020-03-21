@@ -1,4 +1,4 @@
-import { fireEvent, wait } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
 
 import { renderUI } from '~jest-utils'
 
@@ -14,7 +14,7 @@ it('allows typing and submission', async () => {
   const button = getByRole('button')
   fireEvent.click(button)
 
-  await wait(() => {
+  await waitFor(() => {
     expect(onSubmit).toHaveBeenCalled()
   })
   expect(onSubmit.mock.calls[0][0]).toBe('hello!')
@@ -28,7 +28,7 @@ it('allows submission via Enter', async () => {
   fireEvent.change(input, { target: { value: 'hello!' } })
   fireEvent.submit(input)
 
-  await wait(() => {
+  await waitFor(() => {
     expect(onSubmit).toHaveBeenCalled()
   })
 })
@@ -42,7 +42,7 @@ it('sets initial input', async () => {
   const button = getByRole('button')
   fireEvent.click(button)
 
-  await wait(() => {
+  await waitFor(() => {
     expect(onSubmit).toHaveBeenCalled()
   })
   expect(onSubmit.mock.calls[0][0]).toBe('initial')
