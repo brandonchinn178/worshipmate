@@ -41,7 +41,7 @@ const SearchContainer = styled.div`
   align-items: center;
 `
 
-const SearchInput = styled.input`
+const SearchInput = styled.input.attrs({ type: 'text' })`
   grid-area: search-input;
   width: 100%;
   border: 1px solid black;
