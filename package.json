@@ -5,7 +5,10 @@
       "client",
       "server"
     ],
-    "nohoist": ["**/react-native"]
+    "nohoist": [
+      "**/react-native",
+      "@worship-mate/server/typeorm"
+    ]
   },
   "scripts": {
     "client": "yarn workspace @worship-mate/client",
