@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   type: 'postgres',
 
   // postgres credentials
@@ -17,4 +17,21 @@ module.exports = {
   cli: {
     migrationsDir: 'migration',
   },
+}
+
+if (process.env.NODE_ENV !== 'test') {
+  module.exports = config
+} else {
+  module.exports = [
+    {
+      ...config,
+      name: 'default',
+      database: `${config.database}_test`,
+      synchronize: true,
+    },
+    {
+      ...config,
+      name: 'original',
+    },
+  ]
 }
