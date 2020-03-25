@@ -1,3 +1,5 @@
+const IS_TS_NODE = !!process.env.TS_NODE
+
 const config = {
   type: 'postgres',
 
@@ -9,11 +11,11 @@ const config = {
   database: process.env.PG_DATABASE || 'worship_mate',
 
   // entities
-  entities: ['**/*.entity.ts'],
+  entities: [IS_TS_NODE ? '**/*.entity.ts' : 'dist/**/*.entity.js'],
 
   // migration options
   synchronize: false,
-  migrations: ['migration/*.ts'],
+  migrations: [IS_TS_NODE ? 'migration/*.ts' : 'dist/migration/*.js'],
   cli: {
     migrationsDir: 'migration',
   },

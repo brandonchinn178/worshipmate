@@ -6,7 +6,7 @@
     "start": "nest start",
     "build": "nest build",
     "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
-    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "typeorm": "TS_NODE=true ts-node ./node_modules/typeorm/cli.js",
     "test": "jest",
     "test:unit": "TEST_TYPE=unit jest",
     "test:integration": "TEST_TYPE=integration jest",
