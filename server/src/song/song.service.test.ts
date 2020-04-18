@@ -40,6 +40,12 @@ it('can search all songs', async () => {
 
   const service = new SongService(repo)
 
+  expect(await service.searchSongs()).toEqual([
+    expect.objectContaining({ title: 'Test Song' }),
+    expect.objectContaining({ title: 'Test Song 2' }),
+    expect.objectContaining({ title: 'Another Song' }),
+  ])
+
   expect(await service.searchSongs('test')).toEqual([
     expect.objectContaining({ title: 'Test Song' }),
     expect.objectContaining({ title: 'Test Song 2' }),

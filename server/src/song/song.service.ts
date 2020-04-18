@@ -12,13 +12,15 @@ export class SongService {
   ) {}
 
   // TODO: add filters
-  searchSongs(query: string) {
-    return (
-      this.songRepository
-        .createQueryBuilder('song')
-        // TODO: more clever search
-        .where('song.title ILIKE :query', { query: `%${query}%` })
-        .getMany()
-    )
+  searchSongs(query?: string) {
+    let queryBuilder = this.songRepository.createQueryBuilder('song')
+
+    if (query) {
+      queryBuilder = queryBuilder.where('song.title ILIKE :query', {
+        query: `%${query}%`,
+      })
+    }
+
+    return queryBuilder.getMany()
   }
 }
