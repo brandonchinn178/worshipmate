@@ -1,4 +1,4 @@
-const IS_TS_NODE = !!process.env.TS_NODE
+const IS_TS_NODE = !!process.env.TS_NODE || process.env.NODE_ENV === 'test'
 
 const config = {
   type: 'postgres',
