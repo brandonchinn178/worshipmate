@@ -8,7 +8,7 @@ export class SongResolver {
   constructor(private songService: SongService) {}
 
   @Query((_returns) => [Song], { name: 'songs' })
-  async searchSongs(@Args('query') query: string) {
+  async searchSongs(@Args('query', { nullable: true }) query?: string) {
     return this.songService.searchSongs(query)
   }
 }
