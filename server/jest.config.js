@@ -25,5 +25,5 @@ module.exports = {
   },
   coverageDirectory: './coverage',
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['<rootDir>/jest/setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/__test__/setup.ts'],
 }
