@@ -1,5 +1,6 @@
 import { INestApplication } from '@nestjs/common'
 import supertest from 'supertest'
+import { createConnection, getConnection } from 'typeorm'
 
 type GraphQLQuery = {
   query: string
@@ -15,4 +16,17 @@ export const request = async (app: INestApplication, query: GraphQLQuery) => {
   const { data } = response.body
 
   return data
+}
+
+// A helper for ensuring that a TypeORM connection is running.
+export const setupConnection = () => {
+  beforeAll(async () => {
+    await createConnection()
+  })
+
+  afterAll(async () => {
+    // close test database connection
+    const connection = await getConnection()
+    await connection.close()
+  })
 }

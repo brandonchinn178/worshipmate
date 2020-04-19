@@ -1,7 +1,11 @@
 import { getRepository } from 'typeorm'
 
+import { setupConnection } from '~test-utils'
+
 import { Song } from './song.entity'
 import { SongService } from './song.service'
+
+setupConnection()
 
 it('can search all songs', async () => {
   const repo = getRepository(Song)
