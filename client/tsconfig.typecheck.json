@@ -5,7 +5,7 @@
       "~/*": ["lib/*"],
       "~jest-utils": ["jest/utils"],
       "~stories": ["stories"]
-    },
+    }
   },
   "exclude": ["node_modules"],
   "include": ["**/*"]
