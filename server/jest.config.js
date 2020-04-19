@@ -1,3 +1,7 @@
+const jest = require('ts-jest/utils')
+
+const tsconfig = require('./tsconfig')
+
 const unitTests = '**/*.spec.ts'
 const integrationTests = '**/*.test.ts'
 const e2eTests = '**/*.e2e-spec.ts'
@@ -26,4 +30,9 @@ module.exports = {
   coverageDirectory: './coverage',
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/__test__/setup.ts'],
+  moduleNameMapper: {
+    ...jest.pathsToModuleNameMapper(tsconfig.compilerOptions.paths, {
+      prefix: '<rootDir>/',
+    }),
+  },
 }
