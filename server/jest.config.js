@@ -28,6 +28,11 @@ module.exports = {
     '^.+\\.ts$': 'ts-jest',
   },
   coverageDirectory: './coverage',
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '<rootDir>/ormconfig\\.js',
+    '<rootDir>/migration/',
+  ],
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/__test__/setup.ts'],
   moduleNameMapper: {
