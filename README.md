@@ -6,7 +6,36 @@ sets.
 
 ## Quickstart
 
-1. `brew install yarn`
-1. `yarn`
-1. `yarn client dev`
+Pre-requirements: Install yarn and Docker
+
+1. Install yarn dependencies
+
+   ```bash
+   yarn --frozen-lockfile
+   ```
+
+1. Run a Postgres server in Docker
+
+   ```bash
+   docker run -d -p 5432:5432 \
+       -e POSTGRES_HOST_AUTH_METHOD=trust \
+       -e POSTGRES_DB=worship_mate \
+       --name worship-mate \
+       postgres:12
+   ```
+
+1. Start the GraphQL server and front end (different tabs)
+
+   ```bash
+   yarn server start
+   yarn client dev
+   ```
+
 1. Go to `http://localhost:3000`
+
+## Package overview
+
+This repository is organized using the following Yarn workspaces:
+
+- `client`: The NextJS project that runs the web frontend
+- `server`: The TypeORM project that runs the GraphQL backend

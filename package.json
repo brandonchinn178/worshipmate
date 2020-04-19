@@ -1,10 +1,19 @@
 {
   "private": true,
-  "workspaces": [
-    "client"
-  ],
+  "workspaces": {
+    "packages": [
+      "client",
+      "server"
+    ],
+    "nohoist": [
+      "**/react-native",
+      "@worship-mate/server/typeorm",
+      "@worship-mate/server/typeorm/**"
+    ]
+  },
   "scripts": {
     "client": "yarn workspace @worship-mate/client",
+    "server": "yarn workspace @worship-mate/server",
     "lint": "eslint --ext .js,.ts,.tsx,.json --max-warnings=0"
   },
   "devDependencies": {
