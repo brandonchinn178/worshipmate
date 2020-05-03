@@ -7,9 +7,7 @@
       "pg-toolbox"
     ],
     "nohoist": [
-      "**/react-native",
-      "@worship-mate/server/typeorm",
-      "@worship-mate/server/typeorm/**"
+      "**/react-native"
     ]
   },
   "scripts": {
