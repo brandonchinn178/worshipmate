@@ -3,7 +3,8 @@
   "workspaces": {
     "packages": [
       "client",
-      "server"
+      "server",
+      "pg-toolbox"
     ],
     "nohoist": [
       "**/react-native",
@@ -14,6 +15,7 @@
   "scripts": {
     "client": "yarn workspace @worship-mate/client",
     "server": "yarn workspace @worship-mate/server",
+    "pg-toolbox": "yarn workspace pg-toolbox",
     "lint": "eslint --ext .js,.ts,.tsx,.json --max-warnings=0"
   },
   "devDependencies": {

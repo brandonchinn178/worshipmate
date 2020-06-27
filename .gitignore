@@ -4,6 +4,7 @@
 # NodeJS
 node_modules/
 coverage/
+dist/
 
 # NextJS
 .next/
