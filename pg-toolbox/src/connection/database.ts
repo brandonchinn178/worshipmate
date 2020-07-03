@@ -85,4 +85,8 @@ export class Database {
   async migrate(options: Partial<RunnerOption>): Promise<void> {
     return this.withClient((client) => client.migrate(options))
   }
+
+  async clear(): Promise<void> {
+    return this.withClient((client) => client.clear())
+  }
 }

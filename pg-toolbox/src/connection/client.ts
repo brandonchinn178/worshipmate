@@ -156,4 +156,30 @@ export class DatabaseClient {
       ...options,
     })
   }
+
+  /**
+   * A test helper to clear all tables in the database.
+   *
+   * Usage:
+   *
+   *   await client.clear()
+   */
+  async clear(): Promise<void> {
+    await this.transaction(async () => {
+      const tables = await this.query<{ table: string }>(sql`
+        SELECT table_name AS table FROM information_schema.tables
+        WHERE table_schema = 'public' AND table_type = 'BASE TABLE'
+      `)
+
+      if (tables.length > 0) {
+        const truncationList = tables.map(
+          ({ table }) => sql`"public".${sql.quote(table)}`,
+        )
+
+        await this.query(sql`
+          TRUNCATE ${sql.join(truncationList, ',')} RESTART IDENTITY
+        `)
+      }
+    })
+  }
 }
