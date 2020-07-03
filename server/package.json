@@ -7,8 +7,7 @@
     "build": "nest build",
     "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
     "typeorm": "TS_NODE=true ts-node ./node_modules/typeorm/cli.js",
-    "test": "jest --runInBand",
-    "test:unit": "TEST_TYPE=unit jest",
+    "test": "TEST_TYPE=unit jest --runInBand",
     "test:integration": "TEST_TYPE=integration jest --runInBand",
     "test:e2e": "TEST_TYPE=e2e jest --runInBand"
   },

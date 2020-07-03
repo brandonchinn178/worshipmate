@@ -4,9 +4,13 @@
 # NodeJS
 node_modules/
 coverage/
+dist/
 
 # NextJS
 .next/
 
 # Yarn
 yarn-error.log
+
+# Developer files
+.env
