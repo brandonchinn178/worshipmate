@@ -11,3 +11,6 @@ dist/
 
 # Yarn
 yarn-error.log
+
+# Developer files
+.env
