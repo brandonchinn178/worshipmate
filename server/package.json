@@ -5,10 +5,17 @@
   "scripts": {
     "start": "nodemon",
     "build": "tsc -p tsconfig.build.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit --incremental false"
+    "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
+    "codegen": "graphql-codegen"
   },
-  "dependencies": {},
+  "dependencies": {
+    "graphql": "^15.2.0"
+  },
   "devDependencies": {
+    "@graphql-codegen/add": "^1.16.0",
+    "@graphql-codegen/cli": "^1.16.0",
+    "@graphql-codegen/typescript": "^1.16.0",
+    "@graphql-codegen/typescript-resolvers": "^1.16.0",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2",
     "tsconfig-paths": "^3.9.0",
