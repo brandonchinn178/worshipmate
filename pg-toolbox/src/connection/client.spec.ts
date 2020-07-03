@@ -292,4 +292,37 @@ describe('DatabaseClient', () => {
       )
     })
   })
+
+  describe('.clear()', () => {
+    const mockTableList = (mockQuery: jest.Mock, tables: string[]) => {
+      mockQuery.mockImplementation(async (query) => {
+        if (query.text.match('SELECT table_name AS table')) {
+          return { rows: tables.map((table) => ({ table })) }
+        }
+        return { rows: [] }
+      })
+    }
+
+    it('does not clear anything if no tables are in the database', async () => {
+      const { client, mockQuery } = mkClient()
+      mockTableList(mockQuery, [])
+
+      await client.clear()
+
+      expect(mockQuery).not.toHaveBeenCalledWith(
+        expect.objectContaining({ text: expect.stringContaining('TRUNCATE') }),
+      )
+    })
+
+    it('clears all tables', async () => {
+      const { client, mockQuery } = mkClient()
+      mockTableList(mockQuery, ['foo', 'bar'])
+
+      await client.clear()
+
+      expect(mockQuery).toHaveBeenCalledWith(
+        sqlMatches('TRUNCATE "public"."foo","public"."bar" RESTART IDENTITY'),
+      )
+    })
+  })
 })

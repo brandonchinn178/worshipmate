@@ -239,4 +239,19 @@ describe('Database', () => {
       )
     })
   })
+
+  describe('.clear()', () => {
+    it('proxies to DatabaseClient', async () => {
+      await fc.assert(
+        fc.asyncProperty(fc.anything(), async (result) => {
+          const client = { clear: jest.fn().mockResolvedValue(result) }
+
+          const db = mkDatabaseWithMockedClient(client)
+          await expect(db.clear()).resolves.toBe(result)
+
+          expect(client.clear).toHaveBeenCalled()
+        }),
+      )
+    })
+  })
 })
