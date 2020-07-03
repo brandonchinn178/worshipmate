@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.base",
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "incremental": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./src/*"],
+      "~test-utils": ["./__test__/utils"]
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+  "include": ["**/*"]
+}
