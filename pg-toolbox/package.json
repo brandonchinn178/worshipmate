@@ -5,7 +5,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
-    "test": "jest"
+    "test": "TEST_TYPE=unit jest",
+    "test:e2e": "TEST_TYPE=e2e jest --runInBand"
   },
   "dependencies": {
     "node-pg-migrate": "^5.2.0",
@@ -13,6 +14,7 @@
   },
   "devDependencies": {
     "@types/pg": "^7.14.3",
+    "dotenv": "^8.2.0",
     "fast-check": "^1.25.1",
     "jest": "^26.1.0",
     "ts-jest": "^26.1.1",
