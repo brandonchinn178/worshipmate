@@ -2,8 +2,10 @@
   "name": "pg-toolbox",
   "version": "0.0.1",
   "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
     "test": "TEST_TYPE=unit jest",
     "test:e2e": "TEST_TYPE=e2e jest --runInBand"

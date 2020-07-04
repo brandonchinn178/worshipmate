@@ -1,8 +1,7 @@
 import { RunnerOption } from 'node-pg-migrate'
 import * as pg from 'pg'
 
-import { SqlQuery } from '~/sql'
-
+import { SqlQuery } from '../sql'
 import { DatabaseClient, SqlRecord } from './client'
 
 /**

@@ -1,6 +1,6 @@
 import * as path from 'path'
 
-import { sql } from '~/index'
+import { sql } from '~/sql'
 import { getTestDatabase } from '~test-utils'
 
 const setupTestDatabase = async () => {
