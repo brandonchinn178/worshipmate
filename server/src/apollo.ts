@@ -19,5 +19,8 @@ export const initServer = () => {
   return new ApolloServer({
     typeDefs: getTypeDefs(),
     resolvers: [song.resolvers],
+    dataSources: () => ({
+      songAPI: new song.SongAPI(),
+    }),
   })
 }
