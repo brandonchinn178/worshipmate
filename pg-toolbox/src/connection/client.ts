@@ -1,7 +1,7 @@
 import migrate, { RunnerOption } from 'node-pg-migrate'
 import * as pg from 'pg'
 
-import { sql, SqlQuery } from '~/sql'
+import { sql, SqlQuery } from '../sql'
 
 export type SqlRecord = Record<string, unknown>
 
