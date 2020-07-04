@@ -91,3 +91,27 @@ sql.join = (queries: SqlQuery[], delimiter = '') =>
       return builtText.join(delimiter)
     },
   )
+
+/**
+ * A helper for joining clauses with `AND`.
+ *
+ * If no clauses are provided, returns `TRUE`.
+ *
+ * Usage:
+ *
+ *   db.query(sql`SELECT * FROM song WHERE ${sql.and(clauses)}`)
+ */
+sql.and = (clauses: SqlQuery[]) =>
+  clauses.length > 0 ? sql.join(clauses, ' AND ') : sql`TRUE`
+
+/**
+ * A helper for joining clauses with `OR`.
+ *
+ * If no clauses are provided, returns `FALSE`.
+ *
+ * Usage:
+ *
+ *   db.query(sql`SELECT * FROM song WHERE ${sql.or(clauses)}`)
+ */
+sql.or = (clauses: SqlQuery[]) =>
+  clauses.length > 0 ? sql.join(clauses, ' OR ') : sql`FALSE`

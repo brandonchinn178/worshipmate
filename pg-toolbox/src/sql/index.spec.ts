@@ -1,4 +1,4 @@
-import { sql } from './index'
+import { sql, SqlQuery } from './index'
 
 const TEST_SONG = {
   name: 'Take On Me',
@@ -110,6 +110,52 @@ describe('sql', () => {
 
       expect(query).toMatchObject({
         text: 'SELECT * FROM song WHERE song.name = $1 AND song.artist = $2',
+        values: [TEST_SONG.name, TEST_SONG.artist],
+      })
+    })
+  })
+
+  describe('.and()', () => {
+    it('returns TRUE if no clauses provided', () => {
+      const filters = [] as SqlQuery[]
+
+      expect(sql`SELECT * FROM song WHERE ${sql.and(filters)}`).toMatchObject({
+        text: 'SELECT * FROM song WHERE TRUE',
+        values: [],
+      })
+    })
+
+    it('joins clauses with AND', () => {
+      const filters = [
+        sql`song.name = ${TEST_SONG.name}`,
+        sql`song.artist = ${TEST_SONG.artist}`,
+      ]
+
+      expect(sql`SELECT * FROM song WHERE ${sql.and(filters)}`).toMatchObject({
+        text: 'SELECT * FROM song WHERE song.name = $1 AND song.artist = $2',
+        values: [TEST_SONG.name, TEST_SONG.artist],
+      })
+    })
+  })
+
+  describe('.or()', () => {
+    it('returns FALSE if no clauses provided', () => {
+      const filters = [] as SqlQuery[]
+
+      expect(sql`SELECT * FROM song WHERE ${sql.or(filters)}`).toMatchObject({
+        text: 'SELECT * FROM song WHERE FALSE',
+        values: [],
+      })
+    })
+
+    it('joins clauses with OR', () => {
+      const filters = [
+        sql`song.name = ${TEST_SONG.name}`,
+        sql`song.artist = ${TEST_SONG.artist}`,
+      ]
+
+      expect(sql`SELECT * FROM song WHERE ${sql.or(filters)}`).toMatchObject({
+        text: 'SELECT * FROM song WHERE song.name = $1 OR song.artist = $2',
         values: [TEST_SONG.name, TEST_SONG.artist],
       })
     })
