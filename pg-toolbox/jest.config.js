@@ -16,8 +16,7 @@ module.exports = {
     '^.+\\.ts$': 'ts-jest',
   },
   coverageDirectory: './coverage',
-  coveragePathIgnorePatterns: ['/node_modules/', '__test__'],
-  setupFilesAfterEnv: compact([isE2E && '<rootDir>/__test__/setup.ts']),
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/', '/__test__/'],
   testEnvironment: 'node',
   moduleNameMapper: {
     ...jest.pathsToModuleNameMapper(tsconfig.compilerOptions.paths, {

@@ -1,11 +1,11 @@
 import * as path from 'path'
 
 import { sql } from '~/sql'
-import { getTestDatabase } from '~test-utils'
+import { setupTestDatabase } from '~test-utils'
 
-const setupTestDatabase = async () => {
-  const db = getTestDatabase()
+const db = setupTestDatabase()
 
+const initTestTable = async () => {
   await db.withClient(async (client) => {
     await client.query(sql`
       CREATE TABLE "test_table" ("col1" VARCHAR);
@@ -19,23 +19,19 @@ const setupTestDatabase = async () => {
       );
     `)
   })
-
-  return db
 }
 
 describe('Database', () => {
   it('can connect with a client', async () => {
-    const db = getTestDatabase()
-
     await expect(
       db.withClient((client) => client.query(sql`SELECT 1 AS val`)),
     ).resolves.toStrictEqual([{ val: 1 }])
   })
 
   describe('.query()', () => {
-    it('can run a query', async () => {
-      const db = await setupTestDatabase()
+    beforeEach(initTestTable)
 
+    it('can run a query', async () => {
       await Promise.all(
         ['foo', 'bar', 'baz'].map(async (val) => {
           await expect(
@@ -49,25 +45,21 @@ describe('Database', () => {
   })
 
   describe('.queryOne()', () => {
-    it('can run a query', async () => {
-      const db = await setupTestDatabase()
+    beforeEach(initTestTable)
 
+    it('can run a query', async () => {
       await expect(
         db.queryOne(sql`SELECT "col1" FROM "test_table" WHERE "col1" = 'foo'`),
       ).resolves.toEqual({ col1: 'foo' })
     })
 
     it('errors if the query returns no rows', async () => {
-      const db = await setupTestDatabase()
-
       await expect(
         db.queryOne(sql`SELECT * FROM "test_table" WHERE FALSE`),
       ).rejects.toThrow()
     })
 
     it('errors if the query returns multiple rows', async () => {
-      const db = await setupTestDatabase()
-
       await expect(
         db.queryOne(sql`SELECT * FROM "test_table"`),
       ).rejects.toThrow()
@@ -75,9 +67,9 @@ describe('Database', () => {
   })
 
   describe('.transaction()', () => {
-    it('can run a transaction', async () => {
-      const db = await setupTestDatabase()
+    beforeEach(initTestTable)
 
+    it('can run a transaction', async () => {
       await db.transaction(async (client) => {
         const rows = await client.query<{ col1: string }>(sql`
           SELECT "col1" FROM "test_table" WHERE "col1" != 'foo'
@@ -95,8 +87,6 @@ describe('Database', () => {
     })
 
     it('rolls back a transaction', async () => {
-      const db = await setupTestDatabase()
-
       await expect(
         db.transaction(async (client) => {
           await client.executeAll([
@@ -113,8 +103,9 @@ describe('Database', () => {
   })
 
   describe('.executeAll()', () => {
+    beforeEach(initTestTable)
+
     it('can execute multiple queries', async () => {
-      const db = await setupTestDatabase()
       const val1 = 'newvalue'
       const val2 = 'newvalue2'
 
@@ -129,7 +120,6 @@ describe('Database', () => {
     })
 
     it('rolls back if any individual query fails', async () => {
-      const db = await setupTestDatabase()
       const val1 = 'newvalue'
       const val2 = 'newvalue2'
 
@@ -148,8 +138,9 @@ describe('Database', () => {
   })
 
   describe('.insertAll()', () => {
+    beforeEach(initTestTable)
+
     it('can insert multiple records', async () => {
-      const db = await setupTestDatabase()
       await db.insertAll('person', [
         { name: 'Alice', age: 20 },
         { name: 'Bob' },
@@ -166,7 +157,6 @@ describe('Database', () => {
     })
 
     it('rolls back if any individual query fails', async () => {
-      const db = await setupTestDatabase()
       const val1 = 'newvalue'
       const val2 = 'newvalue2'
 
@@ -186,7 +176,6 @@ describe('Database', () => {
 
   describe('.migrate()', () => {
     it('can run migrations', async () => {
-      const db = getTestDatabase()
       // suppress output
       jest.spyOn(console, 'info').mockReturnValue(undefined)
 
@@ -232,8 +221,6 @@ describe('Database', () => {
 
   describe('.clear()', () => {
     it('can clear all tables', async () => {
-      const db = getTestDatabase()
-
       await db.executeAll([
         sql`CREATE TABLE "test_table1" ("col1" VARCHAR)`,
         sql`INSERT INTO "test_table1" ("col1") VALUES ('a')`,
@@ -261,8 +248,6 @@ describe('Database', () => {
     })
 
     it('is a noop if no tables exist', async () => {
-      const db = getTestDatabase()
-
       await expect(db.clear()).resolves.toBeUndefined()
     })
   })
