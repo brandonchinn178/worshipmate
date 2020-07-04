@@ -3,6 +3,7 @@ import migrate, { RunnerOption } from 'node-pg-migrate'
 import * as pg from 'pg'
 
 import { sql, SqlQuery } from '~/sql'
+import { sqlMatches } from '~/sql/testutils'
 
 import { DatabaseClient } from './client'
 import { parseMigrateArgs } from './migrate'
@@ -33,22 +34,6 @@ const mkClient = () => {
   const client = new DatabaseClient(pgClient as pg.PoolClient)
 
   return { client, pgClient, mockQuery }
-}
-
-const sqlMatches = (query: string | { text: string; values: unknown[] }) => {
-  const { text, values } =
-    typeof query === 'string' ? { text: query, values: [] } : query
-
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Escaping
-  const escapedText = text.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&')
-
-  // ignore differences in whitespace
-  const textMatch = new RegExp(escapedText.trim().replace(/\s+/g, '\\s+'))
-
-  return expect.objectContaining({
-    text: expect.stringMatching(textMatch),
-    values,
-  })
 }
 
 describe('DatabaseClient', () => {
