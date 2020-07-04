@@ -12,6 +12,7 @@
     "@graphql-toolkit/core": "^0.10.7",
     "@graphql-toolkit/graphql-file-loader": "^0.10.7",
     "@graphql-toolkit/schema-merging": "^0.10.7",
+    "apollo-datasource": "^0.7.2",
     "apollo-server": "^2.15.1",
     "graphql": "^15.2.0"
   },
