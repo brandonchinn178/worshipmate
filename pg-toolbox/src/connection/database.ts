@@ -1,8 +1,10 @@
-import { RunnerOption } from 'node-pg-migrate'
 import * as pg from 'pg'
 
 import { SqlQuery } from '../sql'
 import { DatabaseClient, SqlRecord } from './client'
+import { MigrateOptions } from './migrate'
+
+export type DatabaseConfig = pg.PoolConfig
 
 /**
  * An interface to a PostgreSQL database.
@@ -22,7 +24,7 @@ import { DatabaseClient, SqlRecord } from './client'
 export class Database {
   private pool: pg.Pool
 
-  constructor(config?: pg.PoolConfig) {
+  constructor(config?: DatabaseConfig) {
     this.pool = new pg.Pool(config)
   }
 
@@ -81,7 +83,7 @@ export class Database {
     return this.withClient((client) => client.insertAll<T>(table, records))
   }
 
-  async migrate(options: Partial<RunnerOption>): Promise<void> {
+  async migrate(options?: MigrateOptions): Promise<void> {
     return this.withClient((client) => client.migrate(options))
   }
 
