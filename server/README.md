@@ -15,3 +15,11 @@ This directory serves the backend for the website.
    ```
 
 1. `yarn server start`
+
+## Tests
+
+### Run unit tests
+
+```bash
+yarn server test
+```
