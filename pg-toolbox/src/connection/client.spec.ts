@@ -5,6 +5,7 @@ import * as pg from 'pg'
 import { sql, SqlQuery } from '~/sql'
 
 import { DatabaseClient } from './client'
+import { parseMigrateArgs } from './migrate'
 
 jest.mock('node-pg-migrate', () => {
   return {
@@ -13,6 +14,14 @@ jest.mock('node-pg-migrate', () => {
     default: jest.fn(),
   }
 })
+
+jest.mock('./migrate', () => {
+  return {
+    parseMigrateArgs: jest.fn(),
+  }
+})
+
+const mockParseMigrateArgs = (parseMigrateArgs as unknown) as jest.Mock
 
 const mkClient = () => {
   const mockQuery = jest.fn()
@@ -289,6 +298,32 @@ describe('DatabaseClient', () => {
 
           expect(migrate).toHaveBeenCalledWith(expect.objectContaining(options))
         }),
+      )
+    })
+
+    it('can load options from arguments', async () => {
+      const fcMigrateDirectionOption = fc.record({
+        direction: fc.constantFrom('up', 'down'),
+        count: fc.constantFrom(Infinity, 1, 2, 3, 4),
+      })
+
+      await fc.assert(
+        fc.asyncProperty(
+          fc.array(fcMigrateDirectionOption, 1, 2),
+          async (migrateDirectionOptions) => {
+            mockParseMigrateArgs.mockReturnValue(migrateDirectionOptions)
+
+            const { client } = mkClient()
+            await client.migrate({ loadFromArgs: true })
+
+            expect(mockParseMigrateArgs).toHaveBeenCalled()
+            for (const options of migrateDirectionOptions) {
+              expect(migrate).toHaveBeenCalledWith(
+                expect.objectContaining(options),
+              )
+            }
+          },
+        ),
       )
     })
   })
