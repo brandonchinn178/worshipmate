@@ -23,3 +23,9 @@ This directory serves the backend for the website.
 ```bash
 yarn server test
 ```
+
+### Run end-to-end tests
+
+1. Have the `worship_mate` Postgres database running
+
+1. `yarn pg-toolbox test:e2e`
