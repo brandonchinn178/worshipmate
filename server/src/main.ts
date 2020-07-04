@@ -1,3 +1,6 @@
-import { Console } from 'console'
+import { initServer } from './apollo'
 
-new Console(process).log('Hello world')
+const server = initServer()
+server.listen(4000).then(({ url }: { url: string }) => {
+  console.log(`🚀  Server ready at ${url}`)
+})
