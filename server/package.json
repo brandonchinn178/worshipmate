@@ -27,6 +27,7 @@
     "@graphql-codegen/cli": "^1.16.0",
     "@graphql-codegen/typescript": "^1.16.0",
     "@graphql-codegen/typescript-resolvers": "^1.16.0",
+    "apollo-server-testing": "^2.15.1",
     "dotenv": "^8.2.0",
     "jest": "^26.1.0",
     "nodemon": "^2.0.4",
