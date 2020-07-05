@@ -2,39 +2,24 @@ const jest = require('ts-jest/utils')
 
 const tsconfig = require('./tsconfig')
 
-const unitTests = '**/*.spec.ts'
-const integrationTests = '**/*.test.ts'
-const e2eTests = '**/*.e2e-spec.ts'
-
-let testMatch
-switch (process.env.TEST_TYPE) {
-  case 'unit':
-    testMatch = [unitTests]
-    break
-  case 'integration':
-    testMatch = [integrationTests]
-    break
-  case 'e2e':
-    testMatch = [e2eTests]
-    break
-  default:
-    testMatch = [unitTests, integrationTests, e2eTests]
-}
+const isUnit = process.env.TEST_TYPE === 'unit'
+const isE2E = process.env.TEST_TYPE === 'e2e'
+const compact = (a) => a.filter(Boolean)
 
 module.exports = {
   moduleFileExtensions: ['js', 'ts'],
-  testMatch,
+  testMatch: compact([isUnit && '**/*.spec.ts', isE2E && '**/*.e2e-spec.ts']),
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
   coverageDirectory: './coverage',
   coveragePathIgnorePatterns: [
     '/node_modules/',
-    '<rootDir>/ormconfig\\.js',
-    '<rootDir>/migration/',
+    '/dist/',
+    '/__test__/',
+    '/migrations/',
   ],
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['<rootDir>/__test__/setup.ts'],
   moduleNameMapper: {
     ...jest.pathsToModuleNameMapper(tsconfig.compilerOptions.paths, {
       prefix: '<rootDir>/',

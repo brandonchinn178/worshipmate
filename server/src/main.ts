@@ -1,10 +1,9 @@
-import { NestFactory } from '@nestjs/core'
+import { initServer } from './apollo'
+import { initDatabase } from './db'
 
-import { AppModule } from './app.module'
+const db = initDatabase()
+const server = initServer(db)
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
-  await app.listen(4000)
-}
-
-bootstrap()
+server.listen(4000).then(({ url }: { url: string }) => {
+  console.log(`🚀  Server ready at ${url}`)
+})

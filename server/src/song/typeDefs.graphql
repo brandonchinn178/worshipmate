@@ -1,0 +1,17 @@
+type Song {
+  id: ID!
+  slug: String!
+  title: String!
+  recommendedKey: String!
+  timeSignature: TimeSignature!
+  bpm: Int!
+}
+
+type TimeSignature {
+  top: Int!
+  bottom: Int!
+}
+
+extend type Query {
+  songs(query: String): [Song!]!
+}

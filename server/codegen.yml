@@ -1,0 +1,13 @@
+schema: ./src/**/*.graphql
+generates:
+  ./src/types.ts:
+    plugins:
+      - add: '/** AUTO GENERATED. DO NOT MODIFY **/'
+      - add: '/* eslint-disable */'
+      - typescript
+      - typescript-resolvers
+    config:
+      useIndexSignature: true
+    hooks:
+      afterOneFileWrite:
+        - prettier --write
