@@ -1,10 +1,7 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+    "paths": {}
   },
   "exclude": [
     "node_modules",
@@ -12,5 +9,6 @@
     "__test__",
     "**/*.spec.ts",
     "**/*.e2e-spec.ts"
-  ]
+  ],
+  "include": ["src/**/*.ts"]
 }

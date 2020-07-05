@@ -1,17 +1,21 @@
+import { Database, sql } from '~/index'
+
 require('dotenv').config()
+const TEST_DB = 'pg_toolbox_test'
 
-import { Database } from '~/index'
+export const setupTestDatabase = (): Database => {
+  const db = new Database({ database: TEST_DB })
 
-let GLOBAL_DB: null | Database
+  beforeEach(async () => {
+    await db.executeAll([
+      sql`DROP SCHEMA public CASCADE`,
+      sql`CREATE SCHEMA public`,
+    ])
+  })
 
-export const initTestDatabase = () => {
-  GLOBAL_DB = new Database({ database: 'pg_toolbox_test' })
-  return GLOBAL_DB
-}
+  afterAll(async () => {
+    await db.close()
+  })
 
-export const getTestDatabase = () => {
-  if (!GLOBAL_DB) {
-    throw new Error('Database has not been initialized yet.')
-  }
-  return GLOBAL_DB
+  return db
 }

@@ -1,7 +1,8 @@
-import migrate, { RunnerOption } from 'node-pg-migrate'
+import migrate from 'node-pg-migrate'
 import * as pg from 'pg'
 
-import { sql, SqlQuery } from '~/sql'
+import { sql, SqlQuery } from '../sql'
+import { MigrateOptions, parseMigrateArgs } from './migrate'
 
 export type SqlRecord = Record<string, unknown>
 
@@ -139,22 +140,25 @@ export class DatabaseClient {
    *
    * Usage:
    *
-   *   await client.migrate({
-   *     migrationsTable: 'migrations',
-   *     direction: 'up' as const,
-   *     dir: 'migrations',
-   *     count: Infinity,
-   *   })
+   *   await client.migrate()
    */
-  async migrate(options: Partial<RunnerOption> = {}): Promise<void> {
-    await migrate({
-      dbClient: this.client,
-      migrationsTable: 'pgmigrations',
-      dir: 'migrations',
-      direction: 'up',
-      count: Infinity,
-      ...options,
-    })
+  async migrate(options: MigrateOptions = {}): Promise<void> {
+    const { loadFromArgs = false, ...nodePgMigrateOptions } = options
+
+    const migrateDirectionOptions = loadFromArgs
+      ? parseMigrateArgs(process.argv)
+      : [{ direction: 'up' as const, count: Infinity }]
+
+    for (const { direction, count } of migrateDirectionOptions) {
+      await migrate({
+        dbClient: this.client,
+        migrationsTable: 'pgmigrations',
+        dir: 'migrations',
+        direction,
+        count,
+        ...nodePgMigrateOptions,
+      })
+    }
   }
 
   /**

@@ -4,31 +4,28 @@ This directory serves the backend for the website.
 
 ## Quickstart
 
-Requires a running PostgreSQL server. See `ormconfig.js` for the default
-PostgreSQL configuration and the environment variables that can override them.
+1. Run a Postgres server in Docker
 
-```bash
-yarn server start
-```
+   ```bash
+   docker run -d -p 5432:5432 \
+       -e POSTGRES_HOST_AUTH_METHOD=trust \
+       -e POSTGRES_DB=worship_mate \
+       --name worship-mate \
+       postgres:12
+   ```
 
-## Test
+1. `yarn server start`
 
-To run both all tests, run
+## Tests
+
+### Run unit tests
 
 ```bash
 yarn server test
 ```
 
-This requires the PostgreSQL server to be running. It will use a test database
-(`worship_mate_test` by default) so that it won't erase data being used in
-development.
+### Run end-to-end tests
 
-To run only one specific type of test, run one of:
+1. Have the `worship_mate` Postgres database running
 
-```bash
-yarn server test:unit
-yarn server test:integration
-yarn server test:e2e
-```
-
-The integration and end-to-end tests require PostgreSQL.
+1. `yarn pg-toolbox test:e2e`

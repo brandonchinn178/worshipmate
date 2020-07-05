@@ -3,8 +3,10 @@ import migrate, { RunnerOption } from 'node-pg-migrate'
 import * as pg from 'pg'
 
 import { sql, SqlQuery } from '~/sql'
+import { sqlMatches } from '~/sql/testutils'
 
 import { DatabaseClient } from './client'
+import { parseMigrateArgs } from './migrate'
 
 jest.mock('node-pg-migrate', () => {
   return {
@@ -13,6 +15,14 @@ jest.mock('node-pg-migrate', () => {
     default: jest.fn(),
   }
 })
+
+jest.mock('./migrate', () => {
+  return {
+    parseMigrateArgs: jest.fn(),
+  }
+})
+
+const mockParseMigrateArgs = (parseMigrateArgs as unknown) as jest.Mock
 
 const mkClient = () => {
   const mockQuery = jest.fn()
@@ -24,22 +34,6 @@ const mkClient = () => {
   const client = new DatabaseClient(pgClient as pg.PoolClient)
 
   return { client, pgClient, mockQuery }
-}
-
-const sqlMatches = (query: string | { text: string; values: unknown[] }) => {
-  const { text, values } =
-    typeof query === 'string' ? { text: query, values: [] } : query
-
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Escaping
-  const escapedText = text.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&')
-
-  // ignore differences in whitespace
-  const textMatch = new RegExp(escapedText.trim().replace(/\s+/g, '\\s+'))
-
-  return expect.objectContaining({
-    text: expect.stringMatching(textMatch),
-    values,
-  })
 }
 
 describe('DatabaseClient', () => {
@@ -289,6 +283,32 @@ describe('DatabaseClient', () => {
 
           expect(migrate).toHaveBeenCalledWith(expect.objectContaining(options))
         }),
+      )
+    })
+
+    it('can load options from arguments', async () => {
+      const fcMigrateDirectionOption = fc.record({
+        direction: fc.constantFrom('up', 'down'),
+        count: fc.constantFrom(Infinity, 1, 2, 3, 4),
+      })
+
+      await fc.assert(
+        fc.asyncProperty(
+          fc.array(fcMigrateDirectionOption, 1, 2),
+          async (migrateDirectionOptions) => {
+            mockParseMigrateArgs.mockReturnValue(migrateDirectionOptions)
+
+            const { client } = mkClient()
+            await client.migrate({ loadFromArgs: true })
+
+            expect(mockParseMigrateArgs).toHaveBeenCalled()
+            for (const options of migrateDirectionOptions) {
+              expect(migrate).toHaveBeenCalledWith(
+                expect.objectContaining(options),
+              )
+            }
+          },
+        ),
       )
     })
   })
