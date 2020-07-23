@@ -23,7 +23,7 @@
     "pg-toolbox": "0.0.1"
   },
   "devDependencies": {
-    "@graphql-codegen/add": "^1.16.0",
+    "@graphql-codegen/add": "^1.17.4",
     "@graphql-codegen/cli": "^1.16.0",
     "@graphql-codegen/typescript": "^1.16.0",
     "@graphql-codegen/typescript-resolvers": "^1.16.0",
