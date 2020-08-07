@@ -37,6 +37,6 @@
     "babel-plugin-styled-components": "^1.10.7",
     "jest": "^26.1.0",
     "snapshot-diff": "^0.8.1",
-    "webpack": "^4.42.1"
+    "webpack": "^4.44.1"
   }
 }
