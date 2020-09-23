@@ -19,7 +19,7 @@
     "apollo-datasource": "^0.7.2",
     "apollo-server": "^2.16.1",
     "graphql": "^15.2.0",
-    "node-pg-migrate": "^5.2.0",
+    "node-pg-migrate": "^5.7.1",
     "pg-toolbox": "0.0.1"
   },
   "devDependencies": {
