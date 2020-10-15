@@ -25,7 +25,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.6.0",
     "@storybook/react": "^5.3.19",
     "@svgr/webpack": "^5.3.1",
-    "@testing-library/jest-dom": "^5.11.3",
+    "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.0.2",
     "@types/jest": "^26.0.3",
     "@types/lodash": "^4.14.159",
