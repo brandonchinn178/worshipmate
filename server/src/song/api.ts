@@ -19,14 +19,14 @@ export class SongAPI extends DataSource {
   }
 
   async searchSongs(query?: string): Promise<Song[]> {
-    const filters = []
+    const conditions = []
 
     if (query) {
-      filters.push(sql`"song"."title" ILIKE ${'%' + query + '%'}`)
+      conditions.push(sql`"song"."title" ILIKE ${'%' + query + '%'}`)
     }
 
     const songs = await this.db.query<SongRecord>(sql`
-      SELECT * FROM "song" WHERE ${sql.and(filters)}
+      SELECT * FROM "song" WHERE ${sql.and(conditions)}
     `)
 
     return songs.map(fromRecord)
