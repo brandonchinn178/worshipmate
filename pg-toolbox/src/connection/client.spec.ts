@@ -11,7 +11,7 @@ import { parseMigrateArgs } from './migrate'
 jest.mock('node-pg-migrate', () => {
   return {
     __esModule: true,
-    ...jest.requireActual<object>('node-pg-migrate'),
+    ...jest.requireActual<Record<string, unknown>>('node-pg-migrate'),
     default: jest.fn(),
   }
 })
