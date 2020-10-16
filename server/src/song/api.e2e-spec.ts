@@ -78,7 +78,7 @@ describe('SongAPI', () => {
     })
 
     it('can return songs matching a query', async () => {
-      const songs = await songApi.searchSongs('be')
+      const songs = await songApi.searchSongs({ query: 'be' })
       expect(songs).toMatchObject([
         { title: 'Blessed Be Your Name' },
         { title: 'Ever Be' },
