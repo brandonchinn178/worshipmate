@@ -8,6 +8,6 @@ export const mkRouter = ({ query }: { query: NextRouter['query'] }) => {
   return router
 }
 
-export const getNewQuery = (router: NextRouter): object => {
+export const getNewQuery = (router: NextRouter): Record<string, unknown> => {
   return _.last((router.push as jest.Mock).mock.calls)[0].query
 }

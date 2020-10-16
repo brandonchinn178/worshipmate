@@ -1,5 +1,6 @@
 import { Database, sql } from 'pg-toolbox'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
 const TEST_DB = 'worship_mate_test'
 
