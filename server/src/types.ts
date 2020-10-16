@@ -1,6 +1,10 @@
 /** AUTO GENERATED. DO NOT MODIFY **/
 /* eslint-disable */
-import { GraphQLResolveInfo } from 'graphql'
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from 'graphql'
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -16,6 +20,15 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+  /**
+   * A filter value must be of a type corresponding to the filter name:
+   *
+   * - RECOMMENDED_KEY: String
+   * - BPM: Int
+   * - TIME_SIGNATURE: [Int, Int]
+   * - THEMES: [String, String, ...]
+   */
+  FilterValue: unknown
 }
 
 export type Song = {
@@ -34,6 +47,18 @@ export type TimeSignature = {
   bottom: Scalars['Int']
 }
 
+export enum FilterName {
+  RECOMMENDED_KEY = 'RECOMMENDED_KEY',
+  BPM = 'BPM',
+  TIME_SIGNATURE = 'TIME_SIGNATURE',
+  THEMES = 'THEMES',
+}
+
+export type SearchFilter = {
+  name: FilterName
+  value: Scalars['FilterValue']
+}
+
 export type Query = {
   __typename?: 'Query'
   songs: Array<Song>
@@ -41,6 +66,7 @@ export type Query = {
 
 export type QuerySongsArgs = {
   query?: Maybe<Scalars['String']>
+  filters?: Maybe<Array<SearchFilter>>
 }
 
 export type WithIndex<TObject> = TObject & Record<string, any>
@@ -167,6 +193,9 @@ export type ResolversTypes = ResolversObject<{
   String: ResolverTypeWrapper<Scalars['String']>
   Int: ResolverTypeWrapper<Scalars['Int']>
   TimeSignature: ResolverTypeWrapper<TimeSignature>
+  FilterName: FilterName
+  FilterValue: ResolverTypeWrapper<Scalars['FilterValue']>
+  SearchFilter: SearchFilter
   Query: ResolverTypeWrapper<{}>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
 }>
@@ -178,6 +207,8 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String']
   Int: Scalars['Int']
   TimeSignature: TimeSignature
+  FilterValue: Scalars['FilterValue']
+  SearchFilter: SearchFilter
   Query: {}
   Boolean: Scalars['Boolean']
 }>
@@ -208,6 +239,11 @@ export type TimeSignatureResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
+export interface FilterValueScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['FilterValue'], any> {
+  name: 'FilterValue'
+}
+
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
@@ -223,6 +259,7 @@ export type QueryResolvers<
 export type Resolvers<ContextType = any> = ResolversObject<{
   Song?: SongResolvers<ContextType>
   TimeSignature?: TimeSignatureResolvers<ContextType>
+  FilterValue?: GraphQLScalarType
   Query?: QueryResolvers<ContextType>
 }>
 
