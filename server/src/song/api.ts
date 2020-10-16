@@ -4,6 +4,10 @@ import { Database, sql } from 'pg-toolbox'
 import { Song } from './models'
 import { SongRecord } from './schema'
 
+export type SearchOptions = {
+  query?: string
+}
+
 const fromRecord = (song: SongRecord): Song => ({
   ...song,
   recommendedKey: song.recommended_key,
@@ -18,7 +22,9 @@ export class SongAPI extends DataSource {
     super()
   }
 
-  async searchSongs(query?: string): Promise<Song[]> {
+  async searchSongs(options: SearchOptions = {}): Promise<Song[]> {
+    const { query } = options
+
     const conditions = []
 
     if (query) {

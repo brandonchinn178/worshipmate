@@ -25,7 +25,7 @@ describe('SongAPI', () => {
     })
 
     it('can return songs matching a query', async () => {
-      await songApi.searchSongs('foo')
+      await songApi.searchSongs({ query: 'foo' })
       expect(db.query).toHaveBeenCalledWith(
         sqlMatches({
           text: 'SELECT * FROM "song" WHERE "song"."title" ILIKE $1',
