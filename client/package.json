@@ -34,7 +34,7 @@
     "@types/styled-components": "^5.1.2",
     "babel-jest": "^26.5.2",
     "babel-loader": "^8.1.0",
-    "babel-plugin-styled-components": "^1.10.7",
+    "babel-plugin-styled-components": "^1.11.1",
     "jest": "^26.4.0",
     "snapshot-diff": "^0.8.1",
     "webpack": "^4.44.1"
