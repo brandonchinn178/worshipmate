@@ -24,6 +24,7 @@ module.exports = {
     'simple-import-sort/sort': 'error',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/member-delimiter-style': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
