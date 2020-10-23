@@ -8,11 +8,24 @@ type UnknownFilter = {
 /**
  * MUST correspond with documentation of FilterValue scalar.
  */
-export type SearchFilter =
-  | { name: 'RECOMMENDED_KEY'; value: string }
-  | { name: 'BPM'; value: number }
-  | { name: 'TIME_SIGNATURE'; value: [number, number] }
-  | { name: 'THEMES'; value: string[] }
+export type SearchFilterTypes = {
+  RECOMMENDED_KEY: string
+  BPM: number
+  TIME_SIGNATURE: [number, number]
+  THEMES: string[]
+}
+
+export type SearchFilterNames = keyof SearchFilterTypes
+
+// https://stackoverflow.com/a/51691257
+type SearchFilterHelper<Name> = Name extends SearchFilterNames
+  ? {
+      name: Name
+      value: SearchFilterTypes[Name]
+    }
+  : never
+
+export type SearchFilter = SearchFilterHelper<SearchFilterNames>
 
 const positiveIntSchema = yup.number().positive().integer()
 const pairSchema = yup.array().min(2).max(2)
