@@ -34,6 +34,10 @@ input SearchFilter {
   value: FilterValue!
 }
 
+type SongSearchResult {
+  songs: [Song!]!
+}
+
 extend type Query {
-  searchSongs(query: String, filters: [SearchFilter!]): [Song!]!
+  searchSongs(query: String, filters: [SearchFilter!]): SongSearchResult
 }

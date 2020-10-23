@@ -59,9 +59,14 @@ export type SearchFilter = {
   value: Scalars['FilterValue']
 }
 
+export type SongSearchResult = {
+  __typename?: 'SongSearchResult'
+  songs: Array<Song>
+}
+
 export type Query = {
   __typename?: 'Query'
-  searchSongs: Array<Song>
+  searchSongs?: Maybe<SongSearchResult>
 }
 
 export type QuerySearchSongsArgs = {
@@ -196,6 +201,7 @@ export type ResolversTypes = ResolversObject<{
   FilterName: FilterName
   FilterValue: ResolverTypeWrapper<Scalars['FilterValue']>
   SearchFilter: SearchFilter
+  SongSearchResult: ResolverTypeWrapper<SongSearchResult>
   Query: ResolverTypeWrapper<{}>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
 }>
@@ -209,6 +215,7 @@ export type ResolversParentTypes = ResolversObject<{
   TimeSignature: TimeSignature
   FilterValue: Scalars['FilterValue']
   SearchFilter: SearchFilter
+  SongSearchResult: SongSearchResult
   Query: {}
   Boolean: Scalars['Boolean']
 }>
@@ -244,12 +251,20 @@ export interface FilterValueScalarConfig
   name: 'FilterValue'
 }
 
+export type SongSearchResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SongSearchResult'] = ResolversParentTypes['SongSearchResult']
+> = ResolversObject<{
+  songs?: Resolver<Array<ResolversTypes['Song']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}>
+
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = ResolversObject<{
   searchSongs?: Resolver<
-    Array<ResolversTypes['Song']>,
+    Maybe<ResolversTypes['SongSearchResult']>,
     ParentType,
     ContextType,
     RequireFields<QuerySearchSongsArgs, never>
@@ -260,6 +275,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Song?: SongResolvers<ContextType>
   TimeSignature?: TimeSignatureResolvers<ContextType>
   FilterValue?: GraphQLScalarType
+  SongSearchResult?: SongSearchResultResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
 }>
 
