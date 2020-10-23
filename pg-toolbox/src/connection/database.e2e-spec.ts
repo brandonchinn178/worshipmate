@@ -28,6 +28,11 @@ describe('Database', () => {
     ).resolves.toStrictEqual([{ val: 1 }])
   })
 
+  it('converts PostgreSQL bigint into Javascript BigInt', async () => {
+    const { val } = await db.queryOne(sql`SELECT 1::bigint AS val`)
+    expect(val).toEqual(BigInt(1))
+  })
+
   describe('.query()', () => {
     beforeEach(initTestTable)
 
