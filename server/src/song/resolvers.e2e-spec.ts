@@ -5,7 +5,7 @@ const db = setupTestDatabase()
 const server = setupTestServer(db)
 
 describe('Query', () => {
-  describe('songs', () => {
+  describe('searchSongs', () => {
     const allSongs = [
       {
         slug: 'blessed-be-your-name',
@@ -129,7 +129,7 @@ describe('Query', () => {
       })
     })
 
-    describe('filters', () => {
+    describe('search with filters', () => {
       it('queries songs filtered by a search filter', async () => {
         const res = await server.query({
           query: `
@@ -222,36 +222,36 @@ describe('Query', () => {
           errors: [{ message: "Invalid value for filter 'BPM': foo" }],
         })
       })
-    })
 
-    it('queries songs with query and filter', async () => {
-      const res = await server.query({
-        query: `
-          query ($query: String!, $filters: [SearchFilter!]!) {
-            searchSongs(query: $query, filters: $filters) {
-              songs {
-                title
+      it('queries songs with query and filter', async () => {
+        const res = await server.query({
+          query: `
+            query ($query: String!, $filters: [SearchFilter!]!) {
+              searchSongs(query: $query, filters: $filters) {
+                songs {
+                  title
+                }
               }
             }
-          }
-        `,
-        variables: {
-          query: 'be',
-          filters: [
-            {
-              name: 'RECOMMENDED_KEY',
-              value: 'E',
-            },
-          ],
-        },
-      })
-
-      expect(res).toMatchObject({
-        data: {
-          searchSongs: {
-            songs: [{ title: 'Ever Be' }],
+          `,
+          variables: {
+            query: 'be',
+            filters: [
+              {
+                name: 'RECOMMENDED_KEY',
+                value: 'E',
+              },
+            ],
           },
-        },
+        })
+
+        expect(res).toMatchObject({
+          data: {
+            searchSongs: {
+              songs: [{ title: 'Ever Be' }],
+            },
+          },
+        })
       })
     })
   })
