@@ -3,6 +3,12 @@ import { Database, sql } from 'pg-toolbox'
 
 import { Song } from './models'
 import { SongRecord } from './schema'
+import { SearchFilter } from './searchFilter'
+
+export type SearchOptions = {
+  query?: string
+  filters?: SearchFilter[]
+}
 
 const fromRecord = (song: SongRecord): Song => ({
   ...song,
@@ -18,15 +24,38 @@ export class SongAPI extends DataSource {
     super()
   }
 
-  async searchSongs(query?: string): Promise<Song[]> {
-    const filters = []
+  async searchSongs(options: SearchOptions = {}): Promise<Song[]> {
+    const { query, filters = [] } = options
+
+    const conditions = []
 
     if (query) {
-      filters.push(sql`"song"."title" ILIKE ${'%' + query + '%'}`)
+      conditions.push(sql`"song"."title" ILIKE ${'%' + query + '%'}`)
     }
 
+    filters.forEach((filter) => {
+      switch (filter.name) {
+        case 'RECOMMENDED_KEY': {
+          conditions.push(sql`"song"."recommended_key" = ${filter.value}`)
+          break
+        }
+        case 'BPM': {
+          conditions.push(sql`"song"."bpm" = ${filter.value}`)
+          break
+        }
+        case 'TIME_SIGNATURE': {
+          const [top, bottom] = filter.value
+          conditions.push(sql`
+            "song"."time_signature_top" = ${top} AND
+            "song"."time_signature_bottom" = ${bottom}
+          `)
+          break
+        }
+      }
+    })
+
     const songs = await this.db.query<SongRecord>(sql`
-      SELECT * FROM "song" WHERE ${sql.and(filters)}
+      SELECT * FROM "song" WHERE ${sql.and(conditions)}
     `)
 
     return songs.map(fromRecord)
