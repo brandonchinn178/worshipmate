@@ -102,7 +102,6 @@ describe('Query', () => {
         query: `
           query ($query: String!) {
             songs(query: $query) {
-              id
               title
             }
           }
@@ -114,16 +113,10 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          songs: [
-            {
-              id: expect.any(String),
-              title: 'Blessed Be Your Name',
-            },
-            {
-              id: expect.any(String),
-              title: 'Ever Be',
-            },
-          ],
+          songs: expect.arrayContaining([
+            { title: 'Blessed Be Your Name' },
+            { title: 'Ever Be' },
+          ]),
         },
       })
     })
