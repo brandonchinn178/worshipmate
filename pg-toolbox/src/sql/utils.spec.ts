@@ -91,13 +91,14 @@ describe('mergeLists', () => {
           const [result1, result2] = unmerge(resultWithBoth)
           const resultWithRest = result.slice(boundary)
 
-          if (shortFirst) {
-            expect(result1).toStrictEqual(short)
-            expect([...result2, ...resultWithRest]).toStrictEqual(long)
-          } else {
-            expect([...result1, ...resultWithRest]).toStrictEqual(long)
-            expect(result2).toStrictEqual(short)
-          }
+          const shortResult = shortFirst ? result1 : result2
+          expect(shortResult).toStrictEqual(short)
+
+          const longResult = [
+            ...(shortFirst ? result2 : result1),
+            ...resultWithRest,
+          ]
+          expect(longResult).toStrictEqual(long)
         },
       ),
     )
