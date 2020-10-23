@@ -61,10 +61,10 @@ export type SearchFilter = {
 
 export type Query = {
   __typename?: 'Query'
-  songs: Array<Song>
+  searchSongs: Array<Song>
 }
 
-export type QuerySongsArgs = {
+export type QuerySearchSongsArgs = {
   query?: Maybe<Scalars['String']>
   filters?: Maybe<Array<SearchFilter>>
 }
@@ -248,11 +248,11 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = ResolversObject<{
-  songs?: Resolver<
+  searchSongs?: Resolver<
     Array<ResolversTypes['Song']>,
     ParentType,
     ContextType,
-    RequireFields<QuerySongsArgs, never>
+    RequireFields<QuerySearchSongsArgs, never>
   >
 }>
 
