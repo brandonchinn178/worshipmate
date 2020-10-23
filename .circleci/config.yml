@@ -129,6 +129,11 @@ jobs:
       - checkout
       - install_yarn_and_deps
       - run: yarn lint .
+      - run:
+          name: Check that server GraphQL files are up to date
+          command: |
+            yarn server codegen
+            git diff --exit-code server/
 
 workflows:
   version: 2
