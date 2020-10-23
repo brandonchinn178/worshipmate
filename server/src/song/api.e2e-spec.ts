@@ -32,6 +32,14 @@ describe('SongAPI', () => {
         time_signature_bottom: 4,
         bpm: 72,
       },
+      {
+        slug: 'great-are-you-lord',
+        title: 'Great Are You Lord',
+        recommended_key: 'G',
+        time_signature_top: 6,
+        time_signature_bottom: 8,
+        bpm: 52,
+      },
     ]
 
     beforeEach(async () => {
@@ -74,6 +82,17 @@ describe('SongAPI', () => {
           },
           bpm: 72,
         },
+        {
+          id: expect.any(Number),
+          slug: 'great-are-you-lord',
+          title: 'Great Are You Lord',
+          recommended_key: 'G',
+          timeSignature: {
+            top: 6,
+            bottom: 8,
+          },
+          bpm: 52,
+        },
       ])
     })
 
@@ -83,6 +102,35 @@ describe('SongAPI', () => {
         { title: 'Blessed Be Your Name' },
         { title: 'Ever Be' },
       ])
+    })
+
+    it('can return songs with a recommended key', async () => {
+      const songs = await songApi.searchSongs({
+        filters: [{ name: 'RECOMMENDED_KEY', value: 'A' }],
+      })
+      expect(songs).toMatchObject([{ title: 'Blessed Be Your Name' }])
+    })
+
+    it('can return songs with a time signature', async () => {
+      const songs = await songApi.searchSongs({
+        filters: [{ name: 'TIME_SIGNATURE', value: [6, 8] }],
+      })
+      expect(songs).toMatchObject([{ title: 'Great Are You Lord' }])
+    })
+
+    it('can return songs with a BPM', async () => {
+      const songs = await songApi.searchSongs({
+        filters: [{ name: 'BPM', value: 68 }],
+      })
+      expect(songs).toMatchObject([{ title: 'Build My Life' }])
+    })
+
+    it('can return songs matching a filter and query', async () => {
+      const songs = await songApi.searchSongs({
+        query: 'be',
+        filters: [{ name: 'RECOMMENDED_KEY', value: 'E' }],
+      })
+      expect(songs).toMatchObject([{ title: 'Ever Be' }])
     })
   })
 })

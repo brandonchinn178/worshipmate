@@ -34,6 +34,18 @@ describe('SongAPI', () => {
       )
     })
 
+    it('can return songs matching a filter', async () => {
+      await songApi.searchSongs({
+        filters: [{ name: 'RECOMMENDED_KEY', value: 'A' }],
+      })
+      expect(db.query).toHaveBeenCalledWith(
+        sqlMatches({
+          text: 'SELECT * FROM "song" WHERE "song"."recommended_key" = $1',
+          values: ['A'],
+        }),
+      )
+    })
+
     it('converts song record to song model', async () => {
       const songRecord = {
         id: 1,
