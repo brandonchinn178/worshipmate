@@ -2,12 +2,13 @@
 /* eslint-disable */
 import { GraphQLResolveInfo } from 'graphql'
 export type Maybe<T> = T | null
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] }
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K]
+}
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X]
 } &
   { [P in K]-?: NonNullable<T[P]> }
-
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -138,8 +139,9 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   info: GraphQLResolveInfo,
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>
 
-export type IsTypeOfResolverFn<T = {}> = (
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
   obj: T,
+  context: TContext,
   info: GraphQLResolveInfo,
 ) => boolean | Promise<boolean>
 
@@ -194,7 +196,7 @@ export type SongResolvers<
     ContextType
   >
   bpm?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
 export type TimeSignatureResolvers<
@@ -203,7 +205,7 @@ export type TimeSignatureResolvers<
 > = ResolversObject<{
   top?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   bottom?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
 export type QueryResolvers<
