@@ -1,5 +1,5 @@
 import { DataSource } from 'apollo-datasource'
-import { Database, sql } from 'pg-toolbox'
+import { Database, sql, SqlQuery } from 'pg-toolbox'
 
 import { Song } from './models'
 import { SongRecord } from './schema'
@@ -24,7 +24,17 @@ export class SongAPI extends DataSource {
     super()
   }
 
-  async searchSongs(options: SearchOptions = {}): Promise<Song[]> {
+  async searchSongs(options?: SearchOptions): Promise<Song[]> {
+    const condition = this.getSearchCondition(options)
+
+    const songs = await this.db.query<SongRecord>(sql`
+      SELECT * FROM "song" WHERE ${condition}
+    `)
+
+    return songs.map(fromRecord)
+  }
+
+  private getSearchCondition(options: SearchOptions = {}): SqlQuery {
     const { query, filters = [] } = options
 
     const conditions = []
@@ -54,10 +64,6 @@ export class SongAPI extends DataSource {
       }
     })
 
-    const songs = await this.db.query<SongRecord>(sql`
-      SELECT * FROM "song" WHERE ${sql.and(conditions)}
-    `)
-
-    return songs.map(fromRecord)
+    return sql.and(conditions)
   }
 }
