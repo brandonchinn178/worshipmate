@@ -41,7 +41,7 @@ describe('Query', () => {
       const res = await server.query({
         query: `
           query {
-            songs {
+            searchSongs {
               id
               slug
               title
@@ -58,7 +58,7 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          songs: [
+          searchSongs: [
             {
               id: expect.any(String),
               slug: 'blessed-be-your-name',
@@ -101,7 +101,7 @@ describe('Query', () => {
       const res = await server.query({
         query: `
           query ($query: String!) {
-            songs(query: $query) {
+            searchSongs(query: $query) {
               title
             }
           }
@@ -113,7 +113,7 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          songs: expect.arrayContaining([
+          searchSongs: expect.arrayContaining([
             { title: 'Blessed Be Your Name' },
             { title: 'Ever Be' },
           ]),
@@ -126,7 +126,7 @@ describe('Query', () => {
         const res = await server.query({
           query: `
             query ($filters: [SearchFilter!]!) {
-              songs(filters: $filters) {
+              searchSongs(filters: $filters) {
                 title
               }
             }
@@ -143,7 +143,7 @@ describe('Query', () => {
 
         expect(res).toMatchObject({
           data: {
-            songs: expect.arrayContaining([
+            searchSongs: expect.arrayContaining([
               { title: 'Build My Life' },
               { title: 'Ever Be' },
             ]),
@@ -155,7 +155,7 @@ describe('Query', () => {
         const res = await server.query({
           query: `
             query ($filters: [SearchFilter!]!) {
-              songs(filters: $filters) {
+              searchSongs(filters: $filters) {
                 title
               }
             }
@@ -176,7 +176,7 @@ describe('Query', () => {
 
         expect(res).toMatchObject({
           data: {
-            songs: [{ title: 'Build My Life' }],
+            searchSongs: [{ title: 'Build My Life' }],
           },
         })
       })
@@ -185,7 +185,7 @@ describe('Query', () => {
         const res = await server.query({
           query: `
             query ($filters: [SearchFilter!]!) {
-              songs(filters: $filters) {
+              searchSongs(filters: $filters) {
                 title
               }
             }
@@ -210,7 +210,7 @@ describe('Query', () => {
       const res = await server.query({
         query: `
           query ($query: String!, $filters: [SearchFilter!]!) {
-            songs(query: $query, filters: $filters) {
+            searchSongs(query: $query, filters: $filters) {
               title
             }
           }
@@ -228,7 +228,7 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          songs: [{ title: 'Ever Be' }],
+          searchSongs: [{ title: 'Ever Be' }],
         },
       })
     })
