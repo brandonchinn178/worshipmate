@@ -25,11 +25,23 @@ describe('SongAPI', () => {
     })
 
     it('can return songs matching a query', async () => {
-      await songApi.searchSongs('foo')
+      await songApi.searchSongs({ query: 'foo' })
       expect(db.query).toHaveBeenCalledWith(
         sqlMatches({
           text: 'SELECT * FROM "song" WHERE "song"."title" ILIKE $1',
           values: ['%foo%'],
+        }),
+      )
+    })
+
+    it('can return songs matching a filter', async () => {
+      await songApi.searchSongs({
+        filters: [{ name: 'RECOMMENDED_KEY', value: 'A' }],
+      })
+      expect(db.query).toHaveBeenCalledWith(
+        sqlMatches({
+          text: 'SELECT * FROM "song" WHERE "song"."recommended_key" = $1',
+          values: ['A'],
         }),
       )
     })

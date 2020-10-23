@@ -102,7 +102,6 @@ describe('Query', () => {
         query: `
           query ($query: String!) {
             songs(query: $query) {
-              id
               title
             }
           }
@@ -114,16 +113,122 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          songs: [
+          songs: expect.arrayContaining([
+            { title: 'Blessed Be Your Name' },
+            { title: 'Ever Be' },
+          ]),
+        },
+      })
+    })
+
+    describe('filters', () => {
+      it('queries songs filtered by a search filter', async () => {
+        const res = await server.query({
+          query: `
+            query ($filters: [SearchFilter!]!) {
+              songs(filters: $filters) {
+                title
+              }
+            }
+          `,
+          variables: {
+            filters: [
+              {
+                name: 'RECOMMENDED_KEY',
+                value: 'E',
+              },
+            ],
+          },
+        })
+
+        expect(res).toMatchObject({
+          data: {
+            songs: expect.arrayContaining([
+              { title: 'Build My Life' },
+              { title: 'Ever Be' },
+            ]),
+          },
+        })
+      })
+
+      it('queries songs filtered by multiple search filters', async () => {
+        const res = await server.query({
+          query: `
+            query ($filters: [SearchFilter!]!) {
+              songs(filters: $filters) {
+                title
+              }
+            }
+          `,
+          variables: {
+            filters: [
+              {
+                name: 'RECOMMENDED_KEY',
+                value: 'E',
+              },
+              {
+                name: 'BPM',
+                value: 68,
+              },
+            ],
+          },
+        })
+
+        expect(res).toMatchObject({
+          data: {
+            songs: [{ title: 'Build My Life' }],
+          },
+        })
+      })
+
+      it('errors with an invalid search filter', async () => {
+        const res = await server.query({
+          query: `
+            query ($filters: [SearchFilter!]!) {
+              songs(filters: $filters) {
+                title
+              }
+            }
+          `,
+          variables: {
+            filters: [
+              {
+                name: 'BPM',
+                value: 'foo',
+              },
+            ],
+          },
+        })
+
+        expect(res).toMatchObject({
+          errors: [{ message: "Invalid value for filter 'BPM': foo" }],
+        })
+      })
+    })
+
+    it('queries songs with query and filter', async () => {
+      const res = await server.query({
+        query: `
+          query ($query: String!, $filters: [SearchFilter!]!) {
+            songs(query: $query, filters: $filters) {
+              title
+            }
+          }
+        `,
+        variables: {
+          query: 'be',
+          filters: [
             {
-              id: expect.any(String),
-              title: 'Blessed Be Your Name',
-            },
-            {
-              id: expect.any(String),
-              title: 'Ever Be',
+              name: 'RECOMMENDED_KEY',
+              value: 'E',
             },
           ],
+        },
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          songs: [{ title: 'Ever Be' }],
         },
       })
     })

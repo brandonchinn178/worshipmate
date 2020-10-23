@@ -12,6 +12,28 @@ type TimeSignature {
   bottom: Int!
 }
 
+enum FilterName {
+  RECOMMENDED_KEY
+  BPM
+  TIME_SIGNATURE
+  THEMES
+}
+
+"""
+A filter value must be of a type corresponding to the filter name:
+
+- RECOMMENDED_KEY: String
+- BPM: Int
+- TIME_SIGNATURE: [Int, Int]
+- THEMES: [String, String, ...]
+"""
+scalar FilterValue
+
+input SearchFilter {
+  name: FilterName!
+  value: FilterValue!
+}
+
 extend type Query {
-  songs(query: String): [Song!]!
+  songs(query: String, filters: [SearchFilter!]): [Song!]!
 }

@@ -29,3 +29,13 @@ yarn server test
 1. Have the `worship_mate` Postgres database running
 
 1. `yarn pg-toolbox test:e2e`
+
+## Migrations
+
+To create a new migration, use `yarn server migrate:create name-of-migration`
+
+To run migrations, run the following command:
+
+```bash
+yarn server migrate [up|down|redo] [N]
+```
