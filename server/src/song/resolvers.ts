@@ -5,11 +5,12 @@ import { QueryResolvers } from '~/types'
 import { validateSearchFilter } from './searchFilter'
 
 const Query: QueryResolvers = {
-  searchSongs(parent, { query, filters }, { dataSources: { songAPI } }) {
-    return songAPI.searchSongs({
+  async searchSongs(parent, { query, filters }, { dataSources: { songAPI } }) {
+    const songs = await songAPI.searchSongs({
       query,
       filters: _.map(filters, validateSearchFilter),
     })
+    return { songs }
   },
 }
 
