@@ -15,7 +15,7 @@ export type RequireFields<T, K extends keyof T> = {
   { [P in K]-?: NonNullable<T[P]> }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string
+  ID: number
   String: string
   Boolean: boolean
   Int: number
