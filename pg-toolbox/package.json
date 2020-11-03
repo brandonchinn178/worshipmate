@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "node-pg-migrate": "^5.8.1",
-    "pg": "^8.2.1"
+    "pg": "^8.4.2"
   },
   "devDependencies": {
     "@types/pg": "^7.14.3",
