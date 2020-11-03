@@ -31,6 +31,16 @@ export type Scalars = {
   FilterValue: unknown
 }
 
+export type Query = {
+  __typename?: 'Query'
+  searchSongs?: Maybe<SongSearchResult>
+}
+
+export type QuerySearchSongsArgs = {
+  query?: Maybe<Scalars['String']>
+  filters?: Maybe<Array<SearchFilter>>
+}
+
 export type Song = {
   __typename?: 'Song'
   id: Scalars['ID']
@@ -62,16 +72,6 @@ export type SearchFilter = {
 export type SongSearchResult = {
   __typename?: 'SongSearchResult'
   songs: Array<Song>
-}
-
-export type Query = {
-  __typename?: 'Query'
-  searchSongs?: Maybe<SongSearchResult>
-}
-
-export type QuerySearchSongsArgs = {
-  query?: Maybe<Scalars['String']>
-  filters?: Maybe<Array<SearchFilter>>
 }
 
 export type WithIndex<TObject> = TObject & Record<string, any>
@@ -193,31 +193,43 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  Query: ResolverTypeWrapper<{}>
+  String: ResolverTypeWrapper<Scalars['String']>
   Song: ResolverTypeWrapper<Song>
   ID: ResolverTypeWrapper<Scalars['ID']>
-  String: ResolverTypeWrapper<Scalars['String']>
   Int: ResolverTypeWrapper<Scalars['Int']>
   TimeSignature: ResolverTypeWrapper<TimeSignature>
   FilterName: FilterName
   FilterValue: ResolverTypeWrapper<Scalars['FilterValue']>
   SearchFilter: SearchFilter
   SongSearchResult: ResolverTypeWrapper<SongSearchResult>
-  Query: ResolverTypeWrapper<{}>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
 }>
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  Query: {}
+  String: Scalars['String']
   Song: Song
   ID: Scalars['ID']
-  String: Scalars['String']
   Int: Scalars['Int']
   TimeSignature: TimeSignature
   FilterValue: Scalars['FilterValue']
   SearchFilter: SearchFilter
   SongSearchResult: SongSearchResult
-  Query: {}
   Boolean: Scalars['Boolean']
+}>
+
+export type QueryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
+> = ResolversObject<{
+  searchSongs?: Resolver<
+    Maybe<ResolversTypes['SongSearchResult']>,
+    ParentType,
+    ContextType,
+    RequireFields<QuerySearchSongsArgs, never>
+  >
 }>
 
 export type SongResolvers<
@@ -259,24 +271,12 @@ export type SongSearchResultResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }>
 
-export type QueryResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
-> = ResolversObject<{
-  searchSongs?: Resolver<
-    Maybe<ResolversTypes['SongSearchResult']>,
-    ParentType,
-    ContextType,
-    RequireFields<QuerySearchSongsArgs, never>
-  >
-}>
-
 export type Resolvers<ContextType = any> = ResolversObject<{
+  Query?: QueryResolvers<ContextType>
   Song?: SongResolvers<ContextType>
   TimeSignature?: TimeSignatureResolvers<ContextType>
   FilterValue?: GraphQLScalarType
   SongSearchResult?: SongSearchResultResolvers<ContextType>
-  Query?: QueryResolvers<ContextType>
 }>
 
 /**

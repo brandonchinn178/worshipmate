@@ -1,6 +1,6 @@
 schema: ./src/**/*.graphql
 generates:
-  ./src/types.ts:
+  ./src/graphql/types.ts:
     plugins:
       - add:
           content: '/** AUTO GENERATED. DO NOT MODIFY **/'

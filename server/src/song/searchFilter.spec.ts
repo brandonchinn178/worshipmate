@@ -1,6 +1,6 @@
 import * as fc from 'fast-check'
 
-import { FilterName } from '~/types'
+import { FilterName } from '~/graphql/types'
 
 import { validateSearchFilter } from './searchFilter'
 
