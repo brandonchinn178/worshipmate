@@ -7,7 +7,6 @@ generates:
       - add:
           content: '/* eslint-disable */'
       - typescript
-      - typescript-resolvers
     config:
       useIndexSignature: true
       namingConvention:
