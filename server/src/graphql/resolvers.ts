@@ -7,7 +7,8 @@ import { ApolloContext } from '~/apollo/context'
  *
  * type PersonParent = { id: number; name: string }
  * type PersonResolvers = Resolvers<PersonParent, {
- *   address: Resolver<PersonAddressArgs, string>
+ *   jobs: Resolver<PersonJobsArgs, Job[]>
+ *   address: Resolver<string>
  * }
  */
 export type Resolvers<
@@ -22,10 +23,15 @@ export type Resolvers<
   ) => ResolverResult<FieldResolvers[Field]['result']>
 }
 
-export type Resolver<Arg, Result> = {
-  arg: Arg
-  result: Result
-}
+/**
+ * A resolver for a field in the Resolvers definition.
+ *
+ * Can either specify just the result (for a field without args) or both
+ * the args and result.
+ */
+export type Resolver<ArgOrResult, Result = undefined> = Result extends undefined
+  ? { arg: unknown; result: ArgOrResult }
+  : { arg: ArgOrResult; result: Result }
 
 type ResolverResult<T> = Promise<T> | T
 
