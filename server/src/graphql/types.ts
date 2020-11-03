@@ -63,4 +63,17 @@ export type SearchFilter = {
 export type SongSearchResult = {
   __typename?: 'SongSearchResult'
   songs: Array<Song>
+  availableFilters: Array<AvailableFilter>
+}
+
+export type AvailableFilter = {
+  __typename?: 'AvailableFilter'
+  name: FilterName
+  values: Array<AvailableFilterValue>
+}
+
+export type AvailableFilterValue = {
+  __typename?: 'AvailableFilterValue'
+  value: Scalars['FilterValue']
+  count: Scalars['Int']
 }

@@ -254,5 +254,62 @@ describe('Query', () => {
         })
       })
     })
+
+    describe('available filters', () => {
+      it('returns available filters for search results', async () => {
+        const res = await server.query({
+          query: `
+            query ($query: String!) {
+              searchSongs(query: $query) {
+                songs {
+                  title
+                }
+                availableFilters {
+                  name
+                  values {
+                    value
+                    count
+                  }
+                }
+              }
+            }
+          `,
+          variables: {
+            query: 'be',
+          },
+        })
+
+        expect(res).toMatchObject({
+          data: {
+            searchSongs: {
+              songs: expect.arrayContaining([
+                { title: 'Blessed Be Your Name' },
+                { title: 'Ever Be' },
+              ]),
+              availableFilters: expect.arrayContaining([
+                {
+                  name: 'RECOMMENDED_KEY',
+                  values: expect.arrayContaining([
+                    { value: 'E', count: 1 },
+                    { value: 'A', count: 1 },
+                  ]),
+                },
+                {
+                  name: 'BPM',
+                  values: expect.arrayContaining([
+                    { value: 140, count: 1 },
+                    { value: 72, count: 1 },
+                  ]),
+                },
+                {
+                  name: 'TIME_SIGNATURE',
+                  values: [{ value: [4, 4], count: 2 }],
+                },
+              ]),
+            },
+          },
+        })
+      })
+    })
   })
 })
