@@ -1,18 +1,18 @@
 schema: ./src/**/*.graphql
 generates:
-  ./src/types.ts:
+  ./src/graphql/types.ts:
     plugins:
       - add:
           content: '/** AUTO GENERATED. DO NOT MODIFY **/'
       - add:
           content: '/* eslint-disable */'
       - typescript
-      - typescript-resolvers
     config:
       useIndexSignature: true
       namingConvention:
         enumValues: keep
       scalars:
+        ID: number
         FilterValue: unknown
     hooks:
       afterOneFileWrite:

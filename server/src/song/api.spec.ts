@@ -10,7 +10,7 @@ const db = {
 }
 
 beforeEach(() => {
-  db.query.mockResolvedValue([])
+  db.query.mockReset().mockResolvedValue([])
 })
 
 describe('SongAPI', () => {
