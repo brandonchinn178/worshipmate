@@ -133,4 +133,74 @@ describe('SongAPI', () => {
       expect(songs).toMatchObject([{ title: 'Ever Be' }])
     })
   })
+
+  describe('getAvailableFilters', () => {
+    const allSongs = [
+      {
+        slug: 'amazing-grace',
+        title: 'Amazing Grace',
+        recommended_key: 'A',
+        time_signature_top: 3,
+        time_signature_bottom: 4,
+        bpm: 68,
+      },
+      {
+        slug: 'blessed-be-your-name',
+        title: 'Blessed Be Your Name',
+        recommended_key: 'A',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 140,
+      },
+      {
+        slug: 'build-my-life',
+        title: 'Build My Life',
+        recommended_key: 'E',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 68,
+      },
+      {
+        slug: 'build-my-life-2',
+        title: 'Build My Life 2',
+        recommended_key: 'E',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 68,
+      },
+    ]
+
+    beforeEach(async () => {
+      await db.insertAll('song', allSongs)
+    })
+
+    it('returns filters for all songs', async () => {
+      const filters = await songApi.getAvailableFilters()
+      expect(filters).toMatchObject({
+        RECOMMENDED_KEY: expect.arrayContaining([
+          { value: 'A', count: 2 },
+          { value: 'E', count: 2 },
+        ]),
+        TIME_SIGNATURE: expect.arrayContaining([
+          { value: [4, 4], count: 3 },
+          { value: [3, 4], count: 1 },
+        ]),
+        BPM: expect.arrayContaining([
+          { value: 140, count: 1 },
+          { value: 68, count: 3 },
+        ]),
+      })
+    })
+
+    it('returns filters for queried songs', async () => {
+      const filters = await songApi.getAvailableFilters({
+        query: 'Grace',
+      })
+      expect(filters).toMatchObject({
+        RECOMMENDED_KEY: [{ value: 'A', count: 1 }],
+        TIME_SIGNATURE: [{ value: [3, 4], count: 1 }],
+        BPM: [{ value: 68, count: 1 }],
+      })
+    })
+  })
 })

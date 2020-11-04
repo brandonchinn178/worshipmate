@@ -4,6 +4,9 @@ import { SqlQuery } from '../sql'
 import { DatabaseClient, SqlRecord } from './client'
 import { MigrateOptions } from './migrate'
 
+// https://github.com/brianc/node-pg-types/issues/78
+pg.types.setTypeParser(pg.types.builtins.INT8, BigInt)
+
 export type DatabaseConfig = pg.PoolConfig
 
 /**

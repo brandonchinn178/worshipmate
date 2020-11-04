@@ -13,6 +13,7 @@ beforeEach(jest.resetAllMocks)
 
 jest.mock('pg', () => {
   return {
+    ...jest.requireActual<Record<string, unknown>>('pg'),
     Pool: jest.fn(),
   }
 })

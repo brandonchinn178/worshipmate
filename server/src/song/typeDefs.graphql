@@ -12,6 +12,8 @@ type TimeSignature {
   bottom: Int!
 }
 
+## Search filters ##
+
 enum FilterName {
   RECOMMENDED_KEY
   BPM
@@ -34,6 +36,25 @@ input SearchFilter {
   value: FilterValue!
 }
 
+## Song search results ##
+
+type SongSearchResult {
+  songs: [Song!]!
+  availableFilters: [AvailableFilter!]!
+}
+
+type AvailableFilter {
+  name: FilterName!
+  values: [AvailableFilterValue!]!
+}
+
+type AvailableFilterValue {
+  value: FilterValue!
+  count: Int!
+}
+
+## Query ##
+
 extend type Query {
-  songs(query: String, filters: [SearchFilter!]): [Song!]!
+  searchSongs(query: String, filters: [SearchFilter!]): SongSearchResult
 }
