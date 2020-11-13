@@ -5,9 +5,6 @@
       "client",
       "server",
       "pg-toolbox"
-    ],
-    "nohoist": [
-      "**/react-native"
     ]
   },
   "scripts": {
