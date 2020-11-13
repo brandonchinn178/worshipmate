@@ -1,12 +1,10 @@
 {
   "private": true,
-  "workspaces": {
-    "packages": [
-      "client",
-      "server",
-      "pg-toolbox"
-    ]
-  },
+  "workspaces": [
+    "client",
+    "server",
+    "pg-toolbox"
+  ],
   "scripts": {
     "client": "yarn workspace @worship-mate/client",
     "server": "yarn workspace @worship-mate/server",
