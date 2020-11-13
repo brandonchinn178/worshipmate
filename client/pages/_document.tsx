@@ -1,8 +1,8 @@
-import {
-  default as NextDocument,
+import NextDocument, {
   DocumentContext,
   DocumentInitialProps,
   Head,
+  Html,
   Main,
   NextScript,
 } from 'next/document'
@@ -41,7 +41,7 @@ export default class Document extends NextDocument {
 
   render() {
     return (
-      <html>
+      <Html>
         <Head>
           {/* realfavicongenerator.net */}
           <link
@@ -75,7 +75,7 @@ export default class Document extends NextDocument {
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     )
   }
 }
