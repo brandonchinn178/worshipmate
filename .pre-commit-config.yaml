@@ -5,6 +5,7 @@ repos:
       - id: check-merge-conflict
       - id: check-symlinks
       - id: end-of-file-fixer
+        exclude: ^\.yarn/.*$
       - id: trailing-whitespace
 
   - repo: https://github.com/prettier/prettier
