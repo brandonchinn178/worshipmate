@@ -4168,7 +4168,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.162":
+"@types/lodash@npm:^4.14.162, @types/lodash@npm:^4.14.165":
   version: 4.14.165
   resolution: "@types/lodash@npm:4.14.165"
   checksum: 525bfc34b0b591cc957125a961c70e63e5ad8b23cbd89b7594a5ea74823285b6d96993a7eec506e26b379ee52dc9dcd3a894ff210be4c97bccb536e62361dbc8
@@ -4453,7 +4453,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/testing-library__jest-dom@npm:^5.9.1":
+"@types/testing-library__jest-dom@npm:^5.9.1, @types/testing-library__jest-dom@npm:^5.9.5":
   version: 5.9.5
   resolution: "@types/testing-library__jest-dom@npm:5.9.5"
   dependencies:
@@ -4865,6 +4865,7 @@ __metadata:
     "@types/node": ^14.14.6
     "@types/react": ^16.9.44
     "@types/styled-components": ^5.1.2
+    "@types/testing-library__jest-dom": ^5.9.5
     babel-jest: ^26.6.2
     babel-loader: ^8.1.0
     babel-plugin-styled-components: ^1.11.1
@@ -4892,6 +4893,7 @@ __metadata:
     "@graphql-toolkit/graphql-file-loader": ^0.10.7
     "@graphql-toolkit/schema-merging": ^0.10.7
     "@types/jest": ^26.0.15
+    "@types/lodash": ^4.14.165
     "@types/yup": ^0.29.8
     apollo-datasource: ^0.7.2
     apollo-server: ^2.16.1
@@ -16498,9 +16500,9 @@ fsevents@~2.1.2:
   linkType: hard
 
 "regenerate@npm:^1.4.0":
-  version: 1.4.2
-  resolution: "regenerate@npm:1.4.2"
-  checksum: 54275a99effd8a439bcdd88942b61f68a769133df841e90d94df9ae7c250cb6537c0a28dd913116539772b3415edbcb3c8d81c22275595d3755cf0353976dfa4
+  version: 1.4.0
+  resolution: "regenerate@npm:1.4.0"
+  checksum: d797b035730c0b5cbb7c230220b6a34610f84c1ea2369f0025292613c1ec88068cd87819fccf9c08f002670f26d59e63bbc309358181a6186f7fda185e93618a
   languageName: node
   linkType: hard
 
