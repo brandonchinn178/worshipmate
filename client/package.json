@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.typecheck.json"
   },
   "dependencies": {
+    "@apollo/client": "^3.2.5",
     "lodash": "^4.17.20",
     "next": "^10.0.1",
     "react": "^17.0.1",
