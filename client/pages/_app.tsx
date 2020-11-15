@@ -14,16 +14,16 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
       <ApolloProvider client={apolloClient}>
-      <>
-        <Head>
-          <title>WorshipMate</title>
-        </Head>
-        <GlobalStyle />
-        <Header />
-        <PageContent>
-          <Component {...pageProps} />
-        </PageContent>
-      </>
+        <>
+          <Head>
+            <title>WorshipMate</title>
+          </Head>
+          <GlobalStyle />
+          <Header />
+          <PageContent>
+            <Component {...pageProps} />
+          </PageContent>
+        </>
       </ApolloProvider>
     </ThemeProvider>
   )
