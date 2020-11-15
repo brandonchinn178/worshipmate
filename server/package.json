@@ -28,6 +28,7 @@
     "@graphql-codegen/add": "^2.0.1",
     "@graphql-codegen/cli": "^1.18.0",
     "@graphql-codegen/typescript": "^1.17.11",
+    "@types/jest": "^26.0.15",
     "@types/yup": "^0.29.8",
     "apollo-server-testing": "^2.18.2",
     "dotenv": "^8.2.0",

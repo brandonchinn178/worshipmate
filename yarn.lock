@@ -4080,7 +4080,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:*, @types/jest@npm:26.x, @types/jest@npm:^26.0.3":
+"@types/jest@npm:*, @types/jest@npm:26.x, @types/jest@npm:^26.0.15, @types/jest@npm:^26.0.3":
   version: 26.0.15
   resolution: "@types/jest@npm:26.0.15"
   dependencies:
@@ -4891,6 +4891,7 @@ __metadata:
     "@graphql-toolkit/core": ^0.10.7
     "@graphql-toolkit/graphql-file-loader": ^0.10.7
     "@graphql-toolkit/schema-merging": ^0.10.7
+    "@types/jest": ^26.0.15
     "@types/yup": ^0.29.8
     apollo-datasource: ^0.7.2
     apollo-server: ^2.16.1
@@ -15290,6 +15291,7 @@ fsevents@~2.1.2:
   version: 0.0.0-use.local
   resolution: "pg-toolbox@workspace:pg-toolbox"
   dependencies:
+    "@types/jest": ^26.0.15
     "@types/pg": ^7.14.3
     dotenv: ^8.2.0
     fast-check: ^2.5.0
