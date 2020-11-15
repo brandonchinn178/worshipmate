@@ -1,7 +1,8 @@
+import * as _ from 'lodash'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-import { useSearchSongs } from '~/api'
+import { useSearchSongsQuery } from '~/api/searchSongs.generated'
 import { setQueryString } from '~/router'
 import {
   getAvailableFilters,
@@ -32,14 +33,19 @@ export default function Home() {
   const search = router.query.search as string | undefined
   const activeFilters = loadActiveFilters(router)
 
-  const { data } = useSearchSongs({
+  const { data } = useSearchSongsQuery({
     variables: {
-      search,
+      query: search,
       filters: activeFilters,
     },
   })
 
-  const songs = data?.searchSongs ?? []
+  const songs = _.map(data?.searchSongs ?? [], (song) => ({
+    ...song,
+    artist: 'TODO',
+    themes: ['TODO1', 'TODO2'],
+  }))
+
   const availableFilters = getAvailableFilters(songs)
 
   return (
