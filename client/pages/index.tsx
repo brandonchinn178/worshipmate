@@ -1,24 +1,13 @@
 import _ from 'lodash'
-import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import { useSearchSongs } from '~/api'
 import { setQueryString } from '~/router'
-import {
-  ActiveFilters,
-  addFilter,
-  loadFilters,
-  removeFilter,
-} from '~/router/filters'
+import { addFilter, loadFilters, removeFilter } from '~/router/filters'
 import SongFilter from '~/song/SongFilter'
 import SongTable from '~/song/SongTable'
 import SearchBar from '~/ui-kit/SearchBar'
-
-type HomeProps = {
-  search: string
-  activeFilters: ActiveFilters
-}
 
 function pluralize(...args: [string, number] | [string, string, number]) {
   const [singular, plural, count] =
@@ -34,8 +23,12 @@ function pluralize(...args: [string, number] | [string, string, number]) {
   }
 }
 
-export default function Home({ search, activeFilters }: HomeProps) {
+export default function Home() {
   const router = useRouter()
+
+  const { query } = router
+  const search = router.query.search as string | undefined
+  const activeFilters = loadFilters(query)
 
   const { data } = useSearchSongs({
     variables: {
@@ -73,13 +66,6 @@ export default function Home({ search, activeFilters }: HomeProps) {
       </SongTableCell>
     </Grid>
   )
-}
-
-Home.getInitialProps = ({ query }: NextPageContext) => {
-  return {
-    search: query.search,
-    activeFilters: loadFilters(query),
-  }
 }
 
 const Grid = styled.div`
