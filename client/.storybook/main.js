@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   stories: ['../lib/**/*.stories.tsx'],
-  webpackFinal: ({ config }) => {
+  webpackFinal: (config) => {
     config.module.rules = [
       {
         test: /\.(ts|tsx)$/,
