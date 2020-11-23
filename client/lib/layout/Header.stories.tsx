@@ -1,5 +1,8 @@
-import { Story } from '~stories'
-
 import Header from './Header'
 
-Story('Header').add('Standard header', () => <Header />)
+export default {
+  title: 'Header',
+  component: Header,
+}
+
+export const StandardHeader = () => <Header />
