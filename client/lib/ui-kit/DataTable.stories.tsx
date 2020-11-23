@@ -1,5 +1,3 @@
-import { Story } from '~stories'
-
 import DataTable from './DataTable'
 
 const narniaData = [
@@ -33,60 +31,64 @@ const narniaData = [
   },
 ]
 
-Story('DataTable')
-  .add('Basic DataTable', () => (
-    <DataTable
-      data={narniaData}
-      columnDefs={[
-        {
-          name: 'title',
-        },
-        {
-          name: 'year',
-        },
-      ]}
-    />
-  ))
-  .add('Custom header', () => (
-    <DataTable
-      data={narniaData}
-      columnDefs={[
-        {
-          name: 'title',
-          header: 'Book',
-        },
-        {
-          name: 'year',
-          header: 'Publication year',
-        },
-      ]}
-    />
-  ))
-  .add('Custom size', () => (
-    <DataTable
-      data={narniaData}
-      columnDefs={[
-        {
-          name: 'title',
-        },
-        {
-          name: 'year',
-          size: '200px',
-        },
-      ]}
-    />
-  ))
-  .add('Custom render', () => (
-    <DataTable
-      data={narniaData}
-      columnDefs={[
-        {
-          name: 'title',
-          render: ({ title }) => <i>{title}</i>,
-        },
-        {
-          name: 'year',
-        },
-      ]}
-    />
-  ))
+export default {
+  title: 'DataTable',
+  component: DataTable,
+  args: {
+    data: narniaData,
+  },
+}
+
+const Template = (args) => <DataTable {...args} />
+
+export const Basic = Template.bind({})
+Basic.args = {
+  columnDefs: [
+    {
+      name: 'title',
+    },
+    {
+      name: 'year',
+    },
+  ],
+}
+
+export const CustomHeader = Template.bind({})
+CustomHeader.args = {
+  columnDefs: [
+    {
+      name: 'title',
+      header: 'Book',
+    },
+    {
+      name: 'year',
+      header: 'Publication year',
+    },
+  ],
+}
+
+export const CustomSize = Template.bind({})
+CustomSize.args = {
+  columnDefs: [
+    {
+      name: 'title',
+    },
+    {
+      name: 'year',
+      size: '200px',
+    },
+  ],
+}
+
+export const CustomRender = Template.bind({})
+CustomRender.args = {
+  columnDefs: [
+    {
+      name: 'title',
+      render: ({ title }) => <i>{title}</i>,
+    },
+    {
+      name: 'year',
+    },
+  ],
+}
