@@ -43,7 +43,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['jest.config.js'],
+      files: ['*.js'],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
       },
