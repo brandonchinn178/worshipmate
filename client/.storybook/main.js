@@ -20,7 +20,6 @@ module.exports = {
     ]
 
     config.resolve.alias['~'] = path.join(__dirname, '..', 'lib')
-    config.resolve.alias['~stories'] = path.join(__dirname, '..', 'stories')
     config.resolve.extensions.push('.ts', '.tsx')
 
     return config
