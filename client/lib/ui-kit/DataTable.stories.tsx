@@ -1,8 +1,13 @@
-import { Story } from '~stories'
+import { Story } from '@storybook/react'
 
-import DataTable from './DataTable'
+import DataTable, { DataTableProps } from './DataTable'
 
-const narniaData = [
+type Book = {
+  title: string
+  year: number
+}
+
+const narniaData: Book[] = [
   {
     title: 'The Lion, the Witch, and the Wardrobe',
     year: 1950,
@@ -33,60 +38,72 @@ const narniaData = [
   },
 ]
 
-Story('DataTable')
-  .add('Basic DataTable', () => (
-    <DataTable
-      data={narniaData}
-      columnDefs={[
-        {
-          name: 'title',
-        },
-        {
-          name: 'year',
-        },
-      ]}
-    />
-  ))
-  .add('Custom header', () => (
-    <DataTable
-      data={narniaData}
-      columnDefs={[
-        {
-          name: 'title',
-          header: 'Book',
-        },
-        {
-          name: 'year',
-          header: 'Publication year',
-        },
-      ]}
-    />
-  ))
-  .add('Custom size', () => (
-    <DataTable
-      data={narniaData}
-      columnDefs={[
-        {
-          name: 'title',
-        },
-        {
-          name: 'year',
-          size: '200px',
-        },
-      ]}
-    />
-  ))
-  .add('Custom render', () => (
-    <DataTable
-      data={narniaData}
-      columnDefs={[
-        {
-          name: 'title',
-          render: ({ title }) => <i>{title}</i>,
-        },
-        {
-          name: 'year',
-        },
-      ]}
-    />
-  ))
+export default {
+  title: 'DataTable',
+  component: DataTable,
+  args: {
+    data: narniaData,
+  },
+  argTypes: {
+    data: {
+      table: { disable: true },
+    },
+    columnDefs: {
+      table: { disable: true },
+    },
+  },
+}
+
+const Template: Story<DataTableProps<Book>> = (args) => <DataTable {...args} />
+
+export const Basic = Template.bind({})
+Basic.args = {
+  columnDefs: [
+    {
+      name: 'title',
+    },
+    {
+      name: 'year',
+    },
+  ],
+}
+
+export const CustomHeader = Template.bind({})
+CustomHeader.args = {
+  columnDefs: [
+    {
+      name: 'title',
+      header: 'Book',
+    },
+    {
+      name: 'year',
+      header: 'Publication year',
+    },
+  ],
+}
+
+export const CustomSize = Template.bind({})
+CustomSize.args = {
+  columnDefs: [
+    {
+      name: 'title',
+    },
+    {
+      name: 'year',
+      size: '200px',
+    },
+  ],
+}
+
+export const CustomRender = Template.bind({})
+CustomRender.args = {
+  columnDefs: [
+    {
+      name: 'title',
+      render: ({ title }) => <i>{title}</i>,
+    },
+    {
+      name: 'year',
+    },
+  ],
+}
