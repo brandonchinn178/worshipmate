@@ -2,6 +2,7 @@ const path = require('path')
 
 module.exports = {
   stories: ['../lib/**/*.stories.tsx'],
+  addons: ['@storybook/addon-essentials'],
   webpackFinal: (config) => {
     config.module.rules = [
       {
