@@ -1,12 +1,22 @@
 import { useState } from 'react'
 
-import { Story } from '~stories'
-
 import SearchBar from './SearchBar'
 
-function SearchStory({ initial }: { initial?: string }) {
-  const [result, setResult] = useState(initial)
+export default {
+  title: 'SearchBar',
+  component: SearchBar,
+  argTypes: {
+    initial: {
+      table: { disable: true },
+    },
+    onSubmit: {
+      table: { disable: true },
+    },
+  },
+}
 
+const Template = ({ initial }) => {
+  const [result, setResult] = useState(initial)
   return (
     <div>
       <SearchBar initial={initial} onSubmit={setResult} />
@@ -15,6 +25,9 @@ function SearchStory({ initial }: { initial?: string }) {
   )
 }
 
-Story('SearchBar')
-  .add('Search test', () => <SearchStory />)
-  .add('With initial', () => <SearchStory initial="start!" />)
+export const Basic = Template.bind({})
+
+export const WithInitial = Template.bind({})
+WithInitial.args = {
+  initial: 'start!',
+}
