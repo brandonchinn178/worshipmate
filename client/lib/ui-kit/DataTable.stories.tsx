@@ -37,6 +37,14 @@ export default {
   args: {
     data: narniaData,
   },
+  argTypes: {
+    data: {
+      table: { disable: true },
+    },
+    columnDefs: {
+      table: { disable: true },
+    },
+  },
 }
 
 const Template = (args) => <DataTable {...args} />
