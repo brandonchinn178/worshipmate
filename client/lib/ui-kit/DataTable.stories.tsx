@@ -1,6 +1,13 @@
-import DataTable from './DataTable'
+import { Story } from '@storybook/react'
 
-const narniaData = [
+import DataTable, { DataTableProps } from './DataTable'
+
+type Book = {
+  title: string
+  year: number
+}
+
+const narniaData: Book[] = [
   {
     title: 'The Lion, the Witch, and the Wardrobe',
     year: 1950,
@@ -47,7 +54,7 @@ export default {
   },
 }
 
-const Template = (args) => <DataTable {...args} />
+const Template: Story<DataTableProps<Book>> = (args) => <DataTable {...args} />
 
 export const Basic = Template.bind({})
 Basic.args = {

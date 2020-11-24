@@ -1,3 +1,5 @@
+import { Story } from '@storybook/react'
+
 import { useState } from 'react'
 
 import SearchBar from './SearchBar'
@@ -15,7 +17,7 @@ export default {
   },
 }
 
-const Template = ({ initial }) => {
+const Template: Story<{ initial?: string }> = ({ initial }) => {
   const [result, setResult] = useState(initial)
   return (
     <div>
