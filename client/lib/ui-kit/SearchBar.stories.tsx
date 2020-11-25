@@ -1,5 +1,4 @@
 import { Story } from '@storybook/react'
-
 import { useState } from 'react'
 
 import SearchBar from './SearchBar'

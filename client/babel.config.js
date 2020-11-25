@@ -1,8 +1,8 @@
 module.exports = {
-  presets: ['next/babel'],
+  presets: [require.resolve('next/babel')],
   plugins: [
-    ['styled-components', { ssr: true }],
-    '@babel/proposal-nullish-coalescing-operator',
-    '@babel/proposal-optional-chaining',
+    [require.resolve('babel-plugin-styled-components'), { ssr: true }],
+    require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
+    require.resolve('@babel/plugin-proposal-optional-chaining'),
   ],
 }

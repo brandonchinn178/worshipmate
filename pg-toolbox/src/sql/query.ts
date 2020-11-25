@@ -11,7 +11,7 @@ export interface SqlQuery {
 const $sqlQuerySymbol = Symbol('SqlQuery')
 
 export const isSqlQuery = (value: unknown): value is SqlQuery =>
-  value && (value as SqlQuery).$type === $sqlQuerySymbol
+  !!value && (value as SqlQuery).$type === $sqlQuerySymbol
 
 export const mkSqlQuery = (
   values: unknown[],

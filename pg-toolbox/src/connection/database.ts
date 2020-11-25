@@ -4,8 +4,13 @@ import { SqlQuery } from '../sql'
 import { DatabaseClient, SqlRecord } from './client'
 import { MigrateOptions } from './migrate'
 
+// https://github.com/DefinitelyTyped/DefinitelyTyped/pull/49567
+const { builtins } = (pg.types as unknown) as {
+  builtins: Record<string, number>
+}
+
 // https://github.com/brianc/node-pg-types/issues/78
-pg.types.setTypeParser(pg.types.builtins.INT8, BigInt)
+pg.types.setTypeParser(builtins.INT8, BigInt)
 
 export type DatabaseConfig = pg.PoolConfig
 
