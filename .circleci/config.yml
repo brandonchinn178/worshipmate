@@ -39,7 +39,7 @@ commands:
           key: *yarn_cache_key
       - run:
           name: Install external dependencies
-          command: yarn install --frozen-lockfile
+          command: yarn install --immutable
       - save_cache:
           key: *yarn_cache_key
           paths:

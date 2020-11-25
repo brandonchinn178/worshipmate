@@ -7,15 +7,11 @@ module.exports = {
     config.module.rules = [
       {
         test: /\.(ts|tsx)$/,
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-        ],
+        use: [require.resolve('babel-loader')],
       },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack'],
+        use: [require.resolve('@svgr/webpack')],
       },
     ]
 

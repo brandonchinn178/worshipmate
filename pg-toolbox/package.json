@@ -15,6 +15,7 @@
     "pg": "^8.4.2"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.15",
     "@types/pg": "^7.14.3",
     "dotenv": "^8.2.0",
     "fast-check": "^2.5.0",

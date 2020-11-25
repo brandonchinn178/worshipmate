@@ -11,7 +11,7 @@ Pre-requirements: Install yarn and Docker
 1. Install yarn dependencies
 
    ```bash
-   yarn --frozen-lockfile
+   yarn --immutable
    ```
 
 1. Run a Postgres server in Docker

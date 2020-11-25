@@ -5,20 +5,14 @@ repos:
       - id: check-merge-conflict
       - id: check-symlinks
       - id: end-of-file-fixer
+        exclude: ^\.yarn/.*$
       - id: trailing-whitespace
 
-  - repo: https://github.com/prettier/prettier
-    rev: 2.0.1
-    hooks:
-      - id: prettier
-
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v6.1.0
+  - repo: local
     hooks:
       - id: eslint
-        types: []
-        args:
-          - --max-warnings=0
-          # https://github.com/eslint/eslint/issues/10341
-          - --no-ignore
+        name: eslint
+        entry: yarn lint
+        language: system
         files: '\.(js|ts|tsx)$'
+        require_serial: true
