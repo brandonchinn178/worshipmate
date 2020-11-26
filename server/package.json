@@ -27,7 +27,7 @@
   "devDependencies": {
     "@graphql-codegen/add": "^2.0.1",
     "@graphql-codegen/cli": "^1.18.0",
-    "@graphql-codegen/typescript": "^1.17.11",
+    "@graphql-codegen/typescript": "^1.18.1",
     "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.165",
     "@types/yup": "^0.29.8",
