@@ -22,12 +22,12 @@
     "lodash": "^4.17.20",
     "node-pg-migrate": "^5.8.1",
     "pg-toolbox": "0.0.1",
-    "yup": "^0.29.3"
+    "yup": "^0.31.0"
   },
   "devDependencies": {
-    "@graphql-codegen/add": "^2.0.1",
-    "@graphql-codegen/cli": "^1.18.0",
-    "@graphql-codegen/typescript": "^1.17.11",
+    "@graphql-codegen/add": "^2.0.2",
+    "@graphql-codegen/cli": "^1.19.3",
+    "@graphql-codegen/typescript": "^1.18.1",
     "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.165",
     "@types/yup": "^0.29.8",
