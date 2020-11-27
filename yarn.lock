@@ -4986,7 +4986,7 @@ __metadata:
     ts-node: ^9.0.0
     tsconfig-paths: ^3.9.0
     typescript: ^4.0.3
-    yup: ^0.29.3
+    yup: ^0.31.0
   languageName: unknown
   linkType: soft
 
@@ -10198,13 +10198,6 @@ __metadata:
     inherits: ^2.0.3
     readable-stream: ^2.3.6
   checksum: b8fa1fbfadd5c4b6df3cf2c34b3c408fe508a2899c536bafa339f679de545689997e907bd4ff61dd292942f8044fb2f293a5956dd8b601f6a5601617842d0dda
-  languageName: node
-  linkType: hard
-
-"fn-name@npm:~3.0.0":
-  version: 3.0.0
-  resolution: "fn-name@npm:3.0.0"
-  checksum: dd2190001862d3ea6d1f0788c58d083593166debfa65ff77473a3d37795548e92e5d050ca32f90781fa5c270901694c45022fc90ff2fa50f44aa302f20916589
   languageName: node
   linkType: hard
 
@@ -15947,7 +15940,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"property-expr@npm:^2.0.2":
+"property-expr@npm:^2.0.4":
   version: 2.0.4
   resolution: "property-expr@npm:2.0.4"
   checksum: fffa6ba8a21cbbf694652755fe2cf4d68bfb8c625f2de6424910edf2c7d50a3f4e7e5ac749b8fe42261cb63d12148d7612f207397d244151e2d7fb853ce7bf5b
@@ -18552,13 +18545,6 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"synchronous-promise@npm:^2.0.13":
-  version: 2.0.15
-  resolution: "synchronous-promise@npm:2.0.15"
-  checksum: 3462a5aa243969dc07aeeac00d77d56fc49663441f0167d48b39468e673cb294ce18ec1848aa24cd04961a0678d374f4cd77226d8288ebd57873d24a2a20f7eb
-  languageName: node
-  linkType: hard
-
 "table@npm:^5.2.3":
   version: 5.4.6
   resolution: "table@npm:5.4.6"
@@ -20546,18 +20532,16 @@ typescript@^4.0.3:
   languageName: node
   linkType: hard
 
-"yup@npm:^0.29.3":
-  version: 0.29.3
-  resolution: "yup@npm:0.29.3"
+"yup@npm:^0.31.0":
+  version: 0.31.0
+  resolution: "yup@npm:0.31.0"
   dependencies:
     "@babel/runtime": ^7.10.5
-    fn-name: ~3.0.0
-    lodash: ^4.17.15
+    lodash: ^4.17.20
     lodash-es: ^4.17.11
-    property-expr: ^2.0.2
-    synchronous-promise: ^2.0.13
+    property-expr: ^2.0.4
     toposort: ^2.0.2
-  checksum: bc07ab697d38169c9fad874696008ec84dab14f5e3559b539c7edb01ea49235808670ea4cb7de64009ed473fb3700e6794ed407c293cb94b2d6c4f34deb16e4b
+  checksum: 87e099ccc253a275cf23bb0f41b1d342f7a98018ea43cbe52e1a208dbda41d4349d2606bfad56f37cf226103d4d83a61a0836adabe2824a0542c148baba148ae
   languageName: node
   linkType: hard
 
