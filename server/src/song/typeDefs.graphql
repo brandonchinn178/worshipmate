@@ -45,7 +45,7 @@ type SongSearchResult {
 
 type AvailableFilter {
   name: FilterName!
-  values: [AvailableFilterValue!]!
+  options: [AvailableFilterValue!]!
 }
 
 type AvailableFilterValue {

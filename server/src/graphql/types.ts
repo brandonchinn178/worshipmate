@@ -73,7 +73,7 @@ export type SongSearchResult = {
 export type AvailableFilter = {
   __typename?: 'AvailableFilter'
   name: FilterName
-  values: Array<AvailableFilterValue>
+  options: Array<AvailableFilterValue>
 }
 
 export type AvailableFilterValue = {

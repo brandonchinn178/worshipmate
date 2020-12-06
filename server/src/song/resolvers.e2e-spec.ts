@@ -266,7 +266,7 @@ describe('Query', () => {
                 }
                 availableFilters {
                   name
-                  values {
+                  options {
                     value
                     count
                   }
@@ -289,21 +289,21 @@ describe('Query', () => {
               availableFilters: expect.arrayContaining([
                 {
                   name: 'RECOMMENDED_KEY',
-                  values: expect.arrayContaining([
+                  options: expect.arrayContaining([
                     { value: 'E', count: 1 },
                     { value: 'A', count: 1 },
                   ]),
                 },
                 {
                   name: 'BPM',
-                  values: expect.arrayContaining([
+                  options: expect.arrayContaining([
                     { value: 140, count: 1 },
                     { value: 72, count: 1 },
                   ]),
                 },
                 {
                   name: 'TIME_SIGNATURE',
-                  values: [{ value: [4, 4], count: 2 }],
+                  options: [{ value: [4, 4], count: 2 }],
                 },
               ]),
             },

@@ -47,8 +47,8 @@ const SongSearchResult: SongSearchResultResolvers = {
     const searchOptions = parent
 
     const availableFilters = await songAPI.getAvailableFilters(searchOptions)
-    return _.map(availableFilters, (values, name) => {
-      return { name, values } as AvailableFilter
+    return _.map(availableFilters, (options, name) => {
+      return { name, options } as AvailableFilter
     })
   },
 }
