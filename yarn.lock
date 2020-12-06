@@ -4632,13 +4632,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yup@npm:^0.29.8":
-  version: 0.29.9
-  resolution: "@types/yup@npm:0.29.9"
-  checksum: 350420a1b5acaf43530657d5c90e2ef408ed23534478070425b90993d57b2fd5e31f2e7116d4ed7617e547909c6e9584b7888d08878eacc109b5c6e6cf970be8
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/eslint-plugin@npm:^4.8.2":
   version: 4.8.2
   resolution: "@typescript-eslint/eslint-plugin@npm:4.8.2"
@@ -4982,7 +4975,6 @@ __metadata:
     "@graphql-toolkit/schema-merging": ^0.10.7
     "@types/jest": ^26.0.15
     "@types/lodash": ^4.14.165
-    "@types/yup": ^0.29.8
     apollo-datasource: ^0.7.2
     apollo-server: ^2.16.1
     apollo-server-testing: ^2.18.2
@@ -4998,7 +4990,7 @@ __metadata:
     ts-node: ^9.0.0
     tsconfig-paths: ^3.9.0
     typescript: ^4.0.3
-    yup: ^0.31.0
+    yup: ^0.32.1
   languageName: unknown
   linkType: soft
 
@@ -14268,6 +14260,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"nanoclone@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "nanoclone@npm:0.2.1"
+  checksum: f624fe519818ac2ab9fc2322d0bd8b54def4c0080123e7e4fa4a8d5fa331862e057a5c8fa1923cce6445d011a66718454750058a16c3a68b1912058288cd71a2
+  languageName: node
+  linkType: hard
+
 "nanoid@npm:^3.1.16":
   version: 3.1.18
   resolution: "nanoid@npm:3.1.18"
@@ -20544,16 +20543,18 @@ typescript@^4.0.3:
   languageName: node
   linkType: hard
 
-"yup@npm:^0.31.0":
-  version: 0.31.0
-  resolution: "yup@npm:0.31.0"
+"yup@npm:^0.32.1":
+  version: 0.32.1
+  resolution: "yup@npm:0.32.1"
   dependencies:
     "@babel/runtime": ^7.10.5
+    "@types/lodash": ^4.14.165
     lodash: ^4.17.20
     lodash-es: ^4.17.11
+    nanoclone: ^0.2.1
     property-expr: ^2.0.4
     toposort: ^2.0.2
-  checksum: 87e099ccc253a275cf23bb0f41b1d342f7a98018ea43cbe52e1a208dbda41d4349d2606bfad56f37cf226103d4d83a61a0836adabe2824a0542c148baba148ae
+  checksum: e1d05a5b7f5354cc5f1a680608bb73af382b68b90090de04cf08f4104ac53478ca7c0c38e06c27af46158d63997adff8b42d91074044e93fc3990e60b0250f64
   languageName: node
   linkType: hard
 
