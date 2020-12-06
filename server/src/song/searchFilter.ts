@@ -30,11 +30,11 @@ export type SearchFilter = SearchFilterHelper<SearchFilterNames>
 const positiveIntSchema = yup.number().positive().integer()
 const pairSchema = yup.array().min(2).max(2)
 
-const FILTER_VALUE_SCHEMA: Record<string, yup.Schema<unknown>> = {
+const FILTER_VALUE_SCHEMA: Record<string, yup.AnySchema> = {
   RECOMMENDED_KEY: yup.string().required(),
   BPM: positiveIntSchema.required(),
   TIME_SIGNATURE: pairSchema.of(positiveIntSchema.required()).required(),
-  THEMES: yup.array().of(yup.string().required()).required(),
+  THEMES: yup.array().of(yup.string().required()).required().min(1),
 }
 
 /**
