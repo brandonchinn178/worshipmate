@@ -22,7 +22,7 @@
     "lodash": "^4.17.20",
     "node-pg-migrate": "^5.8.1",
     "pg-toolbox": "0.0.1",
-    "yup": "^0.31.0"
+    "yup": "^0.32.1"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^2.0.2",
@@ -30,7 +30,6 @@
     "@graphql-codegen/typescript": "^1.18.1",
     "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.165",
-    "@types/yup": "^0.29.8",
     "apollo-server-testing": "^2.18.2",
     "dotenv": "^8.2.0",
     "fast-check": "^2.6.0",
