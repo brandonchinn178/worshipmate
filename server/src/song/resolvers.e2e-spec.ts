@@ -197,6 +197,40 @@ describe('Query', () => {
         })
       })
 
+      it('queries songs with a filter provided as a string', async () => {
+        const res = await server.query({
+          query: `
+            query ($filters: [SearchFilter!]!) {
+              searchSongs(filters: $filters) {
+                songs {
+                  title
+                }
+              }
+            }
+          `,
+          variables: {
+            filters: [
+              {
+                name: 'TIME_SIGNATURE',
+                value: '4/4',
+              },
+              {
+                name: 'BPM',
+                value: '68',
+              },
+            ],
+          },
+        })
+
+        expect(res).toMatchObject({
+          data: {
+            searchSongs: {
+              songs: [{ title: 'Build My Life' }],
+            },
+          },
+        })
+      })
+
       it('errors with an invalid search filter', async () => {
         const res = await server.query({
           query: `
