@@ -14,13 +14,17 @@ export type SearchOptions = {
   filters?: SearchFilter[]
 }
 
-type AvailableFilter<Name extends SearchFilterNames> = {
+type AvailableFilterFor<Name extends SearchFilterNames> = {
   value: SearchFilterTypes[Name]
   count: number
 }
 
+type AvailableFiltersFor<
+  Name extends SearchFilterNames
+> = AvailableFilterFor<Name>[]
+
 export type AvailableFilters = {
-  [Name in SearchFilterNames]: AvailableFilter<Name>[]
+  [Name in SearchFilterNames]: AvailableFiltersFor<Name>
 }
 
 const fromRecord = (song: SongRecord): Song => ({
@@ -50,42 +54,25 @@ export class SongAPI extends DataSource {
   async getAvailableFilters(
     options?: SearchOptions,
   ): Promise<AvailableFilters> {
-    const condition = this.getSearchCondition(options)
+    const recommendedKeyCounts = await this.getAvailableFiltersWith<'RECOMMENDED_KEY'>(
+      sql.raw('"song"."recommended_key"'),
+      options,
+    )
 
-    // Use integer instead of default bigint to get back a normal number
-    // in javascript.
-    // Revisit when database contains more than 2,147,483,647 songs.
-    const count = sql.raw('COUNT(*) :: integer AS "count"')
+    const bpmCounts = await this.getAvailableFiltersWith<'BPM'>(
+      sql.raw('"song"."bpm"'),
+      options,
+    )
 
-    const recommendedKeyCounts = await this.db.query<
-      AvailableFilter<'RECOMMENDED_KEY'>
-    >(sql`
-      SELECT "song"."recommended_key" AS "value", ${count}
-      FROM "song"
-      WHERE ${condition}
-      GROUP BY "value"
-    `)
-
-    const bpmCounts = await this.db.query<AvailableFilter<'BPM'>>(sql`
-      SELECT "song"."bpm" AS "value", ${count}
-      FROM "song"
-      WHERE ${condition}
-      GROUP BY "value"
-    `)
-
-    const timeSignatureCounts = await this.db.query<
-      AvailableFilter<'TIME_SIGNATURE'>
-    >(sql`
-      SELECT
+    const timeSignatureCounts = await this.getAvailableFiltersWith<'TIME_SIGNATURE'>(
+      sql.raw(`
         ARRAY[
           "song"."time_signature_top",
           "song"."time_signature_bottom"
-        ] AS "value",
-        ${count}
-      FROM "song"
-      WHERE ${condition}
-      GROUP BY "value"
-    `)
+        ]
+      `),
+      options,
+    )
 
     return {
       RECOMMENDED_KEY: recommendedKeyCounts,
@@ -95,6 +82,29 @@ export class SongAPI extends DataSource {
       // TODO
       THEMES: [],
     }
+  }
+
+  private async getAvailableFiltersWith<Name extends SearchFilterNames>(
+    valueSql: SqlQuery,
+    options?: SearchOptions,
+  ): Promise<AvailableFiltersFor<Name>> {
+    const condition = this.getSearchCondition(options)
+
+    // Use integer instead of default bigint to get back a normal number
+    // in javascript.
+    // Revisit when database contains more than 2,147,483,647 songs.
+    const countSql = sql.raw('COUNT(*) :: integer')
+
+    const availableFilters = await this.db.query<AvailableFilterFor<Name>>(sql`
+      SELECT
+        ${valueSql} AS "value",
+        ${countSql} as "count"
+      FROM "song"
+      WHERE ${condition}
+      GROUP BY "value"
+    `)
+
+    return availableFilters
   }
 
   private getSearchCondition(options: SearchOptions = {}): SqlQuery {
