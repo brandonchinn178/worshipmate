@@ -21,19 +21,12 @@ enum FilterName {
   THEMES
 }
 
-"""
-A filter value must be of a type corresponding to the filter name:
-
-- RECOMMENDED_KEY: String
-- BPM: Int
-- TIME_SIGNATURE: [Int, Int]
-- THEMES: [String, String, ...]
-"""
-scalar FilterValue
+"""Can pass in either the 'value' or 'valueDisplay' field in AvailableFilterValue"""
+union SearchFilterValue = FilterValue | String
 
 input SearchFilter {
   name: FilterName!
-  value: FilterValue!
+  value: SearchFilterValue!
 }
 
 ## Song search results ##
@@ -53,6 +46,16 @@ type AvailableFilterValue {
   valueDisplay: String!
   count: Int!
 }
+
+"""
+A filter value must be of a type corresponding to the filter name:
+
+- RECOMMENDED_KEY: String
+- BPM: Int
+- TIME_SIGNATURE: [Int, Int]
+- THEMES: [String, String, ...]
+"""
+scalar FilterValue
 
 ## Query ##
 

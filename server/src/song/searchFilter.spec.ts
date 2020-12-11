@@ -1,10 +1,14 @@
 import * as fc from 'fast-check'
+import * as _ from 'lodash'
 
 import { FilterName } from '~/graphql/types'
 
 import { validateSearchFilter } from './searchFilter'
 
-const fcNonEmptyString = fc.string({ minLength: 1 })
+const fcNonEmptyString = fc
+  .string()
+  .map(_.trim)
+  .filter((s) => s.length > 0)
 const fcNonString = fc.anything().filter((v) => typeof v !== 'string')
 
 const fcPositiveInt = fc.integer({ min: 1 })
@@ -73,9 +77,26 @@ describe('validateSearchFilter', () => {
       )
     })
 
-    it('errors for anything other than positive integers', () => {
+    it('validates valid BPM as a string', () => {
       fc.assert(
-        fc.property(fcNonPositiveInt, (value) => {
+        fc.property(fcPositiveInt, (value) => {
+          expect(
+            validateSearchFilter({ name, value: value.toString() }),
+          ).toStrictEqual({
+            name,
+            value,
+          })
+        }),
+      )
+    })
+
+    it('errors for anything other than positive integers', () => {
+      const fcNonPositiveIntLike = fcNonPositiveInt.filter(
+        (v) => !(typeof v === 'string' && !isNaN(parseInt(v, 10))),
+      )
+
+      fc.assert(
+        fc.property(fcNonPositiveIntLike, (value) => {
           expect(() => validateSearchFilter({ name, value })).toThrow()
         }),
       )
@@ -91,6 +112,18 @@ describe('validateSearchFilter', () => {
           expect(validateSearchFilter({ name, value })).toStrictEqual({
             name,
             value,
+          })
+        }),
+      )
+    })
+
+    it('validates valid TIME_SIGNATURE as a string', () => {
+      fc.assert(
+        fc.property(fc.tuple(fcPositiveInt, fcPositiveInt), ([top, bottom]) => {
+          const value = `${top}/${bottom}`
+          expect(validateSearchFilter({ name, value })).toStrictEqual({
+            name,
+            value: [top, bottom],
           })
         }),
       )
@@ -123,8 +156,12 @@ describe('validateSearchFilter', () => {
     })
 
     it('errors for non-arrays', () => {
+      const fcNonTimeSigLike = fcNonArray.filter(
+        (v) => !(typeof v === 'string' && v.match(/^\d+\/\d+$/)),
+      )
+
       fc.assert(
-        fc.property(fcNonArray, (value) => {
+        fc.property(fcNonTimeSigLike, (value) => {
           expect(() => validateSearchFilter({ name, value })).toThrow()
         }),
       )
@@ -145,13 +182,32 @@ describe('validateSearchFilter', () => {
       )
     })
 
+    it('validates valid THEMES as a string', () => {
+      const hasComma = (s: string) => _.includes(s, ',')
+
+      fc.assert(
+        fc.property(
+          fcNonEmptyStringArray.filter((v) => !_.some(v, hasComma)),
+          (themes) => {
+            const value = themes.join(',')
+            expect(validateSearchFilter({ name, value })).toStrictEqual({
+              name,
+              value: themes,
+            })
+          },
+        ),
+      )
+    })
+
     it('errors for empty arrays', () => {
       expect(() => validateSearchFilter({ name, value: [] })).toThrow()
     })
 
-    it('errors for non-arrays', () => {
+    it("errors for anything that's not an array or string", () => {
+      const fcNonThemesLike = fcNonArray.filter((v) => typeof v !== 'string')
+
       fc.assert(
-        fc.property(fcNonArray, (value) => {
+        fc.property(fcNonThemesLike, (value) => {
           expect(() => validateSearchFilter({ name, value })).toThrow()
         }),
       )

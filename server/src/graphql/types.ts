@@ -59,9 +59,12 @@ export enum FilterName {
   THEMES = 'THEMES',
 }
 
+/** Can pass in either the 'value' or 'valueDisplay' field in AvailableFilterValue */
+export type SearchFilterValue = Scalars['FilterValue'] | Scalars['String']
+
 export type SearchFilter = {
   name: FilterName
-  value: Scalars['FilterValue']
+  value: SearchFilterValue
 }
 
 export type SongSearchResult = {
