@@ -178,16 +178,16 @@ describe('SongAPI', () => {
       const filters = await songApi.getAvailableFilters()
       expect(filters).toMatchObject({
         RECOMMENDED_KEY: expect.arrayContaining([
-          { value: 'A', count: 2 },
-          { value: 'E', count: 2 },
+          { value: 'A', valueDisplay: 'A', count: 2 },
+          { value: 'E', valueDisplay: 'E', count: 2 },
         ]),
         TIME_SIGNATURE: expect.arrayContaining([
-          { value: [4, 4], count: 3 },
-          { value: [3, 4], count: 1 },
+          { value: [4, 4], valueDisplay: '4/4', count: 3 },
+          { value: [3, 4], valueDisplay: '3/4', count: 1 },
         ]),
         BPM: expect.arrayContaining([
-          { value: 140, count: 1 },
-          { value: 68, count: 3 },
+          { value: 140, valueDisplay: '140', count: 1 },
+          { value: 68, valueDisplay: '68', count: 3 },
         ]),
       })
     })

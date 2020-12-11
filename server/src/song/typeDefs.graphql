@@ -50,6 +50,7 @@ type AvailableFilter {
 
 type AvailableFilterValue {
   value: FilterValue!
+  valueDisplay: String!
   count: Int!
 }
 

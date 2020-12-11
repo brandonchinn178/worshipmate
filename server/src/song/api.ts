@@ -16,6 +16,7 @@ export type SearchOptions = {
 
 type AvailableFilterFor<Name extends SearchFilterNames> = {
   value: SearchFilterTypes[Name]
+  valueDisplay: string
   count: number
 }
 
@@ -56,11 +57,13 @@ export class SongAPI extends DataSource {
   ): Promise<AvailableFilters> {
     const recommendedKeyCounts = await this.getAvailableFiltersWith<'RECOMMENDED_KEY'>(
       sql.raw('"song"."recommended_key"'),
+      (key) => key,
       options,
     )
 
     const bpmCounts = await this.getAvailableFiltersWith<'BPM'>(
       sql.raw('"song"."bpm"'),
+      (bpm) => bpm.toString(),
       options,
     )
 
@@ -71,6 +74,7 @@ export class SongAPI extends DataSource {
           "song"."time_signature_bottom"
         ]
       `),
+      ([top, bottom]) => `${top}/${bottom}`,
       options,
     )
 
@@ -86,6 +90,7 @@ export class SongAPI extends DataSource {
 
   private async getAvailableFiltersWith<Name extends SearchFilterNames>(
     valueSql: SqlQuery,
+    valueToDisplay: (v: SearchFilterTypes[Name]) => string,
     options?: SearchOptions,
   ): Promise<AvailableFiltersFor<Name>> {
     const condition = this.getSearchCondition(options)
@@ -104,7 +109,11 @@ export class SongAPI extends DataSource {
       GROUP BY "value"
     `)
 
-    return availableFilters
+    return availableFilters.map(({ value, count }) => ({
+      value,
+      valueDisplay: valueToDisplay(value),
+      count,
+    }))
   }
 
   private getSearchCondition(options: SearchOptions = {}): SqlQuery {

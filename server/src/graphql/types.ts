@@ -79,5 +79,6 @@ export type AvailableFilter = {
 export type AvailableFilterValue = {
   __typename?: 'AvailableFilterValue'
   value: Scalars['FilterValue']
+  valueDisplay: Scalars['String']
   count: Scalars['Int']
 }

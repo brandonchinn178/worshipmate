@@ -268,6 +268,7 @@ describe('Query', () => {
                   name
                   options {
                     value
+                    valueDisplay
                     count
                   }
                 }
@@ -290,20 +291,20 @@ describe('Query', () => {
                 {
                   name: 'RECOMMENDED_KEY',
                   options: expect.arrayContaining([
-                    { value: 'E', count: 1 },
-                    { value: 'A', count: 1 },
+                    { value: 'E', valueDisplay: 'E', count: 1 },
+                    { value: 'A', valueDisplay: 'A', count: 1 },
                   ]),
                 },
                 {
                   name: 'BPM',
                   options: expect.arrayContaining([
-                    { value: 140, count: 1 },
-                    { value: 72, count: 1 },
+                    { value: 140, valueDisplay: '140', count: 1 },
+                    { value: 72, valueDisplay: '72', count: 1 },
                   ]),
                 },
                 {
                   name: 'TIME_SIGNATURE',
-                  options: [{ value: [4, 4], count: 2 }],
+                  options: [{ value: [4, 4], valueDisplay: '4/4', count: 2 }],
                 },
               ]),
             },
