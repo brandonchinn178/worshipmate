@@ -101,8 +101,18 @@ sql.join = (queries: SqlQuery[], delimiter = '') =>
  *
  *   db.query(sql`SELECT * FROM song WHERE ${sql.and(clauses)}`)
  */
-sql.and = (clauses: SqlQuery[]) =>
-  clauses.length > 0 ? sql.join(clauses, ' AND ') : sql`TRUE`
+sql.and = (clauses: SqlQuery[]) => {
+  if (clauses.length === 0) {
+    return sql`TRUE`
+  }
+  if (clauses.length === 1) {
+    return clauses[0]
+  }
+  return sql.join(
+    clauses.map((clause) => sql`(${clause})`),
+    ' AND ',
+  )
+}
 
 /**
  * A helper for joining clauses with `OR`.
@@ -113,5 +123,15 @@ sql.and = (clauses: SqlQuery[]) =>
  *
  *   db.query(sql`SELECT * FROM song WHERE ${sql.or(clauses)}`)
  */
-sql.or = (clauses: SqlQuery[]) =>
-  clauses.length > 0 ? sql.join(clauses, ' OR ') : sql`FALSE`
+sql.or = (clauses: SqlQuery[]) => {
+  if (clauses.length === 0) {
+    return sql`FALSE`
+  }
+  if (clauses.length === 1) {
+    return clauses[0]
+  }
+  return sql.join(
+    clauses.map((clause) => sql`(${clause})`),
+    ' OR ',
+  )
+}
