@@ -1,31 +1,29 @@
 import * as _ from 'lodash'
 
+import {
+  getSongFilter,
+  isSongFilterName,
+  SongFilter,
+  SongFilterNames,
+  SongFilterTypes,
+} from './songFilter'
+
 type UnknownFilter = {
   name: string
-  value: unknown
+  oneof: unknown[]
 }
 
-/**
- * MUST correspond with documentation of FilterValue scalar.
- */
-export type SearchFilterTypes = {
-  RECOMMENDED_KEY: string
-  BPM: number
-  TIME_SIGNATURE: [number, number]
-  THEMES: string[]
+type SearchFilterFor<Name extends SongFilterNames> = {
+  name: Name
+  oneof: Array<SongFilterTypes[Name]>
 }
-
-export type SearchFilterNames = keyof SearchFilterTypes
 
 // https://stackoverflow.com/a/51691257
-type SearchFilterHelper<Name> = Name extends SearchFilterNames
-  ? {
-      name: Name
-      value: SearchFilterTypes[Name]
-    }
+type SearchFilterHelper<Name> = Name extends SongFilterNames
+  ? SearchFilterFor<Name>
   : never
 
-export type SearchFilter = SearchFilterHelper<SearchFilterNames>
+export type SearchFilter = SearchFilterHelper<SongFilterNames>
 
 /**
  * Parse an unchecked filter into a typechecked filter.
@@ -35,55 +33,38 @@ export type SearchFilter = SearchFilterHelper<SearchFilterNames>
 export const validateSearchFilter = (filter: UnknownFilter): SearchFilter => {
   const { name } = filter
 
-  const validator = FILTER_VALUE_VALIDATORS[name]
-  if (!validator) {
+  if (!isSongFilterName(name)) {
     throw new Error(`Unknown filter: ${name}`)
   }
 
-  const value = _.isString(filter.value)
-    ? validator.fromString(filter.value)
-    : filter.value
+  const songFilter = getSongFilter(name)
+  const [oneof, invalidValues] = validateAll(songFilter, filter.oneof)
 
-  if (!validator.isValid(value)) {
-    throw new Error(`Invalid value for filter '${name}': '${filter.value}'`)
+  if (invalidValues.length > 0) {
+    const invalidValuesDisplay = invalidValues.map((v) => `'${v}'`).join(', ')
+    throw new Error(
+      `Invalid value(s) for filter '${name}': ${invalidValuesDisplay}`,
+    )
   }
 
-  return { name, value } as SearchFilter
+  return { name, oneof } as SearchFilter
 }
 
-/** Validators **/
+const validateAll = <Name extends SongFilterNames>(
+  songFilter: SongFilter<Name>,
+  oneof: unknown[],
+): [Array<SongFilterTypes[Name]>, unknown[]] => {
+  const invalidValues: unknown[] = []
 
-type Validator = {
-  fromString: (s: string) => unknown
-  isValid: (v: unknown) => boolean
-}
-
-const isNonEmptyString = (v: unknown) => _.isString(v) && v.length > 0
-const isPositiveInt = (v: unknown): boolean =>
-  _.isNumber(v) && _.isInteger(v) && v > 0
-
-const FILTER_VALUE_VALIDATORS: Record<string, Validator> = {
-  RECOMMENDED_KEY: {
-    fromString: (s) => s,
-    isValid: (v) => isNonEmptyString(v),
-  },
-  BPM: {
-    fromString: (s) => _.parseInt(s),
-    isValid: (v) => isPositiveInt(v),
-  },
-  TIME_SIGNATURE: {
-    fromString: (s) => {
-      const parts = s.match(/^(\d+)\/(\d+)$/)
-      if (parts) {
-        return _.map([parts[1], parts[2]], _.parseInt)
+  const validValues = _.compact(
+    oneof.map((value) => {
+      const parsedValue = songFilter.validate(value)
+      if (parsedValue === null) {
+        invalidValues.push(value)
       }
-      return null
-    },
-    isValid: (v) => _.isArray(v) && v.length === 2 && _.every(v, isPositiveInt),
-  },
-  THEMES: {
-    fromString: (s) => s.split(',').map(_.trim),
-    isValid: (v) =>
-      _.isArray(v) && v.length > 0 && _.every(v, isNonEmptyString),
-  },
+      return parsedValue
+    }),
+  )
+
+  return [validValues, invalidValues]
 }

@@ -3,29 +3,29 @@ import { Database, sql, SqlQuery } from 'pg-toolbox'
 
 import { Song } from './models'
 import { SongRecord } from './schema'
+import { SearchFilter } from './searchFilter'
 import {
-  SearchFilter,
-  SearchFilterNames,
-  SearchFilterTypes,
-} from './searchFilter'
+  BpmFilter,
+  RecommendedKeyFilter,
+  SongFilter,
+  SongFilterNames,
+  SongFilterTypes,
+  TimeSignatureFilter,
+} from './songFilter'
 
 export type SearchOptions = {
   query?: string
   filters?: SearchFilter[]
 }
 
-type AvailableFilterFor<Name extends SearchFilterNames> = {
-  value: SearchFilterTypes[Name]
+export type AvailableFiltersFor<Name extends SongFilterNames> = Array<{
+  value: SongFilterTypes[Name]
   valueDisplay: string
   count: number
-}
-
-type AvailableFiltersFor<
-  Name extends SearchFilterNames
-> = AvailableFilterFor<Name>[]
+}>
 
 export type AvailableFilters = {
-  [Name in SearchFilterNames]: AvailableFiltersFor<Name>
+  [Name in SongFilterNames]: AvailableFiltersFor<Name>
 }
 
 const fromRecord = (song: SongRecord): Song => ({
@@ -55,65 +55,78 @@ export class SongAPI extends DataSource {
   async getAvailableFilters(
     options?: SearchOptions,
   ): Promise<AvailableFilters> {
-    const recommendedKeyCounts = await this.getAvailableFiltersWith<'RECOMMENDED_KEY'>(
-      sql.raw('"song"."recommended_key"'),
-      (key) => key,
-      options,
-    )
-
-    const bpmCounts = await this.getAvailableFiltersWith<'BPM'>(
-      sql.raw('"song"."bpm"'),
-      (bpm) => bpm.toString(),
-      options,
-    )
-
-    const timeSignatureCounts = await this.getAvailableFiltersWith<'TIME_SIGNATURE'>(
-      sql.raw(`
-        ARRAY[
-          "song"."time_signature_top",
-          "song"."time_signature_bottom"
-        ]
-      `),
-      ([top, bottom]) => `${top}/${bottom}`,
-      options,
-    )
-
-    return {
-      RECOMMENDED_KEY: recommendedKeyCounts,
-      BPM: bpmCounts,
-      TIME_SIGNATURE: timeSignatureCounts,
-
-      // TODO
-      THEMES: [],
-    }
-  }
-
-  private async getAvailableFiltersWith<Name extends SearchFilterNames>(
-    valueSql: SqlQuery,
-    valueToDisplay: (v: SearchFilterTypes[Name]) => string,
-    options?: SearchOptions,
-  ): Promise<AvailableFiltersFor<Name>> {
     const condition = this.getSearchCondition(options)
 
     // Use integer instead of default bigint to get back a normal number
     // in javascript.
     // Revisit when database contains more than 2,147,483,647 songs.
-    const countSql = sql.raw('COUNT(*) :: integer')
+    const countSql = sql`COUNT(*) :: integer`
 
-    const availableFilters = await this.db.query<AvailableFilterFor<Name>>(sql`
-      SELECT
-        ${valueSql} AS "value",
-        ${countSql} as "count"
-      FROM "song"
-      WHERE ${condition}
-      GROUP BY "value"
-    `)
+    // Get available filters for the given SongFilter using the given SqlQuery.
+    // The SqlQuery must return rows of the type:
+    //
+    //   { value: SongFilterTypes[Name]; count: number }
+    const getAvailableFiltersFor = async <Name extends SongFilterNames>(
+      songFilter: SongFilter<Name>,
+      sqlQuery: SqlQuery,
+    ): Promise<AvailableFiltersFor<Name>> => {
+      const availableFilters = await this.db.query<{
+        value: SongFilterTypes[Name]
+        count: number
+      }>(sqlQuery)
+      return availableFilters.map(({ value, count }) => ({
+        value,
+        valueDisplay: songFilter.display(value),
+        count,
+      }))
+    }
 
-    return availableFilters.map(({ value, count }) => ({
-      value,
-      valueDisplay: valueToDisplay(value),
-      count,
-    }))
+    const recommendedKeyFilters = await getAvailableFiltersFor(
+      RecommendedKeyFilter,
+      sql`
+        SELECT
+          "song"."recommended_key" AS "value",
+          ${countSql} AS "count"
+        FROM "song"
+        WHERE ${condition}
+        GROUP BY "value"
+      `,
+    )
+
+    const bpmFilters = await getAvailableFiltersFor(
+      BpmFilter,
+      sql`
+        SELECT
+          "song"."bpm" AS "value",
+          ${countSql} AS "count"
+        FROM "song"
+        WHERE ${condition}
+        GROUP BY "value"
+      `,
+    )
+
+    const timeSignatureFilters = await getAvailableFiltersFor(
+      TimeSignatureFilter,
+      sql`
+        SELECT
+          ARRAY[
+            "song"."time_signature_top",
+            "song"."time_signature_bottom"
+          ] AS "value",
+          ${countSql} AS "count"
+        FROM "song"
+        WHERE ${condition}
+        GROUP BY "value"
+      `,
+    )
+
+    return {
+      RECOMMENDED_KEY: recommendedKeyFilters,
+      BPM: bpmFilters,
+      TIME_SIGNATURE: timeSignatureFilters,
+      // TODO
+      THEME: [],
+    }
   }
 
   private getSearchCondition(options: SearchOptions = {}): SqlQuery {
@@ -128,19 +141,33 @@ export class SongAPI extends DataSource {
     filters.forEach((filter) => {
       switch (filter.name) {
         case 'RECOMMENDED_KEY': {
-          conditions.push(sql`"song"."recommended_key" = ${filter.value}`)
+          conditions.push(
+            sql.or(
+              filter.oneof.map(
+                (value) => sql`"song"."recommended_key" = ${value}`,
+              ),
+            ),
+          )
           break
         }
         case 'BPM': {
-          conditions.push(sql`"song"."bpm" = ${filter.value}`)
+          conditions.push(
+            sql.or(filter.oneof.map((value) => sql`"song"."bpm" = ${value}`)),
+          )
           break
         }
         case 'TIME_SIGNATURE': {
-          const [top, bottom] = filter.value
-          conditions.push(sql`
-            "song"."time_signature_top" = ${top} AND
-            "song"."time_signature_bottom" = ${bottom}
-          `)
+          conditions.push(
+            sql.or(
+              filter.oneof.map(
+                ([top, bottom]) =>
+                  sql`
+                  "song"."time_signature_top" = ${top} AND
+                  "song"."time_signature_bottom" = ${bottom}
+                `,
+              ),
+            ),
+          )
           break
         }
       }

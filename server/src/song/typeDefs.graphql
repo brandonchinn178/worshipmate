@@ -18,15 +18,22 @@ enum FilterName {
   RECOMMENDED_KEY
   BPM
   TIME_SIGNATURE
-  THEMES
+  THEME
 }
 
-"""Can pass in either the 'value' or 'valueDisplay' field in AvailableFilterValue"""
-union SearchFilterValue = FilterValue | String
+"""
+A filter value as appropriate for filtering a song search query.
+
+A SearchFilterValue can be one of the following:
+  * The 'value' field from a prior AvailableFilter result
+  * The 'valueDisplay' field from a prior AvailableFilter result
+"""
+scalar SearchFilterValue
 
 input SearchFilter {
   name: FilterName!
-  value: SearchFilterValue!
+  """Filters songs that match any of the provided SearchFilterValues."""
+  oneof: [SearchFilterValue!]!
 }
 
 ## Song search results ##
@@ -53,7 +60,7 @@ A filter value must be of a type corresponding to the filter name:
 - RECOMMENDED_KEY: String
 - BPM: Int
 - TIME_SIGNATURE: [Int, Int]
-- THEMES: [String, String, ...]
+- THEME: String
 """
 scalar FilterValue
 

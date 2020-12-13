@@ -16,12 +16,20 @@ export type Scalars = {
   Int: number
   Float: number
   /**
+   * A filter value as appropriate for filtering a song search query.
+   *
+   * A SearchFilterValue can be one of the following:
+   *   * The 'value' field from a prior AvailableFilter result
+   *   * The 'valueDisplay' field from a prior AvailableFilter result
+   */
+  SearchFilterValue: any
+  /**
    * A filter value must be of a type corresponding to the filter name:
    *
    * - RECOMMENDED_KEY: String
    * - BPM: Int
    * - TIME_SIGNATURE: [Int, Int]
-   * - THEMES: [String, String, ...]
+   * - THEME: String
    */
   FilterValue: unknown
 }
@@ -56,15 +64,13 @@ export enum FilterName {
   RECOMMENDED_KEY = 'RECOMMENDED_KEY',
   BPM = 'BPM',
   TIME_SIGNATURE = 'TIME_SIGNATURE',
-  THEMES = 'THEMES',
+  THEME = 'THEME',
 }
-
-/** Can pass in either the 'value' or 'valueDisplay' field in AvailableFilterValue */
-export type SearchFilterValue = Scalars['FilterValue'] | Scalars['String']
 
 export type SearchFilter = {
   name: FilterName
-  value: SearchFilterValue
+  /** Filters songs that match any of the provided SearchFilterValues. */
+  oneof: Array<Scalars['SearchFilterValue']>
 }
 
 export type SongSearchResult = {
