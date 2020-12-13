@@ -132,7 +132,21 @@ describe('sql', () => {
       ]
 
       expect(sql`SELECT * FROM song WHERE ${sql.and(filters)}`).toMatchObject({
-        text: 'SELECT * FROM song WHERE song.name = $1 AND song.artist = $2',
+        text:
+          'SELECT * FROM song WHERE (song.name = $1) AND (song.artist = $2)',
+        values: [TEST_SONG.name, TEST_SONG.artist],
+      })
+    })
+
+    it('wraps complex boolean expressions', () => {
+      const filters = [
+        sql`song.name = ${TEST_SONG.name} OR song.name = ''`,
+        sql`song.artist = ${TEST_SONG.artist}`,
+      ]
+
+      expect(sql`SELECT * FROM song WHERE ${sql.and(filters)}`).toMatchObject({
+        text:
+          "SELECT * FROM song WHERE (song.name = $1 OR song.name = '') AND (song.artist = $2)",
         values: [TEST_SONG.name, TEST_SONG.artist],
       })
     })
@@ -155,7 +169,20 @@ describe('sql', () => {
       ]
 
       expect(sql`SELECT * FROM song WHERE ${sql.or(filters)}`).toMatchObject({
-        text: 'SELECT * FROM song WHERE song.name = $1 OR song.artist = $2',
+        text: 'SELECT * FROM song WHERE (song.name = $1) OR (song.artist = $2)',
+        values: [TEST_SONG.name, TEST_SONG.artist],
+      })
+    })
+
+    it('wraps complex boolean expressions', () => {
+      const filters = [
+        sql`song.name = ${TEST_SONG.name} AND song.artist = ''`,
+        sql`song.artist = ${TEST_SONG.artist}`,
+      ]
+
+      expect(sql`SELECT * FROM song WHERE ${sql.or(filters)}`).toMatchObject({
+        text:
+          "SELECT * FROM song WHERE (song.name = $1 AND song.artist = '') OR (song.artist = $2)",
         values: [TEST_SONG.name, TEST_SONG.artist],
       })
     })
