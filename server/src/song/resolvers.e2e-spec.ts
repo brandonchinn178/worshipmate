@@ -39,7 +39,7 @@ describe('Query', () => {
 
     it('queries all songs', async () => {
       const res = await server.query({
-        query: `
+        query: /* GraphQL */ `
           query {
             searchSongs {
               id
@@ -99,8 +99,8 @@ describe('Query', () => {
 
     it('queries songs filtered by search query', async () => {
       const res = await server.query({
-        query: `
-          query ($query: String!) {
+        query: /* GraphQL */ `
+          query($query: String!) {
             searchSongs(query: $query) {
               title
             }
@@ -124,8 +124,8 @@ describe('Query', () => {
     describe('search with filters', () => {
       it('queries songs filtered by a search filter', async () => {
         const res = await server.query({
-          query: `
-            query ($filters: [SearchFilter!]!) {
+          query: /* GraphQL */ `
+            query($filters: [SearchFilter!]!) {
               searchSongs(filters: $filters) {
                 title
               }
@@ -153,8 +153,8 @@ describe('Query', () => {
 
       it('queries songs filtered by multiple search filters', async () => {
         const res = await server.query({
-          query: `
-            query ($filters: [SearchFilter!]!) {
+          query: /* GraphQL */ `
+            query($filters: [SearchFilter!]!) {
               searchSongs(filters: $filters) {
                 title
               }
@@ -183,8 +183,8 @@ describe('Query', () => {
 
       it('errors with an invalid search filter', async () => {
         const res = await server.query({
-          query: `
-            query ($filters: [SearchFilter!]!) {
+          query: /* GraphQL */ `
+            query($filters: [SearchFilter!]!) {
               searchSongs(filters: $filters) {
                 title
               }
@@ -207,8 +207,8 @@ describe('Query', () => {
 
       it('queries songs with query and filter', async () => {
         const res = await server.query({
-          query: `
-            query ($query: String!, $filters: [SearchFilter!]!) {
+          query: /* GraphQL */ `
+            query($query: String!, $filters: [SearchFilter!]!) {
               searchSongs(query: $query, filters: $filters) {
                 title
               }
