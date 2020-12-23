@@ -44,7 +44,7 @@ export default function Home() {
     <Grid>
       <SidebarArea>
         <SongFilter
-          filters={songFilters}
+          availableFilters={songFilters}
           activeFilters={activeFilters}
           addFilter={(key, value) => addFilter(router, key, value)}
           removeFilter={(key) => removeFilter(router, key)}
