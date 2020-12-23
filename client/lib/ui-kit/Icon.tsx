@@ -10,7 +10,7 @@ type IconProps = {
   name: keyof typeof icons
 }
 
-export default function Icon({ name }: IconProps) {
+export function Icon({ name }: IconProps) {
   const IconComponent = icons[name]
   return <IconComponent />
 }

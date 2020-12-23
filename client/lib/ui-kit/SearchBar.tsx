@@ -12,7 +12,7 @@ type SearchBarProps = {
   onSubmit: (query: string) => void
 }
 
-export default function SearchBar({ initial = '', onSubmit }: SearchBarProps) {
+export function SearchBar({ initial = '', onSubmit }: SearchBarProps) {
   const { register, handleSubmit } = useForm<Form>({
     defaultValues: {
       search: initial,

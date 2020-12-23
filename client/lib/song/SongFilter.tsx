@@ -21,7 +21,7 @@ type SongFilterProps = {
   removeFilter: (key: string) => void
 }
 
-export default function SongFilter({
+export function SongFilter({
   filters,
   activeFilters,
   addFilter,

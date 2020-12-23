@@ -24,7 +24,7 @@ const songTableColumnDefs: ColumnDefs<Song> = [
   },
 ]
 
-export default function SongTable({ songs }: SongTableProps) {
+export function SongTable({ songs }: SongTableProps) {
   return (
     <DataTable
       data={songs}
