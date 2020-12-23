@@ -36,7 +36,7 @@ const testFilters = [
 it('renders filters', () => {
   const { getByText } = renderUI(
     <SongFilter
-      filters={testFilters}
+      availableFilters={testFilters}
       activeFilters={{}}
       addFilter={jest.fn()}
       removeFilter={jest.fn()}
@@ -56,7 +56,7 @@ it('can add a filter', async () => {
 
   const { getByText } = renderUI(
     <SongFilter
-      filters={testFilters}
+      availableFilters={testFilters}
       activeFilters={{}}
       addFilter={mockAddFilter}
       removeFilter={jest.fn()}
@@ -74,7 +74,7 @@ it('can change a filter', async () => {
 
   const { getByText } = renderUI(
     <SongFilter
-      filters={testFilters}
+      availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
       addFilter={mockAddFilter}
       removeFilter={jest.fn()}
@@ -92,7 +92,7 @@ it('can remove a filter', async () => {
 
   const { getByText } = renderUI(
     <SongFilter
-      filters={testFilters}
+      availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
       addFilter={jest.fn()}
       removeFilter={mockRemoveFilter}
@@ -108,7 +108,7 @@ it('can remove a filter', async () => {
 it('renders active options differently', () => {
   const { container: before } = renderUI(
     <SongFilter
-      filters={testFilters}
+      availableFilters={testFilters}
       activeFilters={{}}
       addFilter={jest.fn()}
       removeFilter={jest.fn()}
@@ -117,7 +117,7 @@ it('renders active options differently', () => {
 
   const { container: after } = renderUI(
     <SongFilter
-      filters={testFilters}
+      availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
       addFilter={jest.fn()}
       removeFilter={jest.fn()}

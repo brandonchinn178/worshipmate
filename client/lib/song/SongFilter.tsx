@@ -15,21 +15,21 @@ type Filter = {
 }
 
 type SongFilterProps = {
-  filters: readonly Filter[]
+  availableFilters: readonly Filter[]
   activeFilters: ActiveFilters
   addFilter: (key: string, value: string) => void
   removeFilter: (key: string) => void
 }
 
 export function SongFilter({
-  filters,
+  availableFilters,
   activeFilters,
   addFilter,
   removeFilter,
 }: SongFilterProps) {
   return (
     <FilterBox>
-      {filters.map(({ key, options }) => (
+      {availableFilters.map(({ key, options }) => (
         <FilterCategory key={key}>
           <FilterLabel>{_.startCase(key)}</FilterLabel>
           <FilterOptionGrid>
