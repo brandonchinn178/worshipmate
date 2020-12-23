@@ -13,6 +13,7 @@ generates:
         enumValues: keep
       scalars:
         ID: number
+        TimeSignature: '[number, number]'
         FilterValue: unknown
     hooks:
       afterOneFileWrite:

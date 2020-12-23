@@ -46,10 +46,7 @@ describe('Query', () => {
               slug
               title
               recommendedKey
-              timeSignature {
-                top
-                bottom
-              }
+              timeSignature
               bpm
             }
           }
@@ -64,10 +61,7 @@ describe('Query', () => {
               slug: 'blessed-be-your-name',
               title: 'Blessed Be Your Name',
               recommendedKey: 'A',
-              timeSignature: {
-                top: 4,
-                bottom: 4,
-              },
+              timeSignature: [4, 4],
               bpm: 140,
             },
             {
@@ -75,10 +69,7 @@ describe('Query', () => {
               slug: 'build-my-life',
               title: 'Build My Life',
               recommendedKey: 'E',
-              timeSignature: {
-                top: 4,
-                bottom: 4,
-              },
+              timeSignature: [4, 4],
               bpm: 68,
             },
             {
@@ -86,10 +77,7 @@ describe('Query', () => {
               slug: 'ever-be',
               title: 'Ever Be',
               recommendedKey: 'E',
-              timeSignature: {
-                top: 4,
-                bottom: 4,
-              },
+              timeSignature: [4, 4],
               bpm: 72,
             },
           ],

@@ -54,10 +54,7 @@ describe('SongAPI', () => {
           slug: 'blessed-be-your-name',
           title: 'Blessed Be Your Name',
           recommendedKey: 'A',
-          timeSignature: {
-            top: 4,
-            bottom: 4,
-          },
+          timeSignature: [4, 4],
           bpm: 140,
         },
         {
@@ -65,10 +62,7 @@ describe('SongAPI', () => {
           slug: 'build-my-life',
           title: 'Build My Life',
           recommendedKey: 'E',
-          timeSignature: {
-            top: 4,
-            bottom: 4,
-          },
+          timeSignature: [4, 4],
           bpm: 68,
         },
         {
@@ -76,10 +70,7 @@ describe('SongAPI', () => {
           slug: 'ever-be',
           title: 'Ever Be',
           recommendedKey: 'E',
-          timeSignature: {
-            top: 4,
-            bottom: 4,
-          },
+          timeSignature: [4, 4],
           bpm: 72,
         },
         {
@@ -87,10 +78,7 @@ describe('SongAPI', () => {
           slug: 'great-are-you-lord',
           title: 'Great Are You Lord',
           recommended_key: 'G',
-          timeSignature: {
-            top: 6,
-            bottom: 8,
-          },
+          timeSignature: [6, 8],
           bpm: 52,
         },
       ])

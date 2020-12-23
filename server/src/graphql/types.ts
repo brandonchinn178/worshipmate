@@ -15,6 +15,7 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
+  TimeSignature: [number, number]
   /**
    * A filter value must be of a type corresponding to the filter name:
    *
@@ -42,14 +43,8 @@ export type Song = {
   slug: Scalars['String']
   title: Scalars['String']
   recommendedKey: Scalars['String']
-  timeSignature: TimeSignature
+  timeSignature: Scalars['TimeSignature']
   bpm: Scalars['Int']
-}
-
-export type TimeSignature = {
-  __typename?: 'TimeSignature'
-  top: Scalars['Int']
-  bottom: Scalars['Int']
 }
 
 export enum FilterName {

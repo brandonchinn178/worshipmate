@@ -7,7 +7,4 @@ export type Song = {
   bpm: number
 }
 
-export type TimeSignature = {
-  top: number
-  bottom: number
-}
+export type TimeSignature = [number, number]
