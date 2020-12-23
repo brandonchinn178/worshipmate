@@ -6,13 +6,15 @@ generates:
       - add:
           content: '/** AUTO GENERATED. DO NOT MODIFY **/'
       - typescript
-    config:
-      useIndexSignature: true
-      namingConvention:
-        enumValues: keep
-      scalars:
-        ID: number
-        TimeSignature: '[number, number]'
-    hooks:
-      afterOneFileWrite:
-        - eslint --ext .ts --fix
+
+config:
+  useIndexSignature: true
+  namingConvention:
+    enumValues: keep
+  scalars:
+    ID: number
+    TimeSignature: '[number, number]'
+
+hooks:
+  afterAllFileWrite:
+    - eslint --ext .ts --fix
