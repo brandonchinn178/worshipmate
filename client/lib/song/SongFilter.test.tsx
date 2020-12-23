@@ -33,13 +33,19 @@ const testFilters = [
   },
 ]
 
+const mockFilterHandler = {
+  addFilter: jest.fn(),
+  removeFilter: jest.fn(),
+}
+
+beforeEach(jest.resetAllMocks)
+
 it('renders filters', () => {
   const { getByText } = renderUI(
     <SongFilter
       availableFilters={testFilters}
       activeFilters={{}}
-      addFilter={jest.fn()}
-      removeFilter={jest.fn()}
+      filterHandler={mockFilterHandler}
     />,
   )
 
@@ -52,55 +58,49 @@ it('renders filters', () => {
 })
 
 it('can add a filter', async () => {
-  const mockAddFilter = jest.fn()
-
   const { getByText } = renderUI(
     <SongFilter
       availableFilters={testFilters}
       activeFilters={{}}
-      addFilter={mockAddFilter}
-      removeFilter={jest.fn()}
+      filterHandler={mockFilterHandler}
     />,
   )
 
   fireEvent.click(getByText('G (2)'))
 
+  const mockAddFilter = mockFilterHandler.addFilter
   await waitFor(() => expect(mockAddFilter).toHaveBeenCalled())
   expect(mockAddFilter.mock.calls[0]).toEqual(['recommendedKey', 'G'])
 })
 
 it('can change a filter', async () => {
-  const mockAddFilter = jest.fn()
-
   const { getByText } = renderUI(
     <SongFilter
       availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
-      addFilter={mockAddFilter}
-      removeFilter={jest.fn()}
+      filterHandler={mockFilterHandler}
     />,
   )
 
   fireEvent.click(getByText('E (3)'))
 
+  const mockAddFilter = mockFilterHandler.addFilter
   await waitFor(() => expect(mockAddFilter).toHaveBeenCalled())
   expect(mockAddFilter.mock.calls[0]).toEqual(['recommendedKey', 'E'])
 })
 
 it('can remove a filter', async () => {
-  const mockRemoveFilter = jest.fn()
-
   const { getByText } = renderUI(
     <SongFilter
       availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
-      addFilter={jest.fn()}
-      removeFilter={mockRemoveFilter}
+      filterHandler={mockFilterHandler}
     />,
   )
 
   fireEvent.click(getByText('G (2)'))
 
+  const mockRemoveFilter = mockFilterHandler.removeFilter
   await waitFor(() => expect(mockRemoveFilter).toHaveBeenCalled())
   expect(mockRemoveFilter.mock.calls[0]).toEqual(['recommendedKey'])
 })
@@ -110,8 +110,7 @@ it('renders active options differently', () => {
     <SongFilter
       availableFilters={testFilters}
       activeFilters={{}}
-      addFilter={jest.fn()}
-      removeFilter={jest.fn()}
+      filterHandler={mockFilterHandler}
     />,
   )
 
@@ -119,8 +118,7 @@ it('renders active options differently', () => {
     <SongFilter
       availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
-      addFilter={jest.fn()}
-      removeFilter={jest.fn()}
+      filterHandler={mockFilterHandler}
     />,
   )
 

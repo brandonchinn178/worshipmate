@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { useSearchSongs } from '~/api'
 import { setQueryString } from '~/router'
-import { addFilter, loadFilters, removeFilter } from '~/router/filters'
+import { loadActiveFilters, mkFilterHandler } from '~/song/filters'
 import { SongFilter } from '~/song/SongFilter'
 import { SongTable } from '~/song/SongTable'
 import { SearchBar } from '~/ui-kit/SearchBar'
@@ -26,9 +26,8 @@ function pluralize(...args: [string, number] | [string, string, number]) {
 export default function Home() {
   const router = useRouter()
 
-  const { query } = router
   const search = router.query.search as string | undefined
-  const activeFilters = loadFilters(query)
+  const activeFilters = loadActiveFilters(router)
 
   const { data } = useSearchSongs({
     variables: {
@@ -46,8 +45,7 @@ export default function Home() {
         <SongFilter
           availableFilters={songFilters}
           activeFilters={activeFilters}
-          addFilter={(key, value) => addFilter(router, key, value)}
-          removeFilter={(key) => removeFilter(router, key)}
+          filterHandler={mkFilterHandler(router)}
         />
       </SidebarArea>
       <SongSearchArea>
