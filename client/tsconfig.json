@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.base",
   "compilerOptions": {
+    "esModuleInterop": true,
     "module": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "noEmit": true,
