@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 import { color, font, fontFamily } from '~/theme'
 
-export default function Header() {
+export function Header() {
   return (
     <HeaderContainer>
       <div>

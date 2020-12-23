@@ -46,7 +46,7 @@ const renderCell = <T,>(
   return _.get(rowData, name)
 }
 
-export default function DataTable<T>({
+export function DataTable<T>({
   data,
   columnDefs,
   rowKey,
