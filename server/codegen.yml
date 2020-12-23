@@ -13,7 +13,6 @@ generates:
       scalars:
         ID: number
         TimeSignature: '[number, number]'
-        FilterValue: unknown
     hooks:
       afterOneFileWrite:
         - eslint --ext .ts --fix
