@@ -1,13 +1,18 @@
 import { NextRouter } from 'next/router'
 
-// https://github.com/zeit/next.js/blob/3f691eaa45e8f802f9977ff050f66ac64f016e74/packages/next/next-server/lib/router/router.ts#L37
-// https://github.com/sindresorhus/query-string/blob/7712622f5ae8cc1f99ae45f4af1a1965efec44ac/index.d.ts#L127
-export type QueryStringValue = string | string[] | null | undefined
+// https://github.com/vercel/next.js/blob/bbc1a21c749c423e842586ab116889c9f9c7024e/packages/next/next-server/lib/router/router.ts#L248
+// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/664e93c54b6fbf6cae66460ad506f45e59bda3d9/types/node/querystring.d.ts#L11
+export type QueryStringValue = string | string[]
 
+/**
+ * Use the given router to update the given key in the querystring with the
+ * given callback. If `null`, an empty string, or an empty array is returned,
+ * removes the key from the querystring.
+ */
 export const modifyQueryString = (
   router: NextRouter,
   key: string,
-  callback: (value: QueryStringValue) => QueryStringValue,
+  callback: (value: QueryStringValue | undefined) => QueryStringValue | null,
 ) => {
   const value = callback(router.query[key])
   const query = {
@@ -15,7 +20,7 @@ export const modifyQueryString = (
     [key]: value,
   }
 
-  if (!value) {
+  if (value === null || value === '' || value === []) {
     delete query[key]
   }
 
@@ -25,10 +30,14 @@ export const modifyQueryString = (
   })
 }
 
+/**
+ * Same as `modifyQueryString`, except takes a constant value instead of a
+ * callback.
+ */
 export const setQueryString = (
   router: NextRouter,
   key: string,
-  value?: string,
+  value: QueryStringValue | null,
 ) => {
   modifyQueryString(router, key, () => value)
 }
