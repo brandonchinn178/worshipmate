@@ -15,25 +15,17 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
-  /**
-   * A filter value must be of a type corresponding to the filter name:
-   *
-   * - RECOMMENDED_KEY: String
-   * - BPM: Int
-   * - TIME_SIGNATURE: [Int, Int]
-   * - THEMES: [String, String, ...]
-   */
-  FilterValue: unknown
+  TimeSignature: [number, number]
 }
 
 export type Query = {
   __typename?: 'Query'
-  searchSongs?: Maybe<SongSearchResult>
+  searchSongs: Array<Song>
 }
 
 export type QuerySearchSongsArgs = {
   query?: Maybe<Scalars['String']>
-  filters?: Maybe<Array<SearchFilter>>
+  filters?: Maybe<SearchFilters>
 }
 
 export type Song = {
@@ -42,42 +34,12 @@ export type Song = {
   slug: Scalars['String']
   title: Scalars['String']
   recommendedKey: Scalars['String']
-  timeSignature: TimeSignature
+  timeSignature: Scalars['TimeSignature']
   bpm: Scalars['Int']
 }
 
-export type TimeSignature = {
-  __typename?: 'TimeSignature'
-  top: Scalars['Int']
-  bottom: Scalars['Int']
-}
-
-export enum FilterName {
-  RECOMMENDED_KEY = 'RECOMMENDED_KEY',
-  BPM = 'BPM',
-  TIME_SIGNATURE = 'TIME_SIGNATURE',
-  THEMES = 'THEMES',
-}
-
-export type SearchFilter = {
-  name: FilterName
-  value: Scalars['FilterValue']
-}
-
-export type SongSearchResult = {
-  __typename?: 'SongSearchResult'
-  songs: Array<Song>
-  availableFilters: Array<AvailableFilter>
-}
-
-export type AvailableFilter = {
-  __typename?: 'AvailableFilter'
-  name: FilterName
-  values: Array<AvailableFilterValue>
-}
-
-export type AvailableFilterValue = {
-  __typename?: 'AvailableFilterValue'
-  value: Scalars['FilterValue']
-  count: Scalars['Int']
+export type SearchFilters = {
+  recommendedKey?: Maybe<Scalars['String']>
+  bpm?: Maybe<Scalars['Int']>
+  timeSignature?: Maybe<Scalars['TimeSignature']>
 }

@@ -36,7 +36,7 @@ describe('SongAPI', () => {
 
     it('can return songs matching a filter', async () => {
       await songApi.searchSongs({
-        filters: [{ name: 'RECOMMENDED_KEY', value: 'A' }],
+        filters: { recommendedKey: 'A' },
       })
       expect(db.query).toHaveBeenCalledWith(
         sqlMatches({
@@ -62,10 +62,7 @@ describe('SongAPI', () => {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
         recommendedKey: 'A',
-        timeSignature: {
-          top: 4,
-          bottom: 4,
-        },
+        timeSignature: [4, 4],
         bpm: 140,
       }
 

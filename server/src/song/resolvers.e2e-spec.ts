@@ -39,20 +39,15 @@ describe('Query', () => {
 
     it('queries all songs', async () => {
       const res = await server.query({
-        query: `
+        query: /* GraphQL */ `
           query {
             searchSongs {
-              songs {
-                id
-                slug
-                title
-                recommendedKey
-                timeSignature {
-                  top
-                  bottom
-                }
-                bpm
-              }
+              id
+              slug
+              title
+              recommendedKey
+              timeSignature
+              bpm
             }
           }
         `,
@@ -60,55 +55,42 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          searchSongs: {
-            songs: [
-              {
-                id: expect.any(String),
-                slug: 'blessed-be-your-name',
-                title: 'Blessed Be Your Name',
-                recommendedKey: 'A',
-                timeSignature: {
-                  top: 4,
-                  bottom: 4,
-                },
-                bpm: 140,
-              },
-              {
-                id: expect.any(String),
-                slug: 'build-my-life',
-                title: 'Build My Life',
-                recommendedKey: 'E',
-                timeSignature: {
-                  top: 4,
-                  bottom: 4,
-                },
-                bpm: 68,
-              },
-              {
-                id: expect.any(String),
-                slug: 'ever-be',
-                title: 'Ever Be',
-                recommendedKey: 'E',
-                timeSignature: {
-                  top: 4,
-                  bottom: 4,
-                },
-                bpm: 72,
-              },
-            ],
-          },
+          searchSongs: [
+            {
+              id: expect.any(String),
+              slug: 'blessed-be-your-name',
+              title: 'Blessed Be Your Name',
+              recommendedKey: 'A',
+              timeSignature: [4, 4],
+              bpm: 140,
+            },
+            {
+              id: expect.any(String),
+              slug: 'build-my-life',
+              title: 'Build My Life',
+              recommendedKey: 'E',
+              timeSignature: [4, 4],
+              bpm: 68,
+            },
+            {
+              id: expect.any(String),
+              slug: 'ever-be',
+              title: 'Ever Be',
+              recommendedKey: 'E',
+              timeSignature: [4, 4],
+              bpm: 72,
+            },
+          ],
         },
       })
     })
 
     it('queries songs filtered by search query', async () => {
       const res = await server.query({
-        query: `
-          query ($query: String!) {
+        query: /* GraphQL */ `
+          query($query: String!) {
             searchSongs(query: $query) {
-              songs {
-                title
-              }
+              title
             }
           }
         `,
@@ -119,12 +101,10 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          searchSongs: {
-            songs: expect.arrayContaining([
-              { title: 'Blessed Be Your Name' },
-              { title: 'Ever Be' },
-            ]),
-          },
+          searchSongs: expect.arrayContaining([
+            { title: 'Blessed Be Your Name' },
+            { title: 'Ever Be' },
+          ]),
         },
       })
     })
@@ -132,183 +112,221 @@ describe('Query', () => {
     describe('search with filters', () => {
       it('queries songs filtered by a search filter', async () => {
         const res = await server.query({
-          query: `
-            query ($filters: [SearchFilter!]!) {
+          query: /* GraphQL */ `
+            query($filters: SearchFilters!) {
               searchSongs(filters: $filters) {
-                songs {
-                  title
-                }
+                title
               }
             }
           `,
           variables: {
-            filters: [
-              {
-                name: 'RECOMMENDED_KEY',
-                value: 'E',
-              },
-            ],
+            filters: { recommendedKey: 'E' },
           },
         })
 
         expect(res).toMatchObject({
           data: {
-            searchSongs: {
-              songs: expect.arrayContaining([
-                { title: 'Build My Life' },
-                { title: 'Ever Be' },
-              ]),
-            },
+            searchSongs: expect.arrayContaining([
+              { title: 'Build My Life' },
+              { title: 'Ever Be' },
+            ]),
           },
         })
       })
 
       it('queries songs filtered by multiple search filters', async () => {
         const res = await server.query({
-          query: `
-            query ($filters: [SearchFilter!]!) {
+          query: /* GraphQL */ `
+            query($filters: SearchFilters!) {
               searchSongs(filters: $filters) {
-                songs {
-                  title
-                }
+                title
               }
             }
           `,
           variables: {
-            filters: [
-              {
-                name: 'RECOMMENDED_KEY',
-                value: 'E',
-              },
-              {
-                name: 'BPM',
-                value: 68,
-              },
-            ],
+            filters: {
+              recommendedKey: 'E',
+              bpm: 68,
+            },
           },
         })
 
         expect(res).toMatchObject({
           data: {
-            searchSongs: {
-              songs: [{ title: 'Build My Life' }],
-            },
+            searchSongs: [{ title: 'Build My Life' }],
           },
-        })
-      })
-
-      it('errors with an invalid search filter', async () => {
-        const res = await server.query({
-          query: `
-            query ($filters: [SearchFilter!]!) {
-              searchSongs(filters: $filters) {
-                songs {
-                  title
-                }
-              }
-            }
-          `,
-          variables: {
-            filters: [
-              {
-                name: 'BPM',
-                value: 'foo',
-              },
-            ],
-          },
-        })
-
-        expect(res).toMatchObject({
-          errors: [{ message: "Invalid value for filter 'BPM': foo" }],
         })
       })
 
       it('queries songs with query and filter', async () => {
         const res = await server.query({
-          query: `
-            query ($query: String!, $filters: [SearchFilter!]!) {
+          query: /* GraphQL */ `
+            query($query: String!, $filters: SearchFilters!) {
               searchSongs(query: $query, filters: $filters) {
-                songs {
-                  title
-                }
+                title
               }
             }
           `,
           variables: {
             query: 'be',
-            filters: [
-              {
-                name: 'RECOMMENDED_KEY',
-                value: 'E',
-              },
-            ],
+            filters: { recommendedKey: 'E' },
           },
         })
 
         expect(res).toMatchObject({
           data: {
-            searchSongs: {
-              songs: [{ title: 'Ever Be' }],
-            },
+            searchSongs: [{ title: 'Ever Be' }],
           },
         })
       })
     })
+  })
+})
 
-    describe('available filters', () => {
-      it('returns available filters for search results', async () => {
-        const res = await server.query({
-          query: `
-            query ($query: String!) {
-              searchSongs(query: $query) {
-                songs {
-                  title
-                }
-                availableFilters {
-                  name
-                  values {
-                    value
-                    count
-                  }
-                }
-              }
+describe('TimeSignature', () => {
+  beforeEach(async () => {
+    await db.insertAll('song', [
+      {
+        slug: 'four-four',
+        title: '4/4',
+        recommended_key: 'C',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 0,
+      },
+      {
+        slug: 'three-four',
+        title: '3/4',
+        recommended_key: 'C',
+        time_signature_top: 3,
+        time_signature_bottom: 4,
+        bpm: 0,
+      },
+    ])
+  })
+
+  describe('serialize from resolver', () => {
+    it('serializes correctly', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query {
+            searchSongs {
+              timeSignature
             }
-          `,
-          variables: {
-            query: 'be',
-          },
-        })
+          }
+        `,
+      })
 
-        expect(res).toMatchObject({
-          data: {
-            searchSongs: {
-              songs: expect.arrayContaining([
-                { title: 'Blessed Be Your Name' },
-                { title: 'Ever Be' },
-              ]),
-              availableFilters: expect.arrayContaining([
-                {
-                  name: 'RECOMMENDED_KEY',
-                  values: expect.arrayContaining([
-                    { value: 'E', count: 1 },
-                    { value: 'A', count: 1 },
-                  ]),
-                },
-                {
-                  name: 'BPM',
-                  values: expect.arrayContaining([
-                    { value: 140, count: 1 },
-                    { value: 72, count: 1 },
-                  ]),
-                },
-                {
-                  name: 'TIME_SIGNATURE',
-                  values: [{ value: [4, 4], count: 2 }],
-                },
-              ]),
-            },
-          },
-        })
+      expect(res).toMatchObject({
+        data: {
+          searchSongs: expect.arrayContaining([
+            { timeSignature: [4, 4] },
+            { timeSignature: [3, 4] },
+          ]),
+        },
+      })
+    })
+  })
+
+  describe('parse from variables', () => {
+    it('parses a valid time signature', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query($filters: SearchFilters!) {
+            searchSongs(filters: $filters) {
+              title
+            }
+          }
+        `,
+        variables: {
+          filters: { timeSignature: [4, 4] },
+        },
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          searchSongs: [{ title: '4/4' }],
+        },
+      })
+    })
+
+    it('errors for invalid time signature', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query($filters: SearchFilters!) {
+            searchSongs(filters: $filters) {
+              title
+            }
+          }
+        `,
+        variables: {
+          filters: { timeSignature: 'asdf' },
+        },
+      })
+
+      expect(res).toMatchObject({
+        errors: [
+          { message: expect.stringContaining('Invalid time signature') },
+        ],
+      })
+    })
+
+    it('errors for invalid time signature components', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query($filters: SearchFilters!) {
+            searchSongs(filters: $filters) {
+              title
+            }
+          }
+        `,
+        variables: {
+          filters: { timeSignature: ['foo', 'bar'] },
+        },
+      })
+
+      expect(res).toMatchObject({
+        errors: [
+          { message: expect.stringContaining('Invalid time signature') },
+        ],
+      })
+    })
+  })
+
+  describe('parse from literal', () => {
+    it('parses a valid time signature', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query {
+            searchSongs(filters: { timeSignature: [4, 4] }) {
+              title
+            }
+          }
+        `,
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          searchSongs: [{ title: '4/4' }],
+        },
+      })
+    })
+
+    it('errors for invalid time signature', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query {
+            searchSongs(filters: { timeSignature: asdf }) {
+              title
+            }
+          }
+        `,
+      })
+
+      expect(res).toMatchObject({
+        errors: [
+          { message: expect.stringContaining('Invalid time signature') },
+        ],
       })
     })
   })
