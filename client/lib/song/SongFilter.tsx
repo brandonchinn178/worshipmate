@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import * as _ from 'lodash'
 import styled, { css } from 'styled-components'
 
 import { ActiveFilters } from '~/router/filters'
