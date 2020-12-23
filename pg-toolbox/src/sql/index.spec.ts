@@ -157,6 +157,14 @@ describe('sql', () => {
       })
     })
 
+    it('no-op for single clause', () => {
+      const filter = sql`song.name = ${TEST_SONG.name}`
+      const withAnd = sql`SELECT * FROM song WHERE ${sql.and([filter])}`
+      const withoutAnd = sql`SELECT * FROM song WHERE ${filter}`
+
+      expect(withAnd).toEqualJSON(withoutAnd)
+    })
+
     it('joins clauses with AND', () => {
       const filters = [
         sql`song.name = ${TEST_SONG.name}`,
@@ -192,6 +200,14 @@ describe('sql', () => {
         text: 'SELECT * FROM song WHERE FALSE',
         values: [],
       })
+    })
+
+    it('no-op for single clause', () => {
+      const filter = sql`song.name = ${TEST_SONG.name}`
+      const withOr = sql`SELECT * FROM song WHERE ${sql.or([filter])}`
+      const withoutOr = sql`SELECT * FROM song WHERE ${filter}`
+
+      expect(withOr).toEqualJSON(withoutOr)
     })
 
     it('joins clauses with OR', () => {
