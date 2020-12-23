@@ -54,10 +54,7 @@ describe('SongAPI', () => {
           slug: 'blessed-be-your-name',
           title: 'Blessed Be Your Name',
           recommendedKey: 'A',
-          timeSignature: {
-            top: 4,
-            bottom: 4,
-          },
+          timeSignature: [4, 4],
           bpm: 140,
         },
         {
@@ -65,10 +62,7 @@ describe('SongAPI', () => {
           slug: 'build-my-life',
           title: 'Build My Life',
           recommendedKey: 'E',
-          timeSignature: {
-            top: 4,
-            bottom: 4,
-          },
+          timeSignature: [4, 4],
           bpm: 68,
         },
         {
@@ -76,10 +70,7 @@ describe('SongAPI', () => {
           slug: 'ever-be',
           title: 'Ever Be',
           recommendedKey: 'E',
-          timeSignature: {
-            top: 4,
-            bottom: 4,
-          },
+          timeSignature: [4, 4],
           bpm: 72,
         },
         {
@@ -87,10 +78,7 @@ describe('SongAPI', () => {
           slug: 'great-are-you-lord',
           title: 'Great Are You Lord',
           recommended_key: 'G',
-          timeSignature: {
-            top: 6,
-            bottom: 8,
-          },
+          timeSignature: [6, 8],
           bpm: 52,
         },
       ])
@@ -106,21 +94,21 @@ describe('SongAPI', () => {
 
     it('can return songs with a recommended key', async () => {
       const songs = await songApi.searchSongs({
-        filters: [{ name: 'RECOMMENDED_KEY', value: 'A' }],
+        filters: { recommendedKey: 'A' },
       })
       expect(songs).toMatchObject([{ title: 'Blessed Be Your Name' }])
     })
 
     it('can return songs with a time signature', async () => {
       const songs = await songApi.searchSongs({
-        filters: [{ name: 'TIME_SIGNATURE', value: [6, 8] }],
+        filters: { timeSignature: [6, 8] },
       })
       expect(songs).toMatchObject([{ title: 'Great Are You Lord' }])
     })
 
     it('can return songs with a BPM', async () => {
       const songs = await songApi.searchSongs({
-        filters: [{ name: 'BPM', value: 68 }],
+        filters: { bpm: 68 },
       })
       expect(songs).toMatchObject([{ title: 'Build My Life' }])
     })
@@ -128,79 +116,9 @@ describe('SongAPI', () => {
     it('can return songs matching a filter and query', async () => {
       const songs = await songApi.searchSongs({
         query: 'be',
-        filters: [{ name: 'RECOMMENDED_KEY', value: 'E' }],
+        filters: { recommendedKey: 'E' },
       })
       expect(songs).toMatchObject([{ title: 'Ever Be' }])
-    })
-  })
-
-  describe('getAvailableFilters', () => {
-    const allSongs = [
-      {
-        slug: 'amazing-grace',
-        title: 'Amazing Grace',
-        recommended_key: 'A',
-        time_signature_top: 3,
-        time_signature_bottom: 4,
-        bpm: 68,
-      },
-      {
-        slug: 'blessed-be-your-name',
-        title: 'Blessed Be Your Name',
-        recommended_key: 'A',
-        time_signature_top: 4,
-        time_signature_bottom: 4,
-        bpm: 140,
-      },
-      {
-        slug: 'build-my-life',
-        title: 'Build My Life',
-        recommended_key: 'E',
-        time_signature_top: 4,
-        time_signature_bottom: 4,
-        bpm: 68,
-      },
-      {
-        slug: 'build-my-life-2',
-        title: 'Build My Life 2',
-        recommended_key: 'E',
-        time_signature_top: 4,
-        time_signature_bottom: 4,
-        bpm: 68,
-      },
-    ]
-
-    beforeEach(async () => {
-      await db.insertAll('song', allSongs)
-    })
-
-    it('returns filters for all songs', async () => {
-      const filters = await songApi.getAvailableFilters()
-      expect(filters).toMatchObject({
-        RECOMMENDED_KEY: expect.arrayContaining([
-          { value: 'A', count: 2 },
-          { value: 'E', count: 2 },
-        ]),
-        TIME_SIGNATURE: expect.arrayContaining([
-          { value: [4, 4], count: 3 },
-          { value: [3, 4], count: 1 },
-        ]),
-        BPM: expect.arrayContaining([
-          { value: 140, count: 1 },
-          { value: 68, count: 3 },
-        ]),
-      })
-    })
-
-    it('returns filters for queried songs', async () => {
-      const filters = await songApi.getAvailableFilters({
-        query: 'Grace',
-      })
-      expect(filters).toMatchObject({
-        RECOMMENDED_KEY: [{ value: 'A', count: 1 }],
-        TIME_SIGNATURE: [{ value: [3, 4], count: 1 }],
-        BPM: [{ value: 68, count: 1 }],
-      })
     })
   })
 })

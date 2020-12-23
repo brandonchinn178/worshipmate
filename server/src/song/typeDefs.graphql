@@ -7,54 +7,19 @@ type Song {
   bpm: Int!
 }
 
-type TimeSignature {
-  top: Int!
-  bottom: Int!
-}
+scalar TimeSignature
 
 ## Search filters ##
 
-enum FilterName {
-  RECOMMENDED_KEY
-  BPM
-  TIME_SIGNATURE
-  THEMES
-}
-
-"""
-A filter value must be of a type corresponding to the filter name:
-
-- RECOMMENDED_KEY: String
-- BPM: Int
-- TIME_SIGNATURE: [Int, Int]
-- THEMES: [String, String, ...]
-"""
-scalar FilterValue
-
-input SearchFilter {
-  name: FilterName!
-  value: FilterValue!
-}
-
-## Song search results ##
-
-type SongSearchResult {
-  songs: [Song!]!
-  availableFilters: [AvailableFilter!]!
-}
-
-type AvailableFilter {
-  name: FilterName!
-  values: [AvailableFilterValue!]!
-}
-
-type AvailableFilterValue {
-  value: FilterValue!
-  count: Int!
+input SearchFilters {
+  recommendedKey: String
+  bpm: Int
+  timeSignature: TimeSignature
+  # TODO: themes: [String!] representing a filter for a song matching all themes
 }
 
 ## Query ##
 
 extend type Query {
-  searchSongs(query: String, filters: [SearchFilter!]): SongSearchResult
+  searchSongs(query: String, filters: SearchFilters): [Song!]!
 }
