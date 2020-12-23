@@ -37,7 +37,7 @@ export default function Home() {
     },
   })
 
-  const songs = data?.songs ?? []
+  const songs = data?.searchSongs ?? []
   const songFilters = data?.filters ?? []
 
   return (
