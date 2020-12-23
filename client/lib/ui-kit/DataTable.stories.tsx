@@ -1,6 +1,6 @@
 import { Story } from '@storybook/react'
 
-import DataTable, { DataTableProps } from './DataTable'
+import { DataTable, DataTableProps } from './DataTable'
 
 type Book = {
   title: string

@@ -5,9 +5,9 @@ import styled from 'styled-components'
 import { useSearchSongs } from '~/api'
 import { setQueryString } from '~/router'
 import { addFilter, loadFilters, removeFilter } from '~/router/filters'
-import SongFilter from '~/song/SongFilter'
-import SongTable from '~/song/SongTable'
-import SearchBar from '~/ui-kit/SearchBar'
+import { SongFilter } from '~/song/SongFilter'
+import { SongTable } from '~/song/SongTable'
+import { SearchBar } from '~/ui-kit/SearchBar'
 
 function pluralize(...args: [string, number] | [string, string, number]) {
   const [singular, plural, count] =

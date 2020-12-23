@@ -2,7 +2,7 @@ import { fireEvent, waitFor } from '@testing-library/react'
 
 import { renderUI } from '~jest-utils'
 
-import SearchBar from './SearchBar'
+import { SearchBar } from './SearchBar'
 
 it('allows typing and submission', async () => {
   const onSubmit = jest.fn()
