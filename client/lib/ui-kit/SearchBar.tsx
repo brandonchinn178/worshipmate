@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import Icon from '~/ui-kit/Icon'
+import { Icon } from '~/ui-kit/Icon'
 
 type Form = {
   search: string
