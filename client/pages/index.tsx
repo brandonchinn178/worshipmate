@@ -42,28 +42,28 @@ export default function Home() {
 
   return (
     <Grid>
-      <Sidebar>
+      <SidebarArea>
         <SongFilter
           filters={songFilters}
           activeFilters={activeFilters}
           addFilter={(key, value) => addFilter(router, key, value)}
           removeFilter={(key) => removeFilter(router, key)}
         />
-      </Sidebar>
-      <SongSearch>
+      </SidebarArea>
+      <SongSearchArea>
         <SearchBar
           initial={search}
           onSubmit={(query: string) => {
             setQueryString(router, 'search', query)
           }}
         />
-      </SongSearch>
-      <SongCount>
+      </SongSearchArea>
+      <SongCountArea>
         {songs.length} {pluralize('song', songs.length)}
-      </SongCount>
-      <SongTableCell>
+      </SongCountArea>
+      <SongTableArea>
         <SongTable songs={songs} />
-      </SongTableCell>
+      </SongTableArea>
     </Grid>
   )
 }
@@ -80,18 +80,19 @@ const Grid = styled.div`
   grid-row-gap: 10px;
 `
 
-const Sidebar = styled.div`
+const SidebarArea = styled.div`
   grid-area: sidebar;
 `
 
-const SongSearch = styled.div`
+const SongSearchArea = styled.div`
   grid-area: search;
 `
 
-const SongCount = styled.p`
+const SongCountArea = styled.p`
+  grid-area: song-count;
   font-weight: bold;
 `
 
-const SongTableCell = styled.div`
+const SongTableArea = styled.div`
   grid-area: table;
 `
