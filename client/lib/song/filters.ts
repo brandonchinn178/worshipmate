@@ -23,6 +23,60 @@ export type FilterHandler = {
   removeFilter: <Name extends FilterNames>(name: Name) => void
 }
 
+/** All filter types **/
+
+type FilterType<Name extends FilterNames> = {
+  parseFilterValue: (value: string) => FilterValue<Name> | null
+  showFilterValue: (value: FilterValue<Name>) => string
+}
+
+const ALL_FILTER_TYPES: { [Name in FilterNames]: FilterType<Name> } = {
+  recommendedKey: {
+    parseFilterValue: _.identity,
+    showFilterValue: _.toString,
+  },
+  bpm: {
+    parseFilterValue: (value) => {
+      const bpm = _.parseInt(value)
+      if (!_.isFinite(bpm)) {
+        return null
+      }
+      return bpm
+    },
+    showFilterValue: _.toString,
+  },
+  timeSignature: {
+    parseFilterValue: (value) => {
+      const parts = value.match(/^(\d+)\/(\d+)$/)
+      if (!parts) {
+        return null
+      }
+
+      const top = _.parseInt(parts[1])
+      const bottom = _.parseInt(parts[2])
+      return [top, bottom]
+    },
+    showFilterValue: ([top, bottom]) => `${top}/${bottom}`,
+  },
+}
+
+export const forEachFilterType = (
+  callback: <Name extends FilterNames>(
+    filterName: Name,
+    filterType: FilterType<Name>,
+  ) => void,
+) => {
+  _.each(ALL_FILTER_TYPES, (filterType, filterName) => {
+    callback(filterName as FilterNames, filterType as FilterType<FilterNames>)
+  })
+}
+
+export const getFilterType = <Name extends FilterNames>(
+  name: Name,
+): FilterType<Name> => {
+  return (ALL_FILTER_TYPES[name] as unknown) as FilterType<Name>
+}
+
 /** Marshalling filters to/from querystring **/
 
 export const loadActiveFilters = (router: NextRouter): ActiveFilters => {
@@ -30,25 +84,16 @@ export const loadActiveFilters = (router: NextRouter): ActiveFilters => {
 
   const filters = {} as ActiveFilters
 
-  if (_.isString(query.recommendedKey)) {
-    filters.recommendedKey = query.recommendedKey
-  }
-
-  if (_.isString(query.bpm)) {
-    const bpm = _.parseInt(query.bpm)
-    if (_.isFinite(bpm)) {
-      filters.bpm = bpm
+  forEachFilterType((filterName, filterType) => {
+    const rawValue = query[filterName]
+    if (_.isString(rawValue)) {
+      const value = filterType.parseFilterValue(rawValue)
+      if (value === null) {
+        return
+      }
+      filters[filterName] = value
     }
-  }
-
-  if (_.isString(query.timeSignature)) {
-    const parts = query.timeSignature.match(/^(\d+)\/(\d+)$/)
-    if (parts) {
-      const top = _.parseInt(parts[1])
-      const bottom = _.parseInt(parts[2])
-      filters.timeSignature = [top, bottom]
-    }
-  }
+  })
 
   return filters
 }
@@ -56,24 +101,7 @@ export const loadActiveFilters = (router: NextRouter): ActiveFilters => {
 export const mkFilterHandler = (router: NextRouter): FilterHandler => {
   return {
     addFilter: (name, value) => {
-      let valueString
-
-      switch (name) {
-        case 'recommendedKey': {
-          valueString = value
-          break
-        }
-        case 'bpm': {
-          valueString = value.toString()
-          break
-        }
-        case 'timeSignature': {
-          const [top, bottom] = value
-          valueString = `${top}/${bottom}`
-          break
-        }
-      }
-
+      const valueString = getFilterType(name).showFilterValue(value)
       setQueryString(router, name, valueString)
     },
     removeFilter: (name) => {
