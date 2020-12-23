@@ -42,7 +42,6 @@ describe('Query', () => {
         query: `
           query {
             searchSongs {
-              songs {
                 id
                 slug
                 title
@@ -52,7 +51,6 @@ describe('Query', () => {
                   bottom
                 }
                 bpm
-              }
             }
           }
         `,
@@ -60,8 +58,7 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          searchSongs: {
-            songs: [
+          searchSongs: [
               {
                 id: expect.any(String),
                 slug: 'blessed-be-your-name',
@@ -96,7 +93,6 @@ describe('Query', () => {
                 bpm: 72,
               },
             ],
-          },
         },
       })
     })
@@ -106,9 +102,7 @@ describe('Query', () => {
         query: `
           query ($query: String!) {
             searchSongs(query: $query) {
-              songs {
                 title
-              }
             }
           }
         `,
@@ -119,12 +113,10 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          searchSongs: {
-            songs: expect.arrayContaining([
+          searchSongs: expect.arrayContaining([
               { title: 'Blessed Be Your Name' },
               { title: 'Ever Be' },
             ]),
-          },
         },
       })
     })
@@ -135,9 +127,7 @@ describe('Query', () => {
           query: `
             query ($filters: [SearchFilter!]!) {
               searchSongs(filters: $filters) {
-                songs {
                   title
-                }
               }
             }
           `,
@@ -153,12 +143,10 @@ describe('Query', () => {
 
         expect(res).toMatchObject({
           data: {
-            searchSongs: {
-              songs: expect.arrayContaining([
+            searchSongs: expect.arrayContaining([
                 { title: 'Build My Life' },
                 { title: 'Ever Be' },
               ]),
-            },
           },
         })
       })
@@ -168,9 +156,7 @@ describe('Query', () => {
           query: `
             query ($filters: [SearchFilter!]!) {
               searchSongs(filters: $filters) {
-                songs {
                   title
-                }
               }
             }
           `,
@@ -190,9 +176,7 @@ describe('Query', () => {
 
         expect(res).toMatchObject({
           data: {
-            searchSongs: {
-              songs: [{ title: 'Build My Life' }],
-            },
+            searchSongs: [{ title: 'Build My Life' }],
           },
         })
       })
@@ -202,9 +186,7 @@ describe('Query', () => {
           query: `
             query ($filters: [SearchFilter!]!) {
               searchSongs(filters: $filters) {
-                songs {
                   title
-                }
               }
             }
           `,
@@ -228,9 +210,7 @@ describe('Query', () => {
           query: `
             query ($query: String!, $filters: [SearchFilter!]!) {
               searchSongs(query: $query, filters: $filters) {
-                songs {
                   title
-                }
               }
             }
           `,
@@ -247,66 +227,7 @@ describe('Query', () => {
 
         expect(res).toMatchObject({
           data: {
-            searchSongs: {
-              songs: [{ title: 'Ever Be' }],
-            },
-          },
-        })
-      })
-    })
-
-    describe('available filters', () => {
-      it('returns available filters for search results', async () => {
-        const res = await server.query({
-          query: `
-            query ($query: String!) {
-              searchSongs(query: $query) {
-                songs {
-                  title
-                }
-                availableFilters {
-                  name
-                  values {
-                    value
-                    count
-                  }
-                }
-              }
-            }
-          `,
-          variables: {
-            query: 'be',
-          },
-        })
-
-        expect(res).toMatchObject({
-          data: {
-            searchSongs: {
-              songs: expect.arrayContaining([
-                { title: 'Blessed Be Your Name' },
-                { title: 'Ever Be' },
-              ]),
-              availableFilters: expect.arrayContaining([
-                {
-                  name: 'RECOMMENDED_KEY',
-                  values: expect.arrayContaining([
-                    { value: 'E', count: 1 },
-                    { value: 'A', count: 1 },
-                  ]),
-                },
-                {
-                  name: 'BPM',
-                  values: expect.arrayContaining([
-                    { value: 140, count: 1 },
-                    { value: 72, count: 1 },
-                  ]),
-                },
-                {
-                  name: 'TIME_SIGNATURE',
-                  values: [{ value: [4, 4], count: 2 }],
-                },
-              ]),
-            },
+            searchSongs: [{ title: 'Ever Be' }],
           },
         })
       })
