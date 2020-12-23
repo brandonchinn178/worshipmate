@@ -42,15 +42,15 @@ describe('Query', () => {
         query: `
           query {
             searchSongs {
-                id
-                slug
-                title
-                recommendedKey
-                timeSignature {
-                  top
-                  bottom
-                }
-                bpm
+              id
+              slug
+              title
+              recommendedKey
+              timeSignature {
+                top
+                bottom
+              }
+              bpm
             }
           }
         `,
@@ -59,40 +59,40 @@ describe('Query', () => {
       expect(res).toMatchObject({
         data: {
           searchSongs: [
-              {
-                id: expect.any(String),
-                slug: 'blessed-be-your-name',
-                title: 'Blessed Be Your Name',
-                recommendedKey: 'A',
-                timeSignature: {
-                  top: 4,
-                  bottom: 4,
-                },
-                bpm: 140,
+            {
+              id: expect.any(String),
+              slug: 'blessed-be-your-name',
+              title: 'Blessed Be Your Name',
+              recommendedKey: 'A',
+              timeSignature: {
+                top: 4,
+                bottom: 4,
               },
-              {
-                id: expect.any(String),
-                slug: 'build-my-life',
-                title: 'Build My Life',
-                recommendedKey: 'E',
-                timeSignature: {
-                  top: 4,
-                  bottom: 4,
-                },
-                bpm: 68,
+              bpm: 140,
+            },
+            {
+              id: expect.any(String),
+              slug: 'build-my-life',
+              title: 'Build My Life',
+              recommendedKey: 'E',
+              timeSignature: {
+                top: 4,
+                bottom: 4,
               },
-              {
-                id: expect.any(String),
-                slug: 'ever-be',
-                title: 'Ever Be',
-                recommendedKey: 'E',
-                timeSignature: {
-                  top: 4,
-                  bottom: 4,
-                },
-                bpm: 72,
+              bpm: 68,
+            },
+            {
+              id: expect.any(String),
+              slug: 'ever-be',
+              title: 'Ever Be',
+              recommendedKey: 'E',
+              timeSignature: {
+                top: 4,
+                bottom: 4,
               },
-            ],
+              bpm: 72,
+            },
+          ],
         },
       })
     })
@@ -102,7 +102,7 @@ describe('Query', () => {
         query: `
           query ($query: String!) {
             searchSongs(query: $query) {
-                title
+              title
             }
           }
         `,
@@ -114,9 +114,9 @@ describe('Query', () => {
       expect(res).toMatchObject({
         data: {
           searchSongs: expect.arrayContaining([
-              { title: 'Blessed Be Your Name' },
-              { title: 'Ever Be' },
-            ]),
+            { title: 'Blessed Be Your Name' },
+            { title: 'Ever Be' },
+          ]),
         },
       })
     })
@@ -127,7 +127,7 @@ describe('Query', () => {
           query: `
             query ($filters: [SearchFilter!]!) {
               searchSongs(filters: $filters) {
-                  title
+                title
               }
             }
           `,
@@ -144,9 +144,9 @@ describe('Query', () => {
         expect(res).toMatchObject({
           data: {
             searchSongs: expect.arrayContaining([
-                { title: 'Build My Life' },
-                { title: 'Ever Be' },
-              ]),
+              { title: 'Build My Life' },
+              { title: 'Ever Be' },
+            ]),
           },
         })
       })
@@ -156,7 +156,7 @@ describe('Query', () => {
           query: `
             query ($filters: [SearchFilter!]!) {
               searchSongs(filters: $filters) {
-                  title
+                title
               }
             }
           `,
@@ -186,7 +186,7 @@ describe('Query', () => {
           query: `
             query ($filters: [SearchFilter!]!) {
               searchSongs(filters: $filters) {
-                  title
+                title
               }
             }
           `,
@@ -210,7 +210,7 @@ describe('Query', () => {
           query: `
             query ($query: String!, $filters: [SearchFilter!]!) {
               searchSongs(query: $query, filters: $filters) {
-                  title
+                title
               }
             }
           `,
