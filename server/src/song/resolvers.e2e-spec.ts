@@ -113,19 +113,14 @@ describe('Query', () => {
       it('queries songs filtered by a search filter', async () => {
         const res = await server.query({
           query: /* GraphQL */ `
-            query($filters: [SearchFilter!]!) {
+            query($filters: SearchFilters!) {
               searchSongs(filters: $filters) {
                 title
               }
             }
           `,
           variables: {
-            filters: [
-              {
-                name: 'RECOMMENDED_KEY',
-                value: 'E',
-              },
-            ],
+            filters: { recommendedKey: 'E' },
           },
         })
 
@@ -142,23 +137,17 @@ describe('Query', () => {
       it('queries songs filtered by multiple search filters', async () => {
         const res = await server.query({
           query: /* GraphQL */ `
-            query($filters: [SearchFilter!]!) {
+            query($filters: SearchFilters!) {
               searchSongs(filters: $filters) {
                 title
               }
             }
           `,
           variables: {
-            filters: [
-              {
-                name: 'RECOMMENDED_KEY',
-                value: 'E',
-              },
-              {
-                name: 'BPM',
-                value: 68,
-              },
-            ],
+            filters: {
+              recommendedKey: 'E',
+              bpm: 68,
+            },
           },
         })
 
@@ -169,34 +158,10 @@ describe('Query', () => {
         })
       })
 
-      it('errors with an invalid search filter', async () => {
-        const res = await server.query({
-          query: /* GraphQL */ `
-            query($filters: [SearchFilter!]!) {
-              searchSongs(filters: $filters) {
-                title
-              }
-            }
-          `,
-          variables: {
-            filters: [
-              {
-                name: 'BPM',
-                value: 'foo',
-              },
-            ],
-          },
-        })
-
-        expect(res).toMatchObject({
-          errors: [{ message: "Invalid value for filter 'BPM': foo" }],
-        })
-      })
-
       it('queries songs with query and filter', async () => {
         const res = await server.query({
           query: /* GraphQL */ `
-            query($query: String!, $filters: [SearchFilter!]!) {
+            query($query: String!, $filters: SearchFilters!) {
               searchSongs(query: $query, filters: $filters) {
                 title
               }
@@ -204,12 +169,7 @@ describe('Query', () => {
           `,
           variables: {
             query: 'be',
-            filters: [
-              {
-                name: 'RECOMMENDED_KEY',
-                value: 'E',
-              },
-            ],
+            filters: { recommendedKey: 'E' },
           },
         })
 

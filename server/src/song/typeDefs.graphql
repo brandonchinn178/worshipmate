@@ -11,30 +11,15 @@ scalar TimeSignature
 
 ## Search filters ##
 
-enum FilterName {
-  RECOMMENDED_KEY
-  BPM
-  TIME_SIGNATURE
-  THEMES
-}
-
-"""
-A filter value must be of a type corresponding to the filter name:
-
-- RECOMMENDED_KEY: String
-- BPM: Int
-- TIME_SIGNATURE: [Int, Int]
-- THEMES: [String, String, ...]
-"""
-scalar FilterValue
-
-input SearchFilter {
-  name: FilterName!
-  value: FilterValue!
+input SearchFilters {
+  recommendedKey: String
+  bpm: Int
+  timeSignature: TimeSignature
+  # TODO: themes: [String!] representing a filter for a song matching all themes
 }
 
 ## Query ##
 
 extend type Query {
-  searchSongs(query: String, filters: [SearchFilter!]): [Song!]!
+  searchSongs(query: String, filters: SearchFilters): [Song!]!
 }
