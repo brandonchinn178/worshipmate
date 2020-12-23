@@ -1,5 +1,3 @@
-import React from 'react'
-
 import SearchIcon from './icons/search.svg'
 
 const icons = {
