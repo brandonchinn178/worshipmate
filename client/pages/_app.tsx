@@ -1,6 +1,5 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
-import React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 
 import { Header } from '~/layout/Header'
