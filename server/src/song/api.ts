@@ -3,24 +3,11 @@ import { Database, sql, SqlQuery } from 'pg-toolbox'
 
 import { Song } from './models'
 import { SongRecord } from './schema'
-import {
-  SearchFilter,
-  SearchFilterNames,
-  SearchFilterTypes,
-} from './searchFilter'
+import { SearchFilter } from './searchFilter'
 
 export type SearchOptions = {
   query?: string
   filters?: SearchFilter[]
-}
-
-type AvailableFilter<Name extends SearchFilterNames> = {
-  value: SearchFilterTypes[Name]
-  count: number
-}
-
-export type AvailableFilters = {
-  [Name in SearchFilterNames]: AvailableFilter<Name>[]
 }
 
 const fromRecord = (song: SongRecord): Song => ({
@@ -45,56 +32,6 @@ export class SongAPI extends DataSource {
     `)
 
     return songs.map(fromRecord)
-  }
-
-  async getAvailableFilters(
-    options?: SearchOptions,
-  ): Promise<AvailableFilters> {
-    const condition = this.getSearchCondition(options)
-
-    // Use integer instead of default bigint to get back a normal number
-    // in javascript.
-    // Revisit when database contains more than 2,147,483,647 songs.
-    const count = sql.raw('COUNT(*) :: integer AS "count"')
-
-    const recommendedKeyCounts = await this.db.query<
-      AvailableFilter<'RECOMMENDED_KEY'>
-    >(sql`
-      SELECT "song"."recommended_key" AS "value", ${count}
-      FROM "song"
-      WHERE ${condition}
-      GROUP BY "value"
-    `)
-
-    const bpmCounts = await this.db.query<AvailableFilter<'BPM'>>(sql`
-      SELECT "song"."bpm" AS "value", ${count}
-      FROM "song"
-      WHERE ${condition}
-      GROUP BY "value"
-    `)
-
-    const timeSignatureCounts = await this.db.query<
-      AvailableFilter<'TIME_SIGNATURE'>
-    >(sql`
-      SELECT
-        ARRAY[
-          "song"."time_signature_top",
-          "song"."time_signature_bottom"
-        ] AS "value",
-        ${count}
-      FROM "song"
-      WHERE ${condition}
-      GROUP BY "value"
-    `)
-
-    return {
-      RECOMMENDED_KEY: recommendedKeyCounts,
-      BPM: bpmCounts,
-      TIME_SIGNATURE: timeSignatureCounts,
-
-      // TODO
-      THEMES: [],
-    }
   }
 
   private getSearchCondition(options: SearchOptions = {}): SqlQuery {
