@@ -13,10 +13,7 @@ export type SearchOptions = {
 const fromRecord = (song: SongRecord): Song => ({
   ...song,
   recommendedKey: song.recommended_key,
-  timeSignature: {
-    top: song.time_signature_top,
-    bottom: song.time_signature_bottom,
-  },
+  timeSignature: [song.time_signature_top, song.time_signature_bottom],
 })
 
 export class SongAPI extends DataSource {

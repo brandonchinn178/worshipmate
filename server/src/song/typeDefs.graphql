@@ -7,10 +7,7 @@ type Song {
   bpm: Int!
 }
 
-type TimeSignature {
-  top: Int!
-  bottom: Int!
-}
+scalar TimeSignature
 
 ## Search filters ##
 

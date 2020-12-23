@@ -62,10 +62,7 @@ describe('SongAPI', () => {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
         recommendedKey: 'A',
-        timeSignature: {
-          top: 4,
-          bottom: 4,
-        },
+        timeSignature: [4, 4],
         bpm: 140,
       }
 
