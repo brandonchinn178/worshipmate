@@ -2,7 +2,7 @@ import { fireEvent, waitFor } from '@testing-library/react'
 
 import { renderUI } from '~jest-utils'
 
-import SongFilter from './SongFilter'
+import { SongFilter } from './SongFilter'
 
 const testFilters = [
   {

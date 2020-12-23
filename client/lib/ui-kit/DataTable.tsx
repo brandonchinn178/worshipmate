@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import * as _ from 'lodash'
 import { Key, ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 
@@ -46,11 +46,7 @@ const renderCell = <T,>(
   return _.get(rowData, name)
 }
 
-export default function DataTable<T>({
-  data,
-  columnDefs,
-  rowKey,
-}: DataTableProps<T>) {
+export function DataTable<T>({ data, columnDefs, rowKey }: DataTableProps<T>) {
   // Let columns shrink to dictated proportions, without respect to
   // the data in the columns.
   // https://github.com/rachelandrew/cssgrid-ama/issues/25

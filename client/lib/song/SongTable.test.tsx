@@ -1,6 +1,6 @@
 import { renderUI } from '~jest-utils'
 
-import SongTable from './SongTable'
+import { SongTable } from './SongTable'
 
 it('displays a song', () => {
   const { getByText } = renderUI(

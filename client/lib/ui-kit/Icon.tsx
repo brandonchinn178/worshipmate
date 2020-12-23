@@ -1,5 +1,3 @@
-import React from 'react'
-
 import SearchIcon from './icons/search.svg'
 
 const icons = {
@@ -10,7 +8,7 @@ type IconProps = {
   name: keyof typeof icons
 }
 
-export default function Icon({ name }: IconProps) {
+export function Icon({ name }: IconProps) {
   const IconComponent = icons[name]
   return <IconComponent />
 }

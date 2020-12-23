@@ -1,6 +1,6 @@
 import { renderUI } from '~jest-utils'
 
-import DataTable from './DataTable'
+import { DataTable } from './DataTable'
 
 type MockPerson = {
   id: number
