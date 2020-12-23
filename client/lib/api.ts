@@ -20,7 +20,7 @@ export type SearchSongsQuery = {
 }
 
 type SearchSongsQueryVariables = {
-  search: string
+  search?: string
   filters: ReadonlyArray<{
     key: string
     value: string
@@ -100,8 +100,8 @@ export const useSearchSongs = ({
 
   return {
     data: {
-      songs: allSongs.filter(({ title }) =>
-        title.match(new RegExp(search, 'i')),
+      songs: allSongs.filter(
+        ({ title }) => !search || title.match(new RegExp(search, 'i')),
       ),
       filters: [
         {
