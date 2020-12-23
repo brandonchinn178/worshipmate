@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components'
 
 import { color, fontFamily } from '~/theme'
 
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   * {
     position: relative;
     margin: 0;
@@ -33,5 +33,3 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 `
-
-export default GlobalStyle

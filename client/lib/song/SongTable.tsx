@@ -1,4 +1,4 @@
-import DataTable, { ColumnDefs } from '~/ui-kit/DataTable'
+import { ColumnDefs, DataTable } from '~/ui-kit/DataTable'
 
 import { Song } from '.'
 
@@ -24,7 +24,7 @@ const songTableColumnDefs: ColumnDefs<Song> = [
   },
 ]
 
-export default function SongTable({ songs }: SongTableProps) {
+export function SongTable({ songs }: SongTableProps) {
   return (
     <DataTable
       data={songs}

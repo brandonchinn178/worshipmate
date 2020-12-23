@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
-import Icon from '~/ui-kit/Icon'
+import { Icon } from '~/ui-kit/Icon'
 
 type Form = {
   search: string
@@ -12,7 +12,7 @@ type SearchBarProps = {
   onSubmit: (query: string) => void
 }
 
-export default function SearchBar({ initial = '', onSubmit }: SearchBarProps) {
+export function SearchBar({ initial = '', onSubmit }: SearchBarProps) {
   const { register, handleSubmit } = useForm<Form>({
     defaultValues: {
       search: initial,

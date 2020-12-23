@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import * as _ from 'lodash'
 import styled, { css } from 'styled-components'
 
 import { ActiveFilters } from '~/router/filters'
@@ -21,7 +21,7 @@ type SongFilterProps = {
   removeFilter: (key: string) => void
 }
 
-export default function SongFilter({
+export function SongFilter({
   filters,
   activeFilters,
   addFilter,
