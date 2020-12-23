@@ -182,3 +182,152 @@ describe('Query', () => {
     })
   })
 })
+
+describe('TimeSignature', () => {
+  beforeEach(async () => {
+    await db.insertAll('song', [
+      {
+        slug: 'four-four',
+        title: '4/4',
+        recommended_key: 'C',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 0,
+      },
+      {
+        slug: 'three-four',
+        title: '3/4',
+        recommended_key: 'C',
+        time_signature_top: 3,
+        time_signature_bottom: 4,
+        bpm: 0,
+      },
+    ])
+  })
+
+  describe('serialize from resolver', () => {
+    it('serializes correctly', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query {
+            searchSongs {
+              timeSignature
+            }
+          }
+        `,
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          searchSongs: expect.arrayContaining([
+            { timeSignature: [4, 4] },
+            { timeSignature: [3, 4] },
+          ]),
+        },
+      })
+    })
+  })
+
+  describe('parse from variables', () => {
+    it('parses a valid time signature', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query($filters: SearchFilters!) {
+            searchSongs(filters: $filters) {
+              title
+            }
+          }
+        `,
+        variables: {
+          filters: { timeSignature: [4, 4] },
+        },
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          searchSongs: [{ title: '4/4' }],
+        },
+      })
+    })
+
+    it('errors for invalid time signature', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query($filters: SearchFilters!) {
+            searchSongs(filters: $filters) {
+              title
+            }
+          }
+        `,
+        variables: {
+          filters: { timeSignature: 'asdf' },
+        },
+      })
+
+      expect(res).toMatchObject({
+        errors: [
+          { message: expect.stringContaining('Invalid time signature') },
+        ],
+      })
+    })
+
+    it('errors for invalid time signature components', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query($filters: SearchFilters!) {
+            searchSongs(filters: $filters) {
+              title
+            }
+          }
+        `,
+        variables: {
+          filters: { timeSignature: ['foo', 'bar'] },
+        },
+      })
+
+      expect(res).toMatchObject({
+        errors: [
+          { message: expect.stringContaining('Invalid time signature') },
+        ],
+      })
+    })
+  })
+
+  describe('parse from literal', () => {
+    it('parses a valid time signature', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query {
+            searchSongs(filters: { timeSignature: [4, 4] }) {
+              title
+            }
+          }
+        `,
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          searchSongs: [{ title: '4/4' }],
+        },
+      })
+    })
+
+    it('errors for invalid time signature', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query {
+            searchSongs(filters: { timeSignature: asdf }) {
+              title
+            }
+          }
+        `,
+      })
+
+      expect(res).toMatchObject({
+        errors: [
+          { message: expect.stringContaining('Invalid time signature') },
+        ],
+      })
+    })
+  })
+})
