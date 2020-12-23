@@ -1,8 +1,9 @@
 import * as _ from 'lodash'
 import styled, { css } from 'styled-components'
 
-import { ActiveFilters } from '~/router/filters'
 import { color, font } from '~/theme'
+
+import { ActiveFilters, FilterHandler } from './filters'
 
 type FilterOption = {
   name: string
@@ -17,15 +18,13 @@ type Filter = {
 type SongFilterProps = {
   availableFilters: readonly Filter[]
   activeFilters: ActiveFilters
-  addFilter: (key: string, value: string) => void
-  removeFilter: (key: string) => void
+  filterHandler: FilterHandler
 }
 
 export function SongFilter({
   availableFilters,
   activeFilters,
-  addFilter,
-  removeFilter,
+  filterHandler,
 }: SongFilterProps) {
   return (
     <FilterBox>
@@ -42,9 +41,9 @@ export function SongFilter({
                   key={name}
                   onClick={() => {
                     if (isActive) {
-                      removeFilter(key)
+                      filterHandler.removeFilter(key)
                     } else {
-                      addFilter(key, name)
+                      filterHandler.addFilter(key, name)
                     }
                   }}
                 >
