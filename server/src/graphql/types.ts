@@ -28,7 +28,7 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query'
-  searchSongs?: Maybe<SongSearchResult>
+  searchSongs: Array<Song>
 }
 
 export type QuerySearchSongsArgs = {
@@ -62,22 +62,4 @@ export enum FilterName {
 export type SearchFilter = {
   name: FilterName
   value: Scalars['FilterValue']
-}
-
-export type SongSearchResult = {
-  __typename?: 'SongSearchResult'
-  songs: Array<Song>
-  availableFilters: Array<AvailableFilter>
-}
-
-export type AvailableFilter = {
-  __typename?: 'AvailableFilter'
-  name: FilterName
-  values: Array<AvailableFilterValue>
-}
-
-export type AvailableFilterValue = {
-  __typename?: 'AvailableFilterValue'
-  value: Scalars['FilterValue']
-  count: Scalars['Int']
 }
