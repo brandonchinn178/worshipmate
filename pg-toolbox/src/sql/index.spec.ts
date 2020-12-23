@@ -8,6 +8,38 @@ const TEST_SONG = {
 
 const dedent = (s: string) => s.replace(/\n\s{2}/g, '\n')
 
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace jest {
+    interface Matchers<R> {
+      toEqualJSON(v: unknown): R
+    }
+  }
+}
+
+expect.extend({
+  // Expect the two values to equal when JSON-stringified.
+  toEqualJSON(received: unknown, expected: unknown) {
+    const pass = this.equals(JSON.stringify(received), JSON.stringify(expected))
+
+    const message = () => {
+      const expectedPrefix = pass ? 'not ' : ''
+      return [
+        this.utils.matcherHint('toEqualJSON', undefined, undefined, {
+          comment: 'equality after JSON.stringify',
+          isNot: this.isNot,
+          promise: this.promise,
+        }),
+        '',
+        'Expected: ' + expectedPrefix + this.utils.printExpected(expected),
+        'Received: ' + this.utils.printReceived(received),
+      ].join('\n')
+    }
+
+    return { actual: received, message, pass }
+  },
+})
+
 describe('sql', () => {
   it('allows raw strings', () => {
     expect(sql`SELECT * FROM song`).toMatchObject({
@@ -61,7 +93,7 @@ describe('sql', () => {
       const withoutParam = sql`
         SELECT * FROM song WHERE song.name = ${TEST_SONG.name}
       `
-      expect(JSON.stringify(withParam)).toBe(JSON.stringify(withoutParam))
+      expect(withParam).toEqualJSON(withoutParam)
     })
   })
 
@@ -70,7 +102,7 @@ describe('sql', () => {
       const withRaw = sql.raw('SELECT * FROM song')
       const withSql = sql`SELECT * FROM song`
 
-      expect(JSON.stringify(withRaw)).toBe(JSON.stringify(withSql))
+      expect(withRaw).toEqualJSON(withSql)
     })
 
     it('interpolates without escaping', () => {
