@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import * as _ from 'lodash'
 import { Key, ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 
