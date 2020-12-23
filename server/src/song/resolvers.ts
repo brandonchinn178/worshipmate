@@ -6,7 +6,6 @@ import { QueryParent, Resolver, Resolvers } from '~/graphql/resolvers'
 import { QuerySearchSongsArgs, Scalars, Song } from '~/graphql/types'
 
 import { TimeSignature } from './models'
-import { validateSearchFilter } from './searchFilter'
 
 /** Query **/
 
@@ -23,7 +22,7 @@ const Query: QueryResolvers = {
 
     return songAPI.searchSongs({
       query: query ?? undefined,
-      filters: _.map(filters, validateSearchFilter),
+      filters: filters ? _.pickBy(filters) : undefined,
     })
   },
 }

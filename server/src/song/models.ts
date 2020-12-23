@@ -8,3 +8,9 @@ export type Song = {
 }
 
 export type TimeSignature = [number, number]
+
+export type SearchFilters = {
+  recommendedKey?: string
+  bpm?: number
+  timeSignature?: TimeSignature
+}

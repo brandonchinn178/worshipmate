@@ -94,21 +94,21 @@ describe('SongAPI', () => {
 
     it('can return songs with a recommended key', async () => {
       const songs = await songApi.searchSongs({
-        filters: [{ name: 'RECOMMENDED_KEY', value: 'A' }],
+        filters: { recommendedKey: 'A' },
       })
       expect(songs).toMatchObject([{ title: 'Blessed Be Your Name' }])
     })
 
     it('can return songs with a time signature', async () => {
       const songs = await songApi.searchSongs({
-        filters: [{ name: 'TIME_SIGNATURE', value: [6, 8] }],
+        filters: { timeSignature: [6, 8] },
       })
       expect(songs).toMatchObject([{ title: 'Great Are You Lord' }])
     })
 
     it('can return songs with a BPM', async () => {
       const songs = await songApi.searchSongs({
-        filters: [{ name: 'BPM', value: 68 }],
+        filters: { bpm: 68 },
       })
       expect(songs).toMatchObject([{ title: 'Build My Life' }])
     })
@@ -116,7 +116,7 @@ describe('SongAPI', () => {
     it('can return songs matching a filter and query', async () => {
       const songs = await songApi.searchSongs({
         query: 'be',
-        filters: [{ name: 'RECOMMENDED_KEY', value: 'E' }],
+        filters: { recommendedKey: 'E' },
       })
       expect(songs).toMatchObject([{ title: 'Ever Be' }])
     })

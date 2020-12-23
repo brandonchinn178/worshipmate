@@ -36,7 +36,7 @@ describe('SongAPI', () => {
 
     it('can return songs matching a filter', async () => {
       await songApi.searchSongs({
-        filters: [{ name: 'RECOMMENDED_KEY', value: 'A' }],
+        filters: { recommendedKey: 'A' },
       })
       expect(db.query).toHaveBeenCalledWith(
         sqlMatches({
