@@ -1,11 +1,10 @@
 schema: ./src/**/*.graphql
+
 generates:
   ./src/graphql/types.ts:
     plugins:
       - add:
           content: '/** AUTO GENERATED. DO NOT MODIFY **/'
-      - add:
-          content: '/* eslint-disable */'
       - typescript
     config:
       useIndexSignature: true
@@ -17,4 +16,4 @@ generates:
         FilterValue: unknown
     hooks:
       afterOneFileWrite:
-        - prettier --write
+        - eslint --ext .ts --fix
