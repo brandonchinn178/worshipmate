@@ -36,7 +36,7 @@ describe('setQueryString', () => {
       },
     })
 
-    setQueryString(router, 'foo', undefined)
+    setQueryString(router, 'foo', null)
     expect(getNewQuery(router)).toMatchObject({})
   })
 })
