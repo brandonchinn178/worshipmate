@@ -12,7 +12,7 @@ import { SongFilter } from '~/song/SongFilter'
 import { SongTable } from '~/song/SongTable'
 import { SearchBar } from '~/ui-kit/SearchBar'
 
-function pluralize(...args: [string, number] | [string, string, number]) {
+const pluralize = (...args: [string, number] | [string, string, number]) => {
   const [singular, plural, count] =
     args.length === 2 ? [args[0], args[0] + 's', args[1]] : args
 
