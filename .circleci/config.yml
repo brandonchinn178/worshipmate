@@ -102,11 +102,23 @@ jobs:
           file: server/coverage/lcov.info
 
   build_client:
-    executor: docker_node
+    executor: docker_node_postgres
     steps:
       - checkout
       - install_yarn_and_deps
 
+      # need server to prepopulate
+      - run: yarn pg-toolbox build
+      - run: yarn server migrate up
+      - run:
+          command: yarn server start
+          background: true
+      - run:
+          name: Wait for server to start
+          command: curl --retry 5 --retry-connrefused 127.0.0.1:4000
+
+      # builds client for testing in CI -- production will
+      # build its own Next.js app
       - restore_cache:
           key: *next_cache_key
       - run: yarn client build
@@ -138,6 +150,11 @@ jobs:
           command: |
             yarn server codegen
             git diff --exit-code server/
+      - run:
+          name: Check that client GraphQL files are up to date
+          command: |
+            yarn client codegen
+            git diff --exit-code client/
 
 workflows:
   version: 2
