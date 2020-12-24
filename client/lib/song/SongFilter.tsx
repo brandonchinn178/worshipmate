@@ -47,30 +47,30 @@ function SongFilterSection<Name extends FilterNames>({
   filterHandler,
 }: SongFilterSectionProps<Name>) {
   return (
-        <FilterCategory>
-          <FilterLabel>{_.startCase(filterName)}</FilterLabel>
-          <FilterOptionGrid>
-            {filterOptions.map(({ value, valueDisplay, count }) => {
-              const isActive =
-                filterOptions.length === 1 || activeFilters[filterName] === value
-              return (
-                <FilterOption
-                  active={isActive}
-                  key={valueDisplay}
-                  onClick={() => {
-                    if (isActive) {
-                      filterHandler.removeFilter(filterName)
-                    } else {
-                      filterHandler.addFilter(filterName, value)
-                    }
-                  }}
-                >
-                  {valueDisplay} ({count})
-                </FilterOption>
-              )
-            })}
-          </FilterOptionGrid>
-        </FilterCategory>
+    <FilterCategory>
+      <FilterLabel>{_.startCase(filterName)}</FilterLabel>
+      <FilterOptionGrid>
+        {filterOptions.map(({ value, valueDisplay, count }) => {
+          const isActive =
+            filterOptions.length === 1 || activeFilters[filterName] === value
+          return (
+            <FilterOption
+              active={isActive}
+              key={valueDisplay}
+              onClick={() => {
+                if (isActive) {
+                  filterHandler.removeFilter(filterName)
+                } else {
+                  filterHandler.addFilter(filterName, value)
+                }
+              }}
+            >
+              {valueDisplay} ({count})
+            </FilterOption>
+          )
+        })}
+      </FilterOptionGrid>
+    </FilterCategory>
   )
 }
 
