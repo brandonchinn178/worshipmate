@@ -17,4 +17,4 @@ const runMigrations = async () => {
   }
 }
 
-runMigrations()
+runMigrations().catch(console.error)
