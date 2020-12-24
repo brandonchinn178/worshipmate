@@ -24,7 +24,9 @@ export class SongAPI extends DataSource {
     const condition = this.getSearchCondition(options)
 
     const songs = await this.db.query<SongRecord>(sql`
-      SELECT * FROM "song" WHERE ${condition}
+      SELECT * FROM "song"
+      WHERE ${condition}
+      ORDER BY "song"."title"
     `)
 
     return songs.map(fromRecord)
