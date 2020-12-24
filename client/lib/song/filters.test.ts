@@ -2,7 +2,13 @@ import * as fc from 'fast-check'
 
 import { getNewQuery, mkRouter } from '~/router/testutils'
 
-import { getFilterType, loadActiveFilters, mkFilterHandler } from './filters'
+import {
+  getAvailableFilters,
+  getFilterType,
+  loadActiveFilters,
+  mkFilterHandler,
+} from './filters'
+import { Song } from './models'
 
 describe('Filter types', () => {
   describe('recommendedKey', () => {
@@ -90,6 +96,97 @@ describe('Filter types', () => {
       expect(parseFilterValue('1/2/3')).toBeNull()
       expect(parseFilterValue('1/-10')).toBeNull()
     })
+  })
+})
+
+describe('getAvailableFilters', () => {
+  const mkSongs = (songs: Partial<Song>[]) =>
+    songs.map((song) => {
+      return {
+        recommendedKey: 'E',
+        bpm: 100,
+        timeSignature: [4, 4],
+        ...song,
+      } as Song
+    })
+
+  it('collects songs by recommended key', () => {
+    const songs = mkSongs([
+      { recommendedKey: 'E' },
+      { recommendedKey: 'A' },
+      { recommendedKey: 'E' },
+      { recommendedKey: 'E' },
+      { recommendedKey: 'A' },
+    ])
+
+    expect(getAvailableFilters(songs)).toMatchObject({
+      recommendedKey: [
+        { value: 'E', valueDisplay: 'E', count: 3 },
+        { value: 'A', valueDisplay: 'A', count: 2 },
+      ],
+    })
+  })
+
+  it('collects songs by BPM', () => {
+    const songs = mkSongs([
+      { bpm: 100 },
+      { bpm: 72 },
+      { bpm: 100 },
+      { bpm: 100 },
+      { bpm: 72 },
+    ])
+
+    expect(getAvailableFilters(songs)).toMatchObject({
+      bpm: [
+        { value: 100, valueDisplay: '100', count: 3 },
+        { value: 72, valueDisplay: '72', count: 2 },
+      ],
+    })
+  })
+
+  it('collects songs by time signature', () => {
+    const songs = mkSongs([
+      { timeSignature: [4, 4] },
+      { timeSignature: [3, 4] },
+      { timeSignature: [4, 4] },
+      { timeSignature: [4, 4] },
+      { timeSignature: [3, 4] },
+    ])
+
+    expect(getAvailableFilters(songs)).toMatchObject({
+      timeSignature: [
+        { value: [4, 4], valueDisplay: '4/4', count: 3 },
+        { value: [3, 4], valueDisplay: '3/4', count: 2 },
+      ],
+    })
+  })
+
+  it('orders by count', () => {
+    const songs = mkSongs([
+      { recommendedKey: 'E' },
+      { recommendedKey: 'E' },
+      { recommendedKey: 'E' },
+      { recommendedKey: 'E' },
+      { recommendedKey: 'A' },
+      { recommendedKey: 'A' },
+      { recommendedKey: 'A' },
+      { recommendedKey: 'D' },
+    ])
+
+    fc.assert(
+      fc.property(
+        fc.shuffledSubarray(songs, { minLength: songs.length }),
+        (shuffledSongs) => {
+          expect(getAvailableFilters(shuffledSongs)).toMatchObject({
+            recommendedKey: [
+              { value: 'E', count: 4 },
+              { value: 'A', count: 3 },
+              { value: 'D', count: 1 },
+            ],
+          })
+        },
+      ),
+    )
   })
 })
 

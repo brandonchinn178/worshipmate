@@ -3,6 +3,8 @@ import { NextRouter } from 'next/router'
 
 import { setQueryString } from '~/router'
 
+import { Song } from './models'
+
 export type ActiveFilters = {
   recommendedKey?: string
   bpm?: number
@@ -13,6 +15,16 @@ export type FilterNames = keyof ActiveFilters
 export type FilterValue<Name extends FilterNames> = NonNullable<
   ActiveFilters[Name]
 >
+
+export type AvailableFilterOptions<Name extends FilterNames> = Array<{
+  value: FilterValue<Name>
+  valueDisplay: string
+  count: number
+}>
+
+export type AvailableFilters = {
+  [Name in FilterNames]: AvailableFilterOptions<Name>
+}
 
 export type FilterHandler = {
   addFilter: <Name extends FilterNames>(
@@ -28,12 +40,14 @@ export type FilterHandler = {
 type FilterType<Name extends FilterNames> = {
   parseFilterValue: (value: string) => FilterValue<Name> | null
   showFilterValue: (value: FilterValue<Name>) => string
+  fromSong: (song: Song) => FilterValue<Name>
 }
 
 const ALL_FILTER_TYPES: { [Name in FilterNames]: FilterType<Name> } = {
   recommendedKey: {
     parseFilterValue: _.identity,
     showFilterValue: _.toString,
+    fromSong: ({ recommendedKey }) => recommendedKey,
   },
   bpm: {
     parseFilterValue: (value) => {
@@ -44,6 +58,7 @@ const ALL_FILTER_TYPES: { [Name in FilterNames]: FilterType<Name> } = {
       return bpm
     },
     showFilterValue: _.toString,
+    fromSong: ({ bpm }) => bpm,
   },
   timeSignature: {
     parseFilterValue: (value) => {
@@ -57,6 +72,7 @@ const ALL_FILTER_TYPES: { [Name in FilterNames]: FilterType<Name> } = {
       return [top, bottom]
     },
     showFilterValue: ([top, bottom]) => `${top}/${bottom}`,
+    fromSong: ({ timeSignature }) => timeSignature,
   },
 }
 
@@ -75,6 +91,49 @@ export const getFilterType = <Name extends FilterNames>(
   name: Name,
 ): FilterType<Name> => {
   return (ALL_FILTER_TYPES[name] as unknown) as FilterType<Name>
+}
+
+/** Collecting filters from a list of songs **/
+
+export const getAvailableFilters = (
+  songs: readonly Song[],
+): AvailableFilters => {
+  const availableFilters = {} as AvailableFilters
+
+  forEachFilterType(
+    <Name extends FilterNames>(
+      filterName: Name,
+      filterType: FilterType<Name>,
+    ) => {
+      // pick out attribute in song corresponding to filter
+      const allOptions = songs.map((song) => {
+        const value = filterType.fromSong(song)
+        return {
+          value,
+          valueDisplay: filterType.showFilterValue(value),
+        }
+      })
+
+      // filter out duplicates and annotate each filter option with its count
+      const filterCounts = _.countBy(allOptions, 'valueDisplay')
+      const filterValues = _.uniqBy(allOptions, 'valueDisplay')
+      const filterOptions = _.map(filterValues, ({ value, valueDisplay }) => {
+        return {
+          value,
+          valueDisplay,
+          count: filterCounts[valueDisplay],
+        }
+      })
+
+      availableFilters[filterName] = _.orderBy(
+        filterOptions,
+        'count',
+        'desc',
+      ) as AvailableFilters[Name]
+    },
+  )
+
+  return availableFilters
 }
 
 /** Marshalling filters to/from querystring **/

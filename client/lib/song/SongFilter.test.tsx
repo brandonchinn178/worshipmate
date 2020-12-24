@@ -4,34 +4,39 @@ import { renderUI } from '~jest-utils'
 
 import { SongFilter } from './SongFilter'
 
-const testFilters = [
-  {
-    key: 'recommendedKey',
-    options: [
-      {
-        name: 'C',
-        count: 1,
-      },
-      {
-        name: 'G',
-        count: 2,
-      },
-      {
-        name: 'E',
-        count: 3,
-      },
-    ],
-  },
-  {
-    key: 'timeSignature',
-    options: [
-      {
-        name: '4/4',
-        count: 6,
-      },
-    ],
-  },
-]
+const testFilters = {
+  recommendedKey: [
+    {
+      value: 'C',
+      valueDisplay: 'C',
+      count: 1,
+    },
+    {
+      value: 'G',
+      valueDisplay: 'G',
+      count: 2,
+    },
+    {
+      value: 'E',
+      valueDisplay: 'E',
+      count: 3,
+    },
+  ],
+  bpm: [
+    {
+      value: 100,
+      valueDisplay: '100',
+      count: 6,
+    },
+  ],
+  timeSignature: [
+    {
+      value: [4, 4] as [number, number],
+      valueDisplay: '4/4',
+      count: 6,
+    },
+  ],
+}
 
 const mockFilterHandler = {
   addFilter: jest.fn(),

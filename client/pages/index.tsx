@@ -3,7 +3,11 @@ import styled from 'styled-components'
 
 import { useSearchSongs } from '~/api'
 import { setQueryString } from '~/router'
-import { loadActiveFilters, mkFilterHandler } from '~/song/filters'
+import {
+  getAvailableFilters,
+  loadActiveFilters,
+  mkFilterHandler,
+} from '~/song/filters'
 import { SongFilter } from '~/song/SongFilter'
 import { SongTable } from '~/song/SongTable'
 import { SearchBar } from '~/ui-kit/SearchBar'
@@ -36,13 +40,13 @@ export default function Home() {
   })
 
   const songs = data?.searchSongs ?? []
-  const songFilters = data?.filters ?? []
+  const availableFilters = getAvailableFilters(songs)
 
   return (
     <Grid>
       <SidebarArea>
         <SongFilter
-          availableFilters={songFilters}
+          availableFilters={availableFilters}
           activeFilters={activeFilters}
           filterHandler={mkFilterHandler(router)}
         />
