@@ -9,10 +9,6 @@ module.exports = {
         test: /\.(ts|tsx)$/,
         use: [require.resolve('babel-loader')],
       },
-      {
-        test: /\.svg$/,
-        use: [require.resolve('@svgr/webpack')],
-      },
     ]
 
     config.resolve.alias['~'] = path.join(__dirname, '..', 'lib')
