@@ -3,58 +3,74 @@ import styled, { css } from 'styled-components'
 
 import { color, font } from '~/theme'
 
-import { ActiveFilters, FilterHandler } from './filters'
+import {
+  ActiveFilters,
+  AvailableFilterOptions,
+  AvailableFilters,
+  FilterHandler,
+  FilterNames,
+} from './filters'
 
-type FilterOption = {
-  name: string
-  count: number
-}
-
-type Filter = {
-  key: string
-  options: readonly FilterOption[]
-}
-
-type SongFilterProps = {
-  availableFilters: readonly Filter[]
+type SongFilterContext = {
   activeFilters: ActiveFilters
   filterHandler: FilterHandler
 }
 
-export function SongFilter({
-  availableFilters,
-  activeFilters,
-  filterHandler,
-}: SongFilterProps) {
+type SongFilterProps = SongFilterContext & {
+  availableFilters: AvailableFilters
+}
+
+export function SongFilter({ availableFilters, ...props }: SongFilterProps) {
   return (
     <FilterBox>
-      {availableFilters.map(({ key, options }) => (
-        <FilterCategory key={key}>
-          <FilterLabel>{_.startCase(key)}</FilterLabel>
+      {_.map(availableFilters, (options, name) => (
+        <SongFilterSection
+          key={name}
+          filterName={name as FilterNames}
+          filterOptions={options}
+          {...props}
+        />
+      ))}
+    </FilterBox>
+  )
+}
+
+type SongFilterSectionProps<Name extends FilterNames> = SongFilterContext & {
+  filterName: Name
+  filterOptions: AvailableFilterOptions<Name>
+}
+
+function SongFilterSection<Name extends FilterNames>({
+  filterName,
+  filterOptions,
+  activeFilters,
+  filterHandler,
+}: SongFilterSectionProps<Name>) {
+  return (
+        <FilterCategory>
+          <FilterLabel>{_.startCase(filterName)}</FilterLabel>
           <FilterOptionGrid>
-            {options.map(({ name, count }) => {
+            {filterOptions.map(({ value, valueDisplay, count }) => {
               const isActive =
-                options.length === 1 || activeFilters[key] === name
+                filterOptions.length === 1 || activeFilters[filterName] === value
               return (
                 <FilterOption
                   active={isActive}
-                  key={name}
+                  key={valueDisplay}
                   onClick={() => {
                     if (isActive) {
-                      filterHandler.removeFilter(key)
+                      filterHandler.removeFilter(filterName)
                     } else {
-                      filterHandler.addFilter(key, name)
+                      filterHandler.addFilter(filterName, value)
                     }
                   }}
                 >
-                  {name} ({count})
+                  {valueDisplay} ({count})
                 </FilterOption>
               )
             })}
           </FilterOptionGrid>
         </FilterCategory>
-      ))}
-    </FilterBox>
   )
 }
 
