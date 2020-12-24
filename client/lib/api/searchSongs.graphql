@@ -1,0 +1,9 @@
+query searchSongs($query: String, $filters: SearchFilters) {
+  searchSongs(query: $query, filters: $filters) {
+    slug
+    title
+    recommendedKey
+    timeSignature
+    bpm
+  }
+}
