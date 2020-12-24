@@ -35,18 +35,10 @@ const parseMigrateCount = (arg: string | undefined) => {
   return count
 }
 
-const parseMigrateDirections = (command: string): MigrateDirection[] => {
-  switch (command) {
-    case 'up':
-      return ['up']
-    case 'down':
-      return ['down']
-    case 'redo':
-      return ['down', 'up']
-    default: {
-      throw new Error(`Unknown migrate command: ${command}`)
-    }
-  }
+const MIGRATE_DIRECTIONS: Record<string, MigrateDirection[]> = {
+  up: ['up'],
+  down: ['down'],
+  redo: ['down', 'up'],
 }
 
 /**
@@ -54,13 +46,24 @@ const parseMigrateDirections = (command: string): MigrateDirection[] => {
  */
 export const parseMigrateArgs = (argv: string[]): MigrateDirectionOptions => {
   // [node executable, script path, ...args]
-  const args = argv.slice(2)
+  const [scriptName, ...args] = argv.slice(1)
 
-  if (args[0] === undefined) {
-    throw new Error('No migrate command specified')
+  const directions = MIGRATE_DIRECTIONS[args[0]]
+  if (directions === undefined) {
+    const usage = `
+      Usage: ${scriptName} [up|down|redo] [COUNT]
+
+      Migrate the database with the given arguments.
+
+      Parameters:
+        up|down|redo      The direction to migrate, with redo doing down first,
+                          then up.
+
+        COUNT             The number of migrations to run
+    `
+    console.log(usage.trim().replace(/^[ ]{6}/gm, ''))
+    process.exit(args[0] === '--help' || args[0] === 'help' ? 0 : 1)
   }
-
-  const directions = parseMigrateDirections(args[0])
 
   const count = parseMigrateCount(args[1])
 

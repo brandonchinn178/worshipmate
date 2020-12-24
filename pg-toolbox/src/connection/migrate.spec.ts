@@ -2,6 +2,22 @@ import * as fc from 'fast-check'
 
 import { parseMigrateArgs } from './migrate'
 
+const mockConsoleLog = jest.spyOn(console, 'log')
+
+const mockProcessExit = jest.spyOn(process, 'exit')
+
+beforeEach(() => {
+  jest.resetAllMocks()
+  mockConsoleLog.mockImplementation(() => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+  })
+  mockProcessExit.mockImplementation(() => {
+    throw new Error()
+  })
+})
+
+afterEach(jest.resetAllMocks)
+
 describe('parseMigrateArgs', () => {
   it('parses up/down commands', () => {
     fc.assert(
@@ -61,6 +77,8 @@ describe('parseMigrateArgs', () => {
     fc.assert(
       fc.property(fc.string(), fc.string(), (argv0, argv1) => {
         expect(() => parseMigrateArgs([argv0, argv1])).toThrow()
+        expect(mockConsoleLog).toHaveBeenCalled()
+        expect(mockProcessExit).toHaveBeenCalled()
       }),
     )
   })
@@ -73,6 +91,8 @@ describe('parseMigrateArgs', () => {
         fc.string().filter((s) => !['up', 'down', 'redo'].includes(s)),
         (argv0, argv1, command) => {
           expect(() => parseMigrateArgs([argv0, argv1, command])).toThrow()
+          expect(mockConsoleLog).toHaveBeenCalled()
+          expect(mockProcessExit).toHaveBeenCalled()
         },
       ),
     )
