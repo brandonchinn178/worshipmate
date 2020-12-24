@@ -1,6 +1,6 @@
 import { ColumnDefs, DataTable } from '~/ui-kit/DataTable'
 
-import { Song } from '.'
+import { Song } from './models'
 
 type SongTableProps = {
   songs: readonly Song[]
