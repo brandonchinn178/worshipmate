@@ -102,6 +102,7 @@ describe('SongAPI', () => {
             expect(result).toMatchObject(songTitlesInOrder)
           },
         ),
+        { numRuns: 5 },
       )
     })
 
