@@ -2,7 +2,7 @@ import { fireEvent, waitFor } from '@testing-library/react'
 
 import { renderUI } from '~jest-utils'
 
-import { SongFilter } from './SongFilter'
+import { SongFilterPanel } from './SongFilterPanel'
 
 const testFilters = {
   recommendedKey: [
@@ -47,7 +47,7 @@ beforeEach(jest.resetAllMocks)
 
 it('renders filters', () => {
   const { getByText } = renderUI(
-    <SongFilter
+    <SongFilterPanel
       availableFilters={testFilters}
       activeFilters={{}}
       filterHandler={mockFilterHandler}
@@ -64,7 +64,7 @@ it('renders filters', () => {
 
 it('can add a filter', async () => {
   const { getByText } = renderUI(
-    <SongFilter
+    <SongFilterPanel
       availableFilters={testFilters}
       activeFilters={{}}
       filterHandler={mockFilterHandler}
@@ -80,7 +80,7 @@ it('can add a filter', async () => {
 
 it('can change a filter', async () => {
   const { getByText } = renderUI(
-    <SongFilter
+    <SongFilterPanel
       availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
       filterHandler={mockFilterHandler}
@@ -96,7 +96,7 @@ it('can change a filter', async () => {
 
 it('can remove a filter', async () => {
   const { getByText } = renderUI(
-    <SongFilter
+    <SongFilterPanel
       availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
       filterHandler={mockFilterHandler}
@@ -112,7 +112,7 @@ it('can remove a filter', async () => {
 
 it('renders active options differently', () => {
   const { container: before } = renderUI(
-    <SongFilter
+    <SongFilterPanel
       availableFilters={testFilters}
       activeFilters={{}}
       filterHandler={mockFilterHandler}
@@ -120,7 +120,7 @@ it('renders active options differently', () => {
   )
 
   const { container: after } = renderUI(
-    <SongFilter
+    <SongFilterPanel
       availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
       filterHandler={mockFilterHandler}
