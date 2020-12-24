@@ -1,6 +1,8 @@
 import * as fc from 'fast-check'
 
-import { getFilterType } from './filters'
+import { getNewQuery, mkRouter } from '~/router/testutils'
+
+import { getFilterType, loadActiveFilters, mkFilterHandler } from './filters'
 
 describe('Filter types', () => {
   describe('recommendedKey', () => {
@@ -87,6 +89,95 @@ describe('Filter types', () => {
       expect(parseFilterValue('asdf')).toBeNull()
       expect(parseFilterValue('1/2/3')).toBeNull()
       expect(parseFilterValue('1/-10')).toBeNull()
+    })
+  })
+})
+
+describe('loadActiveFilters', () => {
+  it('deserializes filters from querystring', () => {
+    const router = mkRouter({
+      query: {
+        recommendedKey: 'E',
+        bpm: '72',
+        timeSignature: '4/4',
+      },
+    })
+    expect(loadActiveFilters(router)).toStrictEqual({
+      recommendedKey: 'E',
+      bpm: 72,
+      timeSignature: [4, 4],
+    })
+  })
+
+  it('ignores invalid filter values', () => {
+    const router = mkRouter({
+      query: {
+        recommendedKey: 'E',
+        bpm: 'foo',
+      },
+    })
+    expect(loadActiveFilters(router)).toStrictEqual({
+      recommendedKey: 'E',
+    })
+  })
+})
+
+describe('mkFilterHandler', () => {
+  describe('addFilter', () => {
+    it('adds a new filter', () => {
+      const router = mkRouter()
+      const filterHandler = mkFilterHandler(router)
+
+      filterHandler.addFilter('bpm', 72)
+
+      expect(getNewQuery(router)).toStrictEqual({
+        bpm: '72',
+      })
+    })
+
+    it('overwrites an existing filter', () => {
+      const router = mkRouter({
+        query: { bpm: '72' },
+      })
+      const filterHandler = mkFilterHandler(router)
+
+      filterHandler.addFilter('bpm', 100)
+
+      expect(getNewQuery(router)).toStrictEqual({
+        bpm: '100',
+      })
+    })
+
+    it('adds a filter in addition to another filter', () => {
+      const router = mkRouter({
+        query: { recommendedKey: 'E' },
+      })
+      const filterHandler = mkFilterHandler(router)
+
+      filterHandler.addFilter('bpm', 72)
+
+      expect(getNewQuery(router)).toStrictEqual({
+        recommendedKey: 'E',
+        bpm: '72',
+      })
+    })
+  })
+
+  describe('removeFilter', () => {
+    it('removes a filter', () => {
+      const router = mkRouter({
+        query: {
+          recommendedKey: 'E',
+          bpm: '72',
+        },
+      })
+      const filterHandler = mkFilterHandler(router)
+
+      filterHandler.removeFilter('bpm')
+
+      expect(getNewQuery(router)).toStrictEqual({
+        recommendedKey: 'E',
+      })
     })
   })
 })
