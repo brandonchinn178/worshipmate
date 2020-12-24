@@ -8,7 +8,7 @@ import {
   loadActiveFilters,
   mkFilterHandler,
 } from '~/song/filters'
-import { SongFilter } from '~/song/SongFilter'
+import { SongFilterPanel } from '~/song/SongFilterPanel'
 import { SongTable } from '~/song/SongTable'
 import { SearchBar } from '~/ui-kit/SearchBar'
 
@@ -45,7 +45,7 @@ export default function Home() {
   return (
     <Grid>
       <SidebarArea>
-        <SongFilter
+        <SongFilterPanel
           availableFilters={availableFilters}
           activeFilters={activeFilters}
           filterHandler={mkFilterHandler(router)}

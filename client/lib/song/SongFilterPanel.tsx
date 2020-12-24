@@ -11,20 +11,23 @@ import {
   FilterNames,
 } from './filters'
 
-type SongFilterContext = {
+type SongFilterPanelContext = {
   activeFilters: ActiveFilters
   filterHandler: FilterHandler
 }
 
-type SongFilterProps = SongFilterContext & {
+type SongFilterPanelProps = SongFilterPanelContext & {
   availableFilters: AvailableFilters
 }
 
-export function SongFilter({ availableFilters, ...props }: SongFilterProps) {
+export function SongFilterPanel({
+  availableFilters,
+  ...props
+}: SongFilterPanelProps) {
   return (
     <FilterBox>
       {_.map(availableFilters, (options, name) => (
-        <SongFilterSection
+        <SongFilterPanelSection
           key={name}
           filterName={name as FilterNames}
           filterOptions={options}
@@ -35,17 +38,19 @@ export function SongFilter({ availableFilters, ...props }: SongFilterProps) {
   )
 }
 
-type SongFilterSectionProps<Name extends FilterNames> = SongFilterContext & {
+type SongFilterPanelSectionProps<
+  Name extends FilterNames
+> = SongFilterPanelContext & {
   filterName: Name
   filterOptions: AvailableFilterOptions<Name>
 }
 
-function SongFilterSection<Name extends FilterNames>({
+function SongFilterPanelSection<Name extends FilterNames>({
   filterName,
   filterOptions,
   activeFilters,
   filterHandler,
-}: SongFilterSectionProps<Name>) {
+}: SongFilterPanelSectionProps<Name>) {
   return (
     <FilterCategory>
       <FilterLabel>{_.startCase(filterName)}</FilterLabel>
