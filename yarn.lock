@@ -2002,6 +2002,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@graphql-codegen/near-operation-file-preset@npm:^1.17.13":
+  version: 1.17.13
+  resolution: "@graphql-codegen/near-operation-file-preset@npm:1.17.13"
+  dependencies:
+    "@graphql-codegen/add": ^2.0.2
+    "@graphql-codegen/plugin-helpers": ^1.18.2
+    "@graphql-codegen/visitor-plugin-common": ^1.17.20
+    parse-filepath: ^1.0.2
+    tslib: ~2.0.1
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+  checksum: f83b28b71eb24659a19670ae747f294293120e6e271e9e637a5d2b787bd5db4e5a62c6d66a9f9dc4c01b0202188362e6133e71d22c363b6fc776f65d816ced22
+  languageName: node
+  linkType: hard
+
 "@graphql-codegen/plugin-helpers@npm:^1.18.2":
   version: 1.18.2
   resolution: "@graphql-codegen/plugin-helpers@npm:1.18.2"
@@ -2023,6 +2038,52 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@graphql-codegen/typescript-operations@npm:^1.17.13":
+  version: 1.17.13
+  resolution: "@graphql-codegen/typescript-operations@npm:1.17.13"
+  dependencies:
+    "@graphql-codegen/plugin-helpers": ^1.18.2
+    "@graphql-codegen/typescript": ^1.18.1
+    "@graphql-codegen/visitor-plugin-common": ^1.17.22
+    auto-bind: ~4.0.0
+    tslib: ~2.0.1
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+  checksum: b101f49dac951a351ed08311033b832c2bf041ac6eb803c6a3dd97a5f428e586844c809b5bea0cc165bce1ffb8adff70a87a99fa1b891b56ab2eb7b8ed06daba
+  languageName: node
+  linkType: hard
+
+"@graphql-codegen/typescript-react-apollo@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@graphql-codegen/typescript-react-apollo@npm:2.2.1"
+  dependencies:
+    "@graphql-codegen/plugin-helpers": ^1.18.2
+    "@graphql-codegen/visitor-plugin-common": ^1.17.20
+    auto-bind: ~4.0.0
+    camel-case: ^4.1.1
+    pascal-case: ^3.1.1
+    tslib: ~2.0.1
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+    graphql-tag: ^2.0.0
+  checksum: c1219dcaebbc571f4eac6227259b17194718f1cc22a9bc848402512f7d9f57ad9fda481b4ed67f614d24e8bb9be73287c8b26707d99600835feb68a610b0fd0c
+  languageName: node
+  linkType: hard
+
+"@graphql-codegen/typescript@npm:^1.18.1":
+  version: 1.18.1
+  resolution: "@graphql-codegen/typescript@npm:1.18.1"
+  dependencies:
+    "@graphql-codegen/plugin-helpers": ^1.18.2
+    "@graphql-codegen/visitor-plugin-common": ^1.17.21
+    auto-bind: ~4.0.0
+    tslib: ~2.0.1
+  peerDependencies:
+    graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+  checksum: a99ce4fd2da9b6d40ecbf3bcfd9e911e0283a6cbf0974c6ea6c5d7b538f808e34d9b6f8e90c5ec12e2f7f49f24673d005f1f9806c1f9b245fa69627874599159
+  languageName: node
+  linkType: hard
+
 "@graphql-codegen/typescript@npm:^1.19.0":
   version: 1.19.0
   resolution: "@graphql-codegen/typescript@npm:1.19.0"
@@ -2037,7 +2098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphql-codegen/visitor-plugin-common@npm:^1.17.21":
+"@graphql-codegen/visitor-plugin-common@npm:^1.17.20, @graphql-codegen/visitor-plugin-common@npm:^1.17.21, @graphql-codegen/visitor-plugin-common@npm:^1.17.22":
   version: 1.17.22
   resolution: "@graphql-codegen/visitor-plugin-common@npm:1.17.22"
   dependencies:
@@ -4984,6 +5045,11 @@ __metadata:
     "@babel/core": ^7.12.9
     "@babel/plugin-proposal-nullish-coalescing-operator": ^7.12.1
     "@babel/plugin-proposal-optional-chaining": ^7.12.7
+    "@graphql-codegen/cli": ^1.20.0
+    "@graphql-codegen/near-operation-file-preset": ^1.17.13
+    "@graphql-codegen/typescript": ^1.19.0
+    "@graphql-codegen/typescript-operations": ^1.17.13
+    "@graphql-codegen/typescript-react-apollo": ^2.2.1
     "@storybook/addon-essentials": ^6.1.3
     "@storybook/react": ^6.1.3
     "@svgr/webpack": ^5.4.0
@@ -4999,6 +5065,7 @@ __metadata:
     babel-loader: ^8.1.0
     babel-plugin-styled-components: ^1.11.1
     fast-check: ^2.10.0
+    graphql: ^15.4.0
     jest: ^26.6.1
     lodash: ^4.17.20
     next: ^10.0.1
@@ -11015,7 +11082,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"graphql@npm:^15.2.0, graphql@npm:^15.3.0":
+"graphql@npm:^15.2.0, graphql@npm:^15.3.0, graphql@npm:^15.4.0":
   version: 15.4.0
   resolution: "graphql@npm:15.4.0"
   checksum: 1a307dcfe2646e1e8323d03e8cd24554ba9f7369863bf0b020f2e4b39bff3504dc7d6dcad19cb96899f0825eda4c688819911f0c270e84f1bb0954fe3ac16a31
