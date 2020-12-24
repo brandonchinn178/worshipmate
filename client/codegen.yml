@@ -1,0 +1,22 @@
+schema: ../server/**/*.graphql
+documents: lib/api/**/*.graphql
+
+generates:
+  lib/api/types.ts:
+    - typescript
+  lib/api/:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.tsx
+      baseTypesPath: types.ts
+    plugins:
+      - typescript-operations
+      - typescript-react-apollo
+
+config:
+  scalars:
+    TimeSignature: '[number, number]'
+
+hooks:
+  afterAllFileWrite:
+    - eslint --ext .tsx --fix
