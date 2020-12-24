@@ -1,4 +1,3 @@
-import * as _ from 'lodash'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
@@ -32,7 +31,7 @@ export default function Home() {
   const { data } = useSearchSongs({
     variables: {
       search,
-      filters: _.toPairs(activeFilters).map(([key, value]) => ({ key, value })),
+      filters: activeFilters,
     },
   })
 
