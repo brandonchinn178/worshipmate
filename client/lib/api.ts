@@ -10,13 +10,6 @@ export type SearchSongsQuery = {
     timeSignature: [number, number]
     bpm: number
   }>
-  filters: ReadonlyArray<{
-    key: string
-    options: ReadonlyArray<{
-      name: string
-      count: number
-    }>
-  }>
 }
 
 type SearchSongsQueryVariables = {
@@ -100,48 +93,6 @@ export const useSearchSongs = ({
       searchSongs: allSongs.filter(
         ({ title }) => !search || title.match(new RegExp(search, 'i')),
       ),
-      filters: [
-        {
-          key: 'recommendedKey',
-          options: [
-            { name: 'A', count: 1 },
-            { name: 'E', count: 3 },
-            { name: 'G', count: 1 },
-            { name: 'D', count: 1 },
-            { name: 'Em', count: 1 },
-          ],
-        },
-        {
-          key: 'bpm',
-          options: [
-            { name: '68', count: 1 },
-            { name: '72', count: 3 },
-            { name: '78', count: 1 },
-            { name: '80', count: 1 },
-            { name: '140', count: 1 },
-          ],
-        },
-        {
-          key: 'timeSignature',
-          options: [{ name: '4/4', count: 7 }],
-        },
-        {
-          key: 'themes',
-          options: [
-            { name: 'Comfort', count: 1 },
-            { name: 'Devotion', count: 1 },
-            { name: 'Faith', count: 1 },
-            { name: 'Faithfulness', count: 1 },
-            { name: 'Love', count: 3 },
-            { name: 'Outreach', count: 1 },
-            { name: 'Praise', count: 1 },
-            { name: 'Surrender', count: 1 },
-            { name: 'Unity', count: 1 },
-            { name: 'Witness', count: 1 },
-            { name: 'Worship', count: 5 },
-          ],
-        },
-      ],
     } as SearchSongsQuery,
   }
 }
