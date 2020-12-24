@@ -1,14 +1,11 @@
-import SearchIcon from './icons/search.svg'
+import Image, { ImageProps } from 'next/image'
 
-const icons = {
-  search: SearchIcon,
+type IconNames = 'search'
+
+type IconProps = Omit<ImageProps, 'src'> & {
+  name: IconNames
 }
 
-type IconProps = {
-  name: keyof typeof icons
-}
-
-export function Icon({ name }: IconProps) {
-  const IconComponent = icons[name]
-  return <IconComponent />
+export function Icon({ name, ...props }: IconProps) {
+  return <Image src={`/${name}.svg`} {...props} />
 }
