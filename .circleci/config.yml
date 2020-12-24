@@ -138,6 +138,11 @@ jobs:
           command: |
             yarn server codegen
             git diff --exit-code server/
+      - run:
+          name: Check that client GraphQL files are up to date
+          command: |
+            yarn client codegen
+            git diff --exit-code client/
 
 workflows:
   version: 2
