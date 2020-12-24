@@ -1,3 +1,6 @@
+import * as fc from 'fast-check'
+import * as _ from 'lodash'
+
 import { setupTestDatabase } from '~test-utils/db'
 
 import { SongAPI } from './api'
@@ -82,6 +85,25 @@ describe('SongAPI', () => {
           bpm: 52,
         },
       ])
+    })
+
+    it('returns songs in alphabetical order', async () => {
+      const songTitlesInOrder = _.map(_.sortBy(allSongs, 'title'), (song) =>
+        _.pick(song, 'title'),
+      )
+
+      await fc.assert(
+        fc.asyncProperty(
+          fc.shuffledSubarray(allSongs, { minLength: allSongs.length }),
+          async (songs) => {
+            await db.clear()
+            await db.insertAll('song', songs)
+            const result = await songApi.searchSongs()
+            expect(result).toMatchObject(songTitlesInOrder)
+          },
+        ),
+        { numRuns: 5 },
+      )
     })
 
     it('can return songs matching a query', async () => {

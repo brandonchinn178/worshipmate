@@ -26,7 +26,7 @@ export function SearchBar({ initial = '', onSubmit }: SearchBarProps) {
       <SearchContainer>
         <SearchInput name="search" ref={register} />
         <SearchBox>
-          <Icon name="search" />
+          <Icon name="search" width={16} height={16} />
         </SearchBox>
       </SearchContainer>
     </form>
