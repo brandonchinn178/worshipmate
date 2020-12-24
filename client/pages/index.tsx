@@ -1,15 +1,18 @@
-import * as _ from 'lodash'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import { useSearchSongs } from '~/api'
 import { setQueryString } from '~/router'
-import { addFilter, loadFilters, removeFilter } from '~/router/filters'
-import { SongFilter } from '~/song/SongFilter'
+import {
+  getAvailableFilters,
+  loadActiveFilters,
+  mkFilterHandler,
+} from '~/song/filters'
+import { SongFilterPanel } from '~/song/SongFilterPanel'
 import { SongTable } from '~/song/SongTable'
 import { SearchBar } from '~/ui-kit/SearchBar'
 
-function pluralize(...args: [string, number] | [string, string, number]) {
+const pluralize = (...args: [string, number] | [string, string, number]) => {
   const [singular, plural, count] =
     args.length === 2 ? [args[0], args[0] + 's', args[1]] : args
 
@@ -26,44 +29,42 @@ function pluralize(...args: [string, number] | [string, string, number]) {
 export default function Home() {
   const router = useRouter()
 
-  const { query } = router
   const search = router.query.search as string | undefined
-  const activeFilters = loadFilters(query)
+  const activeFilters = loadActiveFilters(router)
 
   const { data } = useSearchSongs({
     variables: {
       search,
-      filters: _.toPairs(activeFilters).map(([key, value]) => ({ key, value })),
+      filters: activeFilters,
     },
   })
 
-  const songs = data?.songs ?? []
-  const songFilters = data?.filters ?? []
+  const songs = data?.searchSongs ?? []
+  const availableFilters = getAvailableFilters(songs)
 
   return (
     <Grid>
-      <Sidebar>
-        <SongFilter
-          filters={songFilters}
+      <SidebarArea>
+        <SongFilterPanel
+          availableFilters={availableFilters}
           activeFilters={activeFilters}
-          addFilter={(key, value) => addFilter(router, key, value)}
-          removeFilter={(key) => removeFilter(router, key)}
+          filterHandler={mkFilterHandler(router)}
         />
-      </Sidebar>
-      <SongSearch>
+      </SidebarArea>
+      <SongSearchArea>
         <SearchBar
           initial={search}
           onSubmit={(query: string) => {
             setQueryString(router, 'search', query)
           }}
         />
-      </SongSearch>
-      <SongCount>
+      </SongSearchArea>
+      <SongCountArea>
         {songs.length} {pluralize('song', songs.length)}
-      </SongCount>
-      <SongTableCell>
+      </SongCountArea>
+      <SongTableArea>
         <SongTable songs={songs} />
-      </SongTableCell>
+      </SongTableArea>
     </Grid>
   )
 }
@@ -80,18 +81,19 @@ const Grid = styled.div`
   grid-row-gap: 10px;
 `
 
-const Sidebar = styled.div`
+const SidebarArea = styled.div`
   grid-area: sidebar;
 `
 
-const SongSearch = styled.div`
+const SongSearchArea = styled.div`
   grid-area: search;
 `
 
-const SongCount = styled.p`
+const SongCountArea = styled.p`
+  grid-area: song-count;
   font-weight: bold;
 `
 
-const SongTableCell = styled.div`
+const SongTableArea = styled.div`
   grid-area: table;
 `

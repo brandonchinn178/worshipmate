@@ -4950,6 +4950,7 @@ __metadata:
     babel-jest: ^26.6.2
     babel-loader: ^8.1.0
     babel-plugin-styled-components: ^1.11.1
+    fast-check: ^2.10.0
     jest: ^26.6.1
     lodash: ^4.17.20
     next: ^10.0.1
@@ -9878,6 +9879,15 @@ __metadata:
   version: 1.4.0
   resolution: "extsprintf@npm:1.4.0"
   checksum: 092e011574324c5cddd78b5a27f869c2703613c1140eb7763aef8f5b0e33769a9b4c7dbcc50acd39b6afebe79bf66adcec73bf3c84e095c5bcfb42306d128ad0
+  languageName: node
+  linkType: hard
+
+"fast-check@npm:^2.10.0":
+  version: 2.10.0
+  resolution: "fast-check@npm:2.10.0"
+  dependencies:
+    pure-rand: ^4.1.1
+  checksum: e3ae1e48ad7f0a5056a3926ca56fb455368485c7215d659eecb069f8b9979e6e50b4e5798a46482d7db21b5e24d494b0688845787b1a5cf30f9331dda79b239a
   languageName: node
   linkType: hard
 
@@ -16077,6 +16087,13 @@ fsevents@~2.1.2:
   version: 4.1.0
   resolution: "pure-rand@npm:4.1.0"
   checksum: 042390da4e970fa116ac1087190cb76f38ef38fc7a22c61f981aee21fdfad26ac67eae71fb6e7387a5567ada026376917c0cbdc95c95694a4b0e4e8475c18b29
+  languageName: node
+  linkType: hard
+
+"pure-rand@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "pure-rand@npm:4.1.1"
+  checksum: ee58642600299f2db55d8f4cd14b04df9e6dcfca764c9057909c78f0d0a20b20a33999920d008d6319c57563abfc6884485c5adc0b794547f7da2ce9283d6927
   languageName: node
   linkType: hard
 
