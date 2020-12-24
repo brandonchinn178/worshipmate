@@ -1,5 +1,4 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
-import * as _ from 'lodash'
 import { useMemo } from 'react'
 
 const SSR_MODE = typeof window === 'undefined'
@@ -30,18 +29,7 @@ export const getApolloClient = () => {
   return apolloClient
 }
 
-export const useApollo = (initialState: unknown) => {
-  const client = useMemo(() => {
-    const apolloClient = getApolloClient()
-
-    if (initialState) {
-      const existingCache = apolloClient.extract()
-      const data = _.merge({}, existingCache, initialState)
-      apolloClient.cache.restore(data)
-    }
-
-    return apolloClient
-  }, [initialState])
-
+export const useApollo = () => {
+  const client = useMemo(() => getApolloClient(), [])
   return client
 }

@@ -2,7 +2,12 @@ import * as _ from 'lodash'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-import { useSearchSongsQuery } from '~/api/searchSongs.generated'
+import {
+  SearchSongsDocument,
+  SearchSongsQuery,
+  useSearchSongsQuery,
+} from '~/api/searchSongs.generated'
+import { getApolloClient } from '~/apollo'
 import { setQueryString } from '~/router'
 import {
   getAvailableFilters,
@@ -27,7 +32,14 @@ const pluralize = (...args: [string, number] | [string, string, number]) => {
   }
 }
 
-export default function Home() {
+type HomeStaticProps = {
+  /**
+   * The full list of songs to show at the start.
+   */
+  initialSongs: SearchSongsQuery['searchSongs']
+}
+
+export default function Home({ initialSongs }: HomeStaticProps) {
   const router = useRouter()
 
   const search = router.query.search as string | undefined
@@ -40,7 +52,7 @@ export default function Home() {
     },
   })
 
-  const songs = _.map(data?.searchSongs ?? [], (song) => ({
+  const songs = _.map(data?.searchSongs ?? initialSongs, (song) => ({
     ...song,
     artist: 'TODO',
     themes: ['TODO1', 'TODO2'],
@@ -73,6 +85,21 @@ export default function Home() {
       </SongTableArea>
     </Grid>
   )
+}
+
+export const getStaticProps = async () => {
+  const apolloClient = getApolloClient()
+
+  const { data } = await apolloClient.query({
+    query: SearchSongsDocument,
+  })
+
+  return {
+    props: {
+      initialSongs: data.searchSongs,
+    },
+    revalidate: 30,
+  }
 }
 
 const Grid = styled.div`
