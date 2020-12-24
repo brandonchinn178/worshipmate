@@ -9,7 +9,7 @@ import { theme } from '~/theme'
 import { GlobalStyle } from '~/theme/global'
 
 export default function App({ Component, pageProps }: AppProps) {
-  const apolloClient = useApollo(pageProps.initialApolloState)
+  const apolloClient = useApollo()
 
   return (
     <ThemeProvider theme={theme}>
