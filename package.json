@@ -6,11 +6,11 @@
     "pg-toolbox"
   ],
   "scripts": {
-    "start": "concurrently -k -n client,server -c green,blue 'yarn client dev' 'yarn server start'",
     "client": "yarn workspace @worship-mate/client",
     "server": "yarn workspace @worship-mate/server",
     "pg-toolbox": "yarn workspace pg-toolbox",
-    "lint": "eslint --ext .js,.ts,.tsx --max-warnings=0"
+    "lint": "eslint --ext .js,.ts,.tsx --max-warnings=0",
+    "start": "concurrently -k -n client,server -c green,blue 'yarn client dev' 'yarn server start'"
   },
   "devDependencies": {
     "@types/concurrently": "^5",
