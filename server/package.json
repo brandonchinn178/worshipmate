@@ -10,6 +10,7 @@
     "test:e2e": "TEST_TYPE=e2e jest --runInBand",
     "codegen": "graphql-codegen",
     "migrate": "yarn :ts-node -s bin/migrate.ts",
+    "migrate:dev": "yarn migrate up && yarn :ts-node -s bin/prepopulateDB.ts",
     "migrate:create": "node-pg-migrate create",
     ":ts-node": "ts-node -r tsconfig-paths/register"
   },
