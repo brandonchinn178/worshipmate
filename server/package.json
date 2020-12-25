@@ -9,8 +9,9 @@
     "test": "TEST_TYPE=unit jest",
     "test:e2e": "TEST_TYPE=e2e jest --runInBand",
     "codegen": "graphql-codegen",
-    "migrate": "ts-node-script -r tsconfig-paths/register bin/migrate.ts",
-    "migrate:create": "node-pg-migrate create"
+    "migrate": "yarn :ts-node -s bin/migrate.ts",
+    "migrate:create": "node-pg-migrate create",
+    ":ts-node": "ts-node -r tsconfig-paths/register"
   },
   "dependencies": {
     "@graphql-toolkit/core": "^0.10.7",
