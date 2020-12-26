@@ -40,7 +40,7 @@ const fromSqlQueryMatcher = (queryMatcher: SqlQueryMatcher): SqlQueryLike =>
     ? { text: queryMatcher, values: [] }
     : queryMatcher
 
-const checkSqlMatches = (
+export const checkSqlMatches = (
   receivedQuery: SqlQueryLike,
   expectedQueryMatcher: SqlQueryMatcher,
 ) => {
@@ -68,9 +68,12 @@ const checkSqlMatches = (
   }
 }
 
+export const normalizeSqlText = (text: string) =>
+  text.trim().replace(/\s+/g, ' ')
+
 const normalizeSqlQuery = ({ text, values }: SqlQueryLike) => ({
   // ignore whitespace differences
-  text: text.trim().replace(/\s+/g, ' '),
+  text: normalizeSqlText(text),
   values,
 })
 
