@@ -3,13 +3,20 @@
 import { initDatabase } from '~/db'
 
 const prepopulateDB = async () => {
+  console.log('TODO')
+}
+
+const bootstrap = async () => {
   const db = initDatabase()
 
   try {
-    console.log('TODO')
+    await prepopulateDB(db)
   } finally {
-    db.close()
+    await db.close()
   }
 }
 
-prepopulateDB().catch(console.error)
+bootstrap().catch((e) => {
+  console.error(e)
+  process.exit(1)
+})
