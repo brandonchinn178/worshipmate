@@ -203,26 +203,3 @@ expect.sqlMatching = (expected: SqlQueryMatcher) =>
   new SqlMatching(expected, false)
 expect.not.sqlMatching = (expected: SqlQueryMatcher) =>
   new SqlMatching(expected, true)
-
-/**
- * A Jest test helper for checking if a SQL query matches the given query,
- * ignoring differences in whitespace.
- *
- * Usage:
- *
- *   const name = 'Take On Me'
- *   const query = sql`
- *     INSERT INTO "song" ("name")
- *     VALUES (${name})
- *   `
- *
- *   expect(query).toEqual(
- *     sqlMatches({
- *       text: 'INSERT INTO "song" ("name") VALUES ($1)',
- *       values: [name],
- *     })
- *   )
- */
-export const sqlMatches = (query: SqlQueryMatcher) => {
-  return expect.sqlMatching(query)
-}
