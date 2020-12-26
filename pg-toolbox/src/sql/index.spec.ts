@@ -1,3 +1,5 @@
+import { extendExpect } from '~test-utils'
+
 import { sql, SqlQuery } from './index'
 
 const TEST_SONG = {
@@ -8,37 +10,7 @@ const TEST_SONG = {
 
 const dedent = (s: string) => s.replace(/\n\s{2}/g, '\n')
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace jest {
-    interface Matchers<R> {
-      toEqualJSON(v: unknown): R
-    }
-  }
-}
-
-expect.extend({
-  // Expect the two values to equal when JSON-stringified.
-  toEqualJSON(received: unknown, expected: unknown) {
-    const pass = this.equals(JSON.stringify(received), JSON.stringify(expected))
-
-    const message = () => {
-      const expectedPrefix = pass ? 'not ' : ''
-      return [
-        this.utils.matcherHint('toEqualJSON', undefined, undefined, {
-          comment: 'equality after JSON.stringify',
-          isNot: this.isNot,
-          promise: this.promise,
-        }),
-        '',
-        'Expected: ' + expectedPrefix + this.utils.printExpected(expected),
-        'Received: ' + this.utils.printReceived(received),
-      ].join('\n')
-    }
-
-    return { actual: received, message, pass }
-  },
-})
+extendExpect()
 
 describe('sql', () => {
   it('allows raw strings', () => {
