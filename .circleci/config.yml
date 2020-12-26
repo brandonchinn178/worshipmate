@@ -107,7 +107,7 @@ jobs:
       - checkout
       - install_yarn_and_deps
 
-      # need server to prepopulate
+      # need running server for getStaticProps in NextJS build
       - run: yarn pg-toolbox build
       - run: yarn server migrate up
       - run:
