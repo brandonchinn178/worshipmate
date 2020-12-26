@@ -6,6 +6,7 @@ import { SqlQuery } from '~/sql'
 
 import { DatabaseClient } from './client'
 import { Database } from './database'
+import { InsertOptions } from './insert'
 
 beforeEach(jest.resetAllMocks)
 
@@ -205,15 +206,24 @@ describe('Database', () => {
           fc.string(),
           fc.array(fc.anything()),
           fc.anything(),
-          async (table, records, result) => {
+          fc.anything(),
+          async (table, records, options, result) => {
             const client = { insertAll: jest.fn().mockResolvedValue(result) }
 
             const db = mkDatabaseWithMockedClient(client)
             await expect(
-              db.insertAll(table, records as Array<Record<string, unknown>>),
+              db.insertAll(
+                table,
+                records as Array<Record<string, unknown>>,
+                options as InsertOptions,
+              ),
             ).resolves.toBe(result)
 
-            expect(client.insertAll).toHaveBeenCalledWith(table, records)
+            expect(client.insertAll).toHaveBeenCalledWith(
+              table,
+              records,
+              options,
+            )
           },
         ),
       )

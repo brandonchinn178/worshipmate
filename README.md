@@ -30,12 +30,6 @@ Pre-requirements: Install yarn and Docker
    yarn pg-toolbox build
    ```
 
-1. Run migrations
-
-   ```bash
-   yarn server migrate up
-   ```
-
 1. Start the GraphQL server and front end concurrently
 
    ```bash

@@ -14,7 +14,7 @@ This directory serves the backend for the website.
        postgres:12
    ```
 
-1. `yarn server migrate up`
+1. `yarn server migrate:dev`
 
 1. `yarn server start`
 
