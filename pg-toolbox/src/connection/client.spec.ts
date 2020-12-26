@@ -1,9 +1,10 @@
+import '~/sql/testutils'
+
 import * as fc from 'fast-check'
 import migrate, { RunnerOption } from 'node-pg-migrate'
 import * as pg from 'pg'
 
 import { sql, SqlQuery } from '~/sql'
-import { sqlMatches } from '~/sql/testutils'
 
 import { DatabaseClient } from './client'
 import { parseMigrateArgs } from './migrate'
@@ -102,9 +103,9 @@ describe('DatabaseClient', () => {
           const callback = jest.fn().mockResolvedValue(result)
           await expect(client.transaction(callback)).resolves.toBe(result)
 
-          expect(mockQuery).toHaveBeenCalledWith(sqlMatches('BEGIN'))
+          expect(mockQuery).toHaveBeenCalledWith(expect.sqlMatching('BEGIN'))
           expect(callback).toHaveBeenCalled()
-          expect(mockQuery).toHaveBeenCalledWith(sqlMatches('COMMIT'))
+          expect(mockQuery).toHaveBeenCalledWith(expect.sqlMatching('COMMIT'))
         }),
       )
     })
@@ -117,10 +118,12 @@ describe('DatabaseClient', () => {
           const callback = jest.fn().mockRejectedValue(result)
           await expect(client.transaction(callback)).rejects.toBe(result)
 
-          expect(mockQuery).toHaveBeenCalledWith(sqlMatches('BEGIN'))
+          expect(mockQuery).toHaveBeenCalledWith(expect.sqlMatching('BEGIN'))
           expect(callback).toHaveBeenCalled()
-          expect(mockQuery).not.toHaveBeenCalledWith(sqlMatches('COMMIT'))
-          expect(mockQuery).toHaveBeenCalledWith(sqlMatches('ROLLBACK'))
+          expect(mockQuery).not.toHaveBeenCalledWith(
+            expect.sqlMatching('COMMIT'),
+          )
+          expect(mockQuery).toHaveBeenCalledWith(expect.sqlMatching('ROLLBACK'))
         }),
       )
     })
@@ -143,20 +146,20 @@ describe('DatabaseClient', () => {
         sql`INSERT INTO "song" ("name") VALUES (${song2})`,
       ])
 
-      expect(mockQuery).toHaveBeenCalledWith(sqlMatches('BEGIN'))
+      expect(mockQuery).toHaveBeenCalledWith(expect.sqlMatching('BEGIN'))
       expect(mockQuery).toHaveBeenCalledWith(
-        sqlMatches({
+        expect.sqlMatching({
           text: 'INSERT INTO "song" ("name") VALUES ($1)',
           values: [song1],
         }),
       )
       expect(mockQuery).toHaveBeenCalledWith(
-        sqlMatches({
+        expect.sqlMatching({
           text: 'INSERT INTO "song" ("name") VALUES ($1)',
           values: [song2],
         }),
       )
-      expect(mockQuery).toHaveBeenCalledWith(sqlMatches('COMMIT'))
+      expect(mockQuery).toHaveBeenCalledWith(expect.sqlMatching('COMMIT'))
     })
 
     it('rolls back if any individual query fails', async () => {
@@ -177,17 +180,17 @@ describe('DatabaseClient', () => {
         ]),
       ).rejects.toThrow()
 
-      expect(mockQuery).toHaveBeenCalledWith(sqlMatches('BEGIN'))
+      expect(mockQuery).toHaveBeenCalledWith(expect.sqlMatching('BEGIN'))
       expect(mockQuery).toHaveBeenCalledWith(
-        sqlMatches(`INSERT INTO "song" ("name") VALUES ('Take On Me')`),
+        expect.sqlMatching(`INSERT INTO "song" ("name") VALUES ('Take On Me')`),
       )
       expect(mockQuery).toHaveBeenCalledWith(
-        sqlMatches(`INSERT INTO "song" ("name") VALUES ('UNKNOWN')`),
+        expect.sqlMatching(`INSERT INTO "song" ("name") VALUES ('UNKNOWN')`),
       )
       expect(mockQuery).not.toHaveBeenCalledWith(
-        sqlMatches(`INSERT INTO "song" ("name") VALUES ('Separate')`),
+        expect.sqlMatching(`INSERT INTO "song" ("name") VALUES ('Separate')`),
       )
-      expect(mockQuery).toHaveBeenCalledWith(sqlMatches('ROLLBACK'))
+      expect(mockQuery).toHaveBeenCalledWith(expect.sqlMatching('ROLLBACK'))
     })
   })
 
@@ -203,14 +206,14 @@ describe('DatabaseClient', () => {
       await client.insertAll('song', songs)
 
       expect(client.executeAll).toHaveBeenCalledWith([
-        sqlMatches({
+        expect.sqlMatching({
           text: `
             INSERT INTO "song" ("name","artist","rating")
             VALUES ($1,$2,$3)
           `,
           values: ['Take On Me', 'A-ha', 5],
         }),
-        sqlMatches({
+        expect.sqlMatching({
           text: `
             INSERT INTO "song" ("name","artist")
             VALUES ($1,$2)
@@ -238,26 +241,26 @@ describe('DatabaseClient', () => {
         ]),
       ).rejects.toThrow()
 
-      expect(mockQuery).toHaveBeenCalledWith(sqlMatches('BEGIN'))
+      expect(mockQuery).toHaveBeenCalledWith(expect.sqlMatching('BEGIN'))
       expect(mockQuery).toHaveBeenCalledWith(
-        sqlMatches({
+        expect.sqlMatching({
           text: `INSERT INTO "song" ("name") VALUES ($1)`,
           values: ['Take On Me'],
         }),
       )
       expect(mockQuery).toHaveBeenCalledWith(
-        sqlMatches({
+        expect.sqlMatching({
           text: `INSERT INTO "song" ("name") VALUES ($1)`,
           values: ['UNKNOWN'],
         }),
       )
       expect(mockQuery).not.toHaveBeenCalledWith(
-        sqlMatches({
+        expect.sqlMatching({
           text: `INSERT INTO "song" ("name") VALUES ($1)`,
           values: ['Separate Ways'],
         }),
       )
-      expect(mockQuery).toHaveBeenCalledWith(sqlMatches('ROLLBACK'))
+      expect(mockQuery).toHaveBeenCalledWith(expect.sqlMatching('ROLLBACK'))
     })
   })
 
@@ -341,7 +344,9 @@ describe('DatabaseClient', () => {
       await client.clear()
 
       expect(mockQuery).toHaveBeenCalledWith(
-        sqlMatches('TRUNCATE "public"."foo","public"."bar" RESTART IDENTITY'),
+        expect.sqlMatching(
+          'TRUNCATE "public"."foo","public"."bar" RESTART IDENTITY',
+        ),
       )
     })
   })
