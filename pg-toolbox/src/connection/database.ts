@@ -2,6 +2,7 @@ import * as pg from 'pg'
 
 import { SqlQuery } from '../sql'
 import { DatabaseClient, SqlRecord } from './client'
+import { InsertOptions } from './insert'
 import { MigrateOptions } from './migrate'
 
 // https://github.com/DefinitelyTyped/DefinitelyTyped/pull/49567
@@ -87,8 +88,11 @@ export class Database {
   async insertAll<T extends SqlRecord>(
     table: string,
     records: T[],
+    options?: InsertOptions,
   ): Promise<void> {
-    return this.withClient((client) => client.insertAll<T>(table, records))
+    return this.withClient((client) =>
+      client.insertAll<T>(table, records, options),
+    )
   }
 
   async migrate(options?: MigrateOptions): Promise<void> {
