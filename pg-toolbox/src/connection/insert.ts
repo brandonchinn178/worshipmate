@@ -1,8 +1,13 @@
 import { sql } from '../sql'
 
+export type InsertOptions = {
+  onConflict?: ConflictOptions | null
+}
+
 export const mkInsertQueries = <T extends Record<string, unknown>>(
   table: string,
   records: T[],
+  options: InsertOptions = {},
 ) => {
   return records.map((record) => {
     const columnNames = Object.keys(record)
@@ -17,3 +22,10 @@ export const mkInsertQueries = <T extends Record<string, unknown>>(
     `
   })
 }
+
+type ConflictTarget = { column: string } | { constraint: string }
+
+type ConflictOptions =
+  | 'ignore'
+  | ({ action: 'ignore' } & Partial<ConflictTarget>)
+  | ({ action: 'update' } & ConflictTarget)

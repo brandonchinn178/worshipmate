@@ -2,7 +2,7 @@ import migrate from 'node-pg-migrate'
 import * as pg from 'pg'
 
 import { sql, SqlQuery } from '../sql'
-import { mkInsertQueries } from './insert'
+import { InsertOptions, mkInsertQueries } from './insert'
 import { MigrateOptions, parseMigrateArgs } from './migrate'
 
 export type SqlRecord = Record<string, unknown>
@@ -111,8 +111,9 @@ export class DatabaseClient {
   async insertAll<T extends SqlRecord>(
     table: string,
     records: T[],
+    options?: InsertOptions,
   ): Promise<void> {
-    const queries = mkInsertQueries(table, records)
+    const queries = mkInsertQueries(table, records, options)
     await this.executeAll(queries)
   }
 
