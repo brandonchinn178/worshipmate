@@ -1,36 +1,171 @@
+import * as fc from 'fast-check'
+
 import { sql } from './index'
-import { sqlMatches } from './testutils'
+import { checkSqlMatches, normalizeSqlText } from './testutils'
 
-describe('sqlMatches', () => {
+describe('checkSqlMatches', () => {
+  const fcQueryValues = fc.array(fc.jsonObject())
+
+  const fcDifferentTexts = fc
+    .tuple(fc.string(), fc.string())
+    .filter(([a, b]) => normalizeSqlText(a) !== normalizeSqlText(b))
+
+  const fcDifferentValues = fc.tuple(fcQueryValues, fcQueryValues).filter(
+    ([values1, values2]) =>
+      !values1.reduce((acc, a, i) => {
+        const b = values2[i]
+        return acc && JSON.stringify(a) === JSON.stringify(b)
+      }, true),
+  )
+
+  it('matches same objects', () => {
+    fc.assert(
+      fc.property(fc.string(), fcQueryValues, (text, values) => {
+        const { pass } = checkSqlMatches({ text, values }, { text, values })
+        expect(pass).toBe(true)
+      }),
+    )
+  })
+
+  it('fails for different texts', () => {
+    fc.assert(
+      fc.property(fcDifferentTexts, fcQueryValues, ([text1, text2], values) => {
+        const { pass } = checkSqlMatches(
+          { text: text1, values },
+          { text: text2, values },
+        )
+        expect(pass).toBe(false)
+      }),
+    )
+  })
+
+  it('fails for different values', () => {
+    fc.assert(
+      fc.property(
+        fc.string(),
+        fcDifferentValues,
+        (text, [values1, values2]) => {
+          const { pass } = checkSqlMatches(
+            { text, values: values1 },
+            { text, values: values2 },
+          )
+          expect(pass).toBe(false)
+        },
+      ),
+    )
+  })
+
+  it('fails for different texts + values', () => {
+    fc.assert(
+      fc.property(
+        fcDifferentTexts,
+        fcDifferentValues,
+        ([text1, text2], [values1, values2]) => {
+          const { pass } = checkSqlMatches(
+            { text: text1, values: values1 },
+            { text: text2, values: values2 },
+          )
+          expect(pass).toBe(false)
+        },
+      ),
+    )
+  })
+
+  const fcSpaces = fc.nat(10).map((x) => ' '.repeat(x))
+  const fcQueryText = fc
+    .tuple(fcSpaces, fcSpaces, fcSpaces)
+    .map(([a, b, c]) => a + 'SELECT ' + b + '1' + c)
+
   it('ignores whitespace differences', () => {
-    expect(sql`     SELECT   1  `).toEqual(sqlMatches('SELECT 1'))
+    const fcQuery = fc.oneof(
+      fcQueryText,
+      fcQueryText.map((text) => ({ text, values: [] })),
+    )
 
-    expect(sql`     SELECT   1  `).toEqual(
-      sqlMatches({ text: 'SELECT 1', values: [] }),
+    fc.assert(
+      fc.property(fcQueryText, fcQuery, (actualText, expected) => {
+        const actual = { text: actualText, values: [] }
+
+        const { pass } = checkSqlMatches(actual, expected)
+        expect(pass).toBe(true)
+      }),
     )
   })
 
-  it('escapes regex special characters', () => {
-    expect(sql`SELECT COUNT(*) FROM "foo"`).toEqual(
-      sqlMatches('SELECT COUNT(*) FROM "foo"'),
+  it('ignores whitespace differences with values', () => {
+    fc.assert(
+      fc.property(
+        fcQueryText,
+        fcQueryText,
+        fcQueryValues,
+        (actualText, expectedText, values) => {
+          const actual = { text: actualText, values }
+          const expected = { text: expectedText, values }
+
+          const { pass } = checkSqlMatches(actual, expected)
+          expect(pass).toBe(true)
+        },
+      ),
     )
   })
+})
 
-  it('matches values', () => {
-    const name = 'Take On Me'
+describe('Match against query text', () => {
+  const query = sql`SELECT * FROM "song"`
 
-    expect(sql`SELECT * FROM "song" WHERE "song"."name" = ${name}`).toEqual(
-      sqlMatches({
+  test('expect().toMatchSql(string)', () => {
+    expect(query).toMatchSql('SELECT * FROM "song"')
+  })
+
+  test('expect().not.toMatchSql(string)', () => {
+    expect(query).not.toMatchSql('SELECT * FROM "person"')
+  })
+
+  test('expect.sqlMatching(string)', () => {
+    expect([query]).toEqual([expect.sqlMatching('SELECT * FROM "song"')])
+  })
+
+  test('expect.not.sqlMatching(string)', () => {
+    expect([query]).toEqual([expect.not.sqlMatching('SELECT * FROM "person"')])
+  })
+})
+
+describe('Match against query text and values', () => {
+  const name = 'Take On Me'
+  const query = sql`
+    SELECT * FROM "song"
+    WHERE "song"."name" = ${name}
+  `
+
+  test('expect().toMatchSql({ text, values })', () => {
+    expect(query).toMatchSql({
+      text: 'SELECT * FROM "song" WHERE "song"."name" = $1',
+      values: [name],
+    })
+  })
+
+  test('expect().not.toMatchSql({ text, values })', () => {
+    expect(query).not.toMatchSql({
+      text: 'SELECT * FROM "person" WHERE "person"."name" = $1',
+      values: [name],
+    })
+  })
+
+  test('expect.sqlMatching({ text, values })', () => {
+    expect([query]).toEqual([
+      expect.sqlMatching({
         text: 'SELECT * FROM "song" WHERE "song"."name" = $1',
         values: [name],
       }),
-    )
+    ])
+  })
 
-    expect(sql`SELECT * FROM "song" WHERE "song"."name" = ${name}`).toEqual(
-      sqlMatches({
-        text: 'SELECT * FROM "song" WHERE "song"."name" = $1',
-        values: [expect.stringMatching(/\w+ Me/)],
+  test('expect.not.sqlMatching({ text, values })', () => {
+    expect([query]).toEqual([
+      expect.not.sqlMatching({
+        text: 'SELECT * FROM "person" WHERE "person"."name" = $1',
+        values: [name],
       }),
-    )
+    ])
   })
 })
