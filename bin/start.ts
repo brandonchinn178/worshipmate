@@ -21,7 +21,10 @@ const startAll = async () => {
 }
 
 startAll()
-  .catch(console.error)
+  .catch(() => {
+    process.exit(1)
+  })
   .finally(() => {
+    // https://github.com/kimmobrunfeldt/concurrently/pull/253
     process.stdin.pause()
   })
