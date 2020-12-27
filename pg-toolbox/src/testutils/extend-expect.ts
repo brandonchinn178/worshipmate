@@ -1,4 +1,8 @@
-import { addSymmetricMatchers, AsymmetricMatcher } from './jest-internals'
+import {
+  addSymmetricMatchers,
+  AsymmetricMatcher,
+  jestExpect,
+} from './jest-internals'
 import {
   checkSqlMatches,
   fromSqlQueryMatcher,
@@ -7,26 +11,6 @@ import {
   SqlQueryLike,
   SqlQueryMatcher,
 } from './utils'
-
-declare global {
-  /* eslint-disable-next-line @typescript-eslint/no-namespace */
-  namespace jest {
-    // expect.sqlMatching(...)
-    interface Expect {
-      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      sqlMatching(expected: string | SqlQueryMatcher): any
-    }
-    // expect.not.sqlMatching(...)
-    interface InverseAsymmetricMatchers {
-      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-      sqlMatching(expected: string | SqlQueryMatcher): any
-    }
-    // expect(...).toMatchSql(...)
-    interface Matchers<R> {
-      toMatchSql(expected: string | SqlQueryMatcher): R
-    }
-  }
-}
 
 addSymmetricMatchers({
   /**
@@ -146,7 +130,7 @@ class SqlMatching extends AsymmetricMatcher<SqlQueryMatcher> {
   }
 }
 
-expect.sqlMatching = (expected: SqlQueryMatcher) =>
+jestExpect.sqlMatching = (expected: SqlQueryMatcher) =>
   new SqlMatching(expected, false)
-expect.not.sqlMatching = (expected: SqlQueryMatcher) =>
+jestExpect.not.sqlMatching = (expected: SqlQueryMatcher) =>
   new SqlMatching(expected, true)
