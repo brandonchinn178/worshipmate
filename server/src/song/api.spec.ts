@@ -1,5 +1,4 @@
 import { Database } from 'pg-toolbox'
-import { sqlMatches } from 'pg-toolbox/dist/testutils'
 
 import { SongAPI } from './api'
 
@@ -20,14 +19,14 @@ describe('SongAPI', () => {
     it('can return all songs', async () => {
       await songApi.searchSongs()
       expect(db.query).toHaveBeenCalledWith(
-        sqlMatches('SELECT * FROM "song" WHERE TRUE'),
+        expect.sqlMatching('SELECT * FROM "song" WHERE TRUE'),
       )
     })
 
     it('can return songs matching a query', async () => {
       await songApi.searchSongs({ query: 'foo' })
       expect(db.query).toHaveBeenCalledWith(
-        sqlMatches({
+        expect.sqlMatching({
           text: 'SELECT * FROM "song" WHERE "song"."title" ILIKE $1',
           values: ['%foo%'],
         }),
@@ -39,7 +38,7 @@ describe('SongAPI', () => {
         filters: { recommendedKey: 'A' },
       })
       expect(db.query).toHaveBeenCalledWith(
-        sqlMatches({
+        expect.sqlMatching({
           text: 'SELECT * FROM "song" WHERE "song"."recommended_key" = $1',
           values: ['A'],
         }),
