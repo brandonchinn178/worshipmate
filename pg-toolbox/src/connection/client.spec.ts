@@ -1,5 +1,3 @@
-import '~/testutils'
-
 import * as fc from 'fast-check'
 import migrate, { RunnerOption } from 'node-pg-migrate'
 import * as pg from 'pg'

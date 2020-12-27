@@ -1,5 +1,3 @@
-import './index'
-
 import { sql } from '~/sql'
 
 describe('Match against query text', () => {
