@@ -1,4 +1,4 @@
-import '~/sql/testutils'
+import '~/testutils'
 
 import * as fc from 'fast-check'
 import migrate, { RunnerOption } from 'node-pg-migrate'

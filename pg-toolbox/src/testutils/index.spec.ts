@@ -1,7 +1,8 @@
 import * as fc from 'fast-check'
 
-import { sql } from './index'
-import { checkSqlMatches, normalizeSqlText } from './testutils'
+import { sql } from '~/sql'
+
+import { checkSqlMatches, normalizeSqlText } from './index'
 
 describe('checkSqlMatches', () => {
   const fcQueryValues = fc.array(fc.jsonObject())

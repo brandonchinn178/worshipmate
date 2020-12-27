@@ -1,4 +1,4 @@
-import '~/sql/testutils'
+import '~/testutils'
 
 import { extendExpect } from '~test-utils'
 
