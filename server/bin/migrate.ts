@@ -2,7 +2,7 @@
 
 import { Database } from 'pg-toolbox'
 
-import { initDatabase } from '~/db'
+import { withDatabase } from '~/db'
 
 const runMigrations = async (db: Database) => {
   await db.migrate({
@@ -13,17 +13,7 @@ const runMigrations = async (db: Database) => {
   console.log('Migrations complete')
 }
 
-const bootstrap = async () => {
-  const db = initDatabase()
-
-  try {
-    await runMigrations(db)
-  } finally {
-    await db.close()
-  }
-}
-
-bootstrap().catch((e) => {
+withDatabase(runMigrations).catch((e) => {
   console.error(e)
   process.exit(1)
 })
