@@ -1,7 +1,4 @@
-import { AsymmetricMatcher } from 'expect/build/asymmetricMatchers'
-import { setMatchers } from 'expect/build/jestMatchersObject'
-import { Expect } from 'expect/build/types'
-
+import { addSymmetricMatchers, AsymmetricMatcher } from './jest-internals'
 import {
   checkSqlMatches,
   fromSqlQueryMatcher,
@@ -31,64 +28,60 @@ declare global {
   }
 }
 
-setMatchers(
-  {
-    /**
-     * A Jest matcher for checking if a SQL query matches the given query,
-     * ignoring differences in whitespace.
-     *
-     * Usage:
-     *
-     *   const query = sql`
-     *     SELECT *
-     *     FROM "song"
-     *   `
-     *
-     *   expect(query).toMatchSql('SELECT * FROM "song"')
-     *   expect(query).toMatchSql({
-     *     text: 'SELECT * FROM "song"',
-     *     values: [],
-     *   })
-     *
-     *   const name = 'Take On Me'
-     *   const queryWithValues = sql`
-     *     INSERT INTO "song" ("name")
-     *     VALUES (${name})
-     *   `
-     *
-     *   expect(queryWithValues).toMatchSql({
-     *     text: 'INSERT INTO "song" ("name") VALUES ($1)',
-     *     values: [name],
-     *   })
-     */
-    toMatchSql(
-      receivedQuery: SqlQueryLike,
-      expectedQueryMatcher: SqlQueryMatcher,
-    ) {
-      const { pass, received, expected } = checkSqlMatches(
-        receivedQuery,
-        expectedQueryMatcher,
-      )
+addSymmetricMatchers({
+  /**
+   * A Jest matcher for checking if a SQL query matches the given query,
+   * ignoring differences in whitespace.
+   *
+   * Usage:
+   *
+   *   const query = sql`
+   *     SELECT *
+   *     FROM "song"
+   *   `
+   *
+   *   expect(query).toMatchSql('SELECT * FROM "song"')
+   *   expect(query).toMatchSql({
+   *     text: 'SELECT * FROM "song"',
+   *     values: [],
+   *   })
+   *
+   *   const name = 'Take On Me'
+   *   const queryWithValues = sql`
+   *     INSERT INTO "song" ("name")
+   *     VALUES (${name})
+   *   `
+   *
+   *   expect(queryWithValues).toMatchSql({
+   *     text: 'INSERT INTO "song" ("name") VALUES ($1)',
+   *     values: [name],
+   *   })
+   */
+  toMatchSql(
+    receivedQuery: SqlQueryLike,
+    expectedQueryMatcher: SqlQueryMatcher,
+  ) {
+    const { pass, received, expected } = checkSqlMatches(
+      receivedQuery,
+      expectedQueryMatcher,
+    )
 
-      const message = () => {
-        const notPrefix = pass ? 'not ' : ''
-        return [
-          this.utils.matcherHint('toMatchSql', undefined, undefined, {
-            isNot: this.isNot,
-            promise: this.promise,
-          }),
-          '',
-          'Expected: ' + notPrefix + this.utils.printExpected(expected),
-          'Received: ' + this.utils.printReceived(received),
-        ].join('\n')
-      }
+    const message = () => {
+      const notPrefix = pass ? 'not ' : ''
+      return [
+        this.utils.matcherHint('toMatchSql', undefined, undefined, {
+          isNot: this.isNot,
+          promise: this.promise,
+        }),
+        '',
+        'Expected: ' + notPrefix + this.utils.printExpected(expected),
+        'Received: ' + this.utils.printReceived(received),
+      ].join('\n')
+    }
 
-      return { actual: receivedQuery, message, pass }
-    },
+    return { actual: receivedQuery, message, pass }
   },
-  true,
-  (expect as unknown) as Expect,
-)
+})
 
 /**
  * A Jest asymmetric matcher for checking if a SQL query matches the given

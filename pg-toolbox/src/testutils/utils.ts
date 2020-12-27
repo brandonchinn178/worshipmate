@@ -1,4 +1,4 @@
-import * as jestUtils from 'expect/build/jasmineUtils'
+import { isEqual } from './jest-internals'
 
 export type SqlQueryLike = {
   text: string
@@ -37,8 +37,8 @@ export const checkSqlMatches = (
   const received = normalizeSqlQuery(receivedQuery)
   const expected = normalizeSqlQuery(expectedQuery)
 
-  const textPasses = jestUtils.equals(received.text, expected.text)
-  const valuesPasses = jestUtils.equals(received.values, expected.values)
+  const textPasses = isEqual(received.text, expected.text)
+  const valuesPasses = isEqual(received.values, expected.values)
 
   return {
     pass: textPasses && valuesPasses,
