@@ -2,7 +2,7 @@
 
 import { Database } from 'pg-toolbox'
 
-import { initDatabase } from '~/db'
+import { withDatabase } from '~/db'
 
 const prepopulateDB = async (db: Database) => {
   await db.insertAll(
@@ -52,17 +52,7 @@ const prepopulateDB = async (db: Database) => {
   console.log('Prepopulated songs table')
 }
 
-const bootstrap = async () => {
-  const db = initDatabase()
-
-  try {
-    await prepopulateDB(db)
-  } finally {
-    await db.close()
-  }
-}
-
-bootstrap().catch((e) => {
+withDatabase(prepopulateDB).catch((e) => {
   console.error(e)
   process.exit(1)
 })

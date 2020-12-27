@@ -1,4 +1,3 @@
-import { sqlMatches } from '~/sql/testutils'
 import { extendExpect } from '~test-utils'
 
 import { mkInsertQueries } from './insert'
@@ -13,14 +12,14 @@ describe('mkInsertQueries', () => {
     ]
 
     expect(mkInsertQueries('song', songs)).toEqual([
-      sqlMatches({
+      expect.sqlMatching({
         text: `
           INSERT INTO "song" ("name","artist","rating")
           VALUES ($1,$2,$3)
         `,
         values: ['Take On Me', 'A-ha', 5],
       }),
-      sqlMatches({
+      expect.sqlMatching({
         text: `
           INSERT INTO "song" ("name","artist")
           VALUES ($1,$2)
@@ -42,7 +41,7 @@ describe('mkInsertQueries', () => {
     const songs = [{ name: 'Take On Me', rating: 5 }]
 
     expect(mkInsertQueries('song', songs, { onConflict: 'ignore' })).toEqual([
-      sqlMatches({
+      expect.sqlMatching({
         text: `
           INSERT INTO "song" ("name","rating") VALUES ($1,$2)
           ON CONFLICT DO NOTHING
@@ -70,7 +69,7 @@ describe('mkInsertQueries', () => {
         onConflict: { action: 'ignore', column: 'name' },
       }),
     ).toEqual([
-      sqlMatches({
+      expect.sqlMatching({
         text: `
           INSERT INTO "song" ("name","rating") VALUES ($1,$2)
           ON CONFLICT ("name") DO NOTHING
@@ -88,7 +87,7 @@ describe('mkInsertQueries', () => {
         onConflict: { action: 'ignore', constraint: 'unique_name' },
       }),
     ).toEqual([
-      sqlMatches({
+      expect.sqlMatching({
         text: `
           INSERT INTO "song" ("name","rating") VALUES ($1,$2)
           ON CONFLICT ON CONSTRAINT "unique_name" DO NOTHING
@@ -106,7 +105,7 @@ describe('mkInsertQueries', () => {
         onConflict: { action: 'update', column: 'name' },
       }),
     ).toEqual([
-      sqlMatches({
+      expect.sqlMatching({
         text: `
           INSERT INTO "song" ("name","rating") VALUES ($1,$2)
           ON CONFLICT ("name") DO UPDATE SET ("name","rating") = ($3,$4)
@@ -124,7 +123,7 @@ describe('mkInsertQueries', () => {
         onConflict: { action: 'update', constraint: 'unique_name' },
       }),
     ).toEqual([
-      sqlMatches({
+      expect.sqlMatching({
         text: `
           INSERT INTO "song" ("name","rating") VALUES ($1,$2)
           ON CONFLICT ON CONSTRAINT "unique_name" DO UPDATE SET ("name","rating") = ($3,$4)

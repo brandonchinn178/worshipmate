@@ -10,3 +10,14 @@ export const initDatabase = () => {
     database: 'worship_mate',
   })
 }
+
+export const withDatabase = async <T>(
+  callback: (db: Database) => Promise<T>,
+): Promise<T> => {
+  const db = initDatabase()
+  try {
+    return await callback(db)
+  } finally {
+    await db.close()
+  }
+}
