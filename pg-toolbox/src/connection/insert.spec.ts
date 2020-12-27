@@ -1,5 +1,3 @@
-import '~/testutils'
-
 import { extendExpect } from '~test-utils'
 
 import { mkInsertQueries } from './insert'

@@ -23,4 +23,5 @@ module.exports = {
       prefix: '<rootDir>/',
     }),
   },
+  setupFilesAfterEnv: ['<rootDir>/jest/setup.ts'],
 }
