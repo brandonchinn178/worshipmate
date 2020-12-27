@@ -8,9 +8,9 @@ export type SqlQueryLike = {
 export type SqlQueryMatcher = string | SqlQueryLike
 
 export const isSqlLike = (query: unknown): query is SqlQueryLike =>
-  jestUtils.isA('Object', query) &&
-  jestUtils.isA('String', (query as SqlQueryLike).text) &&
-  Array.isArray((query as SqlQueryLike).values)
+  typeof query === 'object' &&
+  typeof (query as Record<string, unknown>).text === 'string' &&
+  Array.isArray((query as Record<string, unknown>).values)
 
 export const fromSqlQueryMatcher = (
   queryMatcher: SqlQueryMatcher,
