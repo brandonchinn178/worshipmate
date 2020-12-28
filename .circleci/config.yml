@@ -1,7 +1,7 @@
 version: 2.1
 
 aliases:
-  - &yarn_cache_key v1-yarn-{{ checksum "yarn.lock" }}
+  - &yarn_cache_key v2-yarn-{{ checksum "yarn.lock" }}
   - &next_cache_key v1-next-{{ checksum "yarn.lock" }}
   - &ci_executor
     working_directory: ~/worship_mate/
@@ -43,10 +43,7 @@ commands:
       - save_cache:
           key: *yarn_cache_key
           paths:
-            - node_modules
-            - client/node_modules
-            - server/node_modules
-            - pg-toolbox/node_modules
+            - .yarn/cache/
 
 jobs:
   build_pg_toolbox:
