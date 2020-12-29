@@ -141,7 +141,14 @@ jobs:
     steps:
       - checkout
       - install_yarn_and_deps
-      - run: yarn lint .
+
+      - run:
+          name: Install pre-commit
+          command: curl https://pre-commit.com/install-local.py | python -
+      - run:
+          name: Run pre-commit
+          command: pre-commit run --all-files
+
       - run:
           name: Check that server GraphQL files are up to date
           command: |
