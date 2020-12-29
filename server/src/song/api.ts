@@ -1,5 +1,5 @@
 import { DataSource } from 'apollo-datasource'
-import { Database, sql, SqlQuery } from 'pg-toolbox'
+import { Database, sql, SqlQuery } from 'pg-fusion'
 
 import { SearchFilters, Song } from './models'
 import { SongRecord } from './schema'

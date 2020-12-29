@@ -46,39 +46,11 @@ commands:
             - .yarn/cache/
 
 jobs:
-  build_pg_toolbox:
-    executor: docker_node
-
-    steps:
-      - checkout
-      - install_yarn_and_deps
-      - run: yarn pg-toolbox build
-
-  test_pg_toolbox:
-    executor:
-      name: docker_node_postgres
-      db_name: pg_toolbox_test
-
-    steps:
-      - checkout
-      - install_yarn_and_deps
-
-      - run: yarn pg-toolbox typecheck
-
-      - run: yarn pg-toolbox test --coverage
-      - codecov/upload:
-          file: pg-toolbox/coverage/lcov.info
-
-      - run: yarn pg-toolbox test:e2e --coverage
-      - codecov/upload:
-          file: pg-toolbox/coverage/lcov.info
-
   build_server:
     executor: docker_node
     steps:
       - checkout
       - install_yarn_and_deps
-      - run: yarn pg-toolbox build
       - run: yarn server build
 
   test_server:
@@ -86,7 +58,6 @@ jobs:
     steps:
       - checkout
       - install_yarn_and_deps
-      - run: yarn pg-toolbox build
 
       - run: yarn server typecheck
 
@@ -105,7 +76,6 @@ jobs:
       - install_yarn_and_deps
 
       # need running server for getStaticProps in NextJS build
-      - run: yarn pg-toolbox build
       - run: yarn server migrate up
       - run:
           command: yarn server start
@@ -165,8 +135,6 @@ workflows:
 
   build_and_test:
     jobs:
-      - build_pg_toolbox
-      - test_pg_toolbox
       - build_server
       - test_server
       - build_client

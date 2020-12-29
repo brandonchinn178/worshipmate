@@ -1,6 +1,6 @@
 #!/usr/bin/env ts-node-script
 
-import { Database, loadCLIMigrateArgs } from 'pg-toolbox'
+import { Database, loadCLIMigrateArgs } from 'pg-fusion'
 
 import { withDatabase } from '~/db'
 

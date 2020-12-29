@@ -2,13 +2,11 @@
   "private": true,
   "workspaces": [
     "client",
-    "server",
-    "pg-toolbox"
+    "server"
   ],
   "scripts": {
     "client": "yarn workspace @worship-mate/client",
     "server": "yarn workspace @worship-mate/server",
-    "pg-toolbox": "yarn workspace pg-toolbox",
     "lint": "eslint --ext .js,.ts,.tsx --max-warnings=0",
     "start": "ts-node-script bin/start.ts"
   },
