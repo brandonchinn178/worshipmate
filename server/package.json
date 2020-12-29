@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start:dev": "yarn migrate up && yarn :ts-node -s bin/prepopulateDB.ts && nodemon",
+    "start:dev": "yarn :ts-node -s bin/initDB.ts && nodemon",
     "build": "tsc -p tsconfig.build.json",
     "start:prod": "node dist/main.js",
     "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
