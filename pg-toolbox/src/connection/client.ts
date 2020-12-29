@@ -3,7 +3,7 @@ import * as pg from 'pg'
 
 import { sql, SqlQuery } from '../sql'
 import { InsertOptions, mkInsertQueries } from './insert'
-import { MigrateOptions, parseMigrateArgs } from './migrate'
+import { MigrateOptions } from './migrate'
 
 export type SqlRecord = Record<string, unknown>
 
@@ -133,19 +133,17 @@ export class DatabaseClient {
    *   await client.migrate()
    */
   async migrate(options: MigrateOptions = {}): Promise<void> {
-    const { loadFromArgs = false, ...nodePgMigrateOptions } = options
+    const { action = 'up', ...nodePgMigrateOptions } = options
 
-    const migrateDirectionOptions = loadFromArgs
-      ? parseMigrateArgs(process.argv)
-      : [{ direction: 'up' as const, count: Infinity }]
+    const directions = action === 'redo' ? ['down', 'up'] : [action]
 
-    for (const { direction, count } of migrateDirectionOptions) {
+    for (const direction of directions) {
       await migrate({
         dbClient: this.client,
         migrationsTable: 'pgmigrations',
         dir: 'migrations',
-        direction,
-        count,
+        direction: direction as 'up' | 'down',
+        count: Infinity,
         ...nodePgMigrateOptions,
       })
     }

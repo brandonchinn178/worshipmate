@@ -1,10 +1,10 @@
 import * as fc from 'fast-check'
 
-import { parseMigrateArgs } from './migrate'
+import { loadCLIMigrateArgs } from './migrate'
 
 const mockConsoleLog = jest.spyOn(console, 'log')
 
-const mockProcessExit = jest.spyOn(process, 'exit')
+const mockProcessExit = (jest.spyOn(process, 'exit') as unknown) as jest.Mock
 
 beforeEach(() => {
   jest.resetAllMocks()
@@ -18,36 +18,18 @@ beforeEach(() => {
 
 afterEach(jest.resetAllMocks)
 
-describe('parseMigrateArgs', () => {
-  it('parses up/down commands', () => {
+describe('loadCLIMigrateArgs', () => {
+  it('parses an action and a count', () => {
     fc.assert(
       fc.property(
         fc.string(),
         fc.string(),
-        fc.constantFrom('up', 'down'),
+        fc.constantFrom('up', 'down', 'redo'),
         fc.integer(),
-        (argv0, argv1, direction, count) => {
+        (argv0, argv1, action, count) => {
           expect(
-            parseMigrateArgs([argv0, argv1, direction, count.toString()]),
-          ).toStrictEqual([{ direction, count }])
-        },
-      ),
-    )
-  })
-
-  it('parses the redo command', () => {
-    fc.assert(
-      fc.property(
-        fc.string(),
-        fc.string(),
-        fc.integer(),
-        (argv0, argv1, count) => {
-          expect(
-            parseMigrateArgs([argv0, argv1, 'redo', count.toString()]),
-          ).toStrictEqual([
-            { direction: 'down', count },
-            { direction: 'up', count },
-          ])
+            loadCLIMigrateArgs([argv0, argv1, action, count.toString()]),
+          ).toStrictEqual({ action, count })
         },
       ),
     )
@@ -60,14 +42,8 @@ describe('parseMigrateArgs', () => {
         fc.string(),
         fc.constantFrom('up', 'down', 'redo'),
         (argv0, argv1, command) => {
-          const migrateDirectionOptions = parseMigrateArgs([
-            argv0,
-            argv1,
-            command,
-          ])
-          for (const options of migrateDirectionOptions) {
-            expect(options.count).toBe(Infinity)
-          }
+          const { count } = loadCLIMigrateArgs([argv0, argv1, command])
+          expect(count).toBe(Infinity)
         },
       ),
     )
@@ -76,9 +52,7 @@ describe('parseMigrateArgs', () => {
   it('fails without a command', () => {
     fc.assert(
       fc.property(fc.string(), fc.string(), (argv0, argv1) => {
-        expect(() => parseMigrateArgs([argv0, argv1])).toThrow()
-        expect(mockConsoleLog).toHaveBeenCalled()
-        expect(mockProcessExit).toHaveBeenCalled()
+        expect(() => loadCLIMigrateArgs([argv0, argv1])).toThrow()
       }),
     )
   })
@@ -90,12 +64,20 @@ describe('parseMigrateArgs', () => {
         fc.string(),
         fc.string().filter((s) => !['up', 'down', 'redo'].includes(s)),
         (argv0, argv1, command) => {
-          expect(() => parseMigrateArgs([argv0, argv1, command])).toThrow()
-          expect(mockConsoleLog).toHaveBeenCalled()
-          expect(mockProcessExit).toHaveBeenCalled()
+          expect(() => loadCLIMigrateArgs([argv0, argv1, command])).toThrow()
         },
       ),
     )
+  })
+
+  it('prints a help message', () => {
+    expect(() => {
+      loadCLIMigrateArgs(['node', 'scripts/migrate.js', '--help'])
+    }).toThrow()
+
+    expect(mockConsoleLog).toHaveBeenCalled()
+    const [usage] = mockConsoleLog.mock.calls[0]
+    expect(usage).toMatchSnapshot()
   })
 
   it('fails with a non-numeric count', () => {
@@ -106,9 +88,9 @@ describe('parseMigrateArgs', () => {
         fc.constantFrom('up', 'down', 'redo'),
         fc.string().filter((s) => isNaN(parseInt(s, 10))),
         (argv0, argv1, command, count) => {
-          expect(() =>
-            parseMigrateArgs([argv0, argv1, command, count]),
-          ).toThrow()
+          expect(() => {
+            loadCLIMigrateArgs([argv0, argv1, command, count])
+          }).toThrow()
         },
       ),
     )

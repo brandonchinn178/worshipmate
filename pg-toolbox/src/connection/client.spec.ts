@@ -5,7 +5,6 @@ import * as pg from 'pg'
 import { sql, SqlQuery } from '~/sql'
 
 import { DatabaseClient } from './client'
-import { parseMigrateArgs } from './migrate'
 
 jest.mock('node-pg-migrate', () => {
   return {
@@ -15,13 +14,7 @@ jest.mock('node-pg-migrate', () => {
   }
 })
 
-jest.mock('./migrate', () => {
-  return {
-    parseMigrateArgs: jest.fn(),
-  }
-})
-
-const mockParseMigrateArgs = (parseMigrateArgs as unknown) as jest.Mock
+const mockMigrate = (migrate as unknown) as jest.Mock
 
 const mkClient = () => {
   const mockQuery = jest.fn()
@@ -34,6 +27,8 @@ const mkClient = () => {
 
   return { client, pgClient, mockQuery }
 }
+
+beforeEach(jest.resetAllMocks)
 
 describe('DatabaseClient', () => {
   describe('.query()', () => {
@@ -111,6 +106,8 @@ describe('DatabaseClient', () => {
     it('rolls back the transaction if the callback rejects', async () => {
       await fc.assert(
         fc.asyncProperty(fc.anything(), async (result) => {
+          jest.resetAllMocks()
+
           const { client, mockQuery } = mkClient()
 
           const callback = jest.fn().mockRejectedValue(result)
@@ -135,6 +132,8 @@ describe('DatabaseClient', () => {
     })
 
     it('executes the given queries', async () => {
+      jest.resetAllMocks()
+
       const song1 = 'Take On Me'
       const song2 = 'Separate Ways'
 
@@ -263,6 +262,10 @@ describe('DatabaseClient', () => {
   })
 
   describe('.migrate()', () => {
+    const fcMigrateOptions = fc.object({
+      key: fc.string().filter((s) => s !== 'action'),
+    })
+
     it('can run migration without passing options', async () => {
       const { client, pgClient } = mkClient()
       await client.migrate()
@@ -278,7 +281,7 @@ describe('DatabaseClient', () => {
 
     it('passes options through', async () => {
       await fc.assert(
-        fc.asyncProperty(fc.object(), async (options) => {
+        fc.asyncProperty(fcMigrateOptions, async (options) => {
           const { client } = mkClient()
           await client.migrate((options as unknown) as RunnerOption)
 
@@ -287,29 +290,20 @@ describe('DatabaseClient', () => {
       )
     })
 
-    it('can load options from arguments', async () => {
-      const fcMigrateDirectionOption = fc.record({
-        direction: fc.constantFrom('up', 'down'),
-        count: fc.constantFrom(Infinity, 1, 2, 3, 4),
-      })
-
+    it('handles redo action', async () => {
       await fc.assert(
-        fc.asyncProperty(
-          fc.array(fcMigrateDirectionOption, 1, 2),
-          async (migrateDirectionOptions) => {
-            mockParseMigrateArgs.mockReturnValue(migrateDirectionOptions)
+        fc.asyncProperty(fcMigrateOptions, async (options) => {
+          jest.resetAllMocks()
 
-            const { client } = mkClient()
-            await client.migrate({ loadFromArgs: true })
+          const { client } = mkClient()
+          await client.migrate({ action: 'redo', ...options })
 
-            expect(mockParseMigrateArgs).toHaveBeenCalled()
-            for (const options of migrateDirectionOptions) {
-              expect(migrate).toHaveBeenCalledWith(
-                expect.objectContaining(options),
-              )
-            }
-          },
-        ),
+          expect(mockMigrate).toHaveBeenCalledTimes(2)
+          const [call1, call2] = mockMigrate.mock.calls
+
+          expect(call1[0]).toMatchObject({ direction: 'down', ...options })
+          expect(call2[0]).toMatchObject({ direction: 'up', ...options })
+        }),
       )
     })
   })

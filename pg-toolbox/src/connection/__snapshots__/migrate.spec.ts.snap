@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loadCLIMigrateArgs prints a help message 1`] = `
+"
+Usage: scripts/migrate.js [up|down|redo] [COUNT]
+
+Migrate the database with the given arguments.
+
+Parameters:
+  up|down|redo      The direction to migrate, with redo doing down first,
+                    then up.
+
+  COUNT             The number of migrations to run
+"
+`;

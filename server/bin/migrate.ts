@@ -1,13 +1,15 @@
 #!/usr/bin/env ts-node-script
 
-import { Database } from 'pg-toolbox'
+import { Database, loadCLIMigrateArgs } from 'pg-toolbox'
 
 import { withDatabase } from '~/db'
 
+const cliMigrateArgs = loadCLIMigrateArgs()
+
 const runMigrations = async (db: Database) => {
   await db.migrate({
+    ...cliMigrateArgs,
     checkOrder: true,
-    loadFromArgs: true,
   })
 
   console.log('Migrations complete')
