@@ -1,4 +1,4 @@
-import { Database } from 'pg-toolbox'
+import { Database } from 'pg-fusion'
 
 import { SongAPI } from './api'
 
