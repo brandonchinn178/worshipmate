@@ -5,7 +5,7 @@ This directory serves the frontend for the website.
 ## Quickstart
 
 ```bash
-yarn client dev
+yarn client start:dev
 ```
 
 To run the storybook, run

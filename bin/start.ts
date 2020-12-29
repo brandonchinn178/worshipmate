@@ -10,8 +10,12 @@ const startAll = async () => {
 
   await concurrently(
     [
-      { command: 'yarn server start', name: 'server', prefixColor: 'blue' },
-      { command: 'yarn client dev', name: 'client', prefixColor: 'green' },
+      { command: 'yarn server start:dev', name: 'server', prefixColor: 'blue' },
+      {
+        command: 'yarn client start:dev',
+        name: 'client',
+        prefixColor: 'green',
+      },
     ],
     {
       killOthers: ['success', 'failure'],

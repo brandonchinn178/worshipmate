@@ -12,7 +12,7 @@ This directory serves the backend for the website.
 
 1. `yarn server migrate:dev`
 
-1. `yarn server start`
+1. `yarn server start:dev`
 
 ## Tests
 
