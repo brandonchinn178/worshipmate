@@ -24,12 +24,6 @@ Pre-requirements: Install yarn and Docker
        postgres:12
    ```
 
-1. Build dependencies
-
-   ```bash
-   yarn pg-toolbox build
-   ```
-
 1. Start the GraphQL server and front end concurrently
 
    ```bash
