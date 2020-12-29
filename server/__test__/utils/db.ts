@@ -1,24 +1,29 @@
 import { Database, sql } from 'pg-fusion'
 
+import { DB_NAME, initDatabase, withAdminDatabase } from '~/db'
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
-const TEST_DB = 'worship_mate_test'
 
 export const setupTestDatabase = (): Database => {
+  let dbOrNull: Database | null = null
   beforeAll(async () => {
-    const admin = new Database({ database: 'postgres' })
+    await withAdminDatabase(async (admin) => {
+      await admin.query(sql`DROP DATABASE IF EXISTS ${sql.quote(DB_NAME)}`)
+    })
 
-    try {
-      await admin.query(sql`DROP DATABASE IF EXISTS ${sql.quote(TEST_DB)}`)
-      await admin.query(sql`CREATE DATABASE ${sql.quote(TEST_DB)}`)
-    } finally {
-      await admin.close()
-    }
+    dbOrNull = await initDatabase()
   })
 
-  const db = new Database({ database: TEST_DB })
+  const getDB = (): Database => {
+    if (dbOrNull === null) {
+      throw new Error('Database has not been initialized yet.')
+    }
+    return dbOrNull
+  }
 
   beforeAll(async () => {
+    const db = getDB()
     await db.migrate({
       log: () => {
         // suppress migration output
@@ -27,12 +32,24 @@ export const setupTestDatabase = (): Database => {
   })
 
   beforeEach(async () => {
+    const db = getDB()
     await db.clear()
   })
 
   afterAll(async () => {
+    const db = getDB()
     await db.close()
   })
 
-  return db
+  const dbProxy = new Proxy(
+    {},
+    {
+      get: (target, prop) => {
+        const db = getDB()
+        return Reflect.get(db, prop)
+      },
+    },
+  )
+
+  return dbProxy as Database
 }
