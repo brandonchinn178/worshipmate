@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start:dev": "nodemon",
+    "start:dev": "yarn migrate up && yarn :ts-node -s bin/prepopulateDB.ts && nodemon",
     "build": "tsc -p tsconfig.build.json",
     "start:prod": "node dist/main.js",
     "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
@@ -11,7 +11,6 @@
     "test:e2e": "TEST_TYPE=e2e jest --runInBand",
     "codegen": "graphql-codegen",
     "migrate": "yarn :ts-node -s bin/migrate.ts",
-    "migrate:dev": "yarn migrate up && yarn :ts-node -s bin/prepopulateDB.ts",
     "migrate:create": "node-pg-migrate create",
     ":ts-node": "ts-node -r tsconfig-paths/register"
   },
