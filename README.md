@@ -37,4 +37,4 @@ Pre-requirements: Install yarn and Docker
 This repository is organized using the following Yarn workspaces:
 
 - `client`: The NextJS project that runs the web frontend
-- `server`: The TypeORM project that runs the GraphQL backend
+- `server`: The apollo-server project that runs the GraphQL backend
