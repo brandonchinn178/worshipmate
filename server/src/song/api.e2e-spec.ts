@@ -88,9 +88,10 @@ describe('SongAPI', () => {
     })
 
     it('returns songs in alphabetical order', async () => {
-      const songTitlesInOrder = _.map(_.sortBy(allSongs, 'title'), (song) =>
-        _.pick(song, 'title'),
-      )
+      const songTitlesInOrder = _(allSongs)
+        .sortBy('title')
+        .map(({ title }) => ({ title }))
+        .value()
 
       await fc.assert(
         fc.asyncProperty(
