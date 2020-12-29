@@ -1,3 +1,4 @@
+import * as _ from 'lodash'
 import { Database, sql } from 'pg-fusion'
 
 if (process.env.NODE_ENV !== 'production') {
@@ -11,7 +12,10 @@ export const DB_NAME =
 export const initDatabase = async () => {
   if (process.env.NODE_ENV === 'test') {
     await withAdminDatabase(async (admin) => {
-      await admin.query(sql`CREATE DATABASE ${sql.quote(DB_NAME)}`)
+      const databases = await admin.query(sql`SELECT datname FROM pg_database`)
+      if (!_(databases).map('datname').includes(DB_NAME)) {
+        await admin.query(sql`CREATE DATABASE ${sql.quote(DB_NAME)}`)
+      }
     })
   }
 
