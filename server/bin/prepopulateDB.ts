@@ -1,6 +1,6 @@
 #!/usr/bin/env ts-node-script
 
-import { Database } from 'pg-toolbox'
+import { Database } from 'pg-fusion'
 
 import { withDatabase } from '~/db'
 

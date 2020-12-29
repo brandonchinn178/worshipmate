@@ -1,5 +1,5 @@
 import { createTestClient } from 'apollo-server-testing'
-import { Database } from 'pg-toolbox'
+import { Database } from 'pg-fusion'
 
 import * as apollo from '~/apollo'
 

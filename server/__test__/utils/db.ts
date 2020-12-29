@@ -1,4 +1,4 @@
-import { Database, sql } from 'pg-toolbox'
+import { Database, sql } from 'pg-fusion'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
