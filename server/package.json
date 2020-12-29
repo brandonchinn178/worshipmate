@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start:dev": "yarn :ts-node -s bin/initDB.ts && nodemon",
+    "start:test": "NODE_ENV=test yarn start:dev",
     "build": "webpack",
     "start:prod": "node dist/main.js",
     "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
