@@ -4497,7 +4497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/pg@npm:^7.14.3, @types/pg@npm:^7.4.0":
+"@types/pg@npm:^7.4.0":
   version: 7.14.7
   resolution: "@types/pg@npm:7.14.7"
   dependencies:
@@ -5109,7 +5109,7 @@ __metadata:
     lodash: ^4.17.20
     node-pg-migrate: ^5.8.1
     nodemon: ^2.0.6
-    pg-toolbox: 0.0.1
+    pg-fusion: ^0.0.3
     ts-jest: ^26.4.1
     ts-node: ^9.0.0
     tsconfig-paths: ^3.9.0
@@ -10086,7 +10086,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-check@npm:^2.5.0, fast-check@npm:^2.6.0":
+"fast-check@npm:^2.6.0":
   version: 2.7.0
   resolution: "fast-check@npm:2.7.0"
   dependencies:
@@ -15646,6 +15646,17 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"pg-fusion@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "pg-fusion@npm:0.0.3"
+  dependencies:
+    expect: ^26.6.2
+    node-pg-migrate: ^5.8.1
+    pg: ^8.4.2
+  checksum: 07eb90968fa4649d5a16889446b03d46255ac7f54943981e61681abadd63a9a789bb43c6ebd3f194f4d235d99c20cecac8cb6436b50ff50bf9c669e4385a1d63
+  languageName: node
+  linkType: hard
+
 "pg-int8@npm:1.0.1":
   version: 1.0.1
   resolution: "pg-int8@npm:1.0.1"
@@ -15668,28 +15679,6 @@ fsevents@~2.1.2:
   checksum: 2b5ebfccd014a4a9127a04e34a423a9e7fe6f6b96c32698929e0860e32c453e64438c935068405ee923ab99788345b9591a6dbaa30bba70e724d7fc4d5f5d21e
   languageName: node
   linkType: hard
-
-"pg-toolbox@0.0.1, pg-toolbox@workspace:pg-toolbox":
-  version: 0.0.0-use.local
-  resolution: "pg-toolbox@workspace:pg-toolbox"
-  dependencies:
-    "@types/jest": ^26.0.15
-    "@types/pg": ^7.14.3
-    dotenv: ^8.2.0
-    expect: ^26.6.2
-    fast-check: ^2.5.0
-    jest: ^26.6.1
-    node-pg-migrate: ^5.8.1
-    pg: ^8.4.2
-    ts-jest: ^26.4.1
-    typescript: ^4.0.3
-  peerDependencies:
-    expect: "*"
-  peerDependenciesMeta:
-    expect:
-      optional: true
-  languageName: unknown
-  linkType: soft
 
 "pg-types@npm:^2.1.0":
   version: 2.2.0
