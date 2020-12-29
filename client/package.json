@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "wait-on tcp:4000 && next",
+    "start:dev": "wait-on tcp:4000 && next",
     "build": "wait-on tcp:4000 && next build",
-    "start": "next start",
+    "start:prod": "next start",
     "storybook": "start-storybook -p 6006",
     "test": "jest",
     "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",

@@ -78,7 +78,7 @@ jobs:
       # need running server for getStaticProps in NextJS build
       - run: yarn server migrate up
       - run:
-          command: yarn server start
+          command: yarn server start:dev
           background: true
 
       # builds client for testing in CI -- production will

@@ -23,7 +23,7 @@ Pre-requirements: Install yarn and Docker
 1. Start the GraphQL server and front end concurrently
 
    ```bash
-   yarn start
+   yarn start:dev
    ```
 
 1. Go to `http://localhost:3000`
