@@ -52,6 +52,10 @@ jobs:
       - checkout
       - install_yarn_and_deps
       - run: yarn server build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - server/dist/
 
   test_server:
     executor: docker_node_postgres
@@ -73,12 +77,14 @@ jobs:
     executor: docker_node_postgres
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - install_yarn_and_deps
 
       # need running server for getStaticProps in NextJS build
       - run: yarn server migrate up
       - run:
-          command: yarn server start:dev
+          command: yarn server start:prod
           background: true
 
       # builds client for testing in CI -- production will
@@ -134,6 +140,8 @@ workflows:
     jobs:
       - build_server
       - test_server
-      - build_client
+      - build_client:
+          requires:
+            - build_server
       - test_client
       - lint_all

@@ -5,6 +5,7 @@
   "scripts": {
     "start:dev": "nodemon",
     "build": "tsc -p tsconfig.build.json",
+    "start:prod": "node dist/main.js",
     "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
     "test": "TEST_TYPE=unit jest",
     "test:e2e": "TEST_TYPE=e2e jest --runInBand",
