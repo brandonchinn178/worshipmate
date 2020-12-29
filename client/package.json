@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start:dev": "wait-on tcp:4000 && next",
+    "start:test": "NODE_ENV=test yarn start:dev",
     "build": "wait-on tcp:4000 && next build",
     "start:prod": "next start",
     "storybook": "start-storybook -p 6006",
