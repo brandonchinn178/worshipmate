@@ -80,9 +80,6 @@ jobs:
       - run:
           command: yarn server start
           background: true
-      - run:
-          name: Wait for server to start
-          command: curl --retry 5 --retry-connrefused 127.0.0.1:4000
 
       # builds client for testing in CI -- production will
       # build its own Next.js app
