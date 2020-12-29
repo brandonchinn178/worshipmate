@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import _ from 'lodash'
 import { NextRouter } from 'next/router'
 
 import { setQueryString } from '~/router'
@@ -105,31 +105,23 @@ export const getAvailableFilters = (
       filterName: Name,
       filterType: FilterType<Name>,
     ) => {
-      // pick out attribute in song corresponding to filter
-      const allOptions = songs.map((song) => {
-        const value = filterType.fromSong(song)
-        return {
-          value,
-          valueDisplay: filterType.showFilterValue(value),
-        }
-      })
-
-      // filter out duplicates and annotate each filter option with its count
-      const filterCounts = _.countBy(allOptions, 'valueDisplay')
-      const filterValues = _.uniqBy(allOptions, 'valueDisplay')
-      const filterOptions = _.map(filterValues, ({ value, valueDisplay }) => {
-        return {
-          value,
-          valueDisplay,
-          count: filterCounts[valueDisplay],
-        }
-      })
-
-      availableFilters[filterName] = _.orderBy(
-        filterOptions,
-        'count',
-        'desc',
-      ) as AvailableFilters[Name]
+      availableFilters[filterName] = _(songs)
+        .map((song) => {
+          const value = filterType.fromSong(song)
+          return {
+            value,
+            valueDisplay: filterType.showFilterValue(value),
+          }
+        })
+        .groupBy('valueDisplay')
+        .map((optionsWithSameValue) => {
+          return {
+            ...optionsWithSameValue[0],
+            count: optionsWithSameValue.length,
+          }
+        })
+        .orderBy('count', 'desc')
+        .value() as AvailableFilters[Name]
     },
   )
 
