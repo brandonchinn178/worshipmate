@@ -1,0 +1,8 @@
+services:
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: worship_mate
+    ports:
+      - '${PGPORT:-5432}:5432'
