@@ -106,9 +106,9 @@ describe('parseMigrateArgs', () => {
         fc.constantFrom('up', 'down', 'redo'),
         fc.string().filter((s) => isNaN(parseInt(s, 10))),
         (argv0, argv1, command, count) => {
-          expect(() =>
-            parseMigrateArgs([argv0, argv1, command, count]),
-          ).toThrow()
+          expect(() => {
+            loadCLIMigrateArgs([argv0, argv1, command, count])
+          }).toThrow()
         },
       ),
     )

@@ -35,6 +35,8 @@ const mkClient = () => {
   return { client, pgClient, mockQuery }
 }
 
+beforeEach(jest.resetAllMocks)
+
 describe('DatabaseClient', () => {
   describe('.query()', () => {
     it('queries rows', async () => {
@@ -111,6 +113,8 @@ describe('DatabaseClient', () => {
     it('rolls back the transaction if the callback rejects', async () => {
       await fc.assert(
         fc.asyncProperty(fc.anything(), async (result) => {
+          jest.resetAllMocks()
+
           const { client, mockQuery } = mkClient()
 
           const callback = jest.fn().mockRejectedValue(result)
@@ -135,6 +139,8 @@ describe('DatabaseClient', () => {
     })
 
     it('executes the given queries', async () => {
+      jest.resetAllMocks()
+
       const song1 = 'Take On Me'
       const song2 = 'Separate Ways'
 
