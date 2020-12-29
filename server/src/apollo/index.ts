@@ -2,7 +2,7 @@ import { loadTypedefsSync } from '@graphql-toolkit/core'
 import { GraphQLFileLoader } from '@graphql-toolkit/graphql-file-loader'
 import { mergeTypeDefs } from '@graphql-toolkit/schema-merging'
 import { ApolloServer } from 'apollo-server'
-import { Database } from 'pg-toolbox'
+import { Database } from 'pg-fusion'
 
 import * as song from '~/song'
 

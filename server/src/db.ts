@@ -1,4 +1,4 @@
-import { Database } from 'pg-toolbox'
+import { Database } from 'pg-fusion'
 
 if (process.env.NODE_ENV !== 'production') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
