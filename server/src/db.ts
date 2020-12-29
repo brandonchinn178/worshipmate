@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-export const initDatabase = () => {
+export const initDatabase = async () => {
   return new Database({
     database: 'worship_mate',
   })
@@ -14,7 +14,7 @@ export const initDatabase = () => {
 export const withDatabase = async <T>(
   callback: (db: Database) => Promise<T>,
 ): Promise<T> => {
-  const db = initDatabase()
+  const db = await initDatabase()
   try {
     return await callback(db)
   } finally {
