@@ -4,11 +4,18 @@
 const concurrently = require('concurrently')
 
 const startAll = async () => {
+  const startCommand =
+    process.env.NODE_ENV === 'test' ? 'start:test' : 'start:dev'
+
   await concurrently(
     [
-      { command: 'yarn server start:dev', name: 'server', prefixColor: 'blue' },
       {
-        command: 'yarn client start:dev',
+        command: `yarn server ${startCommand}`,
+        name: 'server',
+        prefixColor: 'blue',
+      },
+      {
+        command: `yarn client ${startCommand}`,
         name: 'client',
         prefixColor: 'green',
       },

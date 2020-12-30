@@ -21,3 +21,9 @@ yarn client storybook
 ```bash
 yarn client test
 ```
+
+### Run cypress tests
+
+1. `docker-compose up -d`
+1. `yarn start:test`
+1. `yarn client cypress open`
