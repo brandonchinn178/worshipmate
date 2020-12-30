@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
@@ -13,11 +14,11 @@ type SearchBarProps = {
 }
 
 export function SearchBar({ initial = '', onSubmit }: SearchBarProps) {
-  const { register, handleSubmit } = useForm<Form>({
-    defaultValues: {
-      search: initial,
-    },
-  })
+  const { register, handleSubmit, setValue } = useForm<Form>()
+
+  useEffect(() => {
+    setValue('search', initial)
+  }, [initial])
 
   const doSubmit = handleSubmit(({ search }) => onSubmit(search))
 

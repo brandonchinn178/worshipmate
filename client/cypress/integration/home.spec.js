@@ -8,10 +8,12 @@ Cypress.Commands.add('getRecommendedKeyFilter', (key) => {
 })
 
 describe('Home page', () => {
-  beforeEach(cy.seedDatabase)
+  beforeEach(() => {
+    cy.seedDatabase()
+    cy.visit('/')
+  })
 
   it('loads, searches, and filters songs', () => {
-    cy.visit('/')
     cy.findByText('Recommended Key').should('exist')
     cy.findByText('4 songs').should('exist')
     cy.findByText('Blessed Be Your Name').should('exist')
@@ -48,6 +50,44 @@ describe('Home page', () => {
     cy.findByText('1 song').should('exist')
     cy.findByText('Blessed Be Your Name').should('not.exist')
     cy.findByText('Build My Life').should('exist')
+    cy.findByText('Ever Be').should('not.exist')
+    cy.findByText('Great Are You Lord').should('not.exist')
+  })
+
+  it('persists filters', () => {
+    cy.getRecommendedKeyFilter('A').click()
+    cy.getRecommendedKeyFilter('A').should('have.class', 'active')
+    cy.findByText('1 song').should('exist')
+    cy.findByText('Blessed Be Your Name').should('exist')
+    cy.findByText('Build My Life').should('not.exist')
+    cy.findByText('Ever Be').should('not.exist')
+    cy.findByText('Great Are You Lord').should('not.exist')
+
+    cy.reload()
+    cy.getRecommendedKeyFilter('A').should('have.class', 'active')
+    cy.findByText('1 song').should('exist')
+    cy.findByText('Blessed Be Your Name').should('exist')
+    cy.findByText('Build My Life').should('not.exist')
+    cy.findByText('Ever Be').should('not.exist')
+    cy.findByText('Great Are You Lord').should('not.exist')
+  })
+
+  it('persists search', () => {
+    cy.get('input[name=search]')
+      .as('searchBar')
+      .type('Blessed Be Your Name{enter}')
+    cy.get('@searchBar').should('have.value', 'Blessed Be Your Name')
+    cy.findByText('1 song').should('exist')
+    cy.findByText('Blessed Be Your Name').should('exist')
+    cy.findByText('Build My Life').should('not.exist')
+    cy.findByText('Ever Be').should('not.exist')
+    cy.findByText('Great Are You Lord').should('not.exist')
+
+    cy.reload()
+    cy.get('@searchBar').should('have.value', 'Blessed Be Your Name')
+    cy.findByText('1 song').should('exist')
+    cy.findByText('Blessed Be Your Name').should('exist')
+    cy.findByText('Build My Life').should('not.exist')
     cy.findByText('Ever Be').should('not.exist')
     cy.findByText('Great Are You Lord').should('not.exist')
   })
