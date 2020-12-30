@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start:dev": "yarn :ts-node -s bin/initDB.ts && nodemon",
+    "start:dev": "yarn migrate up && yarn db:init && nodemon",
     "start:test": "NODE_ENV=test yarn start:dev",
     "build": "webpack",
     "start:prod": "node dist/main.js",
@@ -14,6 +14,7 @@
     "migrate": "yarn :ts-node -s bin/migrate.ts",
     "migrate:create": "node-pg-migrate create",
     "db:clear": "yarn :ts-node -s bin/clearDB.ts",
+    "db:init": "yarn :ts-node -s bin/initDB.ts",
     ":ts-node": "ts-node -r tsconfig-paths/register"
   },
   "dependencies": {
