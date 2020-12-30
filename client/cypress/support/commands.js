@@ -1,3 +1,5 @@
+import '@testing-library/cypress/add-commands'
+
 Cypress.Commands.add('clearDatabase', () => {
   cy.task('clearDatabase')
 })
