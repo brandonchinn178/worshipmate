@@ -7,7 +7,7 @@
   "scripts": {
     "client": "yarn workspace @worship-mate/client",
     "server": "yarn workspace @worship-mate/server",
-    "lint": "eslint --ext .js,.ts,.tsx --max-warnings=0",
+    "lint": "eslint --ext .js,.ts,.tsx --max-warnings=0 --resolve-plugins-relative-to=.",
     "start:dev": "ts-node-script bin/start.ts",
     "start:test": "NODE_ENV=test yarn start:dev"
   },
@@ -18,6 +18,7 @@
     "concurrently": "^5.3.0",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-jest": "^24.1.3",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
