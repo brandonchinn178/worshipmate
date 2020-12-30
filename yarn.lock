@@ -3997,6 +3997,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testing-library/cypress@npm:^7.0.3":
+  version: 7.0.3
+  resolution: "@testing-library/cypress@npm:7.0.3"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+    "@testing-library/dom": ^7.28.1
+  peerDependencies:
+    cypress: ^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
+  checksum: cc1c5c9c8ad5878508fd192fcf83bbf3863faacd691024b9badd8add4d995eb6c1b36cba3957308fc34e4370cd22d5011ef160471169c6f0221181000ba53fa4
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^7.28.1":
   version: 7.28.1
   resolution: "@testing-library/dom@npm:7.28.1"
@@ -5375,6 +5387,7 @@ __metadata:
     "@graphql-codegen/typescript-react-apollo": ^2.2.1
     "@storybook/addon-essentials": ^6.1.3
     "@storybook/react": ^6.1.3
+    "@testing-library/cypress": ^7.0.3
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.1.0
     "@types/jest": ^26.0.3
@@ -5387,11 +5400,13 @@ __metadata:
     babel-loader: ^8.1.0
     babel-plugin-styled-components: ^1.11.1
     cypress: ^6.2.0
+    cypress-webpack-preprocessor-v5: ^5.0.0-alpha.1
     fast-check: ^2.10.0
     graphql: ^15.4.0
     jest: ^26.6.1
     lodash: ^4.17.20
     next: ^10.0.1
+    pnp-webpack-plugin: ^1.6.4
     react: ^17.0.1
     react-dom: ^17.0.1
     react-hook-form: ^6.11.0
@@ -7098,7 +7113,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bluebird@npm:^3.3.5, bluebird@npm:^3.5.5, bluebird@npm:^3.7.2":
+"bluebird@npm:^3.3.5, bluebird@npm:^3.5.5, bluebird@npm:^3.7.1, bluebird@npm:^3.7.2":
   version: 3.7.2
   resolution: "bluebird@npm:3.7.2"
   checksum: 4f2288662f3d4eadbb82d4daa4a7d7976a28fa3c7eb4102c9b4033b03e5be4574ba123ac52a7c103cde4cb7b2d2afc1dbe41817ca15a29ff21ecd258d0286047
@@ -8902,6 +8917,22 @@ __metadata:
   version: 1.0.1
   resolution: "cyclist@npm:1.0.1"
   checksum: 74bc0a48c37bed8a430f103d0a880902768b7e3bcc0f9e098c4bd9630438c6b053b88e33c127e41316bb2da8d642a937015961a6cd563641ad2a5798dfecadd9
+  languageName: node
+  linkType: hard
+
+"cypress-webpack-preprocessor-v5@npm:^5.0.0-alpha.1":
+  version: 5.0.0-alpha.1
+  resolution: "cypress-webpack-preprocessor-v5@npm:5.0.0-alpha.1"
+  dependencies:
+    bluebird: ^3.7.1
+    debug: ^4.1.1
+    lodash: ^4.17.20
+  peerDependencies:
+    "@babel/core": ^7.0.1
+    "@babel/preset-env": ^7.0.0
+    babel-loader: ^8.0.2
+    webpack: ^4.x || ^5.x
+  checksum: 27dfcde6303ca93a96f4d9728d5dea7993916272d1c8569b2789d01f64eb66c19908503dc05fcb2874acd8febddf7ae12837d046ba6b7d699f22829c76a25757
   languageName: node
   linkType: hard
 
