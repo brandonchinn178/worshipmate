@@ -8,7 +8,7 @@
     "client": "yarn workspace @worship-mate/client",
     "server": "yarn workspace @worship-mate/server",
     "lint": "eslint --ext .js,.ts,.tsx --max-warnings=0",
-    "start": "ts-node-script bin/start.ts"
+    "start:dev": "ts-node-script bin/start.ts"
   },
   "devDependencies": {
     "@types/concurrently": "^5",

@@ -17,17 +17,13 @@ Pre-requirements: Install yarn and Docker
 1. Run a Postgres server in Docker
 
    ```bash
-   docker run -d -p 5432:5432 \
-       -e POSTGRES_HOST_AUTH_METHOD=trust \
-       -e POSTGRES_DB=worship_mate \
-       --name worship-mate \
-       postgres:12
+   docker-compose up -d
    ```
 
 1. Start the GraphQL server and front end concurrently
 
    ```bash
-   yarn start
+   yarn start:dev
    ```
 
 1. Go to `http://localhost:3000`
@@ -37,4 +33,4 @@ Pre-requirements: Install yarn and Docker
 This repository is organized using the following Yarn workspaces:
 
 - `client`: The NextJS project that runs the web frontend
-- `server`: The TypeORM project that runs the GraphQL backend
+- `server`: The apollo-server project that runs the GraphQL backend
