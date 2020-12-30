@@ -4,27 +4,31 @@
 const concurrently = require('concurrently')
 
 const startAll = async () => {
-  const startCommand =
-    process.env.NODE_ENV === 'test' ? 'start:test' : 'start:dev'
+  const isTest = process.env.NODE_ENV === 'test'
+  const startCommand = isTest ? 'start:test' : 'start:dev'
 
-  await concurrently(
-    [
-      {
-        command: `yarn server ${startCommand}`,
-        name: 'server',
-        prefixColor: 'blue',
-      },
-      {
-        command: `yarn client ${startCommand}`,
-        name: 'client',
-        prefixColor: 'green',
-      },
-    ],
+  const services = [
     {
-      killOthers: ['success', 'failure'],
-      inputStream: process.stdin,
+      command: `yarn server ${startCommand}`,
+      name: 'server',
+      prefixColor: 'blue',
     },
-  )
+    {
+      command: `yarn client ${startCommand}`,
+      name: 'client',
+      prefixColor: 'green',
+    },
+    isTest && {
+      command: 'yarn server db:start-test-server',
+      name: 'db-test-server',
+      prefixColor: 'cyan',
+    },
+  ]
+
+  await concurrently(services.filter(Boolean), {
+    killOthers: ['success', 'failure'],
+    inputStream: process.stdin,
+  })
 }
 
 startAll()

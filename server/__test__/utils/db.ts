@@ -1,6 +1,6 @@
-import { Database, sql } from 'pg-fusion'
+import { Database } from 'pg-fusion'
 
-import { DB_NAME, initDatabase, withAdminDatabase } from '~/db'
+import { dropTestDatabase, initDatabase } from '~/db'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
@@ -8,11 +8,15 @@ require('dotenv').config()
 export const setupTestDatabase = (): Database => {
   let dbOrNull: Database | null = null
   beforeAll(async () => {
-    await withAdminDatabase(async (admin) => {
-      await admin.query(sql`DROP DATABASE IF EXISTS ${sql.quote(DB_NAME)}`)
+    await dropTestDatabase()
+    const db = await initDatabase()
+    await db.migrate({
+      log: () => {
+        // suppress migration output
+      },
     })
 
-    dbOrNull = await initDatabase()
+    dbOrNull = db
   })
 
   const getDB = (): Database => {
@@ -21,15 +25,6 @@ export const setupTestDatabase = (): Database => {
     }
     return dbOrNull
   }
-
-  beforeAll(async () => {
-    const db = getDB()
-    await db.migrate({
-      log: () => {
-        // suppress migration output
-      },
-    })
-  })
 
   beforeEach(async () => {
     const db = getDB()
