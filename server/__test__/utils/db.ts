@@ -9,7 +9,14 @@ export const setupTestDatabase = (): Database => {
   let dbOrNull: Database | null = null
   beforeAll(async () => {
     await dropTestDatabase()
-    dbOrNull = await initDatabase()
+    const db = await initDatabase()
+    await db.migrate({
+      log: () => {
+        // suppress migration output
+      },
+    })
+
+    dbOrNull = db
   })
 
   const getDB = (): Database => {
@@ -18,15 +25,6 @@ export const setupTestDatabase = (): Database => {
     }
     return dbOrNull
   }
-
-  beforeAll(async () => {
-    const db = getDB()
-    await db.migrate({
-      log: () => {
-        // suppress migration output
-      },
-    })
-  })
 
   beforeEach(async () => {
     const db = getDB()
