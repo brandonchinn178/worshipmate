@@ -11,8 +11,8 @@ exports[`renders active options differently 1`] = `
             )
           </div>
           <div
--           class=\\"SongFilterPanel__FilterOption-sc-1esthvi-4 kafzeo\\"
-+           class=\\"SongFilterPanel__FilterOption-sc-1esthvi-4 iYSQTL\\"
+-           class=\\"SongFilterPanel__FilterOption-sc-1esthvi-4 fyBlVT\\"
++           class=\\"SongFilterPanel__FilterOption-sc-1esthvi-4 fyBlVT active\\"
           >
             G
              (
