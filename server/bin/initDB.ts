@@ -4,7 +4,7 @@ import { Database } from 'pg-fusion'
 
 import { withDatabase } from '~/db'
 
-const initDB = async (db: Database) => {
+export const prepopulateDB = async (db: Database) => {
   await db.insertAll(
     'song',
     [
@@ -48,11 +48,16 @@ const initDB = async (db: Database) => {
       },
     },
   )
-
-  console.log('Prepopulated songs table')
 }
 
-withDatabase(initDB).catch((e) => {
-  console.error(e)
-  process.exit(1)
-})
+const initDB = async (db: Database) => {
+  await prepopulateDB(db)
+  console.log('Prepopulated database')
+}
+
+if (require.main === module) {
+  withDatabase(initDB).catch((e) => {
+    console.error(e)
+    process.exit(1)
+  })
+}
