@@ -10,14 +10,7 @@ export const DB_NAME =
   process.env.NODE_ENV === 'test' ? 'worship_mate_test' : 'worship_mate'
 
 export const initDatabase = async () => {
-  if (process.env.NODE_ENV === 'test') {
-    await withAdminDatabase(async (admin) => {
-      const databases = await admin.query(sql`SELECT datname FROM pg_database`)
-      if (!_(databases).map('datname').includes(DB_NAME)) {
-        await admin.query(sql`CREATE DATABASE ${sql.quote(DB_NAME)}`)
-      }
-    })
-  }
+  await createTestDatabase()
 
   return new Database({
     database: DB_NAME,
@@ -38,7 +31,7 @@ export const withDatabase = async <T>(
 /**
  * Manage the databases in the PostgreSQL server. Useful for testing.
  */
-export const withAdminDatabase = async <T>(
+const withAdminDatabase = async <T>(
   callback: (db: Database) => Promise<T>,
 ): Promise<T> => {
   const db = new Database({ database: 'postgres' })
@@ -47,4 +40,34 @@ export const withAdminDatabase = async <T>(
   } finally {
     await db.close()
   }
+}
+
+/**
+ * Create the test database if it doesn't already exist.
+ */
+export const createTestDatabase = async () => {
+  if (process.env.NODE_ENV !== 'test') {
+    return
+  }
+
+  await withAdminDatabase(async (admin) => {
+    const databases = await admin.query(sql`SELECT datname FROM pg_database`)
+
+    if (!_(databases).map('datname').includes(DB_NAME)) {
+      await admin.query(sql`CREATE DATABASE ${sql.quote(DB_NAME)}`)
+    }
+  })
+}
+
+/**
+ * Drop the test database if it exists.
+ */
+export const dropTestDatabase = async () => {
+  if (process.env.NODE_ENV !== 'test') {
+    return
+  }
+
+  await withAdminDatabase(async (admin) => {
+    await admin.query(sql`DROP DATABASE IF EXISTS ${sql.quote(DB_NAME)}`)
+  })
 }
