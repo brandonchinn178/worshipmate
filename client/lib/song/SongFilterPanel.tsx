@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
 import { color, font } from '~/theme'
 
@@ -60,7 +60,7 @@ function SongFilterPanelSection<Name extends FilterNames>({
             filterOptions.length === 1 || activeFilters[filterName] === value
           return (
             <FilterOption
-              active={isActive}
+              className={isActive ? 'active' : ''}
               key={valueDisplay}
               onClick={() => {
                 if (isActive) {
@@ -103,7 +103,7 @@ const FilterOptionGrid = styled.div`
   flex-wrap: wrap;
 `
 
-const FilterOption = styled.div<{ active: boolean }>`
+const FilterOption = styled.div`
   margin: 2px;
   padding: 5px 10px;
 
@@ -113,10 +113,8 @@ const FilterOption = styled.div<{ active: boolean }>`
   border-radius: 3px;
   cursor: pointer;
 
-  ${(p) =>
-    p.active &&
-    css`
-      color: ${color('white')};
-      background: ${color('darkTeal')};
-    `}
+  &.active {
+    color: ${color('white')};
+    background: ${color('darkTeal')};
+  }
 `
