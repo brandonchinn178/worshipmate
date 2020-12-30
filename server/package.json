@@ -13,6 +13,7 @@
     "codegen": "graphql-codegen",
     "migrate": "yarn :ts-node -s bin/migrate.ts",
     "migrate:create": "node-pg-migrate create",
+    "db:clear": "yarn :ts-node -s bin/clearDB.ts",
     ":ts-node": "ts-node -r tsconfig-paths/register"
   },
   "dependencies": {
