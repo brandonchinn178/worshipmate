@@ -2,7 +2,7 @@
 
 import { Database, loadCLIMigrateArgs } from 'pg-fusion'
 
-import { withDatabase } from '~/db'
+import { dropTestDatabase, withDatabase } from '~/db'
 
 const cliMigrateArgs = loadCLIMigrateArgs()
 
@@ -15,7 +15,12 @@ const runMigrations = async (db: Database) => {
   console.log('Migrations complete')
 }
 
-withDatabase(runMigrations).catch((e) => {
+const bootstrap = async () => {
+  await dropTestDatabase()
+  return withDatabase(runMigrations)
+}
+
+bootstrap().catch((e) => {
   console.error(e)
   process.exit(1)
 })
