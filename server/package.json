@@ -5,8 +5,7 @@
   "scripts": {
     "start:dev": "yarn migrate up && yarn :ts-node -s bin/initDB.ts && nodemon",
     "start:test": "NODE_ENV=test yarn start:dev",
-    "build": "tsc -p tsconfig.build.json",
-    "start:prod": "node dist/main.js",
+    "start:prod": "NODE_ENV=production yarn :ts-node ./src/main.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit --incremental false",
     "test": "TEST_TYPE=unit jest",
     "test:e2e": "TEST_TYPE=e2e jest --runInBand",
