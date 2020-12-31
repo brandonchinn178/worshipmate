@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "module": "es6",
     "baseUrl": "./",
     "paths": {
       "~/*": ["./src/*"]
@@ -13,6 +12,5 @@
     "__test__",
     "**/*.spec.ts",
     "**/*.e2e-spec.ts"
-  ],
-  "include": ["src/**/*.ts"]
+  ]
 }
