@@ -98,11 +98,18 @@ jobs:
 
   test_cypress:
     executor: docker_node_postgres
+    environment:
+      NODE_ENV: production
     steps:
       - checkout
       - attach_workspace:
           at: .
       - install_yarn_and_deps
+      - run:
+          name: Install Cypress dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
 
       - run:
           name: Run server in background
@@ -114,8 +121,11 @@ jobs:
           background: true
       - run:
           name: Run database test server in background
-          command: yarn server db:start-test-server
+          command: yarn server :ts-node -s bin/startDatabaseTestServer.ts
           background: true
+      - run:
+          name: Run migrations
+          command: yarn server migrate up
 
       - run:
           name: Wait for services
@@ -125,9 +135,9 @@ jobs:
           name: Run Cypress tests
           command: yarn client cypress run
       - store_artifacts:
-          path: /client/cypress/videos/
+          path: client/cypress/videos/
       - store_artifacts:
-          path: /client/cypress/screenshots/
+          path: client/cypress/screenshots/
 
   lint_all:
     executor: docker_node
