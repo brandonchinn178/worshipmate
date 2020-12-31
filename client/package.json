@@ -5,8 +5,8 @@
   "scripts": {
     "start:dev": "wait-on tcp:4000 && next",
     "start:test": "NODE_ENV=test yarn start:dev",
-    "build": "wait-on tcp:4000 && next build",
-    "start:prod": "next start",
+    "build": "echo 'Waiting on server on port 4000...' && wait-on tcp:4000 && next build",
+    "start:prod": "NODE_ENV=production next start",
     "storybook": "start-storybook -p 6006",
     "test": "jest",
     "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
