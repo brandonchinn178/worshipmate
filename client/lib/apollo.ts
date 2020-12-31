@@ -13,7 +13,8 @@ export const getApolloClient = () => {
   const apolloOptions = {
     ssrMode: IS_SSR,
     link: new HttpLink({
-      uri: 'http://localhost:4000/graphql',
+      uri:
+        process.env.NEXT_PUBLIC_GRAPHQL_URL ?? 'http://localhost:4000/graphql',
       credentials: 'same-origin',
     }),
     cache: new InMemoryCache(),
