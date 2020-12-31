@@ -5202,7 +5202,6 @@ __metadata:
     snapshot-diff: ^0.8.1
     styled-components: ^4.4.1
     typescript: ^4.0.3
-    wait-on: ^5.2.1
     webpack: ^5.8.0
   languageName: unknown
   linkType: soft
