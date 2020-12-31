@@ -1,8 +1,6 @@
 version: 2.1
 
 aliases:
-  - &yarn_cache_key v2-yarn-{{ checksum "yarn.lock" }}
-  - &next_cache_key v1-next-{{ checksum "yarn.lock" }}
   - &ci_executor
     working_directory: ~/worship_mate/
     shell: /bin/bash -eux -o pipefail
@@ -32,12 +30,12 @@ commands:
   install_yarn_and_deps:
     steps:
       - restore_cache:
-          key: *yarn_cache_key
+          key: v2-yarn-{{ checksum "yarn.lock" }}
       - run:
           name: Install external dependencies
           command: yarn install --immutable
       - save_cache:
-          key: *yarn_cache_key
+          key: v2-yarn-{{ checksum "yarn.lock" }}
           paths:
             - .yarn/cache/
 
@@ -73,10 +71,10 @@ jobs:
       # builds client for testing in CI -- production will
       # build its own Next.js app
       - restore_cache:
-          key: *next_cache_key
+          key: v1-next-{{ checksum "yarn.lock" }}
       - run: yarn client build
       - save_cache:
-          key: *next_cache_key
+          key: v1-next-{{ checksum "yarn.lock" }}
           paths:
             - client/.next/cache
 
