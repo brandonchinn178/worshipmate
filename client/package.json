@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start:dev": "wait-on tcp:4000 && next",
+    "start:dev": "next dev",
     "start:test": "NODE_ENV=test yarn start:dev",
-    "build": "echo 'Waiting on server on port 4000...' && wait-on tcp:4000 && next build",
+    "build": "next build",
     "start:prod": "NODE_ENV=production next start",
     "storybook": "start-storybook -p 6006",
     "test": "jest",
@@ -52,7 +52,6 @@
     "pnp-webpack-plugin": "^1.6.4",
     "snapshot-diff": "^0.8.1",
     "typescript": "^4.0.3",
-    "wait-on": "^5.2.1",
     "webpack": "^5.8.0"
   }
 }
