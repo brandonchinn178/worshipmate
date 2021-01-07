@@ -6,7 +6,7 @@ const runServer = async () => {
   const server = initServer(db)
 
   // starts an HttpServer in the background
-  const { url } = await server.listen(4000)
+  const { url } = await server.listen(process.env.PORT ?? 4000)
 
   console.log(`🚀  Server ready at ${url}`)
 }
