@@ -23,5 +23,7 @@ export const initServer = (db: Database) => {
     typeDefs: getTypeDefs(),
     resolvers: [song.resolvers],
     dataSources: () => initDataSources(db),
+    introspection: true,
+    playground: true,
   })
 }
