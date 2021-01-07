@@ -8,6 +8,7 @@ aliases:
 
 orbs:
   codecov: codecov/codecov@1.0.2
+  heroku: circleci/heroku@1.2.3
 
 executors:
   docker_node:
@@ -166,6 +167,14 @@ jobs:
             yarn client codegen
             git diff --exit-code client/
 
+  deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - heroku/deploy-via-git:
+          force: true
+
 workflows:
   version: 2
 
@@ -178,3 +187,13 @@ workflows:
           requires:
             - build_client
       - lint_all
+      - deploy:
+          filters:
+            branches:
+              only: master
+          requires:
+            - test_server
+            - build_client
+            - test_client
+            - test_cypress
+            - lint_all
