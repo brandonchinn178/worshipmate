@@ -12,9 +12,11 @@ export const DB_NAME =
 export const initDatabase = async () => {
   await createTestDatabase()
 
-  return new Database({
-    database: DB_NAME,
-  })
+  const connOptions = process.env.DATABASE_URL
+    ? { connectionString: process.env.DATABASE_URL }
+    : { database: DB_NAME }
+
+  return new Database(connOptions)
 }
 
 export const withDatabase = async <T>(
