@@ -168,12 +168,25 @@ jobs:
             git diff --exit-code client/
 
   deploy:
-    docker:
-      - image: cimg/base:stable
+    executor: docker_node
     steps:
       - checkout
       - heroku/deploy-via-git:
           force: true
+      - run:
+          name: Install Vercel CLI
+          command: sudo npm install -g vercel
+      - run:
+          name: Deploy client
+          command: |
+            mkdir -p .vercel
+            cat > .vercel/project.json \<<EOF
+            {
+              "projectId": "${VERCEL_PROJECT_ID}",
+              "orgId": "${VERCEL_ORG_ID}"
+            }
+            EOF
+            vercel --token "${VERCEL_TOKEN}" --prod
 
 workflows:
   version: 2
