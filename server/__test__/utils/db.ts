@@ -2,9 +2,6 @@ import { Database } from 'pg-fusion'
 
 import { dropTestDatabase, initDatabase } from '~/db'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config()
-
 export const setupTestDatabase = (): Database => {
   let dbOrNull: Database | null = null
   beforeAll(async () => {
