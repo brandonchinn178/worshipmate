@@ -1,6 +1,6 @@
 import { Database } from 'pg-fusion'
 
-import { SongAPI } from '~/song'
+import { SongAPI } from '~/song/api'
 
 export type ApolloContext = {
   dataSources: ApolloDataSources
