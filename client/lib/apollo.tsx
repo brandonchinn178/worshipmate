@@ -4,7 +4,10 @@ import {
   HttpLink,
   InMemoryCache,
 } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
 import { ReactNode } from 'react'
+
+import { getToken } from '~/auth/client'
 
 const IS_SSR = typeof window === 'undefined'
 const { NEXT_PUBLIC_GRAPHQL_URL } = process.env
@@ -15,9 +18,20 @@ export const getApolloClient = () => {
     credentials: 'same-origin',
   })
 
+  const authLink = setContext(async (_, { headers }) => {
+    const token = await getToken()
+
+    return {
+      headers: {
+        ...headers,
+        authorization: token && `Bearer ${token}`,
+      },
+    }
+  })
+
   const apolloOptions = {
     ssrMode: IS_SSR,
-    link: httpLink,
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
   }
 
