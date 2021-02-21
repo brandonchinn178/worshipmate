@@ -1,4 +1,3 @@
-import { DataSource } from 'apollo-datasource'
 import { Database, sql, SqlQuery } from 'pg-fusion'
 
 import { SearchFilters, Song } from './models'
@@ -15,10 +14,8 @@ const fromRecord = (song: SongRecord): Song => ({
   timeSignature: [song.time_signature_top, song.time_signature_bottom],
 })
 
-export class SongAPI extends DataSource {
-  constructor(private readonly db: Database) {
-    super()
-  }
+export class SongAPI {
+  constructor(private readonly db: Database) {}
 
   async searchSongs(options?: SearchOptions): Promise<Song[]> {
     const condition = this.getSearchCondition(options)

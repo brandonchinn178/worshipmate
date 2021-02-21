@@ -5219,7 +5219,6 @@ __metadata:
     "@types/express": ^4
     "@types/jest": ^26.0.15
     "@types/lodash": ^4.14.165
-    apollo-datasource: ^0.7.2
     apollo-server: ^2.16.1
     apollo-server-testing: ^2.18.2
     dotenv: ^8.2.0
