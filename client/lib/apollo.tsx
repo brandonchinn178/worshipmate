@@ -7,15 +7,17 @@ import {
 import { ReactNode } from 'react'
 
 const IS_SSR = typeof window === 'undefined'
+const { NEXT_PUBLIC_GRAPHQL_URL } = process.env
 
 export const getApolloClient = () => {
+  const httpLink = new HttpLink({
+    uri: NEXT_PUBLIC_GRAPHQL_URL ?? 'http://localhost:4000/graphql',
+    credentials: 'same-origin',
+  })
+
   const apolloOptions = {
     ssrMode: IS_SSR,
-    link: new HttpLink({
-      uri:
-        process.env.NEXT_PUBLIC_GRAPHQL_URL ?? 'http://localhost:4000/graphql',
-      credentials: 'same-origin',
-    }),
+    link: httpLink,
     cache: new InMemoryCache(),
   }
 
