@@ -17,7 +17,7 @@ type QueryResolvers = Resolvers<
 >
 
 const Query: QueryResolvers = {
-  searchSongs(parent, args, { dataSources: { songAPI } }) {
+  searchSongs(parent, args, { songAPI }) {
     const { query, filters } = args
 
     return songAPI.searchSongs({
