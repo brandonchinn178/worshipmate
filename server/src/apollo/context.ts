@@ -15,7 +15,7 @@ export const getContext = async (
   req: Request,
   db: Database,
 ): Promise<ApolloContext> => {
-  const user = await getUserFromRequest(req)
+  const user = await getUserFromRequest(req, db)
 
   return {
     user,

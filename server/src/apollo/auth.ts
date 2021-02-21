@@ -4,8 +4,10 @@
 import OktaJwtVerifier = require('@okta/jwt-verifier')
 import { AuthenticationError } from 'apollo-server'
 import { Request } from 'express'
+import { Database } from 'pg-fusion'
 
 import { env } from '~/env'
+import { UserAPI } from '~/user/api'
 import { User } from '~/user/models'
 
 const oktaJwtVerifier = new OktaJwtVerifier({
@@ -40,6 +42,7 @@ const verifyToken = async (token: string) => {
 
 export const getUserFromRequest = async (
   req: Request,
+  db: Database,
 ): Promise<User | null> => {
   const token = getTokenFromRequest(req)
   if (!token) {
@@ -50,6 +53,8 @@ export const getUserFromRequest = async (
 
   const username = jwt.claims.sub
 
-  // TODO: get/create from database
-  return { name: username }
+  const userAPI = new UserAPI(db)
+  const user = await userAPI.getOrCreate(username)
+
+  return user
 }
