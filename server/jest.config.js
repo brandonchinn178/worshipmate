@@ -1,3 +1,5 @@
+/* eslint-disable no-process-env */
+
 const jest = require('ts-jest/utils')
 
 const tsconfig = require('./tsconfig')
