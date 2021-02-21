@@ -3,7 +3,7 @@ import Head from 'next/head'
 import styled, { ThemeProvider } from 'styled-components'
 
 import { ApolloProvider } from '~/apollo'
-import { SessionProvider } from '~/auth/session'
+import { SessionProvider, useSession } from '~/auth/session'
 import { Header } from '~/layout/Header'
 import { theme } from '~/theme'
 import { GlobalStyle } from '~/theme/global'
@@ -21,6 +21,8 @@ export default function App(props: AppProps) {
 }
 
 function AppContent({ Component, pageProps }: AppProps) {
+  const { session } = useSession()
+
   const showHeader = pageProps.header ?? true
 
   return (
@@ -29,7 +31,7 @@ function AppContent({ Component, pageProps }: AppProps) {
         <title>WorshipMate</title>
       </Head>
       <GlobalStyle />
-      {showHeader && <Header />}
+      {showHeader && <Header isUserLoggedIn={!!session} />}
       <PageContent>
         <Component {...pageProps} />
       </PageContent>
