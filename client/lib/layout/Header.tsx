@@ -6,7 +6,7 @@ export function Header() {
   return (
     <HeaderContainer>
       <div>
-        <Title href="#">WorshipMate</Title>
+        <Title href="/">WorshipMate</Title>
       </div>
       <Links>
         <Link href="#">About</Link>
