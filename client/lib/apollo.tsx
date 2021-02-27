@@ -25,11 +25,6 @@ export const getApolloClient = () => {
 let cachedApolloClient: ApolloClient<unknown> | null = null
 
 const getApolloClientCached = (): ApolloClient<unknown> => {
-  if (IS_SSR) {
-    // never persist on server side; always create a new ApolloClient
-    return getApolloClient()
-  }
-
   if (!cachedApolloClient) {
     cachedApolloClient = getApolloClient()
   }
