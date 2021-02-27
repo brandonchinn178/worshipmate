@@ -8,24 +8,30 @@ import { Header } from '~/layout/Header'
 import { theme } from '~/theme'
 import { GlobalStyle } from '~/theme/global'
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App(props: AppProps) {
   const apolloClient = useApollo()
 
   return (
     <ThemeProvider theme={theme}>
       <ApolloProvider client={apolloClient}>
-        <>
-          <Head>
-            <title>WorshipMate</title>
-          </Head>
-          <GlobalStyle />
-          <Header />
-          <PageContent>
-            <Component {...pageProps} />
-          </PageContent>
-        </>
+        <AppContent {...props} />
       </ApolloProvider>
     </ThemeProvider>
+  )
+}
+
+function AppContent({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <Head>
+        <title>WorshipMate</title>
+      </Head>
+      <GlobalStyle />
+      <Header />
+      <PageContent>
+        <Component {...pageProps} />
+      </PageContent>
+    </>
   )
 }
 
