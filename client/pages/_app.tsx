@@ -3,17 +3,20 @@ import Head from 'next/head'
 import styled, { ThemeProvider } from 'styled-components'
 
 import { ApolloProvider } from '~/apollo'
+import { SessionProvider } from '~/auth/session'
 import { Header } from '~/layout/Header'
 import { theme } from '~/theme'
 import { GlobalStyle } from '~/theme/global'
 
 export default function App(props: AppProps) {
   return (
-    <ThemeProvider theme={theme}>
-      <ApolloProvider>
-        <AppContent {...props} />
-      </ApolloProvider>
-    </ThemeProvider>
+    <SessionProvider>
+      <ThemeProvider theme={theme}>
+        <ApolloProvider>
+          <AppContent {...props} />
+        </ApolloProvider>
+      </ThemeProvider>
+    </SessionProvider>
   )
 }
 
