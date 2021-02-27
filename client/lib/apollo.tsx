@@ -24,15 +24,14 @@ export const getApolloClient = () => {
 
 let cachedApolloClient: ApolloClient<unknown> | null = null
 
-const getApolloClientCached = (): ApolloClient<unknown> => {
+export function ApolloProvider({ children }: { children: ReactNode }) {
   if (!cachedApolloClient) {
     cachedApolloClient = getApolloClient()
   }
 
-  return cachedApolloClient
-}
-
-export function ApolloProvider({ children }: { children: ReactNode }) {
-  const client = getApolloClientCached()
-  return <ApolloClientProvider client={client}>{children}</ApolloClientProvider>
+  return (
+    <ApolloClientProvider client={cachedApolloClient}>
+      {children}
+    </ApolloClientProvider>
+  )
 }
