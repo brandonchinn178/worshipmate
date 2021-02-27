@@ -4,6 +4,7 @@ abstract class AuthClientBase {
   abstract getToken(): Promise<string | null>
   abstract onUpdateToken(callback: (token: string | null) => void): void
   abstract login(username: string, password: string): Promise<void>
+  abstract logout(): Promise<void>
 }
 
 class AuthClientOkta extends AuthClientBase {
@@ -53,6 +54,10 @@ class AuthClientOkta extends AuthClientBase {
       this.oktaAuth.tokenManager.setTokens(tokens)
     })
   }
+
+  async logout() {
+    await this.oktaAuth.signOut()
+  }
 }
 
 class AuthClientSSR extends AuthClientBase {
@@ -65,6 +70,10 @@ class AuthClientSSR extends AuthClientBase {
   }
 
   async login() {
+    return
+  }
+
+  async logout() {
     return
   }
 }
@@ -82,3 +91,4 @@ const authClient = getAuthClient()
 export const getToken = authClient.getToken.bind(authClient)
 export const onUpdateToken = authClient.onUpdateToken.bind(authClient)
 export const login = authClient.login.bind(authClient)
+export const logout = authClient.logout.bind(authClient)
