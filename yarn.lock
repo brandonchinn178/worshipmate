@@ -2967,6 +2967,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@okta/okta-auth-js@npm:^4.7.1":
+  version: 4.7.1
+  resolution: "@okta/okta-auth-js@npm:4.7.1"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+    Base64: 0.3.0
+    core-js: ^3.6.5
+    cross-fetch: ^3.0.6
+    js-cookie: 2.2.0
+    node-cache: ^4.2.0
+    p-cancelable: ^2.0.0
+    text-encoding: ^0.7.0
+    tiny-emitter: 1.1.0
+    webcrypto-shim: ^0.1.5
+    xhr2: 0.1.3
+  checksum: 15491fcd51cbdc0c341b2dd1d1d3dc28f89ec488c3d363cb946fcd178dcc0f15f563399565842eabf245cb284d74494a4ce6413a57d7bc82a6378c1249b0b0ca
+  languageName: node
+  linkType: hard
+
 "@pmmmwh/react-refresh-webpack-plugin@npm:^0.4.2":
   version: 0.4.3
   resolution: "@pmmmwh/react-refresh-webpack-plugin@npm:0.4.3"
@@ -5201,6 +5220,7 @@ __metadata:
     "@graphql-codegen/typescript": ^1.19.0
     "@graphql-codegen/typescript-operations": ^1.17.13
     "@graphql-codegen/typescript-react-apollo": ^2.2.1
+    "@okta/okta-auth-js": ^4.7.1
     "@storybook/addon-essentials": ^6.1.3
     "@storybook/react": ^6.1.3
     "@testing-library/cypress": ^7.0.3
@@ -5305,6 +5325,13 @@ __metadata:
   version: 4.2.2
   resolution: "@xtuc/long@npm:4.2.2"
   checksum: ec09a359f98e9f8c47bf6c965e73b520a1a65e93f1febf6472babc8b6b0b425a2084452be103da5be11aec8c502ecfa29400713d55ef774579d04f691db44a2d
+  languageName: node
+  linkType: hard
+
+"Base64@npm:0.3.0":
+  version: 0.3.0
+  resolution: "Base64@npm:0.3.0"
+  checksum: 21c4ca80fc89e4dc3c134c645b0742e6fd46d5e90d3ff7319b77827457674a401eda3e032ad40f034a16730f654cc7bd093716c5c58de44103bc8fb767677ca7
   languageName: node
   linkType: hard
 
@@ -7833,6 +7860,13 @@ __metadata:
   dependencies:
     mimic-response: ^1.0.0
   checksum: 71832f9219f2682b0915bdbc0dd187ba8e63d16b0af5342b44f97b34afe9400a1f528a253dd2f70a8dd8b23bfa4c4e106928fcc520fa5899d769af95e4cce53c
+  languageName: node
+  linkType: hard
+
+"clone@npm:2.x":
+  version: 2.1.2
+  resolution: "clone@npm:2.1.2"
+  checksum: 85232d66015d2d703dc59812e30049931d97c7815bf70569ae4fb7a66be257f46fcf47040e4e7050966ca195a9e615d59d73ba9e39fc37eedba1a76865f27ab1
   languageName: node
   linkType: hard
 
@@ -13502,6 +13536,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"js-cookie@npm:2.2.0":
+  version: 2.2.0
+  resolution: "js-cookie@npm:2.2.0"
+  checksum: 27beb10f6f34ed89aab709cf6859327ca8ac52614e09e10a7a82350ee24a680bacb40fa9223d03893efe737da52bd70850e204296c34181be95e74c376b1582b
+  languageName: node
+  linkType: hard
+
 "js-string-escape@npm:^1.0.1":
   version: 1.0.1
   resolution: "js-string-escape@npm:1.0.1"
@@ -15060,6 +15101,16 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"node-cache@npm:^4.2.0":
+  version: 4.2.1
+  resolution: "node-cache@npm:4.2.1"
+  dependencies:
+    clone: 2.x
+    lodash: ^4.17.15
+  checksum: 61b43712f396c0a99de49c8a26d47651577fd214f70381adaa39b529d592ab5a3fc014cc52893bf4027c7ec0c536fe1b5f82f58d5251037e9f65ee54ca6e3d65
+  languageName: node
+  linkType: hard
+
 "node-dir@npm:^0.1.10":
   version: 0.1.17
   resolution: "node-dir@npm:0.1.17"
@@ -15640,6 +15691,13 @@ fsevents@~2.1.2:
   version: 1.1.0
   resolution: "p-cancelable@npm:1.1.0"
   checksum: 01fdd9ac319f0e69e22c18d5b9e5f4dca62a0827d72349c73b0c88b07c760849de49201dcbe4fbbcbe61b4bdce8f4f3596cfbbfed664cf411ff1ab9a80664574
+  languageName: node
+  linkType: hard
+
+"p-cancelable@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "p-cancelable@npm:2.0.0"
+  checksum: 966065f056a116a1ca3b6c7064d4d27a65bc1740c25cc60729faa5deea385bbd0f2317aedabb8e64c0cfc3c6b2dafe7f3ea65c267373d6d9be1602af443b4f12
   languageName: node
   linkType: hard
 
@@ -19480,6 +19538,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"text-encoding@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "text-encoding@npm:0.7.0"
+  checksum: 476a7565817bf24460e35832f1d41a888586242536c4703273496d8d706447df0bce8fa8e70c50c050345d6533747ead5925e11cf7869f027200d8dcfe0690b6
+  languageName: node
+  linkType: hard
+
 "text-table@npm:0.2.0, text-table@npm:^0.2.0":
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
@@ -19531,6 +19596,13 @@ fsevents@~2.1.2:
   dependencies:
     setimmediate: ^1.0.4
   checksum: 9e10d036d61b81eef9679b8ed452000eecbc309ea67067120a124a451b58ac4e5d348ca24152351770b5058117732dc8c665fff0b984f8eb0d857b9e13c33f42
+  languageName: node
+  linkType: hard
+
+"tiny-emitter@npm:1.1.0":
+  version: 1.1.0
+  resolution: "tiny-emitter@npm:1.1.0"
+  checksum: 0fcf868b46293a0005e3339e94a47ed8583b27bff68556ae87603e20e94d176728d8674529e6b19215e3094090b6a8bac3864e9ad376fdf6a419e39f41248618
   languageName: node
   linkType: hard
 
@@ -20752,6 +20824,13 @@ typescript@^4.0.3:
   languageName: node
   linkType: hard
 
+"webcrypto-shim@npm:^0.1.5":
+  version: 0.1.6
+  resolution: "webcrypto-shim@npm:0.1.6"
+  checksum: 8832f217515835cea311ed686a7098e7ffe10143a85eb5eb5c16abecb44363ec836b432204276a600f2befdea98abe2b862b1bcfd0544b948977f0281b4934c0
+  languageName: node
+  linkType: hard
+
 "webidl-conversions@npm:^4.0.2":
   version: 4.0.2
   resolution: "webidl-conversions@npm:4.0.2"
@@ -21219,6 +21298,13 @@ typescript@^4.0.3:
   version: 4.0.0
   resolution: "xdg-basedir@npm:4.0.0"
   checksum: 928953cb7dda8e2475932f748847a3aae751f44864a0067b03e5ca66820a36e1e9ffb647f9b06fb68ebcb0b9d06d5aee630717a1d2501be14cec99f82efa2fe6
+  languageName: node
+  linkType: hard
+
+"xhr2@npm:0.1.3":
+  version: 0.1.3
+  resolution: "xhr2@npm:0.1.3"
+  checksum: 58cf970798898687e5477fce22d8755b8d8bce2067e45beb44d79b5823e1dac2da4711676e7da7384ccf177a391d129c116b85d4880e2e5bf42c8b58fb78cd69
   languageName: node
   linkType: hard
 
