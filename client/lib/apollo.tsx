@@ -1,5 +1,10 @@
-import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
-import { useMemo } from 'react'
+import {
+  ApolloClient,
+  ApolloProvider as ApolloClientProvider,
+  HttpLink,
+  InMemoryCache,
+} from '@apollo/client'
+import { ReactNode, useMemo } from 'react'
 
 const IS_SSR = typeof window === 'undefined'
 
@@ -30,7 +35,12 @@ export const getApolloClient = () => {
   return apolloClient
 }
 
-export const useApollo = () => {
+const useApollo = () => {
   const client = useMemo(() => getApolloClient(), [])
   return client
+}
+
+export function ApolloProvider({ children }: { children: ReactNode }) {
+  const client = useApollo()
+  return <ApolloClientProvider client={client}>{children}</ApolloClientProvider>
 }
