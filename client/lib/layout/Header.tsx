@@ -10,7 +10,7 @@ export function Header() {
       </div>
       <Links>
         <Link href="#">About</Link>
-        <Link href="#">Login</Link>
+        <Link href="/login">Login</Link>
       </Links>
     </HeaderContainer>
   )
