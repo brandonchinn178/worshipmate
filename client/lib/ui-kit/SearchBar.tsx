@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
+import { color } from '~/theme'
 import { Icon } from '~/ui-kit/Icon'
 
 type Form = {
@@ -60,5 +61,6 @@ const SearchBox = styled.button`
   height: 33px;
   width: 33px;
   border: 1px solid black;
-  cursor: pointer;
+
+  background: ${color('white')};
 `
