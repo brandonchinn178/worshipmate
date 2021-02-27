@@ -1,6 +1,7 @@
 import { OktaAuth } from '@okta/okta-auth-js'
 
 abstract class AuthClientBase {
+  abstract getToken(): Promise<string | null>
   abstract login(username: string, password: string): Promise<void>
 }
 
@@ -19,6 +20,11 @@ class AuthClientOkta extends AuthClientBase {
       clientId: oktaClientId,
       redirectUri: `${origin}/login/callback`,
     })
+  }
+
+  async getToken() {
+    const tokens = await this.oktaAuth.tokenManager.getTokens()
+    return tokens.accessToken?.value ?? null
   }
 
   async login(username: string, password: string): Promise<void> {
@@ -42,9 +48,25 @@ class AuthClientOkta extends AuthClientBase {
   }
 }
 
+class AuthClientSSR extends AuthClientBase {
+  async getToken() {
+    return null
+  }
+
+  async login() {
+    return
+  }
+}
+
 const getAuthClient = (): AuthClientBase => {
+  // server-side rendering
+  if (typeof window === 'undefined') {
+    return new AuthClientSSR()
+  }
+
   return new AuthClientOkta()
 }
 
 const authClient = getAuthClient()
+export const getToken = authClient.getToken.bind(authClient)
 export const login = authClient.login.bind(authClient)
