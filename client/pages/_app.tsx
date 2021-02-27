@@ -21,13 +21,15 @@ export default function App(props: AppProps) {
 }
 
 function AppContent({ Component, pageProps }: AppProps) {
+  const showHeader = pageProps.header ?? true
+
   return (
     <>
       <Head>
         <title>WorshipMate</title>
       </Head>
       <GlobalStyle />
-      <Header />
+      {showHeader && <Header />}
       <PageContent>
         <Component {...pageProps} />
       </PageContent>
