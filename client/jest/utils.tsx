@@ -1,4 +1,5 @@
-import { render } from '@testing-library/react'
+import { act, render } from '@testing-library/react'
+import _ from 'lodash'
 import { ReactElement } from 'react'
 import { ThemeProvider } from 'styled-components'
 
@@ -17,3 +18,7 @@ export const renderUI = (ui: ReactElement, options = {}) =>
     ),
     ...options,
   })
+
+export const waitForAllStateChanges = async () => {
+  await act(() => new Promise(_.defer))
+}
