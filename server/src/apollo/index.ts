@@ -4,9 +4,9 @@ import { mergeTypeDefs } from '@graphql-toolkit/schema-merging'
 import { ApolloServer } from 'apollo-server'
 import { Database } from 'pg-fusion'
 
-import * as song from '~/song'
+import * as song from '~/song/resolvers'
 
-import { initDataSources } from './context'
+import { getContext } from './context'
 
 const getTypeDefs = () => {
   const typeDefs = loadTypedefsSync('**/*.graphql', {
@@ -22,7 +22,7 @@ export const initServer = (db: Database) => {
   return new ApolloServer({
     typeDefs: getTypeDefs(),
     resolvers: [song.resolvers],
-    dataSources: () => initDataSources(db),
+    context: ({ req }) => getContext(req, db),
     introspection: true,
     playground: true,
   })

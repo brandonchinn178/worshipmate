@@ -1,19 +1,18 @@
 import * as _ from 'lodash'
 import { Database, sql } from 'pg-fusion'
 
-if (process.env.NODE_ENV !== 'production') {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  require('dotenv').config()
-}
+import { env } from '~/env'
+
+const { NODE_ENV, DATABASE_URL } = env
 
 export const DB_NAME =
-  process.env.NODE_ENV === 'test' ? 'worship_mate_test' : 'worship_mate'
+  NODE_ENV === 'test' ? 'worship_mate_test' : 'worship_mate'
 
 export const initDatabase = async () => {
   await createTestDatabase()
 
-  const connOptions = process.env.DATABASE_URL
-    ? { connectionString: process.env.DATABASE_URL }
+  const connOptions = DATABASE_URL
+    ? { connectionString: DATABASE_URL }
     : { database: DB_NAME }
 
   return new Database(connOptions)
@@ -48,7 +47,7 @@ const withAdminDatabase = async <T>(
  * Create the test database if it doesn't already exist.
  */
 export const createTestDatabase = async () => {
-  if (process.env.NODE_ENV !== 'test') {
+  if (NODE_ENV !== 'test') {
     return
   }
 
@@ -65,7 +64,7 @@ export const createTestDatabase = async () => {
  * Drop the test database if it exists.
  */
 export const dropTestDatabase = async () => {
-  if (process.env.NODE_ENV !== 'test') {
+  if (NODE_ENV !== 'test') {
     return
   }
 

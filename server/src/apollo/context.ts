@@ -1,16 +1,16 @@
+import { Request } from 'express'
 import { Database } from 'pg-fusion'
 
-import { SongAPI } from '~/song'
+import { SongAPI } from '~/song/api'
 
 export type ApolloContext = {
-  dataSources: ApolloDataSources
-}
-
-type ApolloDataSources = {
   songAPI: SongAPI
 }
 
-export function initDataSources(db: Database): ApolloDataSources {
+export const getContext = async (
+  req: Request,
+  db: Database,
+): Promise<ApolloContext> => {
   return {
     songAPI: new SongAPI(db),
   }
