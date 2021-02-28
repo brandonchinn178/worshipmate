@@ -18,7 +18,7 @@ export function SearchBar({ initial = '', onSubmit }: SearchBarProps) {
 
   useEffect(() => {
     setValue('search', initial)
-  }, [initial])
+  }, [setValue, initial])
 
   const doSubmit = handleSubmit(({ search }) => onSubmit(search))
 
