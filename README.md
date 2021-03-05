@@ -1,8 +1,6 @@
 # WorshipMate
 
-A website for worship leaders to browse songs for worshipping individually or
-corporately. Allows for easy key transposition and selection of full worship
-sets.
+A website for worship leaders to browse songs for worshipping individually or corporately. Allows for easy key transposition and selection of full worship sets.
 
 ## Quickstart
 
@@ -37,8 +35,7 @@ This repository is organized using the following Yarn workspaces:
 
 ## Authentication
 
-This project uses [Okta](https://developer.okta.com/) to store user information
-and handle authentication.
+This project uses [Okta](https://developer.okta.com/) to store user information and handle authentication.
 
 ### Set up Okta
 
@@ -56,9 +53,7 @@ and handle authentication.
 
 ### Mock out authentication
 
-To mock out authentication, set `NEXT_PUBLIC_UNSAFE_IGNORE_AUTH=1` in
-`client/.env.local` and `UNSAFE_IGNORE_AUTH=1` in `server/.env`. With these
-environment variables set, you may use these credentials to login:
+To mock out authentication, set `NEXT_PUBLIC_UNSAFE_IGNORE_AUTH=1` in `client/.env.local` and `UNSAFE_IGNORE_AUTH=1` in `server/.env`. With these environment variables set, you may use these credentials to login:
 
 * Username: `testuser`
 * Password: `password`
