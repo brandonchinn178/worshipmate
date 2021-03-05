@@ -77,7 +77,10 @@ jobs:
       # build its own Next.js app
       - restore_cache:
           key: v1-next-{{ checksum "yarn.lock" }}
-      - run: yarn client build
+      - run:
+          command: yarn client build
+          environment:
+            NEXT_PUBLIC_UNSAFE_IGNORE_AUTH: 1
       - save_cache:
           key: v1-next-{{ checksum "yarn.lock" }}
           paths:

@@ -32,4 +32,29 @@ export const GlobalStyle = createGlobalStyle`
       color: ${color('secondary')};
     }
   }
+
+  button {
+    cursor: pointer;
+
+    background: ${color('darkTeal')};
+    color: ${color('white')};
+    border: 5px ${color('darkTeal')} solid;
+
+    font-family: ${fontFamily('alegreya')};
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+
+    &:hover {
+      background: ${color('white')};
+      color: ${color('darkTeal')};
+    }
+
+    &:disabled {
+      background: ${color('lightGray')};
+      border-color: ${color('lightGray')};
+      cursor: initial;
+      color: ${color('white')};
+    }
+  }
 `
