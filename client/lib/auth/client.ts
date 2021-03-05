@@ -78,10 +78,57 @@ class AuthClientSSR extends AuthClientBase {
   }
 }
 
+class AuthClientFake extends AuthClientBase {
+  private token: string | null
+  private callback: ((token: string | null) => void) | null
+
+  USERNAME = 'testuser'
+  PASSWORD = 'password'
+
+  constructor() {
+    super()
+    this.token = null
+    this.callback = null
+  }
+
+  async getToken() {
+    return this.token
+  }
+
+  onUpdateToken(callback: (token: string | null) => void) {
+    this.callback = callback
+  }
+
+  async login(username: string, password: string) {
+    if (username !== this.USERNAME || password !== this.PASSWORD) {
+      throw new Error('Invalid credentials')
+    }
+
+    this.setToken(username + password)
+  }
+
+  async logout() {
+    this.setToken(null)
+  }
+
+  private setToken(token: string | null) {
+    this.token = token
+    if (this.callback) {
+      this.callback(token)
+    }
+  }
+}
+
 const getAuthClient = (): AuthClientBase => {
   // server-side rendering
   if (typeof window === 'undefined') {
     return new AuthClientSSR()
+  }
+
+  const NODE_ENV = process.env.NEXT_PUBLIC_NODE_ENV
+
+  if (NODE_ENV === 'test') {
+    return new AuthClientFake()
   }
 
   return new AuthClientOkta()

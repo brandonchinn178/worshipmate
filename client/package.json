@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start:dev": "next dev",
-    "start:test": "NODE_ENV=test yarn start:dev",
+    "start:test": "NODE_ENV=test NEXT_PUBLIC_NODE_ENV=test yarn start:dev",
     "build": "next build",
     "start:prod": "NODE_ENV=production next start",
     "storybook": "start-storybook -p 6006",
