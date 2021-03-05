@@ -41,7 +41,7 @@ This project uses [Okta](https://developer.okta.com/) to store user information 
 
 1. Create a new Okta application
     * Application type: SPA
-    * Set the Login redirect URI to your domain at the path `/login/callback`
+    * Set the Login redirect URI to your domain, e.g. `http://localhost:3000/`
 1. Go to Security > API > Trusted Origins and add your domain
 1. Copy the client ID and Okta domain
 1. Set the following environment variables in `client/.env.local`:
