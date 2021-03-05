@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext, useEffect, useState } from 'react'
 
-import { getToken } from './client'
+import { getToken, onUpdateToken } from './client'
 
 type Session = {
   token: string
@@ -68,6 +68,10 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
         setResult(mkSessionError(e))
       })
   }, [])
+
+  onUpdateToken((token) => {
+    setResult(mkSession(token))
+  })
 
   return (
     <SessionContext.Provider value={result}>{children}</SessionContext.Provider>
