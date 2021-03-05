@@ -15,12 +15,10 @@ class AuthClientOkta extends AuthClientBase {
 
     const oktaDomain = process.env.NEXT_PUBLIC_OKTA_DOMAIN
     const oktaClientId = process.env.NEXT_PUBLIC_OKTA_CLIENT_ID
-    const origin = window.location.origin
 
     this.oktaAuth = new OktaAuth({
       issuer: `https://${oktaDomain}/oauth2/default`,
       clientId: oktaClientId,
-      redirectUri: `${origin}/login/callback`,
     })
   }
 
