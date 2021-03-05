@@ -2,7 +2,11 @@ import styled from 'styled-components'
 
 import { color, font, fontFamily } from '~/theme'
 
-export function Header() {
+export type HeaderProps = {
+  isUserLoggedIn?: boolean
+}
+
+export function Header({ isUserLoggedIn }: HeaderProps) {
   return (
     <HeaderContainer>
       <div>
@@ -10,7 +14,11 @@ export function Header() {
       </div>
       <Links>
         <Link href="#">About</Link>
-        <Link href="#">Login</Link>
+        {isUserLoggedIn ? (
+          <Link href="#">Dashboard</Link>
+        ) : (
+          <Link href="/login">Login</Link>
+        )}
       </Links>
     </HeaderContainer>
   )
@@ -18,7 +26,7 @@ export function Header() {
 
 const HeaderContainer = styled.div`
   display: grid;
-  grid-template-columns: auto 75px;
+  grid-template-columns: auto max-content;
   padding: 20px;
   background: ${color('primary')};
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.75);
