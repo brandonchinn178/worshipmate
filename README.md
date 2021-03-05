@@ -1,8 +1,6 @@
 # WorshipMate
 
-A website for worship leaders to browse songs for worshipping individually or
-corporately. Allows for easy key transposition and selection of full worship
-sets.
+A website for worship leaders to browse songs for worshipping individually or corporately. Allows for easy key transposition and selection of full worship sets.
 
 ## Quickstart
 
@@ -37,13 +35,25 @@ This repository is organized using the following Yarn workspaces:
 
 ## Authentication
 
-This project uses [Okta](https://developer.okta.com/) to store user information
-and handle authentication. Follow the Okta documentation to set up an Okta
-application for development.
+This project uses [Okta](https://developer.okta.com/) to store user information and handle authentication.
 
-To mock out authentication, set `NEXT_PUBLIC_UNSAFE_IGNORE_AUTH=1` in
-`client/.env.local` and `UNSAFE_IGNORE_AUTH=1` in `server/.env`. With these
-environment variables set, you may use these credentials to login:
+### Set up Okta
+
+1. Create a new Okta application
+    * Application type: SPA
+    * Set the Login redirect URI to your domain, e.g. `http://localhost:3000/`
+1. Go to Security > API > Trusted Origins and add your domain
+1. Copy the client ID and Okta domain
+1. Set the following environment variables in `client/.env.local`:
+    * `NEXT_PUBLIC_OKTA_CLIENT_ID`
+    * `NEXT_PUBLIC_OKTA_DOMAIN`
+1. Set the following environment variables in `server/.env`:
+    * `OKTA_CLIENT_ID`
+    * `OKTA_DOMAIN`
+
+### Mock out authentication
+
+To mock out authentication, set `NEXT_PUBLIC_UNSAFE_IGNORE_AUTH=1` in `client/.env.local` and `UNSAFE_IGNORE_AUTH=1` in `server/.env`. With these environment variables set, you may use these credentials to login:
 
 * Username: `testuser`
 * Password: `password`
