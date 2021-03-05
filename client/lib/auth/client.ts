@@ -126,8 +126,9 @@ const getAuthClient = (): AuthClientBase => {
   }
 
   const NODE_ENV = process.env.NEXT_PUBLIC_NODE_ENV
+  const UNSAFE_IGNORE_AUTH = process.env.NEXT_PUBLIC_UNSAFE_IGNORE_AUTH
 
-  if (NODE_ENV === 'test') {
+  if (NODE_ENV === 'test' || UNSAFE_IGNORE_AUTH) {
     return new AuthClientFake()
   }
 
