@@ -1,11 +1,14 @@
 import {
   ApolloClient,
   ApolloProvider as ApolloClientProvider,
+  from,
   HttpLink,
   InMemoryCache,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { onError } from '@apollo/client/link/error'
 import { ReactNode } from 'react'
+import { toast } from 'react-toastify'
 
 import { getToken } from '~/auth/client'
 
@@ -29,9 +32,33 @@ export const getApolloClient = () => {
     }
   })
 
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      graphQLErrors.forEach((e) => {
+        const { message, path } = e
+
+        console.error(e)
+
+        toast.error(
+          [
+            'GraphQL error',
+            path ? ` at "${path.join('.')}"` : '',
+            ': ',
+            message,
+          ].join(''),
+        )
+      })
+    }
+
+    if (networkError) {
+      console.error(networkError)
+      toast.error(networkError.toString())
+    }
+  })
+
   const apolloOptions = {
     ssrMode: IS_SSR,
-    link: authLink.concat(httpLink),
+    link: from([authLink, errorLink, httpLink]),
     cache: new InMemoryCache(),
   }
 
