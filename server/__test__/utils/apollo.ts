@@ -12,8 +12,12 @@ beforeEach(() => {
 jest.mock('~/apollo/auth', () => {
   return {
     // request is undefined in tests
-    getUserFromRequest: (req: undefined, db: Database) => {
-      const username = mockUsername() ?? 'testuser'
+    getUserFromRequest: async (req: undefined, db: Database) => {
+      const username = mockUsername()
+      if (!username) {
+        return null
+      }
+
       return new UserAPI(db).getOrCreate(username)
     },
   }

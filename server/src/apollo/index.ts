@@ -5,6 +5,7 @@ import { ApolloServer } from 'apollo-server'
 import { Database } from 'pg-fusion'
 
 import * as song from '~/song/resolvers'
+import * as user from '~/user/resolvers'
 
 import { getContext } from './context'
 
@@ -21,7 +22,7 @@ const getTypeDefs = () => {
 export const initServer = (db: Database) => {
   return new ApolloServer({
     typeDefs: getTypeDefs(),
-    resolvers: [song.resolvers],
+    resolvers: [song.resolvers, user.resolvers],
     context: ({ req }) => getContext(req, db),
     introspection: true,
     playground: true,
