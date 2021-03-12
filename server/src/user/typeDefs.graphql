@@ -1,0 +1,9 @@
+type User {
+  id: ID!
+  name: String!
+}
+
+extend type Query {
+  """Return the currently authenticated user, or null if not authenticated."""
+  me: User
+}
