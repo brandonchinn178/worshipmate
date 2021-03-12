@@ -1,4 +1,5 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { renderUI } from '~jest-utils'
 
@@ -9,10 +10,10 @@ it('allows typing and submission', async () => {
   renderUI(<SearchBar onSubmit={onSubmit} />)
 
   const input = screen.getByRole('textbox')
-  fireEvent.change(input, { target: { value: 'hello!' } })
+  userEvent.type(input, 'hello!')
 
   const button = screen.getByRole('button')
-  fireEvent.click(button)
+  userEvent.click(button)
 
   await waitFor(() => {
     expect(onSubmit).toHaveBeenCalled()
@@ -25,8 +26,7 @@ it('allows submission via Enter', async () => {
   renderUI(<SearchBar onSubmit={onSubmit} />)
 
   const input = screen.getByRole('textbox')
-  fireEvent.change(input, { target: { value: 'hello!' } })
-  fireEvent.submit(input)
+  userEvent.type(input, 'hello!{enter}')
 
   await waitFor(() => {
     expect(onSubmit).toHaveBeenCalled()
@@ -38,7 +38,7 @@ it('sets initial input', async () => {
   renderUI(<SearchBar initial="initial" onSubmit={onSubmit} />)
 
   const button = screen.getByRole('button')
-  fireEvent.click(button)
+  userEvent.click(button)
 
   await waitFor(() => {
     expect(onSubmit).toHaveBeenCalled()
