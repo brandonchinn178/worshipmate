@@ -27,6 +27,7 @@ export function Header({ isUserLoggedIn }: HeaderProps) {
 const HeaderContainer = styled.div`
   display: grid;
   grid-template-columns: auto max-content;
+  grid-gap: 20px;
   padding: 20px;
   background: ${color('primary')};
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.75);
