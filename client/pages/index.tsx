@@ -32,14 +32,14 @@ const pluralize = (...args: [string, number] | [string, string, number]) => {
   }
 }
 
-type HomeStaticProps = {
+type HomeProps = {
   /**
    * The full list of songs to show at the start.
    */
   initialSongs: SearchSongsQuery['searchSongs']
 }
 
-function Home({ initialSongs }: HomeStaticProps) {
+function Home({ initialSongs }: HomeProps) {
   const router = useRouter()
 
   const search = router.query.search as string | undefined
