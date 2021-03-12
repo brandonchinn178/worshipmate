@@ -19,11 +19,6 @@ const oktaJwtVerifier = new OktaJwtVerifier({
 })
 
 const getTokenFromRequest = (req: Request): string | null => {
-  // req is undefined in tests
-  if (env.NODE_ENV === 'test') {
-    return 'faketoken'
-  }
-
   const token = req.headers.authorization?.match(/^Bearer (.*)/)?.[1]
 
   if (!token) {

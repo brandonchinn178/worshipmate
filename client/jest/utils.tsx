@@ -1,4 +1,5 @@
-import { act, render } from '@testing-library/react'
+import { MockedProvider, MockedResponse } from '@apollo/client/testing'
+import { act, render, RenderOptions } from '@testing-library/react'
 import _ from 'lodash'
 import { ReactElement } from 'react'
 import { ThemeProvider } from 'styled-components'
@@ -6,18 +7,27 @@ import { ThemeProvider } from 'styled-components'
 import { theme } from '~/theme'
 import { GlobalStyle } from '~/theme/global'
 
-export const renderUI = (ui: ReactElement, options = {}) =>
-  render(ui, {
+type Options = RenderOptions & {
+  mocks?: ReadonlyArray<MockedResponse>
+}
+
+export const renderUI = (ui: ReactElement, options: Options = {}) => {
+  const { mocks = [], ...renderOptions } = options
+
+  return render(ui, {
     wrapper: ({ children }) => (
       <ThemeProvider theme={theme}>
-        <>
-          <GlobalStyle />
-          {children}
-        </>
+        <MockedProvider mocks={mocks}>
+          <>
+            <GlobalStyle />
+            {children}
+          </>
+        </MockedProvider>
       </ThemeProvider>
     ),
-    ...options,
+    ...renderOptions,
   })
+}
 
 export const waitForAllStateChanges = async () => {
   await act(() => new Promise(_.defer))

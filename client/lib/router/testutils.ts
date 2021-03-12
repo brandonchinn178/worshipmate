@@ -3,13 +3,15 @@ import { NextRouter } from 'next/router'
 
 type MockRouterConfig = {
   query?: NextRouter['query']
+  pathname?: NextRouter['pathname']
 }
 
 export const mkRouter = (routerConfig: MockRouterConfig = {}): NextRouter => {
-  const { query = {} } = routerConfig
+  const { query = {}, pathname = '/' } = routerConfig
 
   const mockRouter = {
     query,
+    pathname,
     push: jest.fn(),
   }
 

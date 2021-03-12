@@ -15,6 +15,8 @@ import { getToken } from '~/auth/client'
 const IS_SSR = typeof window === 'undefined'
 const { NEXT_PUBLIC_GRAPHQL_URL } = process.env
 
+export const apolloCache = new InMemoryCache()
+
 export const getApolloClient = () => {
   const httpLink = new HttpLink({
     uri: NEXT_PUBLIC_GRAPHQL_URL ?? 'http://localhost:4000/graphql',
@@ -59,7 +61,7 @@ export const getApolloClient = () => {
   const apolloOptions = {
     ssrMode: IS_SSR,
     link: from([authLink, errorLink, httpLink]),
-    cache: new InMemoryCache(),
+    cache: apolloCache,
   }
 
   return new ApolloClient(apolloOptions)

@@ -90,6 +90,10 @@ class AuthClientFake extends AuthClientBase {
   }
 
   async getToken() {
+    if (document.cookie.includes('authenticated=TRUE')) {
+      return 'validtoken'
+    }
+
     return this.token
   }
 
