@@ -26,7 +26,7 @@ function AppContent({ Component, pageProps }: AppProps) {
   const showHeader = pageProps.header ?? true
 
   return (
-    <>
+    <AppContainer>
       <Head>
         <title>WorshipMate</title>
       </Head>
@@ -35,9 +35,13 @@ function AppContent({ Component, pageProps }: AppProps) {
       <PageContent>
         <Component {...pageProps} />
       </PageContent>
-    </>
+    </AppContainer>
   )
 }
+
+const AppContainer = styled.div`
+  min-width: min-content;
+`
 
 const PageContent = styled.div`
   padding: 15px;
