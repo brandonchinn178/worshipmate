@@ -29,7 +29,7 @@ const getTokenFromRequest = (req: Request): string | null => {
 }
 
 const verifyToken = async (token: string) => {
-  if (env.UNSAFE_IGNORE_AUTH) {
+  if (env.NODE_ENV === 'test' || env.UNSAFE_IGNORE_AUTH) {
     return {
       claims: {
         sub: 'testuser',
