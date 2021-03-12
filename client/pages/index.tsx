@@ -61,7 +61,7 @@ export default function Home({ initialSongs }: HomeStaticProps) {
   const availableFilters = getAvailableFilters(songs)
 
   return (
-    <Grid>
+    <HomePage>
       <SidebarArea>
         <SongFilterPanel
           availableFilters={availableFilters}
@@ -83,7 +83,7 @@ export default function Home({ initialSongs }: HomeStaticProps) {
       <SongTableArea>
         <SongTable songs={songs} />
       </SongTableArea>
-    </Grid>
+    </HomePage>
   )
 }
 
@@ -102,7 +102,7 @@ export const getStaticProps = async () => {
   }
 }
 
-const Grid = styled.div`
+const HomePage = styled.div`
   display: grid;
   grid-template-columns: 400px auto;
   grid-template-rows: max-content max-content auto;
