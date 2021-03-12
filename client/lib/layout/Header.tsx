@@ -15,7 +15,7 @@ export function Header({ isUserLoggedIn }: HeaderProps) {
       <Links>
         <Link href="#">About</Link>
         {isUserLoggedIn ? (
-          <Link href="#">Dashboard</Link>
+          <Link href="/dashboard">Dashboard</Link>
         ) : (
           <Link href="/login">Login</Link>
         )}
