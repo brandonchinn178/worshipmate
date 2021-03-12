@@ -1,5 +1,8 @@
+import 'react-toastify/dist/ReactToastify.css'
+
 import { AppProps } from 'next/app'
 import Head from 'next/head'
+import { ToastContainer } from 'react-toastify'
 import styled, { ThemeProvider } from 'styled-components'
 
 import { ApolloProvider } from '~/apollo'
@@ -35,6 +38,7 @@ function AppContent({ Component, pageProps }: AppProps) {
       <PageContent>
         <Component {...pageProps} />
       </PageContent>
+      <ToastContainer />
     </AppContainer>
   )
 }
