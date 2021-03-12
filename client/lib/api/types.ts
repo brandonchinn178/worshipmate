@@ -18,6 +18,8 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query'
+  /** Return the currently authenticated user, or null if not authenticated. */
+  me?: Maybe<User>
   searchSongs: Array<Song>
 }
 
@@ -40,4 +42,10 @@ export type SearchFilters = {
   recommendedKey?: Maybe<Scalars['String']>
   bpm?: Maybe<Scalars['Int']>
   timeSignature?: Maybe<Scalars['TimeSignature']>
+}
+
+export type User = {
+  __typename?: 'User'
+  id: Scalars['ID']
+  name: Scalars['String']
 }
