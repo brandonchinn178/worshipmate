@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
 import { renderUI } from '~jest-utils'
 
@@ -6,12 +6,12 @@ import { SearchBar } from './SearchBar'
 
 it('allows typing and submission', async () => {
   const onSubmit = jest.fn()
-  const { getByRole } = renderUI(<SearchBar onSubmit={onSubmit} />)
+  renderUI(<SearchBar onSubmit={onSubmit} />)
 
-  const input = getByRole('textbox')
+  const input = screen.getByRole('textbox')
   fireEvent.change(input, { target: { value: 'hello!' } })
 
-  const button = getByRole('button')
+  const button = screen.getByRole('button')
   fireEvent.click(button)
 
   await waitFor(() => {
@@ -22,9 +22,9 @@ it('allows typing and submission', async () => {
 
 it('allows submission via Enter', async () => {
   const onSubmit = jest.fn()
-  const { getByRole } = renderUI(<SearchBar onSubmit={onSubmit} />)
+  renderUI(<SearchBar onSubmit={onSubmit} />)
 
-  const input = getByRole('textbox')
+  const input = screen.getByRole('textbox')
   fireEvent.change(input, { target: { value: 'hello!' } })
   fireEvent.submit(input)
 
@@ -35,11 +35,9 @@ it('allows submission via Enter', async () => {
 
 it('sets initial input', async () => {
   const onSubmit = jest.fn()
-  const { getByRole } = renderUI(
-    <SearchBar initial="initial" onSubmit={onSubmit} />,
-  )
+  renderUI(<SearchBar initial="initial" onSubmit={onSubmit} />)
 
-  const button = getByRole('button')
+  const button = screen.getByRole('button')
   fireEvent.click(button)
 
   await waitFor(() => {
