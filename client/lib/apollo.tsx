@@ -1,6 +1,7 @@
 import {
   ApolloClient,
   ApolloProvider as ApolloClientProvider,
+  from,
   HttpLink,
   InMemoryCache,
 } from '@apollo/client'
@@ -31,7 +32,7 @@ export const getApolloClient = () => {
 
   const apolloOptions = {
     ssrMode: IS_SSR,
-    link: authLink.concat(httpLink),
+    link: from([authLink, httpLink]),
     cache: new InMemoryCache(),
   }
 
