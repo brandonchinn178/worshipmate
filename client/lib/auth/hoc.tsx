@@ -32,7 +32,12 @@ export const withAuth = (Component: ComponentType<{ user: User }>) => (
   const user = data?.me
 
   if (!user) {
-    router.push('/login')
+    router.push({
+      pathname: '/login',
+      query: {
+        next: router.pathname,
+      },
+    })
     return null
   }
 
