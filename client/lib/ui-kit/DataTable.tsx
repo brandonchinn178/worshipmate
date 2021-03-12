@@ -54,39 +54,41 @@ export function DataTable<T>({ data, columnDefs, rowKey }: DataTableProps<T>) {
     .map(({ size }) => size || 'minmax(0, 1fr)')
     .join(' ')
 
-  const getRowKey = (rowData: T, i: number) => (rowKey ? rowKey(rowData) : i)
+  const getCellKey = (rowData: T, i: number, j: number) => {
+    const row = rowKey ? rowKey(rowData) : i
+    const col = j
+    return `${row}-${col}`
+  }
 
   return (
-    <Table>
-      <TableRow columnSizes={columnSizes}>
+    <Table columnSizes={columnSizes}>
+      <>
         {columnDefs.map((columnDef, i) => (
           <TableHeaderCell key={i}>{renderHeader(columnDef)}</TableHeaderCell>
         ))}
-      </TableRow>
-      {data.map((rowData, i) => (
-        <TableRow key={getRowKey(rowData, i)} columnSizes={columnSizes}>
-          {columnDefs.map((columnDef, j) => (
-            <TableCell key={j}>{renderCell(columnDef, rowData)}</TableCell>
-          ))}
-        </TableRow>
-      ))}
+      </>
+      {data.map((rowData, i) =>
+        columnDefs.map((columnDef, j) => (
+          <TableCell key={getCellKey(rowData, i, j)}>
+            {renderCell(columnDef, rowData)}
+          </TableCell>
+        )),
+      )}
     </Table>
   )
 }
 
 const borderStyle = css`1px solid ${color('black')}`
 
-const Table = styled.div`
-  display: grid;
-  border-top: ${borderStyle};
-  border-left: ${borderStyle};
-`
-
-const TableRow = styled.div<{ columnSizes: string }>`
+const Table = styled.div<{ columnSizes: string }>`
   display: grid;
   grid-template-columns: ${(p) => p.columnSizes};
-  border-right: ${borderStyle};
-  border-bottom: ${borderStyle};
+
+  border: ${borderStyle};
+  border-bottom: 0;
+  & > * {
+    border-bottom: ${borderStyle};
+  }
 `
 
 const TableCell = styled.div`
