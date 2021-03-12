@@ -3,63 +3,47 @@
 exports[`displays data 1`] = `
 <div>
   <div
-    class="DataTable__Table-sc-1xhkibe-0 kfZHQD"
+    class="DataTable__Table-sc-1xhkibe-0 lhcMRB"
   >
     <div
-      class="DataTable__TableRow-sc-1xhkibe-1 kisyNV"
+      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 gRqLRZ"
     >
-      <div
-        class="DataTable__TableCell-sc-1xhkibe-2 DataTable__TableHeaderCell-sc-1xhkibe-3 bPBycO"
-      >
-        Id
-      </div>
-      <div
-        class="DataTable__TableCell-sc-1xhkibe-2 DataTable__TableHeaderCell-sc-1xhkibe-3 bPBycO"
-      >
-        Name
-      </div>
+      Id
     </div>
     <div
-      class="DataTable__TableRow-sc-1xhkibe-1 kisyNV"
+      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 gRqLRZ"
     >
-      <div
-        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
-      >
-        1
-      </div>
-      <div
-        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
-      >
-        Alice
-      </div>
+      Name
     </div>
     <div
-      class="DataTable__TableRow-sc-1xhkibe-1 kisyNV"
+      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
     >
-      <div
-        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
-      >
-        2
-      </div>
-      <div
-        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
-      >
-        Bob
-      </div>
+      1
     </div>
     <div
-      class="DataTable__TableRow-sc-1xhkibe-1 kisyNV"
+      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
     >
-      <div
-        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
-      >
-        3
-      </div>
-      <div
-        class="DataTable__TableCell-sc-1xhkibe-2 jFpkpf"
-      >
-        Charlie
-      </div>
+      Alice
+    </div>
+    <div
+      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
+    >
+      2
+    </div>
+    <div
+      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
+    >
+      Bob
+    </div>
+    <div
+      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
+    >
+      3
+    </div>
+    <div
+      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
+    >
+      Charlie
     </div>
   </div>
 </div>
@@ -68,21 +52,17 @@ exports[`displays data 1`] = `
 exports[`displays no data 1`] = `
 <div>
   <div
-    class="DataTable__Table-sc-1xhkibe-0 kfZHQD"
+    class="DataTable__Table-sc-1xhkibe-0 lhcMRB"
   >
     <div
-      class="DataTable__TableRow-sc-1xhkibe-1 kisyNV"
+      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 gRqLRZ"
     >
-      <div
-        class="DataTable__TableCell-sc-1xhkibe-2 DataTable__TableHeaderCell-sc-1xhkibe-3 bPBycO"
-      >
-        Id
-      </div>
-      <div
-        class="DataTable__TableCell-sc-1xhkibe-2 DataTable__TableHeaderCell-sc-1xhkibe-3 bPBycO"
-      >
-        Name
-      </div>
+      Id
+    </div>
+    <div
+      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 gRqLRZ"
+    >
+      Name
     </div>
   </div>
 </div>
