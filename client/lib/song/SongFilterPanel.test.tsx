@@ -1,4 +1,5 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { renderUI } from '~jest-utils'
 
@@ -71,7 +72,7 @@ it('can add a filter', async () => {
     />,
   )
 
-  fireEvent.click(screen.getByText('G (2)'))
+  userEvent.click(screen.getByText('G (2)'))
 
   const mockAddFilter = mockFilterHandler.addFilter
   await waitFor(() => expect(mockAddFilter).toHaveBeenCalled())
@@ -87,7 +88,7 @@ it('can change a filter', async () => {
     />,
   )
 
-  fireEvent.click(screen.getByText('E (3)'))
+  userEvent.click(screen.getByText('E (3)'))
 
   const mockAddFilter = mockFilterHandler.addFilter
   await waitFor(() => expect(mockAddFilter).toHaveBeenCalled())
@@ -103,7 +104,7 @@ it('can remove a filter', async () => {
     />,
   )
 
-  fireEvent.click(screen.getByText('G (2)'))
+  userEvent.click(screen.getByText('G (2)'))
 
   const mockRemoveFilter = mockFilterHandler.removeFilter
   await waitFor(() => expect(mockRemoveFilter).toHaveBeenCalled())
