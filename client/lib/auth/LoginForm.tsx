@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
 import { font, fontFamily } from '~/theme'
@@ -27,7 +28,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
     try {
       await onSubmit(payload)
     } catch (e) {
-      // TODO: show login errors in toaster
+      toast.error(e.toString())
       console.error(e)
 
       // tell react-hook-form that the submission was not successful
