@@ -5,7 +5,7 @@ import { login } from '~/auth/client'
 import { LoginForm, LoginFormValues } from '~/auth/LoginForm'
 import { useSession } from '~/auth/session'
 
-export default function Login() {
+function Login() {
   const { session } = useSession()
   const router = useRouter()
 
@@ -23,3 +23,5 @@ export default function Login() {
 
   return <LoginForm onSubmit={onSubmit} />
 }
+
+export default Login

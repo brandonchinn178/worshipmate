@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { logout } from '~/auth/client'
 
-export default function Logout() {
+function Logout() {
   useEffect(() => {
     logout()
   }, [])
@@ -17,3 +17,5 @@ export const getStaticProps = async () => {
     },
   }
 }
+
+export default Logout
