@@ -1,9 +1,11 @@
+import { screen } from '@testing-library/react'
+
 import { renderUI } from '~jest-utils'
 
 import { SongTable } from './SongTable'
 
 it('displays a song', () => {
-  const { getByText } = renderUI(
+  renderUI(
     <SongTable
       songs={[
         {
@@ -19,5 +21,5 @@ it('displays a song', () => {
     />,
   )
 
-  expect(getByText('Amazing Grace')).toBeVisible()
+  expect(screen.getByText('Amazing Grace')).toBeVisible()
 })

@@ -1,4 +1,5 @@
-import { fireEvent, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { renderUI } from '~jest-utils'
 
@@ -46,7 +47,7 @@ const mockFilterHandler = {
 beforeEach(jest.resetAllMocks)
 
 it('renders filters', () => {
-  const { getByText } = renderUI(
+  renderUI(
     <SongFilterPanel
       availableFilters={testFilters}
       activeFilters={{}}
@@ -54,16 +55,16 @@ it('renders filters', () => {
     />,
   )
 
-  expect(getByText('Recommended Key')).toBeVisible()
-  expect(getByText('C (1)')).toBeVisible()
-  expect(getByText('G (2)')).toBeVisible()
-  expect(getByText('E (3)')).toBeVisible()
-  expect(getByText('Time Signature')).toBeVisible()
-  expect(getByText('4/4 (6)')).toBeVisible()
+  expect(screen.getByText('Recommended Key')).toBeVisible()
+  expect(screen.getByText('C (1)')).toBeVisible()
+  expect(screen.getByText('G (2)')).toBeVisible()
+  expect(screen.getByText('E (3)')).toBeVisible()
+  expect(screen.getByText('Time Signature')).toBeVisible()
+  expect(screen.getByText('4/4 (6)')).toBeVisible()
 })
 
 it('can add a filter', async () => {
-  const { getByText } = renderUI(
+  renderUI(
     <SongFilterPanel
       availableFilters={testFilters}
       activeFilters={{}}
@@ -71,7 +72,7 @@ it('can add a filter', async () => {
     />,
   )
 
-  fireEvent.click(getByText('G (2)'))
+  userEvent.click(screen.getByText('G (2)'))
 
   const mockAddFilter = mockFilterHandler.addFilter
   await waitFor(() => expect(mockAddFilter).toHaveBeenCalled())
@@ -79,7 +80,7 @@ it('can add a filter', async () => {
 })
 
 it('can change a filter', async () => {
-  const { getByText } = renderUI(
+  renderUI(
     <SongFilterPanel
       availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
@@ -87,7 +88,7 @@ it('can change a filter', async () => {
     />,
   )
 
-  fireEvent.click(getByText('E (3)'))
+  userEvent.click(screen.getByText('E (3)'))
 
   const mockAddFilter = mockFilterHandler.addFilter
   await waitFor(() => expect(mockAddFilter).toHaveBeenCalled())
@@ -95,7 +96,7 @@ it('can change a filter', async () => {
 })
 
 it('can remove a filter', async () => {
-  const { getByText } = renderUI(
+  renderUI(
     <SongFilterPanel
       availableFilters={testFilters}
       activeFilters={{ recommendedKey: 'G' }}
@@ -103,7 +104,7 @@ it('can remove a filter', async () => {
     />,
   )
 
-  fireEvent.click(getByText('G (2)'))
+  userEvent.click(screen.getByText('G (2)'))
 
   const mockRemoveFilter = mockFilterHandler.removeFilter
   await waitFor(() => expect(mockRemoveFilter).toHaveBeenCalled())
