@@ -39,7 +39,7 @@ type HomeStaticProps = {
   initialSongs: SearchSongsQuery['searchSongs']
 }
 
-export default function Home({ initialSongs }: HomeStaticProps) {
+function Home({ initialSongs }: HomeStaticProps) {
   const router = useRouter()
 
   const search = router.query.search as string | undefined
@@ -130,3 +130,5 @@ const SongCountArea = styled.p`
 const SongTableArea = styled.div`
   grid-area: table;
 `
+
+export default Home

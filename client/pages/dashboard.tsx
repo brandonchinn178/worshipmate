@@ -1,6 +1,6 @@
 import { useCurrentUserQuery } from '~/api/currentUser.generated'
 
-export default function Dashboard() {
+function Dashboard() {
   const { data } = useCurrentUserQuery()
   if (!data) {
     return null
@@ -12,3 +12,5 @@ export default function Dashboard() {
 
   return <p>Welcome: {name}!</p>
 }
+
+export default Dashboard
