@@ -121,6 +121,8 @@ jobs:
       - run:
           name: Run server in background
           command: yarn server start:prod
+          environment:
+            UNSAFE_IGNORE_AUTH: 1
           background: true
       - run:
           name: Run client in background
