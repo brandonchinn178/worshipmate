@@ -1,16 +1,11 @@
-import { useCurrentUserQuery } from '~/api/currentUser.generated'
+import { User, withAuth } from '~/auth/hoc'
 
-function Dashboard() {
-  const { data } = useCurrentUserQuery()
-  if (!data) {
-    return null
-  }
-
-  const {
-    me: { name },
-  } = data
-
-  return <p>Welcome: {name}!</p>
+type DashboardProps = {
+  user: User
 }
 
-export default Dashboard
+function Dashboard({ user }: DashboardProps) {
+  return <p>Welcome: {user.name}!</p>
+}
+
+export default withAuth(Dashboard)
