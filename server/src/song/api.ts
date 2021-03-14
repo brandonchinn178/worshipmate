@@ -1,6 +1,7 @@
+import * as _ from 'lodash'
 import { Database, sql, SqlQuery } from 'pg-fusion'
 
-import { SearchFilters, Song } from './models'
+import { SearchFilters, Song, TimeSignature } from './models'
 import { SongRecord } from './schema'
 
 export type SearchOptions = {
@@ -25,6 +26,8 @@ const fromRecord = (record: SongRecord): Song => {
 
 export class SongAPI {
   constructor(private readonly db: Database) {}
+
+  /** Search songs **/
 
   async searchSongs(options?: SearchOptions): Promise<Song[]> {
     const condition = this.getSearchCondition(options)
@@ -73,5 +76,53 @@ export class SongAPI {
     }
 
     return sql.and(conditions)
+  }
+
+  /** Manage songs **/
+
+  async createSong(song: {
+    slug?: string
+    title: string
+    recommendedKey: string
+    timeSignature: TimeSignature
+    bpm: number
+  }): Promise<Song> {
+    const {
+      title,
+      recommendedKey: recommended_key,
+      timeSignature: [time_signature_top, time_signature_bottom],
+      bpm,
+    } = song
+
+    let slug = song.slug
+    if (!slug) {
+      slug = _.kebabCase(song.title)
+
+      const takenSlugs = _.map(
+        await this.db.query(sql`
+          SELECT "slug" FROM "song"
+          WHERE "slug" LIKE ${slug + '%'}
+        `),
+        'slug',
+      )
+
+      let slugId = 1
+      const originalSlug = slug
+      while (_.includes(takenSlugs, slug)) {
+        slug = `${originalSlug}-${slugId}`
+        slugId += 1
+      }
+    }
+
+    const result = await this.db.insert<SongRecord>('song', {
+      slug,
+      title,
+      recommended_key,
+      time_signature_top,
+      time_signature_bottom,
+      bpm,
+    })
+
+    return fromRecord(result)
   }
 }

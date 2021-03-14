@@ -179,4 +179,66 @@ describe('SongAPI', () => {
       expect(song).toBeNull()
     })
   })
+
+  describe('createSong', () => {
+    it('can create a song', async () => {
+      const song = {
+        title: 'Blessed Be Your Name',
+        recommendedKey: 'A',
+        timeSignature: [4, 4] as [number, number],
+        bpm: 140,
+      }
+
+      expect(await songApi.createSong(song)).toMatchObject({
+        id: expect.any(Number),
+        slug: 'blessed-be-your-name',
+        ...song,
+      })
+    })
+
+    it('can create a song with unique slug', async () => {
+      const song = {
+        title: 'Blessed Be Your Name',
+        recommendedKey: 'A',
+        timeSignature: [4, 4] as [number, number],
+        bpm: 140,
+      }
+      expect([
+        await songApi.createSong(song),
+        await songApi.createSong(song),
+        await songApi.createSong(song),
+      ]).toMatchObject([
+        { slug: 'blessed-be-your-name' },
+        { slug: 'blessed-be-your-name-1' },
+        { slug: 'blessed-be-your-name-2' },
+      ])
+    })
+
+    it('can create a song with an explicit slug', async () => {
+      const song = {
+        slug: 'my-custom-slug',
+        title: 'Blessed Be Your Name',
+        recommendedKey: 'A',
+        timeSignature: [4, 4] as [number, number],
+        bpm: 140,
+      }
+
+      expect(await songApi.createSong(song)).toMatchObject({
+        slug: 'my-custom-slug',
+      })
+    })
+
+    it('fails when creating song if the explicitly specified slug is taken', async () => {
+      const song = {
+        slug: 'my-custom-slug',
+        title: 'Blessed Be Your Name',
+        recommendedKey: 'A',
+        timeSignature: [4, 4] as [number, number],
+        bpm: 140,
+      }
+
+      await songApi.createSong(song)
+      await expect(songApi.createSong(song)).rejects.toThrow()
+    })
+  })
 })
