@@ -5320,7 +5320,7 @@ __metadata:
     lodash: ^4.17.20
     node-pg-migrate: ^5.8.1
     nodemon: ^2.0.6
-    pg-fusion: ^0.0.3
+    pg-fusion: ^0.1.0
     ts-jest: ^26.4.1
     ts-node: ^9.0.0
     tsconfig-paths: ^3.9.0
@@ -16228,14 +16228,14 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"pg-fusion@npm:^0.0.3":
-  version: 0.0.3
-  resolution: "pg-fusion@npm:0.0.3"
+"pg-fusion@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "pg-fusion@npm:0.1.0"
   dependencies:
     expect: ^26.6.2
     node-pg-migrate: ^5.8.1
     pg: ^8.4.2
-  checksum: 07eb90968fa4649d5a16889446b03d46255ac7f54943981e61681abadd63a9a789bb43c6ebd3f194f4d235d99c20cecac8cb6436b50ff50bf9c669e4385a1d63
+  checksum: eaf44beaec437e03243318060626992e6a07a4ef825bab509f5ecc19433aa800b2c8c44c5ea22be3de63c1540066865fee86ac8f12027510a42dd28f57448b6d
   languageName: node
   linkType: hard
 
