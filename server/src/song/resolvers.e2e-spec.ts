@@ -244,6 +244,40 @@ describe('Query', () => {
   })
 })
 
+describe('Mutation', () => {
+  describe('addSong', () => {
+    it('adds a song', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          mutation($data: AddSongInput!) {
+            addSong(data: $data) {
+              slug
+              title
+            }
+          }
+        `,
+        variables: {
+          data: {
+            title: 'Blessed Be Your Name',
+            recommendedKey: 'A',
+            timeSignature: [4, 4],
+            bpm: 140,
+          },
+        },
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          addSong: {
+            slug: 'blessed-be-your-name',
+            title: 'Blessed Be Your Name',
+          },
+        },
+      })
+    })
+  })
+})
+
 describe('TimeSignature', () => {
   beforeEach(async () => {
     await db.insertAll('song', [
