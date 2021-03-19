@@ -183,15 +183,7 @@ jobs:
           command: sudo npm install -g vercel
       - run:
           name: Deploy client
-          command: |
-            mkdir -p .vercel
-            cat > .vercel/project.json \<<EOF
-            {
-              "projectId": "${VERCEL_PROJECT_ID}",
-              "orgId": "${VERCEL_ORG_ID}"
-            }
-            EOF
-            vercel --token "${VERCEL_TOKEN}" --prod
+          command: vercel --token "${VERCEL_TOKEN}" --prod --confirm
 
 workflows:
   version: 2
