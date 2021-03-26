@@ -2,7 +2,7 @@ import { setupTestServer } from '~test-utils/apollo'
 import { setupTestDatabase } from '~test-utils/db'
 
 const db = setupTestDatabase()
-const server = setupTestServer(db)
+const server = setupTestServer(db, { autoAuth: false })
 
 describe('Query', () => {
   describe('me', () => {
