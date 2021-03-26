@@ -22,11 +22,16 @@ export type Query = {
   /** Return the currently authenticated user, or null if not authenticated. */
   me?: Maybe<User>
   searchSongs: Array<Song>
+  song?: Maybe<Song>
 }
 
 export type QuerySearchSongsArgs = {
   query?: Maybe<Scalars['String']>
   filters?: Maybe<SearchFilters>
+}
+
+export type QuerySongArgs = {
+  id: Scalars['ID']
 }
 
 export type Song = {

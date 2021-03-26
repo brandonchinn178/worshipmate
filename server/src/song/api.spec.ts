@@ -78,7 +78,38 @@ describe('SongAPI', () => {
       }
 
       db.query.mockResolvedValue([songRecord])
-      await expect(songApi.searchSongs()).resolves.toMatchObject([songModel])
+      await expect(songApi.searchSongs()).resolves.toEqual([songModel])
+    })
+  })
+
+  describe('getSong', () => {
+    it('returns null if song does not exist', async () => {
+      db.query.mockResolvedValue([])
+      await expect(songApi.getSong(1)).resolves.toBeNull()
+    })
+
+    it('converts song record to song model', async () => {
+      const songRecord = {
+        id: 1,
+        slug: 'blessed-be-your-name',
+        title: 'Blessed Be Your Name',
+        recommended_key: 'A',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 140,
+      }
+
+      const songModel = {
+        id: 1,
+        slug: 'blessed-be-your-name',
+        title: 'Blessed Be Your Name',
+        recommendedKey: 'A',
+        timeSignature: [4, 4],
+        bpm: 140,
+      }
+
+      db.query.mockResolvedValue([songRecord])
+      await expect(songApi.getSong(1)).resolves.toEqual(songModel)
     })
   })
 })
