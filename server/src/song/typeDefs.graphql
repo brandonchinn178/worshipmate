@@ -37,5 +37,5 @@ input AddSongInput {
 }
 
 extend type Mutation {
-  addSong(data: AddSongInput!): Song!
+  addSong(data: AddSongInput!): Song! @needsAuth
 }

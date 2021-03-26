@@ -4,6 +4,7 @@ import { mergeTypeDefs } from '@graphql-toolkit/schema-merging'
 import { ApolloServer } from 'apollo-server'
 import { Database } from 'pg-fusion'
 
+import { schemaDirectives } from '~/graphql/directives'
 import * as song from '~/song/resolvers'
 import * as user from '~/user/resolvers'
 
@@ -23,6 +24,7 @@ export const initServer = (db: Database) => {
   return new ApolloServer({
     typeDefs: getTypeDefs(),
     resolvers: [song.resolvers, user.resolvers],
+    schemaDirectives,
     context: ({ req }) => getContext(req, db),
     introspection: true,
     playground: true,
