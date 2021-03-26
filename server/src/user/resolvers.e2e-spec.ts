@@ -1,4 +1,4 @@
-import { setReqUser, setupTestServer } from '~test-utils/apollo'
+import { setupTestServer } from '~test-utils/apollo'
 import { setupTestDatabase } from '~test-utils/db'
 
 const db = setupTestDatabase()
@@ -15,7 +15,6 @@ describe('Query', () => {
     })
 
     it('gets information about the current user', async () => {
-      setReqUser('user1')
       const user1 = await server.query({
         query: /* GraphQL */ `
           query {
@@ -25,6 +24,7 @@ describe('Query', () => {
             }
           }
         `,
+        user: 'user1',
       })
       expect(user1).toMatchObject({
         data: {
@@ -35,7 +35,6 @@ describe('Query', () => {
         },
       })
 
-      setReqUser('user2')
       const user2 = await server.query({
         query: /* GraphQL */ `
           query {
@@ -45,6 +44,7 @@ describe('Query', () => {
             }
           }
         `,
+        user: 'user2',
       })
       expect(user2).toMatchObject({
         data: {
