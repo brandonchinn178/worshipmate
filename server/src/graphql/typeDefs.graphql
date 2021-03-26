@@ -1,3 +1,5 @@
 type Query
 
 type Mutation
+
+directive @needsAuth on FIELD_DEFINITION
