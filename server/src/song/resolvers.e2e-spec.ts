@@ -1,6 +1,8 @@
 import { setupTestServer } from '~test-utils/apollo'
 import { setupTestDatabase } from '~test-utils/db'
 
+import { SongRecord } from './schema'
+
 const db = setupTestDatabase()
 const server = setupTestServer(db)
 
@@ -176,6 +178,67 @@ describe('Query', () => {
             searchSongs: [{ title: 'Ever Be' }],
           },
         })
+      })
+    })
+  })
+
+  describe('song', () => {
+    let id: number
+
+    beforeEach(async () => {
+      const song = await db.insert<SongRecord>('song', {
+        slug: 'blessed-be-your-name',
+        title: 'Blessed Be Your Name',
+        recommended_key: 'A',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 140,
+      })
+
+      id = song.id
+    })
+
+    it('gets a song', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query($id: ID!) {
+            song(id: $id) {
+              slug
+            }
+          }
+        `,
+        variables: {
+          id,
+        },
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          song: {
+            slug: 'blessed-be-your-name',
+          },
+        },
+      })
+    })
+
+    it('returns null if song does not exist', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query($id: ID!) {
+            song(id: $id) {
+              slug
+            }
+          }
+        `,
+        variables: {
+          id: '100',
+        },
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          song: null,
+        },
       })
     })
   })
