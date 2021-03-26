@@ -3,7 +3,12 @@ import * as _ from 'lodash'
 import * as yup from 'yup'
 
 import { QueryParent, Resolver, Resolvers } from '~/graphql/resolvers'
-import { QuerySearchSongsArgs, Scalars, Song } from '~/graphql/types'
+import {
+  QuerySearchSongsArgs,
+  QuerySongArgs,
+  Scalars,
+  Song,
+} from '~/graphql/types'
 
 import { TimeSignature } from './models'
 
@@ -13,6 +18,7 @@ type QueryResolvers = Resolvers<
   QueryParent,
   {
     searchSongs: Resolver<QuerySearchSongsArgs, Song[]>
+    song: Resolver<QuerySongArgs, Song | null>
   }
 >
 
@@ -24,6 +30,11 @@ const Query: QueryResolvers = {
       query: query ?? undefined,
       filters: filters ? _.pickBy(filters) : undefined,
     })
+  },
+  song(parent, args, { songAPI }) {
+    const { id } = args
+
+    return songAPI.getSong(id)
   },
 }
 
