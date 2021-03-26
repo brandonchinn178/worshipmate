@@ -24,20 +24,35 @@ jest.mock('~/apollo/auth', () => {
   }
 })
 
+type TestServerOptions = {
+  /**
+   * When true, automatically specify a user when running queries if one is
+   * not explicitly provided.
+   *
+   * Defaults to true, since most tests shouldn't care about auth.
+   */
+  autoAuth?: boolean
+}
+
 type TestServerQueryArgs = Parameters<ApolloServerTestClient['query']>[0] & {
   user?: string
 }
 
 class TestServer {
   private client: ApolloServerTestClient
+  private autoAuth: boolean
 
-  constructor(server: ApolloServer) {
+  constructor(server: ApolloServer, options: TestServerOptions = {}) {
+    const { autoAuth = true } = options
+
     this.client = createTestClient(server)
+    this.autoAuth = autoAuth
   }
 
   query({ user, ...args }: TestServerQueryArgs) {
-    if (user) {
-      mockUsername.mockReturnValue(user)
+    const authUser = user || (this.autoAuth ? 'testuser' : null)
+    if (authUser) {
+      mockUsername.mockReturnValue(authUser)
     }
 
     return this.client.query(args)
