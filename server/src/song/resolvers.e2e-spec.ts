@@ -6,35 +6,33 @@ const server = setupTestServer(db)
 
 describe('Query', () => {
   describe('searchSongs', () => {
-    const allSongs = [
-      {
-        slug: 'blessed-be-your-name',
-        title: 'Blessed Be Your Name',
-        recommended_key: 'A',
-        time_signature_top: 4,
-        time_signature_bottom: 4,
-        bpm: 140,
-      },
-      {
-        slug: 'build-my-life',
-        title: 'Build My Life',
-        recommended_key: 'E',
-        time_signature_top: 4,
-        time_signature_bottom: 4,
-        bpm: 68,
-      },
-      {
-        slug: 'ever-be',
-        title: 'Ever Be',
-        recommended_key: 'E',
-        time_signature_top: 4,
-        time_signature_bottom: 4,
-        bpm: 72,
-      },
-    ]
-
     beforeEach(async () => {
-      await db.insertAll('song', allSongs)
+      await db.insertAll('song', [
+        {
+          slug: 'blessed-be-your-name',
+          title: 'Blessed Be Your Name',
+          recommended_key: 'A',
+          time_signature_top: 4,
+          time_signature_bottom: 4,
+          bpm: 140,
+        },
+        {
+          slug: 'build-my-life',
+          title: 'Build My Life',
+          recommended_key: 'E',
+          time_signature_top: 4,
+          time_signature_bottom: 4,
+          bpm: 68,
+        },
+        {
+          slug: 'ever-be',
+          title: 'Ever Be',
+          recommended_key: 'E',
+          time_signature_top: 4,
+          time_signature_bottom: 4,
+          bpm: 72,
+        },
+      ])
     })
 
     it('queries all songs', async () => {
