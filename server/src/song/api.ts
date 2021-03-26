@@ -8,11 +8,20 @@ export type SearchOptions = {
   filters?: SearchFilters
 }
 
-const fromRecord = (song: SongRecord): Song => ({
-  ...song,
-  recommendedKey: song.recommended_key,
-  timeSignature: [song.time_signature_top, song.time_signature_bottom],
-})
+const fromRecord = (record: SongRecord): Song => {
+  const {
+    recommended_key,
+    time_signature_top,
+    time_signature_bottom,
+    ...song
+  } = record
+
+  return {
+    ...song,
+    recommendedKey: recommended_key,
+    timeSignature: [time_signature_top, time_signature_bottom],
+  }
+}
 
 export class SongAPI {
   constructor(private readonly db: Database) {}

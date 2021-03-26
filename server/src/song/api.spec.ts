@@ -78,7 +78,7 @@ describe('SongAPI', () => {
       }
 
       db.query.mockResolvedValue([songRecord])
-      await expect(songApi.searchSongs()).resolves.toMatchObject([songModel])
+      await expect(songApi.searchSongs()).resolves.toEqual([songModel])
     })
   })
 })
