@@ -51,7 +51,7 @@ describe('SongAPI', () => {
 
     it('can return all songs', async () => {
       const songs = await songApi.searchSongs()
-      expect(songs).toMatchObject([
+      expect(songs).toStrictEqual([
         {
           id: expect.any(Number),
           slug: 'blessed-be-your-name',
@@ -80,7 +80,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'great-are-you-lord',
           title: 'Great Are You Lord',
-          recommended_key: 'G',
+          recommendedKey: 'G',
           timeSignature: [6, 8],
           bpm: 52,
         },
