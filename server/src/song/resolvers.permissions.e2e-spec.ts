@@ -54,3 +54,52 @@ describe('addSong', () => {
     })
   })
 })
+
+describe('updateSong', () => {
+  const query = /* GraphQL */ `
+    mutation($id: ID!, $data: UpdateSongInput!) {
+      updateSong(id: $id, data: $data) {
+        slug
+      }
+    }
+  `
+  const variables = {
+    id: '1',
+    data: {
+      recommendedKey: 'G',
+    },
+  }
+
+  it('fails without authentication', async () => {
+    const res = await server.query({
+      query,
+      variables,
+    })
+
+    expect(res).toMatchObject({
+      data: {
+        updateSong: null,
+      },
+      errors: [
+        {
+          message: 'Unauthenticated user cannot run this mutation',
+          path: ['updateSong'],
+        },
+      ],
+    })
+  })
+
+  it('succeeds with authentication', async () => {
+    const res = await server.query({
+      query,
+      variables,
+      user: 'user1',
+    })
+
+    expect(res).toMatchObject({
+      data: {
+        updateSong: null,
+      },
+    })
+  })
+})
