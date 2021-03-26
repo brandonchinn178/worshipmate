@@ -4,6 +4,7 @@ import * as _ from 'lodash'
 import { setupTestDatabase } from '~test-utils/db'
 
 import { SongAPI } from './api'
+import { SongRecord } from './schema'
 
 describe('SongAPI', () => {
   const db = setupTestDatabase()
@@ -51,7 +52,7 @@ describe('SongAPI', () => {
 
     it('can return all songs', async () => {
       const songs = await songApi.searchSongs()
-      expect(songs).toMatchObject([
+      expect(songs).toStrictEqual([
         {
           id: expect.any(Number),
           slug: 'blessed-be-your-name',
@@ -80,7 +81,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'great-are-you-lord',
           title: 'Great Are You Lord',
-          recommended_key: 'G',
+          recommendedKey: 'G',
           timeSignature: [6, 8],
           bpm: 52,
         },
@@ -142,6 +143,40 @@ describe('SongAPI', () => {
         filters: { recommendedKey: 'E' },
       })
       expect(songs).toMatchObject([{ title: 'Ever Be' }])
+    })
+  })
+
+  describe('getSong', () => {
+    let id: number
+
+    beforeEach(async () => {
+      const song = await db.insert<SongRecord>('song', {
+        slug: 'blessed-be-your-name',
+        title: 'Blessed Be Your Name',
+        recommended_key: 'A',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 140,
+      })
+
+      id = song.id
+    })
+
+    it('loads a song', async () => {
+      const song = await songApi.getSong(id)
+      expect(song).toEqual({
+        id,
+        slug: 'blessed-be-your-name',
+        title: 'Blessed Be Your Name',
+        recommendedKey: 'A',
+        timeSignature: [4, 4],
+        bpm: 140,
+      })
+    })
+
+    it('returns null if song does not exist', async () => {
+      const song = await songApi.getSong(100)
+      expect(song).toBeNull()
     })
   })
 })
