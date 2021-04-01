@@ -10,6 +10,7 @@ beforeEach(jest.resetAllMocks)
 const db = {
   query: jest.fn(),
   insert: jest.fn(),
+  execute: jest.fn(),
 }
 
 beforeEach(() => {
@@ -206,6 +207,26 @@ describe('SongAPI', () => {
       db.insert.mockResolvedValue(songRecord)
 
       await expect(songApi.createSong(songModel)).resolves.toEqual(songModel)
+    })
+  })
+
+  describe('updateSong', () => {
+    it('no-ops if no updates passed', async () => {
+      await expect(songApi.updateSong(1, {})).resolves.toBeUndefined()
+    })
+
+    it('can set a subset of fields', async () => {
+      await songApi.updateSong(1, {
+        title: 'foo',
+        bpm: 100,
+      })
+
+      expect(db.execute).toHaveBeenCalledWith(
+        expect.sqlMatching({
+          text: 'UPDATE "song" SET "title" = $1, "bpm" = $2 WHERE "id" = $3',
+          values: ['foo', 100, 1],
+        }),
+      )
     })
   })
 })

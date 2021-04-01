@@ -241,4 +241,57 @@ describe('SongAPI', () => {
       await expect(songApi.createSong(song)).rejects.toThrow()
     })
   })
+
+  describe('updateSong', () => {
+    let song: SongRecord
+
+    beforeEach(async () => {
+      song = await db.insert<SongRecord>('song', {
+        slug: 'blessed-be-your-name',
+        title: 'Blessed Be Your Name',
+        recommended_key: 'A',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 140,
+      })
+    })
+
+    it('no-ops if no updates passed', async () => {
+      await expect(songApi.updateSong(1, {})).resolves.toBeUndefined()
+    })
+
+    it('no-ops if song does not exist', async () => {
+      await expect(
+        songApi.updateSong(100, { title: 'foo' }),
+      ).resolves.toBeUndefined()
+    })
+
+    it('can update a song', async () => {
+      const updates = {
+        slug: 'new-song',
+        title: 'New song!',
+        recommendedKey: 'C',
+        timeSignature: [6, 8] as [number, number],
+        bpm: 200,
+      }
+      await songApi.updateSong(song.id, updates)
+      await expect(songApi.getSong(song.id)).resolves.toMatchObject(updates)
+    })
+
+    it('can partially update a song', async () => {
+      const updates = {
+        recommendedKey: 'C',
+        bpm: 200,
+      }
+
+      await songApi.updateSong(song.id, updates)
+
+      await expect(songApi.getSong(song.id)).resolves.toMatchObject({
+        ...updates,
+        // some attributes that shouldn't change
+        slug: song.slug,
+        title: song.title,
+      })
+    })
+  })
 })
