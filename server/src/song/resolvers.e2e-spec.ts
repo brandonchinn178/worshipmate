@@ -244,6 +244,126 @@ describe('Query', () => {
   })
 })
 
+describe('Mutation', () => {
+  describe('addSong', () => {
+    it('adds a song', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          mutation($data: AddSongInput!) {
+            addSong(data: $data) {
+              slug
+              title
+            }
+          }
+        `,
+        variables: {
+          data: {
+            title: 'Blessed Be Your Name',
+            recommendedKey: 'A',
+            timeSignature: [4, 4],
+            bpm: 140,
+          },
+        },
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          addSong: {
+            slug: 'blessed-be-your-name',
+            title: 'Blessed Be Your Name',
+          },
+        },
+      })
+    })
+  })
+
+  describe('updateSong', () => {
+    let id: number
+
+    beforeEach(async () => {
+      const song = await db.insert<SongRecord>('song', {
+        slug: 'blessed-be-your-name',
+        title: 'Blessed Be Your Name',
+        recommended_key: 'A',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 140,
+      })
+
+      id = song.id
+    })
+
+    it('returns null if song does not exist', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          mutation($id: ID!, $data: UpdateSongInput!) {
+            updateSong(id: $id, data: $data) {
+              slug
+            }
+          }
+        `,
+        variables: {
+          id: '100',
+          data: {
+            recommendedKey: 'G',
+          },
+        },
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          updateSong: null,
+        },
+      })
+    })
+
+    it('updates a song', async () => {
+      const res = await server.query({
+        query: /* GraphQL */ `
+          mutation($id: ID!, $data: UpdateSongInput!) {
+            updateSong(id: $id, data: $data) {
+              recommendedKey
+            }
+          }
+        `,
+        variables: {
+          id,
+          data: {
+            recommendedKey: 'G',
+          },
+        },
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          updateSong: {
+            recommendedKey: 'G',
+          },
+        },
+      })
+
+      const {
+        data: { song },
+      } = await server.query({
+        query: /* GraphQL */ `
+          query($id: ID!) {
+            song(id: $id) {
+              recommendedKey
+            }
+          }
+        `,
+        variables: {
+          id,
+        },
+      })
+
+      expect(song).toEqual({
+        recommendedKey: 'G',
+      })
+    })
+  })
+})
+
 describe('TimeSignature', () => {
   beforeEach(async () => {
     await db.insertAll('song', [

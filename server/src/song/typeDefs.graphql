@@ -24,3 +24,27 @@ extend type Query {
   searchSongs(query: String, filters: SearchFilters): [Song!]!
   song(id: ID!): Song
 }
+
+## Mutation ##
+
+input AddSongInput {
+  "If a slug is not provided, a default one will be generated from the title."
+  slug: String
+  title: String!
+  recommendedKey: String!
+  timeSignature: TimeSignature!
+  bpm: Int!
+}
+
+input UpdateSongInput {
+  slug: String
+  title: String
+  recommendedKey: String
+  timeSignature: TimeSignature
+  bpm: Int
+}
+
+extend type Mutation {
+  addSong(data: AddSongInput!): Song! @needsAuth
+  updateSong(id: ID!, data: UpdateSongInput!): Song @needsAuth
+}
