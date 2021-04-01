@@ -2,7 +2,7 @@ import { setupTestServer } from '~test-utils/apollo'
 import { setupTestDatabase } from '~test-utils/db'
 
 const db = setupTestDatabase()
-const server = setupTestServer(db, { autoAuth: false })
+const server = setupTestServer(db)
 
 describe('Query', () => {
   describe('me', () => {
@@ -66,6 +66,7 @@ describe('Query', () => {
             }
           }
         `,
+        user: null,
       })
       expect(data).toEqual({ me: null })
     })
