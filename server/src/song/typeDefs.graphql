@@ -36,6 +36,15 @@ input AddSongInput {
   bpm: Int!
 }
 
+input UpdateSongInput {
+  slug: String
+  title: String
+  recommendedKey: String
+  timeSignature: TimeSignature
+  bpm: Int
+}
+
 extend type Mutation {
   addSong(data: AddSongInput!): Song! @needsAuth
+  updateSong(id: ID!, data: UpdateSongInput!): Song @needsAuth
 }
