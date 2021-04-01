@@ -125,4 +125,38 @@ export class SongAPI {
 
     return fromRecord(result)
   }
+
+  async updateSong(
+    id: number,
+    updates: {
+      slug?: string
+      title?: string
+      recommendedKey?: string
+      timeSignature?: TimeSignature
+      bpm?: number
+    },
+  ): Promise<void> {
+    const updatesSql = _.compact([
+      updates.slug && sql`"slug" = ${updates.slug}`,
+      updates.title && sql`"title" = ${updates.title}`,
+      updates.recommendedKey &&
+        sql`"recommended_key" = ${updates.recommendedKey}`,
+      updates.timeSignature &&
+        sql`
+          "time_signature_top" = ${updates.timeSignature[0]},
+          "time_signature_bottom" = ${updates.timeSignature[1]}
+        `,
+      updates.bpm && sql`"bpm" = ${updates.bpm}`,
+    ])
+
+    if (updatesSql.length === 0) {
+      return
+    }
+
+    await this.db.execute(sql`
+      UPDATE "song"
+      SET ${sql.join(updatesSql, ', ')}
+      WHERE "id" = ${id}
+    `)
+  }
 }
