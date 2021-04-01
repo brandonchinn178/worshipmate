@@ -2,8 +2,15 @@ import { GraphQLScalarType } from 'graphql'
 import * as _ from 'lodash'
 import * as yup from 'yup'
 
-import { QueryParent, Resolver, Resolvers } from '~/graphql/resolvers'
 import {
+  MutationParent,
+  QueryParent,
+  Resolver,
+  Resolvers,
+} from '~/graphql/resolvers'
+import {
+  MutationAddSongArgs,
+  MutationUpdateSongArgs,
   QuerySearchSongsArgs,
   QuerySongArgs,
   Scalars,
@@ -34,6 +41,31 @@ const Query: QueryResolvers = {
   song(parent, args, { songAPI }) {
     const { id } = args
 
+    return songAPI.getSong(id)
+  },
+}
+
+/** Mutation **/
+
+type MutationResolvers = Resolvers<
+  MutationParent,
+  {
+    addSong: Resolver<MutationAddSongArgs, Song>
+    updateSong: Resolver<MutationUpdateSongArgs, Song | null>
+  }
+>
+
+const Mutation: MutationResolvers = {
+  addSong(parent, args, { songAPI }) {
+    const { data } = args
+    return songAPI.createSong({
+      ...data,
+      slug: data.slug ?? undefined,
+    })
+  },
+  async updateSong(parent, args, { songAPI }) {
+    const { id, data } = args
+    await songAPI.updateSong(id, _.pickBy(data))
     return songAPI.getSong(id)
   },
 }
@@ -76,4 +108,4 @@ const TimeSignature = new GraphQLScalarType({
 
 /** Resolver Map **/
 
-export const resolvers = { Query, TimeSignature }
+export const resolvers = { Query, Mutation, TimeSignature }

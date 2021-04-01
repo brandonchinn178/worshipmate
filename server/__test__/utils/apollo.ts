@@ -1,4 +1,5 @@
-import { createTestClient } from 'apollo-server-testing'
+import { ApolloServer } from 'apollo-server'
+import { ApolloServerTestClient, createTestClient } from 'apollo-server-testing'
 import { Database } from 'pg-fusion'
 
 import * as apollo from '~/apollo'
@@ -23,11 +24,50 @@ jest.mock('~/apollo/auth', () => {
   }
 })
 
-export const setupTestServer = (db: Database) => {
-  const server = apollo.initServer(db)
-  return createTestClient(server)
+type TestServerOptions = {
+  /**
+   * When true, automatically specify a user when running queries if one is
+   * not explicitly provided.
+   *
+   * Defaults to true, since most tests shouldn't care about auth.
+   */
+  autoAuth?: boolean
 }
 
-export const setReqUser = (name: string) => {
-  mockUsername.mockReturnValue(name)
+type TestServerQueryArgs = Parameters<ApolloServerTestClient['query']>[0] & {
+  /**
+   * The user to run the query as. If not provided, defers to autoAuth.
+   *
+   * Passing 'null' will run the query without a user, regardless of what
+   * autoAuth was set to.
+   */
+  user?: string | null
+}
+
+class TestServer {
+  private client: ApolloServerTestClient
+  private autoAuth: boolean
+
+  constructor(server: ApolloServer, options: TestServerOptions = {}) {
+    const { autoAuth = true } = options
+
+    this.client = createTestClient(server)
+    this.autoAuth = autoAuth
+  }
+
+  query({ user, ...args }: TestServerQueryArgs) {
+    const authUser =
+      user !== undefined ? user : this.autoAuth ? 'testuser' : null
+
+    if (authUser) {
+      mockUsername.mockReturnValue(authUser)
+    }
+
+    return this.client.query(args)
+  }
+}
+
+export const setupTestServer = (db: Database, options?: TestServerOptions) => {
+  const server = apollo.initServer(db)
+  return new TestServer(server, options)
 }

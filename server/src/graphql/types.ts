@@ -34,6 +34,21 @@ export type QuerySongArgs = {
   id: Scalars['ID']
 }
 
+export type Mutation = {
+  __typename?: 'Mutation'
+  addSong: Song
+  updateSong?: Maybe<Song>
+}
+
+export type MutationAddSongArgs = {
+  data: AddSongInput
+}
+
+export type MutationUpdateSongArgs = {
+  id: Scalars['ID']
+  data: UpdateSongInput
+}
+
 export type Song = {
   __typename?: 'Song'
   id: Scalars['ID']
@@ -48,6 +63,23 @@ export type SearchFilters = {
   recommendedKey?: Maybe<Scalars['String']>
   bpm?: Maybe<Scalars['Int']>
   timeSignature?: Maybe<Scalars['TimeSignature']>
+}
+
+export type AddSongInput = {
+  /** If a slug is not provided, a default one will be generated from the title. */
+  slug?: Maybe<Scalars['String']>
+  title: Scalars['String']
+  recommendedKey: Scalars['String']
+  timeSignature: Scalars['TimeSignature']
+  bpm: Scalars['Int']
+}
+
+export type UpdateSongInput = {
+  slug?: Maybe<Scalars['String']>
+  title?: Maybe<Scalars['String']>
+  recommendedKey?: Maybe<Scalars['String']>
+  timeSignature?: Maybe<Scalars['TimeSignature']>
+  bpm?: Maybe<Scalars['Int']>
 }
 
 export type User = {

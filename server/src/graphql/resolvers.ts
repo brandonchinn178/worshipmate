@@ -35,6 +35,7 @@ export type Resolver<ArgOrResult, Result = undefined> = Result extends undefined
 
 type ResolverResult<T> = Promise<T> | T
 
-/* Query */
+/* Top-level parents */
 
 export type QueryParent = Record<string, never>
+export type MutationParent = Record<string, never>
