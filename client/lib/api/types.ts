@@ -36,10 +36,16 @@ export type QuerySongArgs = {
 export type Mutation = {
   __typename?: 'Mutation'
   addSong: Song
+  updateSong?: Maybe<Song>
 }
 
 export type MutationAddSongArgs = {
   data: AddSongInput
+}
+
+export type MutationUpdateSongArgs = {
+  id: Scalars['ID']
+  data: UpdateSongInput
 }
 
 export type Song = {
@@ -65,6 +71,14 @@ export type AddSongInput = {
   recommendedKey: Scalars['String']
   timeSignature: Scalars['TimeSignature']
   bpm: Scalars['Int']
+}
+
+export type UpdateSongInput = {
+  slug?: Maybe<Scalars['String']>
+  title?: Maybe<Scalars['String']>
+  recommendedKey?: Maybe<Scalars['String']>
+  timeSignature?: Maybe<Scalars['TimeSignature']>
+  bpm?: Maybe<Scalars['Int']>
 }
 
 export type User = {
