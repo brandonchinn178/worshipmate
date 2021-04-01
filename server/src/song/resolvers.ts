@@ -10,6 +10,7 @@ import {
 } from '~/graphql/resolvers'
 import {
   MutationAddSongArgs,
+  MutationUpdateSongArgs,
   QuerySearchSongsArgs,
   QuerySongArgs,
   Scalars,
@@ -50,6 +51,7 @@ type MutationResolvers = Resolvers<
   MutationParent,
   {
     addSong: Resolver<MutationAddSongArgs, Song>
+    updateSong: Resolver<MutationUpdateSongArgs, Song | null>
   }
 >
 
@@ -60,6 +62,11 @@ const Mutation: MutationResolvers = {
       ...data,
       slug: data.slug ?? undefined,
     })
+  },
+  async updateSong(parent, args, { songAPI }) {
+    const { id, data } = args
+    await songAPI.updateSong(id, _.pickBy(data))
+    return songAPI.getSong(id)
   },
 }
 
