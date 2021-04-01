@@ -35,7 +35,13 @@ type TestServerOptions = {
 }
 
 type TestServerQueryArgs = Parameters<ApolloServerTestClient['query']>[0] & {
-  user?: string
+  /**
+   * The user to run the query as. If not provided, defers to autoAuth.
+   *
+   * Passing 'null' will run the query without a user, regardless of what
+   * autoAuth was set to.
+   */
+  user?: string | null
 }
 
 class TestServer {
@@ -50,7 +56,9 @@ class TestServer {
   }
 
   query({ user, ...args }: TestServerQueryArgs) {
-    const authUser = user || (this.autoAuth ? 'testuser' : null)
+    const authUser =
+      user !== undefined ? user : this.autoAuth ? 'testuser' : null
+
     if (authUser) {
       mockUsername.mockReturnValue(authUser)
     }
