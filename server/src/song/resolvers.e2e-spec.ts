@@ -183,10 +183,8 @@ describe('Query', () => {
   })
 
   describe('song', () => {
-    let id: number
-
-    beforeEach(async () => {
-      const song = await db.insert<SongRecord>('song', {
+    const createSong = () => {
+      return db.insert<SongRecord>('song', {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
         recommended_key: 'A',
@@ -194,11 +192,11 @@ describe('Query', () => {
         time_signature_bottom: 4,
         bpm: 140,
       })
-
-      id = song.id
-    })
+    }
 
     it('gets a song', async () => {
+      const { id } = await createSong()
+
       const res = await server.query({
         query: /* GraphQL */ `
           query($id: ID!) {
@@ -222,6 +220,8 @@ describe('Query', () => {
     })
 
     it('returns null if song does not exist', async () => {
+      const { id } = await createSong()
+
       const res = await server.query({
         query: /* GraphQL */ `
           query($id: ID!) {
@@ -278,10 +278,8 @@ describe('Mutation', () => {
   })
 
   describe('updateSong', () => {
-    let id: number
-
-    beforeEach(async () => {
-      const song = await db.insert<SongRecord>('song', {
+    const createSong = () => {
+      return db.insert<SongRecord>('song', {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
         recommended_key: 'A',
@@ -289,9 +287,7 @@ describe('Mutation', () => {
         time_signature_bottom: 4,
         bpm: 140,
       })
-
-      id = song.id
-    })
+    }
 
     it('returns null if song does not exist', async () => {
       const res = await server.query({
@@ -318,6 +314,8 @@ describe('Mutation', () => {
     })
 
     it('updates a song', async () => {
+      const { id } = await createSong()
+
       const res = await server.query({
         query: /* GraphQL */ `
           mutation($id: ID!, $data: UpdateSongInput!) {
