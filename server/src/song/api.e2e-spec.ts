@@ -147,10 +147,8 @@ describe('SongAPI', () => {
   })
 
   describe('getSong', () => {
-    let id: number
-
-    beforeEach(async () => {
-      const song = await db.insert<SongRecord>('song', {
+    const createSong = () => {
+      return db.insert<SongRecord>('song', {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
         recommended_key: 'A',
@@ -158,11 +156,10 @@ describe('SongAPI', () => {
         time_signature_bottom: 4,
         bpm: 140,
       })
-
-      id = song.id
-    })
+    }
 
     it('loads a song', async () => {
+      const { id } = await createSong()
       const song = await songApi.getSong(id)
       expect(song).toEqual({
         id,
@@ -243,10 +240,8 @@ describe('SongAPI', () => {
   })
 
   describe('updateSong', () => {
-    let song: SongRecord
-
-    beforeEach(async () => {
-      song = await db.insert<SongRecord>('song', {
+    const createSong = () => {
+      return db.insert<SongRecord>('song', {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
         recommended_key: 'A',
@@ -254,9 +249,10 @@ describe('SongAPI', () => {
         time_signature_bottom: 4,
         bpm: 140,
       })
-    })
+    }
 
     it('no-ops if no updates passed', async () => {
+      await createSong()
       await expect(songApi.updateSong(1, {})).resolves.toBeUndefined()
     })
 
@@ -267,6 +263,8 @@ describe('SongAPI', () => {
     })
 
     it('can update a song', async () => {
+      const song = await createSong()
+
       const updates = {
         slug: 'new-song',
         title: 'New song!',
@@ -279,6 +277,8 @@ describe('SongAPI', () => {
     })
 
     it('can partially update a song', async () => {
+      const song = await createSong()
+
       const updates = {
         recommendedKey: 'C',
         bpm: 200,
