@@ -220,8 +220,6 @@ describe('Query', () => {
     })
 
     it('returns null if song does not exist', async () => {
-      const { id } = await createSong()
-
       const res = await server.query({
         query: /* GraphQL */ `
           query($id: ID!) {
