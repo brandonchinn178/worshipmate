@@ -44,7 +44,6 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         id="username"
         name="username"
         ref={register({ required: true })}
-        autoFocus
       />
       <LoginLabel htmlFor="password">Password</LoginLabel>
       <LoginInput
