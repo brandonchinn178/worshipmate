@@ -14,7 +14,8 @@ it('renders the login form', () => {
   expect(screen.getByText('Login', { selector: 'button' })).toBeVisible()
 })
 
-it('triggers onSubmit when successful', async () => {
+describe('form validation', () => {
+it('triggers onSubmit when passes', async () => {
   const onSubmit = jest.fn()
   renderUI(<LoginForm onSubmit={onSubmit} />)
 
@@ -58,4 +59,5 @@ it('does not trigger onSubmit when both username and password are missing', asyn
 
   await waitForAllStateChanges()
   expect(onSubmit).not.toHaveBeenCalled()
+})
 })
