@@ -40,17 +40,12 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
   return (
     <LoginFormContainer onSubmit={onFormSubmit}>
       <LoginLabel htmlFor="username">Username</LoginLabel>
-      <LoginInput
-        id="username"
-        name="username"
-        ref={register({ required: true })}
-      />
+      <LoginInput id="username" {...register('username', { required: true })} />
       <LoginLabel htmlFor="password">Password</LoginLabel>
       <LoginInput
         id="password"
-        name="password"
         type="password"
-        ref={register({ required: true })}
+        {...register('password', { required: true })}
       />
       <LoginButton disabled={postLoginLoading}>Login</LoginButton>
     </LoginFormContainer>
