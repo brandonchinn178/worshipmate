@@ -15,49 +15,49 @@ it('renders the login form', () => {
 })
 
 describe('form validation', () => {
-it('triggers onSubmit when passes', async () => {
-  const onSubmit = jest.fn()
-  renderUI(<LoginForm onSubmit={onSubmit} />)
+  it('triggers onSubmit when passes', async () => {
+    const onSubmit = jest.fn()
+    renderUI(<LoginForm onSubmit={onSubmit} />)
 
-  userEvent.type(screen.getByLabelText('Username'), 'user')
-  userEvent.type(screen.getByLabelText('Password'), 'pw')
-  userEvent.click(screen.getByText('Login'))
+    userEvent.type(screen.getByLabelText('Username'), 'user')
+    userEvent.type(screen.getByLabelText('Password'), 'pw')
+    userEvent.click(screen.getByText('Login'))
 
-  await waitFor(() => {
-    expect(onSubmit).toHaveBeenCalled()
+    await waitFor(() => {
+      expect(onSubmit).toHaveBeenCalled()
+    })
   })
-})
 
-it('does not trigger onSubmit when username is missing', async () => {
-  const onSubmit = jest.fn()
-  renderUI(<LoginForm onSubmit={onSubmit} />)
+  it('does not trigger onSubmit when username is missing', async () => {
+    const onSubmit = jest.fn()
+    renderUI(<LoginForm onSubmit={onSubmit} />)
 
-  userEvent.type(screen.getByLabelText('Password'), 'pw')
-  userEvent.click(screen.getByText('Login'))
+    userEvent.type(screen.getByLabelText('Password'), 'pw')
+    userEvent.click(screen.getByText('Login'))
 
-  await waitForAllStateChanges()
-  expect(onSubmit).not.toHaveBeenCalled()
-})
+    await waitForAllStateChanges()
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
 
-it('does not trigger onSubmit when password is missing', async () => {
-  const onSubmit = jest.fn()
-  renderUI(<LoginForm onSubmit={onSubmit} />)
+  it('does not trigger onSubmit when password is missing', async () => {
+    const onSubmit = jest.fn()
+    renderUI(<LoginForm onSubmit={onSubmit} />)
 
-  userEvent.type(screen.getByLabelText('Username'), 'user')
-  userEvent.click(screen.getByText('Login'))
+    userEvent.type(screen.getByLabelText('Username'), 'user')
+    userEvent.click(screen.getByText('Login'))
 
-  await waitForAllStateChanges()
-  expect(onSubmit).not.toHaveBeenCalled()
-})
+    await waitForAllStateChanges()
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
 
-it('does not trigger onSubmit when both username and password are missing', async () => {
-  const onSubmit = jest.fn()
+  it('does not trigger onSubmit when both username and password are missing', async () => {
+    const onSubmit = jest.fn()
 
-  renderUI(<LoginForm onSubmit={onSubmit} />)
+    renderUI(<LoginForm onSubmit={onSubmit} />)
 
-  userEvent.click(screen.getByText('Login'))
+    userEvent.click(screen.getByText('Login'))
 
-  await waitForAllStateChanges()
-  expect(onSubmit).not.toHaveBeenCalled()
-})
+    await waitForAllStateChanges()
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
 })
