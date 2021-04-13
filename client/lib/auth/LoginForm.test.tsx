@@ -31,7 +31,7 @@ it('renders the login form', () => {
   expect(container).toMatchSnapshot()
   expect(screen.getByLabelText('Username')).toBeVisible()
   expect(screen.getByLabelText('Password')).toBeVisible()
-  expect(screen.getByText('Login', { selector: 'button' })).toBeVisible()
+  expect(screen.getByRole('button', { name: 'Login' })).toBeVisible()
 })
 
 it('shows errors when onSubmit fails', async () => {
@@ -43,7 +43,7 @@ it('shows errors when onSubmit fails', async () => {
 
   userEvent.type(screen.getByLabelText('Username'), 'user')
   userEvent.type(screen.getByLabelText('Password'), 'pw')
-  userEvent.click(screen.getByText('Login'))
+  userEvent.click(screen.getByRole('button', { name: 'Login' }))
 
   await waitFor(() => {
     expect(onSubmit).toHaveBeenCalled()
@@ -62,7 +62,7 @@ describe('form validation', () => {
 
     userEvent.type(screen.getByLabelText('Username'), 'user')
     userEvent.type(screen.getByLabelText('Password'), 'pw')
-    userEvent.click(screen.getByText('Login'))
+    userEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalled()
@@ -74,7 +74,7 @@ describe('form validation', () => {
     renderUI(<LoginForm onSubmit={onSubmit} />)
 
     userEvent.type(screen.getByLabelText('Password'), 'pw')
-    userEvent.click(screen.getByText('Login'))
+    userEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     await waitForAllStateChanges()
     expect(onSubmit).not.toHaveBeenCalled()
@@ -85,7 +85,7 @@ describe('form validation', () => {
     renderUI(<LoginForm onSubmit={onSubmit} />)
 
     userEvent.type(screen.getByLabelText('Username'), 'user')
-    userEvent.click(screen.getByText('Login'))
+    userEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     await waitForAllStateChanges()
     expect(onSubmit).not.toHaveBeenCalled()
@@ -96,7 +96,7 @@ describe('form validation', () => {
 
     renderUI(<LoginForm onSubmit={onSubmit} />)
 
-    userEvent.click(screen.getByText('Login'))
+    userEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     await waitForAllStateChanges()
     expect(onSubmit).not.toHaveBeenCalled()
@@ -116,7 +116,7 @@ describe('submit button', () => {
 
     userEvent.type(screen.getByLabelText('Username'), 'user')
     userEvent.type(screen.getByLabelText('Password'), 'pw')
-    userEvent.click(screen.getByText('Login'))
+    userEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     expect(screen.getByRole('button')).toHaveAttribute('disabled')
 
@@ -131,7 +131,7 @@ describe('submit button', () => {
     const onSubmit = jest.fn()
     renderUI(<LoginForm onSubmit={onSubmit} />)
 
-    userEvent.click(screen.getByText('Login'))
+    userEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     await waitForAllStateChanges()
     expect(onSubmit).not.toHaveBeenCalled()
@@ -147,7 +147,7 @@ describe('submit button', () => {
 
     userEvent.type(screen.getByLabelText('Username'), 'user')
     userEvent.type(screen.getByLabelText('Password'), 'pw')
-    userEvent.click(screen.getByText('Login'))
+    userEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     expect(screen.getByRole('button')).toHaveAttribute('disabled')
 
