@@ -32,14 +32,14 @@ const pluralize = (...args: [string, number] | [string, string, number]) => {
   }
 }
 
-type HomeProps = {
+type HomePageProps = {
   /**
    * The full list of songs to show at the start.
    */
   initialSongs: SearchSongsQuery['searchSongs']
 }
 
-function Home({ initialSongs }: HomeProps) {
+function HomePage({ initialSongs }: HomePageProps) {
   const router = useRouter()
 
   const search = router.query.search as string | undefined
@@ -61,7 +61,7 @@ function Home({ initialSongs }: HomeProps) {
   const availableFilters = getAvailableFilters(songs)
 
   return (
-    <HomePage>
+    <HomePageContent>
       <SidebarArea>
         <SongFilterPanel
           availableFilters={availableFilters}
@@ -83,7 +83,7 @@ function Home({ initialSongs }: HomeProps) {
       <SongTableArea>
         <SongTable songs={songs} />
       </SongTableArea>
-    </HomePage>
+    </HomePageContent>
   )
 }
 
@@ -102,7 +102,7 @@ export const getStaticProps = async () => {
   }
 }
 
-const HomePage = styled.div`
+const HomePageContent = styled.div`
   display: grid;
   grid-template-columns: 400px auto;
   grid-template-rows: max-content max-content auto;
@@ -131,4 +131,4 @@ const SongTableArea = styled.div`
   grid-area: table;
 `
 
-export default Home
+export default HomePage
