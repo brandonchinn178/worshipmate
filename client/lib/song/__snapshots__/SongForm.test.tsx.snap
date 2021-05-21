@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initial render renders an empty form 1`] = `
+<div>
+  <form
+    class="SongForm__FormContainer-sc-1n6uj49-0 iFVJHX"
+  >
+    <div
+      class="SongForm__FormField-sc-1n6uj49-1 jkpiQR"
+    >
+      <label
+        for="title"
+      >
+        Title
+      </label>
+      <input
+        id="title"
+        name="title"
+      />
+    </div>
+    <div
+      class="SongForm__FormField-sc-1n6uj49-1 jkpiQR"
+    >
+      <label
+        for="recommendedKey"
+      >
+        Recommended Key
+      </label>
+      <input
+        id="recommendedKey"
+        name="recommendedKey"
+      />
+    </div>
+    <div
+      class="SongForm__FormField-sc-1n6uj49-1 jkpiQR"
+    >
+      <label
+        for="timeSignature"
+      >
+        Time Signature
+      </label>
+      <select
+        id="timeSignature"
+      >
+        <option
+          value="[4,4]"
+        >
+          4/4
+        </option>
+        <option
+          value="[3,4]"
+        >
+          3/4
+        </option>
+        <option
+          value="[6,8]"
+        >
+          6/8
+        </option>
+        <option
+          value="[2,4]"
+        >
+          2/4
+        </option>
+      </select>
+    </div>
+    <div
+      class="SongForm__FormField-sc-1n6uj49-1 jkpiQR"
+    >
+      <label
+        for="bpm"
+      >
+        BPM
+      </label>
+      <input
+        id="bpm"
+        name="bpm"
+        type="number"
+      />
+    </div>
+    <button>
+      Submit
+    </button>
+  </form>
+</div>
+`;
