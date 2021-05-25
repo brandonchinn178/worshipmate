@@ -1,3 +1,4 @@
+import NextLink from 'next/link'
 import styled from 'styled-components'
 
 import { color, font, fontFamily } from '~/theme'
@@ -10,14 +11,22 @@ export function Header({ isUserLoggedIn }: HeaderProps) {
   return (
     <HeaderContainer>
       <div>
-        <Title href="/">WorshipMate</Title>
+        <NextLink href="/" passHref>
+          <Title>WorshipMate</Title>
+        </NextLink>
       </div>
       <Links>
-        <Link href="#">About</Link>
+        <NextLink href="#" passHref>
+          <Link>About</Link>
+        </NextLink>
         {isUserLoggedIn ? (
-          <Link href="/dashboard">Dashboard</Link>
+          <NextLink href="/dashboard" passHref>
+            <Link>Dashboard</Link>
+          </NextLink>
         ) : (
-          <Link href="/login">Login</Link>
+          <NextLink href="/login" passHref>
+            <Link>Login</Link>
+          </NextLink>
         )}
       </Links>
     </HeaderContainer>

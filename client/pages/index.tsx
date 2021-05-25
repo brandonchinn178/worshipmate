@@ -1,4 +1,5 @@
 import * as _ from 'lodash'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
@@ -85,7 +86,11 @@ function HomePage({ initialSongs }: HomePageProps) {
         <SongCount>
           {songs.length} {pluralize('song', songs.length)}
         </SongCount>
-        {user && <AddSongLink href="/add-song">Add Song</AddSongLink>}
+        {user && (
+          <NextLink href="/add-song" passHref>
+            <AddSongLink>Add Song</AddSongLink>
+          </NextLink>
+        )}
       </SongTableMetaArea>
       <SongTableArea>
         <SongTable songs={songs} />

@@ -1,3 +1,5 @@
+import NextLink from 'next/link'
+
 import { ColumnDefs, DataTable } from '~/ui-kit/DataTable'
 
 import { Song } from './models'
@@ -11,7 +13,11 @@ const songTableColumnDefs: ColumnDefs<Song> = [
     name: 'title',
     header: 'Name',
     size: '2fr',
-    render: ({ title }) => <a href="#">{title}</a>,
+    render: ({ title }) => (
+      <NextLink href="#">
+        <a>{title}</a>
+      </NextLink>
+    ),
   },
   {
     name: 'artist',
