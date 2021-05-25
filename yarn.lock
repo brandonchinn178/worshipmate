@@ -6148,7 +6148,7 @@ __metadata:
     pnp-webpack-plugin: ^1.6.4
     react: ^17.0.1
     react-dom: ^17.0.1
-    react-hook-form: ^7.0.4
+    react-hook-form: ^7.6.6
     react-select: ^4.3.0
     react-toastify: ^7.0.3
     snapshot-diff: ^0.8.1
@@ -17640,12 +17640,12 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.0.4":
-  version: 7.0.4
-  resolution: "react-hook-form@npm:7.0.4"
+"react-hook-form@npm:^7.6.6":
+  version: 7.6.6
+  resolution: "react-hook-form@npm:7.6.6"
   peerDependencies:
     react: ^16.8.0 || ^17
-  checksum: 8d2ed4522fb2dd0b33140457f1af8cc82c95cf3fe9827b1c305b897bea8a820563ef1bc0291cf4cd7ac8fa50a92f5a339a6bb9fc26f4d2f4c0f8bf60957c79a3
+  checksum: 74573be336df3be2e0d876d0340054ba380533b763a26b6f65b00848ffb536891c234cd8255bc04ce7bc2b4f4f0e2f38cf744e04f9adadc945a0234091d3de87
   languageName: node
   linkType: hard
 
