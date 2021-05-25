@@ -1,4 +1,5 @@
 import * as _ from 'lodash'
+import { GetStaticProps } from 'next'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
@@ -99,7 +100,7 @@ function HomePage({ initialSongs }: HomePageProps) {
   )
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
   const apolloClient = getApolloClient()
 
   const { data } = await apolloClient.query({
