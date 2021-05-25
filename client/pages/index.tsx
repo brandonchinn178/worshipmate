@@ -2,6 +2,7 @@ import * as _ from 'lodash'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
+import { useCurrentUserQuery } from '~/api/currentUser.generated'
 import {
   SearchSongsDocument,
   SearchSongsQuery,
@@ -52,6 +53,9 @@ function HomePage({ initialSongs }: HomePageProps) {
     },
   })
 
+  const { data: currentUserData } = useCurrentUserQuery()
+  const user = currentUserData?.me
+
   const songs = _.map(data?.searchSongs ?? initialSongs, (song) => ({
     ...song,
     artist: 'TODO',
@@ -77,9 +81,12 @@ function HomePage({ initialSongs }: HomePageProps) {
           }}
         />
       </SongSearchArea>
-      <SongCountArea>
-        {songs.length} {pluralize('song', songs.length)}
-      </SongCountArea>
+      <SongTableMetaArea>
+        <SongCount>
+          {songs.length} {pluralize('song', songs.length)}
+        </SongCount>
+        {user && <AddSongLink href="/add-song">Add Song</AddSongLink>}
+      </SongTableMetaArea>
       <SongTableArea>
         <SongTable songs={songs} />
       </SongTableArea>
@@ -108,7 +115,7 @@ const HomePageContent = styled.div`
   grid-template-rows: max-content max-content auto;
   grid-template-areas:
     'sidebar search'
-    'sidebar song-count'
+    'sidebar table-meta'
     'sidebar table';
   grid-column-gap: 25px;
   grid-row-gap: 10px;
@@ -122,9 +129,20 @@ const SongSearchArea = styled.div`
   grid-area: search;
 `
 
-const SongCountArea = styled.p`
-  grid-area: song-count;
+const SongTableMetaArea = styled.div`
+  grid-area: table-meta;
+`
+
+const SongCount = styled.span`
   font-weight: bold;
+`
+
+const AddSongLink = styled.a`
+  float: right;
+  &:before {
+    content: '\\FF0B';
+    font-size: 1rem;
+  }
 `
 
 const SongTableArea = styled.div`
