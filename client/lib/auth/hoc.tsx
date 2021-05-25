@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { ComponentType } from 'react'
+import { ComponentType, useEffect } from 'react'
 
 import { useCurrentUserQuery } from '~/api/currentUser.generated'
 
@@ -35,6 +35,18 @@ export const withAuth = <T,>(Component: ComponentType<WithAuth<T>>) => (
   const router = useRouter()
   const { data, loading } = useCurrentUserQuery()
 
+  useEffect(() => {
+    const user = data?.me
+    if (!loading && !user) {
+      router.push({
+        pathname: '/login',
+        query: {
+          next: router.pathname,
+        },
+      })
+    }
+  }, [data, loading, router])
+
   if (loading) {
     return null
   }
@@ -42,12 +54,6 @@ export const withAuth = <T,>(Component: ComponentType<WithAuth<T>>) => (
   const user = data?.me
 
   if (!user) {
-    router.push({
-      pathname: '/login',
-      query: {
-        next: router.pathname,
-      },
-    })
     return null
   }
 
