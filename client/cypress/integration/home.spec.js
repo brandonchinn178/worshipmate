@@ -91,4 +91,16 @@ describe('Home page', () => {
     cy.findByText('Ever Be').should('not.exist')
     cy.findByText('Great Are You Lord').should('not.exist')
   })
+
+  describe('Add song link', () => {
+    it('is not visible when not logged in', () => {
+      cy.findByText('Add Song').should('not.exist')
+    })
+
+    it('is visible when logged in', () => {
+      cy.login()
+      cy.reload()
+      cy.findByText('Add Song').should('exist')
+    })
+  })
 })
