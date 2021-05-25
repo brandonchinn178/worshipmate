@@ -50,6 +50,15 @@ export class SongAPI {
     return song ? fromRecord(song) : null
   }
 
+  async getSongBySlug(slug: string): Promise<Song | null> {
+    const [song] = await this.db.query<SongRecord>(sql`
+      SELECT * FROM "song"
+      WHERE "song"."slug" = ${slug}
+    `)
+
+    return song ? fromRecord(song) : null
+  }
+
   private getSearchCondition(options: SearchOptions = {}): SqlQuery {
     const { query, filters = {} } = options
 

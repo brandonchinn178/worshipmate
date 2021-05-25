@@ -195,25 +195,25 @@ describe('Query', () => {
     }
 
     it('gets a song', async () => {
-      const { id } = await createSong()
+      const { slug } = await createSong()
 
       const res = await server.query({
         query: /* GraphQL */ `
-          query($id: ID!) {
-            song(id: $id) {
-              slug
+          query($slug: String!) {
+            song(slug: $slug) {
+              title
             }
           }
         `,
         variables: {
-          id,
+          slug,
         },
       })
 
       expect(res).toMatchObject({
         data: {
           song: {
-            slug: 'blessed-be-your-name',
+            title: 'Blessed Be Your Name',
           },
         },
       })
@@ -222,14 +222,14 @@ describe('Query', () => {
     it('returns null if song does not exist', async () => {
       const res = await server.query({
         query: /* GraphQL */ `
-          query($id: ID!) {
-            song(id: $id) {
-              slug
+          query($slug: String!) {
+            song(slug: $slug) {
+              title
             }
           }
         `,
         variables: {
-          id: '100',
+          slug: 'foo',
         },
       })
 
@@ -312,7 +312,7 @@ describe('Mutation', () => {
     })
 
     it('updates a song', async () => {
-      const { id } = await createSong()
+      const { id, slug } = await createSong()
 
       const res = await server.query({
         query: /* GraphQL */ `
@@ -342,14 +342,14 @@ describe('Mutation', () => {
         data: { song },
       } = await server.query({
         query: /* GraphQL */ `
-          query($id: ID!) {
-            song(id: $id) {
+          query($slug: String!) {
+            song(slug: $slug) {
               recommendedKey
             }
           }
         `,
         variables: {
-          id,
+          slug,
         },
       })
 

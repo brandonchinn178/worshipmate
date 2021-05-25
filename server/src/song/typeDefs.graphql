@@ -22,7 +22,7 @@ input SearchFilters {
 
 extend type Query {
   searchSongs(query: String, filters: SearchFilters): [Song!]!
-  song(id: ID!): Song
+  song(slug: String!): Song
 }
 
 ## Mutation ##

@@ -31,7 +31,7 @@ export type QuerySearchSongsArgs = {
 }
 
 export type QuerySongArgs = {
-  id: Scalars['ID']
+  slug: Scalars['String']
 }
 
 export type Mutation = {
