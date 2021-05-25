@@ -1,5 +1,4 @@
 import { useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
 import { font, fontFamily } from '~/theme'
@@ -19,18 +18,8 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
   const { isSubmitting, isSubmitSuccessful } = formState
   const postLoginLoading = isSubmitting || isSubmitSuccessful
 
-  const onFormSubmit = handleSubmit(async (payload) => {
-    try {
-      await onSubmit(payload)
-    } catch (e) {
-      toast.error(e.toString())
-      console.error(e)
-      throw e
-    }
-  })
-
   return (
-    <LoginFormContainer onSubmit={onFormSubmit}>
+    <LoginFormContainer onSubmit={handleSubmit(onSubmit)}>
       <LoginLabel htmlFor="username">Username</LoginLabel>
       <LoginInput id="username" {...register('username', { required: true })} />
       <LoginLabel htmlFor="password">Password</LoginLabel>

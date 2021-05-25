@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 import { apolloCache } from '~/apollo'
 import { login } from '~/auth/client'
@@ -33,7 +34,13 @@ function Login() {
   }, [router, session])
 
   const onSubmit = async ({ username, password }: LoginFormValues) => {
-    await login(username, password)
+    try {
+      await login(username, password)
+    } catch (e) {
+      console.error(e)
+      toast.error(e)
+      throw e
+    }
   }
 
   return <LoginForm onSubmit={onSubmit} />
