@@ -13,8 +13,8 @@ const songTableColumnDefs: ColumnDefs<Song> = [
     name: 'title',
     header: 'Name',
     size: '2fr',
-    render: ({ title }) => (
-      <NextLink href="#">
+    render: ({ title, slug }) => (
+      <NextLink href={`/song/${slug}`}>
         <a>{title}</a>
       </NextLink>
     ),

@@ -1,0 +1,9 @@
+query getSong($slug: String!) {
+  song(slug: $slug) {
+    id
+    title
+    recommendedKey
+    timeSignature
+    bpm
+  }
+}
