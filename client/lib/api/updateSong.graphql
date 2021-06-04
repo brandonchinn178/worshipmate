@@ -1,0 +1,5 @@
+mutation updateSong($id: ID!, $data: UpdateSongInput!) {
+  updateSong(id: $id, data: $data) {
+    slug
+  }
+}

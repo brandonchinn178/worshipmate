@@ -9,6 +9,7 @@ import { ErrorMessage } from '~/ui-kit/ErrorMessage'
 import { TimeSignature } from './models'
 
 export type SongFormValues = {
+  slug: string
   title: string
   recommendedKey: string
   timeSignature: TimeSignature
@@ -28,6 +29,7 @@ export function SongForm({ initialSong, onSubmit }: SongFormProps) {
     register,
   } = useForm<SongFormValues>({
     defaultValues: {
+      slug: initialSong?.slug,
       title: initialSong?.title,
       recommendedKey: initialSong?.recommendedKey,
       timeSignature: initialSong?.timeSignature ?? [4, 4],
@@ -43,6 +45,14 @@ export function SongForm({ initialSong, onSubmit }: SongFormProps) {
 
   return (
     <FormContainer onSubmit={handleSubmit(onSubmit)}>
+      {initialSong && (
+        <FormField>
+          <label htmlFor="slug">Slug</label>
+          <input id="slug" {...register('slug', { required: true })} />
+          <ErrorMessage name="slug" errors={errors} />
+        </FormField>
+      )}
+
       <FormField>
         <label htmlFor="title">Title</label>
         <input id="title" {...register('title', { required: true })} />

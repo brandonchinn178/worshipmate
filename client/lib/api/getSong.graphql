@@ -1,6 +1,7 @@
 query getSong($slug: String!) {
   song(slug: $slug) {
     id
+    slug
     title
     recommendedKey
     timeSignature

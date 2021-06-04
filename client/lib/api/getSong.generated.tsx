@@ -10,7 +10,7 @@ export type GetSongQuery = { __typename?: 'Query' } & {
   song?: Types.Maybe<
     { __typename?: 'Song' } & Pick<
       Types.Song,
-      'id' | 'title' | 'recommendedKey' | 'timeSignature' | 'bpm'
+      'id' | 'slug' | 'title' | 'recommendedKey' | 'timeSignature' | 'bpm'
     >
   >
 }
@@ -19,6 +19,7 @@ export const GetSongDocument = gql`
   query getSong($slug: String!) {
     song(slug: $slug) {
       id
+      slug
       title
       recommendedKey
       timeSignature
