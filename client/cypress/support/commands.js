@@ -11,3 +11,13 @@ Cypress.Commands.add('seedDatabase', () => {
 Cypress.Commands.add('login', () => {
   cy.setCookie('authenticated', 'TRUE')
 })
+
+Cypress.Commands.add('logout', () => {
+  cy.clearCookie('authenticated')
+})
+
+Cypress.Commands.add('findDropdownByLabelText', (...args) => {
+  cy.findByLabelText(...args)
+    .parents()
+    .eq(4)
+})

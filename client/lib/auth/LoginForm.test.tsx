@@ -5,26 +5,6 @@ import { renderUI, waitForAllStateChanges } from '~jest-utils'
 
 import { LoginForm } from './LoginForm'
 
-/** Mock react-toastify **/
-
-const mockToastError = jest.fn()
-jest.mock('react-toastify', () => {
-  return {
-    toast: {
-      error: (...args: unknown[]) => mockToastError(...args),
-    },
-  }
-})
-
-/** Mock console.error **/
-
-afterEach(jest.restoreAllMocks)
-
-const mockConsoleError = () =>
-  jest.spyOn(console, 'error').mockImplementation(() => {})
-
-/** Tests **/
-
 it('renders the login form', () => {
   const { container } = renderUI(<LoginForm onSubmit={jest.fn()} />)
 
@@ -32,27 +12,6 @@ it('renders the login form', () => {
   expect(screen.getByLabelText('Username')).toBeVisible()
   expect(screen.getByLabelText('Password')).toBeVisible()
   expect(screen.getByRole('button', { name: 'Login' })).toBeVisible()
-})
-
-it('shows errors when onSubmit fails', async () => {
-  const e = new Error('onSubmit failed')
-  const onSubmit = jest.fn().mockRejectedValue(e)
-  const consoleError = mockConsoleError()
-
-  renderUI(<LoginForm onSubmit={onSubmit} />)
-
-  userEvent.type(screen.getByLabelText('Username'), 'user')
-  userEvent.type(screen.getByLabelText('Password'), 'pw')
-  userEvent.click(screen.getByRole('button', { name: 'Login' }))
-
-  await waitFor(() => {
-    expect(onSubmit).toHaveBeenCalled()
-  })
-
-  expect(consoleError).toHaveBeenCalledWith(e)
-  expect(mockToastError).toHaveBeenCalledWith(
-    expect.stringContaining('onSubmit failed'),
-  )
 })
 
 describe('form validation', () => {
@@ -141,7 +100,6 @@ describe('submit button', () => {
 
   it('is enabled after submission fails', async () => {
     const onSubmit = jest.fn().mockRejectedValue(new Error())
-    mockConsoleError()
 
     renderUI(<LoginForm onSubmit={onSubmit} />)
 

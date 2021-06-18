@@ -57,4 +57,8 @@ export const GlobalStyle = createGlobalStyle`
       color: ${color('white')};
     }
   }
+
+  svg * {
+    fill: currentColor;
+  }
 `

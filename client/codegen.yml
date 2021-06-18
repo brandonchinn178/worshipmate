@@ -7,7 +7,6 @@ generates:
   lib/api/:
     preset: near-operation-file
     presetConfig:
-      extension: .generated.tsx
       baseTypesPath: types.ts
     plugins:
       - typescript-operations

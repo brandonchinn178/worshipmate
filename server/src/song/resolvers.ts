@@ -39,9 +39,9 @@ const Query: QueryResolvers = {
     })
   },
   song(parent, args, { songAPI }) {
-    const { id } = args
+    const { slug } = args
 
-    return songAPI.getSong(id)
+    return songAPI.getSongBySlug(slug)
   },
 }
 

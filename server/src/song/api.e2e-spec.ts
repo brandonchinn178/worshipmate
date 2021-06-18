@@ -252,8 +252,8 @@ describe('SongAPI', () => {
     }
 
     it('no-ops if no updates passed', async () => {
-      await createSong()
-      await expect(songApi.updateSong(1, {})).resolves.toBeUndefined()
+      const song = await createSong()
+      await expect(songApi.updateSong(song.id, {})).resolves.toBeUndefined()
     })
 
     it('no-ops if song does not exist', async () => {
@@ -292,6 +292,28 @@ describe('SongAPI', () => {
         slug: song.slug,
         title: song.title,
       })
+    })
+
+    it('throws helpful error when setting duplicate slug', async () => {
+      const song = {
+        title: 'Blessed Be Your Name',
+        recommended_key: 'A',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 140,
+      }
+      const song1 = await db.insert<SongRecord>('song', {
+        ...song,
+        slug: 'blessed-be-your-name',
+      })
+      const song2 = await db.insert<SongRecord>('song', {
+        ...song,
+        slug: 'blessed-be-your-name-2',
+      })
+
+      await expect(
+        songApi.updateSong(song2.id, { slug: song1.slug }),
+      ).rejects.toThrow('Could not set slug: slug already in use')
     })
   })
 })

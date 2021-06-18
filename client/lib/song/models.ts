@@ -6,6 +6,8 @@ export type Song = {
   themes: ReadonlyArray<string>
 
   recommendedKey: string
-  timeSignature: [number, number]
+  timeSignature: TimeSignature
   bpm: number
 }
+
+export type TimeSignature = [number, number]

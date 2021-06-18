@@ -9,6 +9,7 @@ module.exports = {
     '^~/(.*)': '<rootDir>/lib/$1',
     '^~jest-utils$': '<rootDir>/jest/utils',
     '\\.svg$': '<rootDir>/jest/svgMock',
+    'react-select': '<rootDir>/jest/reactSelectMock',
   },
-  setupFilesAfterEnv: ['<rootDir>/jest/setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest/setup.tsx'],
 }

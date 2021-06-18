@@ -28,7 +28,7 @@ type ColumnDef<T> = {
 }
 
 const renderHeader = <T,>({ name, header }: ColumnDef<T>): ReactNode => {
-  if (header) {
+  if (header !== undefined) {
     return header
   }
 
@@ -96,6 +96,7 @@ const TableCell = styled.div`
   padding: 10px;
   justify-items: center;
   text-align: center;
+  min-width: max-content;
 `
 
 const TableHeaderCell = styled(TableCell)`

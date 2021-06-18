@@ -1,4 +1,6 @@
 import * as _ from 'lodash'
+import { GetStaticProps } from 'next'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
@@ -6,7 +8,8 @@ import {
   SearchSongsDocument,
   SearchSongsQuery,
   useSearchSongsQuery,
-} from '~/api/searchSongs.generated'
+} from '~/api/songApi.generated'
+import { useCurrentUserQuery } from '~/api/userApi.generated'
 import { getApolloClient } from '~/apollo'
 import { setQueryString } from '~/router'
 import {
@@ -52,6 +55,9 @@ function HomePage({ initialSongs }: HomePageProps) {
     },
   })
 
+  const { data: currentUserData } = useCurrentUserQuery()
+  const user = currentUserData?.me
+
   const songs = _.map(data?.searchSongs ?? initialSongs, (song) => ({
     ...song,
     artist: 'TODO',
@@ -77,17 +83,24 @@ function HomePage({ initialSongs }: HomePageProps) {
           }}
         />
       </SongSearchArea>
-      <SongCountArea>
-        {songs.length} {pluralize('song', songs.length)}
-      </SongCountArea>
+      <SongTableMetaArea>
+        <SongCount>
+          {songs.length} {pluralize('song', songs.length)}
+        </SongCount>
+        {user && (
+          <NextLink href="/add-song" passHref>
+            <AddSongLink>Add Song</AddSongLink>
+          </NextLink>
+        )}
+      </SongTableMetaArea>
       <SongTableArea>
-        <SongTable songs={songs} />
+        <SongTable songs={songs} isAdmin={!!user} />
       </SongTableArea>
     </HomePageContent>
   )
 }
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
   const apolloClient = getApolloClient()
 
   const { data } = await apolloClient.query({
@@ -108,7 +121,7 @@ const HomePageContent = styled.div`
   grid-template-rows: max-content max-content auto;
   grid-template-areas:
     'sidebar search'
-    'sidebar song-count'
+    'sidebar table-meta'
     'sidebar table';
   grid-column-gap: 25px;
   grid-row-gap: 10px;
@@ -122,9 +135,20 @@ const SongSearchArea = styled.div`
   grid-area: search;
 `
 
-const SongCountArea = styled.p`
-  grid-area: song-count;
+const SongTableMetaArea = styled.div`
+  grid-area: table-meta;
+`
+
+const SongCount = styled.span`
   font-weight: bold;
+`
+
+const AddSongLink = styled.a`
+  float: right;
+  &:before {
+    content: '\\FF0B';
+    font-size: 1rem;
+  }
 `
 
 const SongTableArea = styled.div`
