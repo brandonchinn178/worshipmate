@@ -7,12 +7,9 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:prettier/recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
     'plugin:jest/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@next/next/recommended',
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'simple-import-sort', 'prettier', 'jest'],
@@ -20,10 +17,6 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'react/display-name': 'off',
-    'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'off',
-    'react-hooks/exhaustive-deps': 'error',
     'simple-import-sort/imports': 'error',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
@@ -36,29 +29,12 @@ module.exports = {
         argsIgnorePattern: '^_',
       },
     ],
-    // https://github.com/vercel/next.js/issues/26330
-    '@next/next/no-html-link-for-pages': ['error', 'client/pages'],
-  },
-  globals: {
-    React: 'writable',
-  },
-  settings: {
-    react: {
-      version: 'detect',
-    },
   },
   overrides: [
     {
       files: ['*.js'],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
-      },
-    },
-    {
-      files: ['_document.tsx'],
-      rules: {
-        // https://github.com/vercel/next.js/issues/26160
-        '@next/next/no-page-custom-font': 'off',
       },
     },
   ],
