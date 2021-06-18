@@ -7,11 +7,13 @@
   "scripts": {
     "client": "yarn workspace @worship-mate/client",
     "server": "yarn workspace @worship-mate/server",
-    "lint": "eslint --ext .js,.ts,.tsx --max-warnings=0 --resolve-plugins-relative-to=.",
+    "g:lint": "HERE=$(pwd) && cd $INIT_CWD && eslint --ext .js,.ts,.tsx --max-warnings=0 --resolve-plugins-relative-to=$HERE",
+    "lint": "yarn g:lint",
     "start:dev": "ts-node-script bin/start.ts",
     "start:test": "NODE_ENV=test yarn start:dev"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^11.0.0",
     "@types/concurrently": "^5",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
