@@ -28,7 +28,7 @@ type ColumnDef<T> = {
 }
 
 const renderHeader = <T,>({ name, header }: ColumnDef<T>): ReactNode => {
-  if (header) {
+  if (header !== undefined) {
     return header
   }
 

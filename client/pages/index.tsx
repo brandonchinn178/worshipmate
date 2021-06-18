@@ -94,7 +94,7 @@ function HomePage({ initialSongs }: HomePageProps) {
         )}
       </SongTableMetaArea>
       <SongTableArea>
-        <SongTable songs={songs} />
+        <SongTable songs={songs} isAdmin={!!user} />
       </SongTableArea>
     </HomePageContent>
   )

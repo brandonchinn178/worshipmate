@@ -1,6 +1,6 @@
 import Image, { ImageProps } from 'next/image'
 
-type IconNames = 'search'
+type IconNames = 'edit' | 'search'
 
 // https://github.com/vercel/next.js/issues/25344
 type LayoutValue = 'fill' | 'fixed' | 'intrinsic' | 'responsive' | undefined
