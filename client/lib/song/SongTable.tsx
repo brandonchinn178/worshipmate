@@ -35,6 +35,7 @@ export function SongTable({ songs, isAdmin = false }: SongTableProps) {
     isAdmin && {
       name: 'actions',
       header: '',
+      size: '40px',
       render: ({ slug }) => (
         <NextLink href={`/song/${slug}/edit`}>
           <a>

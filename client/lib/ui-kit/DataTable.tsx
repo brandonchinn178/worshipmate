@@ -96,6 +96,7 @@ const TableCell = styled.div`
   padding: 10px;
   justify-items: center;
   text-align: center;
+  min-width: max-content;
 `
 
 const TableHeaderCell = styled(TableCell)`
