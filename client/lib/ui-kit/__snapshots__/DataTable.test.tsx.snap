@@ -6,42 +6,42 @@ exports[`displays data 1`] = `
     class="DataTable__Table-sc-1xhkibe-0 lhcMRB"
   >
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 gRqLRZ"
+      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
     >
       Id
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 gRqLRZ"
+      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
     >
       Name
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
+      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
     >
       1
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
+      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
     >
       Alice
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
+      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
     >
       2
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
+      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
     >
       Bob
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
+      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
     >
       3
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 foVggC"
+      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
     >
       Charlie
     </div>
@@ -55,12 +55,12 @@ exports[`displays no data 1`] = `
     class="DataTable__Table-sc-1xhkibe-0 lhcMRB"
   >
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 gRqLRZ"
+      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
     >
       Id
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 gRqLRZ"
+      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
     >
       Name
     </div>
