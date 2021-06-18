@@ -4,9 +4,10 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin")
 const path = require('path')
 
 module.exports = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack(config, { dev, isServer }) {
-    config.resolve.alias['~'] = path.join(__dirname, 'lib')
-
     if (dev && isServer) {
       config.plugins.push(new ForkTsCheckerWebpackPlugin())
     }
