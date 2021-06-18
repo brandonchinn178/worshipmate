@@ -31,6 +31,7 @@ describe('initial render', () => {
 
   it('renders an initially populated form', () => {
     const song = {
+      slug: 'blessed-be-your-name',
       title: 'Blessed Be Your Name',
       recommendedKey: 'A',
       timeSignature: [3, 4] as TimeSignature,
@@ -51,6 +52,7 @@ describe('initial render', () => {
 
   it('renders populated form with non-standard time signature', () => {
     const song = {
+      slug: 'take-five',
       title: 'Take Five',
       recommendedKey: 'Eb',
       timeSignature: [5, 4] as TimeSignature,

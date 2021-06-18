@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react'
 
-import { CurrentUserDocument } from '~/api/currentUser.generated'
+import { CurrentUserDocument } from '~/api/userApi.generated'
 import { mkRouter } from '~/router/testutils'
 import { renderUI } from '~jest-utils'
 

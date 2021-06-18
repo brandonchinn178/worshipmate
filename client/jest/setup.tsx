@@ -3,6 +3,6 @@ import 'snapshot-diff/extend-expect'
 
 jest.mock('~/ui-kit/Icon', () => {
   return {
-    Icon: ({ name }) => <span data-testid={`icon-${name}`} />,
+    Icon: ({ name }: { name: string }) => <span data-testid={`icon-${name}`} />,
   }
 })
