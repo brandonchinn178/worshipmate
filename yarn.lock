@@ -6146,7 +6146,7 @@ __metadata:
     snapshot-diff: ^0.8.1
     styled-components: ^4.4.1
     svgo: ^2.3.0
-    typescript: ^4.0.3
+    typescript: ^4.3.4
     webpack: ^5.28.0
   languageName: unknown
   linkType: soft
@@ -6179,7 +6179,7 @@ __metadata:
     ts-jest: ^26.4.1
     ts-node: ^9.0.0
     tsconfig-paths: ^3.9.0
-    typescript: ^4.0.3
+    typescript: ^4.3.4
     yup: ^0.32.1
   languageName: unknown
   linkType: soft
@@ -18624,7 +18624,7 @@ fsevents@~2.3.1:
     prettier: ^2.1.2
     react: ^17.0.1
     ts-node: ^9.1.1
-    typescript: ^4.0.3
+    typescript: ^4.3.4
     wait-on: ^5.2.1
   languageName: unknown
   linkType: soft
@@ -20663,23 +20663,23 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-typescript@^4.0.3:
-  version: 4.1.2
-  resolution: "typescript@npm:4.1.2"
+typescript@^4.3.4:
+  version: 4.3.4
+  resolution: "typescript@npm:4.3.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: d2ac373b469e973448c7287d0fbc732dbd34d00d07911b9506bbf81469a80db6613361fc9293d021da357cb7c7da2ee32f56d8ef76446361231374200cd6aee9
+  checksum: 9791c5fe98db6cb70ec0efad8d3d2eb957b9643ee600b90bff49267de69768d0d5f59c41a8fd731cfd63df1ccfb2cb25505a2015d7b39ac10ea51f605a058e16
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.0.3#builtin<compat/typescript>":
-  version: 4.1.2
-  resolution: "typescript@patch:typescript@npm%3A4.1.2#builtin<compat/typescript>::version=4.1.2&hash=cc6730"
+"typescript@patch:typescript@^4.3.4#builtin<compat/typescript>":
+  version: 4.3.4
+  resolution: "typescript@patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 001ab09bb8f597aab1ec43476aedb91b5d547749219273c232bf34cf5a2209d18fa782e64475755115f0907598bb9b503f5e1c0fed06c3651cac584fc88a8172
+  checksum: c8766e84a4f71e925cc059af8286cc7f41819fe821d433b90c83e9b36729cbda7a8e4be3292d8a1433cd717d529c93217d58d173418f43862290b206bd88b284
   languageName: node
   linkType: hard
 
