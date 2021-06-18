@@ -6206,7 +6206,6 @@ __metadata:
     jest: ^26.6.1
     lodash: ^4.17.20
     next: 11.0.1-canary.4
-    pnp-webpack-plugin: ^1.6.4
     react: ^17.0.2
     react-dom: ^17.0.2
     react-hook-form: ^7.6.6
@@ -17074,7 +17073,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"pnp-webpack-plugin@npm:1.6.4, pnp-webpack-plugin@npm:^1.6.4":
+"pnp-webpack-plugin@npm:1.6.4":
   version: 1.6.4
   resolution: "pnp-webpack-plugin@npm:1.6.4"
   dependencies:

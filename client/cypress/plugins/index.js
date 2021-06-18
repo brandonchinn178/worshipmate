@@ -1,5 +1,4 @@
 const wp = require('cypress-webpack-preprocessor-v5')
-const PnpWebpackPlugin = require('pnp-webpack-plugin')
 
 module.exports = (on) => {
   const options = {
@@ -13,12 +12,6 @@ module.exports = (on) => {
             use: 'babel-loader',
           },
         ],
-      },
-      resolve: {
-        plugins: [PnpWebpackPlugin],
-      },
-      resolveLoader: {
-        plugins: [PnpWebpackPlugin.moduleLoader(module)],
       },
     },
     watchOptions: {},
