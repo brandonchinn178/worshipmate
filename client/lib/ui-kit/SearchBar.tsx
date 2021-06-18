@@ -28,7 +28,7 @@ export function SearchBar({ initial = '', onSubmit }: SearchBarProps) {
       <SearchContainer>
         <SearchInput {...register('search')} />
         <SearchBox>
-          <Icon name="search" width={16} height={16} />
+          <Icon name="search" width={16} />
         </SearchBox>
       </SearchContainer>
     </form>
@@ -63,4 +63,10 @@ const SearchBox = styled.button`
   border: 1px solid black;
 
   background: ${color('white')};
+
+  // reset default button font color styling
+  color: inherit;
+  &:hover {
+    color: inherit;
+  }
 `
