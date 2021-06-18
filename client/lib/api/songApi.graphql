@@ -1,32 +1,32 @@
+fragment songFields on Song {
+  id
+  slug
+  title
+  recommendedKey
+  timeSignature
+  bpm
+}
+
 query searchSongs($query: String, $filters: SearchFilters) {
   searchSongs(query: $query, filters: $filters) {
-    slug
-    title
-    recommendedKey
-    timeSignature
-    bpm
+    ...songFields
   }
 }
 
 query getSong($slug: String!) {
   song(slug: $slug) {
-    id
-    slug
-    title
-    recommendedKey
-    timeSignature
-    bpm
+    ...songFields
   }
 }
 
 mutation addSong($data: AddSongInput!) {
   addSong(data: $data) {
-    slug
+    ...songFields
   }
 }
 
 mutation updateSong($id: ID!, $data: UpdateSongInput!) {
   updateSong(id: $id, data: $data) {
-    slug
+    ...songFields
   }
 }

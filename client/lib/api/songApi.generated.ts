@@ -2,18 +2,18 @@ import { gql } from '@apollo/client'
 import * as Apollo from '@apollo/client'
 
 import * as Types from './types'
+export type SongFieldsFragment = { __typename?: 'Song' } & Pick<
+  Types.Song,
+  'id' | 'slug' | 'title' | 'recommendedKey' | 'timeSignature' | 'bpm'
+>
+
 export type SearchSongsQueryVariables = Types.Exact<{
   query?: Types.Maybe<Types.Scalars['String']>
   filters?: Types.Maybe<Types.SearchFilters>
 }>
 
 export type SearchSongsQuery = { __typename?: 'Query' } & {
-  searchSongs: Array<
-    { __typename?: 'Song' } & Pick<
-      Types.Song,
-      'slug' | 'title' | 'recommendedKey' | 'timeSignature' | 'bpm'
-    >
-  >
+  searchSongs: Array<{ __typename?: 'Song' } & SongFieldsFragment>
 }
 
 export type GetSongQueryVariables = Types.Exact<{
@@ -21,12 +21,7 @@ export type GetSongQueryVariables = Types.Exact<{
 }>
 
 export type GetSongQuery = { __typename?: 'Query' } & {
-  song?: Types.Maybe<
-    { __typename?: 'Song' } & Pick<
-      Types.Song,
-      'id' | 'slug' | 'title' | 'recommendedKey' | 'timeSignature' | 'bpm'
-    >
-  >
+  song?: Types.Maybe<{ __typename?: 'Song' } & SongFieldsFragment>
 }
 
 export type AddSongMutationVariables = Types.Exact<{
@@ -34,7 +29,7 @@ export type AddSongMutationVariables = Types.Exact<{
 }>
 
 export type AddSongMutation = { __typename?: 'Mutation' } & {
-  addSong: { __typename?: 'Song' } & Pick<Types.Song, 'slug'>
+  addSong: { __typename?: 'Song' } & SongFieldsFragment
 }
 
 export type UpdateSongMutationVariables = Types.Exact<{
@@ -43,19 +38,26 @@ export type UpdateSongMutationVariables = Types.Exact<{
 }>
 
 export type UpdateSongMutation = { __typename?: 'Mutation' } & {
-  updateSong?: Types.Maybe<{ __typename?: 'Song' } & Pick<Types.Song, 'slug'>>
+  updateSong?: Types.Maybe<{ __typename?: 'Song' } & SongFieldsFragment>
 }
 
+export const SongFieldsFragmentDoc = gql`
+  fragment songFields on Song {
+    id
+    slug
+    title
+    recommendedKey
+    timeSignature
+    bpm
+  }
+`
 export const SearchSongsDocument = gql`
   query searchSongs($query: String, $filters: SearchFilters) {
     searchSongs(query: $query, filters: $filters) {
-      slug
-      title
-      recommendedKey
-      timeSignature
-      bpm
+      ...songFields
     }
   }
+  ${SongFieldsFragmentDoc}
 `
 
 /**
@@ -108,14 +110,10 @@ export type SearchSongsQueryResult = Apollo.QueryResult<
 export const GetSongDocument = gql`
   query getSong($slug: String!) {
     song(slug: $slug) {
-      id
-      slug
-      title
-      recommendedKey
-      timeSignature
-      bpm
+      ...songFields
     }
   }
+  ${SongFieldsFragmentDoc}
 `
 
 /**
@@ -162,9 +160,10 @@ export type GetSongQueryResult = Apollo.QueryResult<
 export const AddSongDocument = gql`
   mutation addSong($data: AddSongInput!) {
     addSong(data: $data) {
-      slug
+      ...songFields
     }
   }
+  ${SongFieldsFragmentDoc}
 `
 export type AddSongMutationFn = Apollo.MutationFunction<
   AddSongMutation,
@@ -208,9 +207,10 @@ export type AddSongMutationOptions = Apollo.BaseMutationOptions<
 export const UpdateSongDocument = gql`
   mutation updateSong($id: ID!, $data: UpdateSongInput!) {
     updateSong(id: $id, data: $data) {
-      slug
+      ...songFields
     }
   }
+  ${SongFieldsFragmentDoc}
 `
 export type UpdateSongMutationFn = Apollo.MutationFunction<
   UpdateSongMutation,
