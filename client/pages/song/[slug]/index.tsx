@@ -17,6 +17,11 @@ function SongPage({ song }: SongPageProps) {
 
   return (
     <div>
+      <p>
+        <NextLink href="/">
+          <a>Back to song list</a>
+        </NextLink>
+      </p>
       <p>{JSON.stringify(song)}</p>
       {user && (
         <p>

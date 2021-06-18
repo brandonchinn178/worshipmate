@@ -97,10 +97,35 @@ describe('Home page', () => {
       cy.findByText('Add Song').should('not.exist')
     })
 
-    it('is visible when logged in', () => {
+    it('is visible + clickable when logged in', () => {
       cy.login()
       cy.reload()
-      cy.findByText('Add Song').should('exist')
+      cy.findByText('Add Song').should('exist').click()
+      cy.location('pathname').should('equal', '/add-song')
+    })
+  })
+
+  describe('Song row', () => {
+    it('contains a clickable song title', () => {
+      cy.findByText('Blessed Be Your Name').click()
+      cy.location('pathname').should('equal', '/song/blessed-be-your-name')
+    })
+
+    describe('Edit song icon', () => {
+      it('is not visible when not logged in', () => {
+        cy.findAllByTestId('icon-edit').should('not.exist')
+      })
+
+      it('is visible + clickable when logged in', () => {
+        cy.login()
+        cy.reload()
+        cy.get('input[name=search]').type('Blessed Be Your Name{enter}')
+        cy.findByTestId('icon-edit').should('exist').click()
+        cy.location('pathname').should(
+          'equal',
+          '/song/blessed-be-your-name/edit',
+        )
+      })
     })
   })
 })

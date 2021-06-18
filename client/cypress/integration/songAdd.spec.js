@@ -1,13 +1,19 @@
 describe('Add song', () => {
-  it('can add a song', () => {
+  beforeEach(() => {
     cy.login()
-    cy.visit('/')
-    cy.findByText('Blessed Be Your Name').should('not.exist')
-    cy.findByText('Add Song').click()
+    cy.visit('/add-song')
+  })
 
+  it('requires login', () => {
+    cy.logout()
+    cy.reload()
+    cy.location('pathname').should('equal', '/login')
+  })
+
+  it('can add a song', () => {
     cy.findByLabelText('Title').type('Blessed Be Your Name')
     cy.findByLabelText('Recommended Key').type('A')
-    cy.findByLabelText('Time Signature').click()
+    cy.findDropdownByLabelText('Time Signature').click()
     cy.findByText('3/4').click()
     cy.findByLabelText('BPM').type(140)
     cy.findByText('Submit').click()

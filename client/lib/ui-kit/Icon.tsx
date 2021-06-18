@@ -16,5 +16,5 @@ type IconProps = {
 
 export function Icon({ name, ...props }: IconProps) {
   const IconSvg = icons[name]
-  return <IconSvg {...props} />
+  return <IconSvg data-testid={`icon-${name}`} {...props} />
 }
