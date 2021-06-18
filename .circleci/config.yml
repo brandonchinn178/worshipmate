@@ -200,7 +200,7 @@ workflows:
       - deploy:
           filters:
             branches:
-              only: master
+              only: main
           requires:
             - test_server
             - build_client
