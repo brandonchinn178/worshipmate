@@ -59,6 +59,10 @@ export const getStaticProps: GetStaticProps<EditSongPageProps> = async ({
     variables: { slug },
   })
 
+  if (!song) {
+    return { notFound: true }
+  }
+
   return {
     props: {
       id: song.id,

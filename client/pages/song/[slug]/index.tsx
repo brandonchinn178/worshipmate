@@ -50,6 +50,10 @@ export const getStaticProps: GetStaticProps<SongPageProps> = async ({
     variables: { slug },
   })
 
+  if (!song) {
+    return { notFound: true }
+  }
+
   return {
     props: { song },
     revalidate: 30,
