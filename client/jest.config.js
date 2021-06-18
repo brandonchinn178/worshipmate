@@ -11,5 +11,5 @@ module.exports = {
     '\\.svg$': '<rootDir>/jest/svgMock',
     'react-select': '<rootDir>/jest/reactSelectMock',
   },
-  setupFilesAfterEnv: ['<rootDir>/jest/setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest/setup.tsx'],
 }
