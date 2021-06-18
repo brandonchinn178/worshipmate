@@ -12,6 +12,7 @@
     "start:test": "NODE_ENV=test yarn start:dev"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^11.0.0",
     "@types/concurrently": "^5",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
