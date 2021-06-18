@@ -36,6 +36,8 @@ module.exports = {
         argsIgnorePattern: '^_',
       },
     ],
+    // https://github.com/vercel/next.js/issues/26330
+    '@next/next/no-html-link-for-pages': ['error', 'client/pages'],
   },
   globals: {
     React: 'writable',
@@ -50,6 +52,13 @@ module.exports = {
       files: ['*.js'],
       rules: {
         '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+    {
+      files: ['_document.tsx'],
+      rules: {
+        // https://github.com/vercel/next.js/issues/26160
+        '@next/next/no-page-custom-font': 'off',
       },
     },
   ],
