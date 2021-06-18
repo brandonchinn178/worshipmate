@@ -8,29 +8,29 @@ type SongTableProps = {
   songs: readonly Song[]
 }
 
-const songTableColumnDefs: ColumnDefs<Song> = [
-  {
-    name: 'title',
-    header: 'Name',
-    size: '2fr',
-    render: ({ title, slug }) => (
-      <NextLink href={`/song/${slug}`}>
-        <a>{title}</a>
-      </NextLink>
-    ),
-  },
-  {
-    name: 'artist',
-    size: '2fr',
-  },
-  {
-    name: 'themes',
-    size: '3fr',
-    render: ({ themes }) => themes.join(', '),
-  },
-]
-
 export function SongTable({ songs }: SongTableProps) {
+  const songTableColumnDefs: ColumnDefs<Song> = [
+    {
+      name: 'title',
+      header: 'Name',
+      size: '2fr',
+      render: ({ title, slug }) => (
+        <NextLink href={`/song/${slug}`}>
+          <a>{title}</a>
+        </NextLink>
+      ),
+    },
+    {
+      name: 'artist',
+      size: '2fr',
+    },
+    {
+      name: 'themes',
+      size: '3fr',
+      render: ({ themes }) => themes.join(', '),
+    },
+  ]
+
   return (
     <DataTable
       data={songs}
