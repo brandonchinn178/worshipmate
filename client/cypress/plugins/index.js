@@ -1,20 +1,8 @@
 const wp = require('cypress-webpack-preprocessor-v5')
 
 module.exports = (on) => {
-  const options = {
-    webpackOptions: {
-      mode: 'development',
-      module: {
-        rules: [
-          {
-            test: /\.jsx?$/,
-            exclude: [/node_modules/],
-            use: 'babel-loader',
-          },
-        ],
-      },
-    },
-    watchOptions: {},
-  }
+  const options = wp.defaultOptions
+  delete options.webpackOptions.module.rules[0].use[0].options.presets
+
   on('file:preprocessor', wp(options))
 }
