@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import NextLink from 'next/link'
 
-import { useCurrentUserQuery } from '~/api/currentUser.generated'
-import { GetSongDocument } from '~/api/getSong.generated'
+import { GetSongDocument } from '~/api/songApi.generated'
+import { useCurrentUserQuery } from '~/api/userApi.generated'
 import { getApolloClient } from '~/apollo'
 import { Song } from '~/song/models'
 

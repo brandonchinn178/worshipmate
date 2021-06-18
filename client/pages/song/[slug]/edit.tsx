@@ -1,8 +1,11 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 
-import { GetSongDocument, useGetSongQuery } from '~/api/getSong.generated'
-import { useUpdateSongMutation } from '~/api/updateSong.generated'
+import {
+  GetSongDocument,
+  useGetSongQuery,
+  useUpdateSongMutation,
+} from '~/api/songApi.generated'
 import { getApolloClient } from '~/apollo'
 import { WithAuth, withAuth } from '~/auth/hoc'
 import { SongForm, SongFormValues } from '~/song/SongForm'

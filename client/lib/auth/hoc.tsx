@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { ComponentType, useEffect } from 'react'
 
-import { useCurrentUserQuery } from '~/api/currentUser.generated'
+import { useCurrentUserQuery } from '~/api/userApi.generated'
 
 export type User = {
   name: string

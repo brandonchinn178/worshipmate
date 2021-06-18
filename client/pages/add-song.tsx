@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import { useAddSongMutation } from '~/api/addSong.generated'
+import { useAddSongMutation } from '~/api/songApi.generated'
 import { withAuth } from '~/auth/hoc'
 import { SongForm, SongFormValues } from '~/song/SongForm'
 

@@ -4,12 +4,12 @@ import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-import { useCurrentUserQuery } from '~/api/currentUser.generated'
 import {
   SearchSongsDocument,
   SearchSongsQuery,
   useSearchSongsQuery,
-} from '~/api/searchSongs.generated'
+} from '~/api/songApi.generated'
+import { useCurrentUserQuery } from '~/api/userApi.generated'
 import { getApolloClient } from '~/apollo'
 import { setQueryString } from '~/router'
 import {

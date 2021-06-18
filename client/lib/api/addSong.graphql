@@ -1,5 +1,0 @@
-mutation addSong($data: AddSongInput!) {
-  addSong(data: $data) {
-    slug
-  }
-}

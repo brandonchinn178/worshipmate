@@ -1,0 +1,32 @@
+query searchSongs($query: String, $filters: SearchFilters) {
+  searchSongs(query: $query, filters: $filters) {
+    slug
+    title
+    recommendedKey
+    timeSignature
+    bpm
+  }
+}
+
+query getSong($slug: String!) {
+  song(slug: $slug) {
+    id
+    slug
+    title
+    recommendedKey
+    timeSignature
+    bpm
+  }
+}
+
+mutation addSong($data: AddSongInput!) {
+  addSong(data: $data) {
+    slug
+  }
+}
+
+mutation updateSong($id: ID!, $data: UpdateSongInput!) {
+  updateSong(id: $id, data: $data) {
+    slug
+  }
+}
