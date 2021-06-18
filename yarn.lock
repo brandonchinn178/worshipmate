@@ -4650,15 +4650,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/cypress@npm:^7.0.4":
-  version: 7.0.4
-  resolution: "@testing-library/cypress@npm:7.0.4"
+"@testing-library/cypress@npm:^7.0.6":
+  version: 7.0.6
+  resolution: "@testing-library/cypress@npm:7.0.6"
   dependencies:
     "@babel/runtime": ^7.12.5
     "@testing-library/dom": ^7.28.1
   peerDependencies:
-    cypress: ^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
-  checksum: 967d650538840c6a2cc5b95fde3f17814f4e6115e53caef51973fca2514134098379657df731db3b80a348023e561a331e97d528db297e8e3c0c6f6464010308
+    cypress: ^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
+  checksum: 6e960b8339249911fd9dff07e1f93ed5c8f813827ebf78188c9d8a95849bcbdeb5accc68665df43d003e1c293e166e7d54b9f1c402797a9a7e778f10c897753a
   languageName: node
   linkType: hard
 
@@ -5292,6 +5292,13 @@ __metadata:
   version: 14.14.9
   resolution: "@types/node@npm:14.14.9"
   checksum: df0405c708fa94831e7f71ed01cd6f859a38ab0daeae99e01afdd408905479f205556a43bafe5692c82cd126abbdc68baeb99b4b7d653c1480c289080b71622b
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:12.12.50":
+  version: 12.12.50
+  resolution: "@types/node@npm:12.12.50"
+  checksum: 02e4e057a353e61eb8b4146633cc766f932951bc11cff9707af03aca8eaf9813133bfca3f2d4b4329cb41a0b892698bf04a1fce1e134813bd8a00dd5b7d36288
   languageName: node
   linkType: hard
 
@@ -6182,7 +6189,7 @@ __metadata:
     "@okta/okta-auth-js": ^4.7.1
     "@storybook/addon-essentials": ^6.2.1
     "@storybook/react": ^6.2.1
-    "@testing-library/cypress": ^7.0.4
+    "@testing-library/cypress": ^7.0.6
     "@testing-library/dom": ^7.30.0
     "@testing-library/jest-dom": ^5.11.9
     "@testing-library/react": ^11.2.5
@@ -6198,7 +6205,7 @@ __metadata:
     babel-loader: ^8.1.0
     babel-plugin-inline-react-svg: ^2.0.1
     babel-plugin-styled-components: ^1.11.1
-    cypress: ^6.2.0
+    cypress: ^6
     cypress-webpack-preprocessor-v5: ^5.0.0-alpha.1
     fast-check: ^2.10.0
     fork-ts-checker-webpack-plugin: ^6.2.1
@@ -9401,13 +9408,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "cypress@npm:6.2.0"
+"cypress@npm:^6":
+  version: 6.9.1
+  resolution: "cypress@npm:6.9.1"
   dependencies:
     "@cypress/listr-verbose-renderer": ^0.4.1
     "@cypress/request": ^2.88.5
     "@cypress/xvfb": ^1.2.4
+    "@types/node": 12.12.50
     "@types/sinonjs__fake-timers": ^6.0.1
     "@types/sizzle": ^2.3.2
     arch: ^2.1.2
@@ -9419,7 +9427,8 @@ __metadata:
     cli-table3: ~0.6.0
     commander: ^5.1.0
     common-tags: ^1.8.0
-    debug: ^4.1.1
+    dayjs: ^1.9.3
+    debug: 4.3.2
     eventemitter2: ^6.4.2
     execa: ^4.0.2
     executable: ^4.1.1
@@ -9433,10 +9442,10 @@ __metadata:
     lodash: ^4.17.19
     log-symbols: ^4.0.0
     minimist: ^1.2.5
-    moment: ^2.27.0
+    moment: ^2.29.1
     ospath: ^1.2.2
     pretty-bytes: ^5.4.1
-    ramda: ~0.26.1
+    ramda: ~0.27.1
     request-progress: ^3.0.0
     supports-color: ^7.2.0
     tmp: ~0.2.1
@@ -9445,7 +9454,7 @@ __metadata:
     yauzl: ^2.10.0
   bin:
     cypress: bin/cypress
-  checksum: 9244333e30bf6e0d85107b698124ec6b369bb725ad417ae5ebccf2bdc2064789ea3874d79a1518f1fc48eddec1a657d19e3e0862006247ed2eacbb2528288b01
+  checksum: bf0b21dcd57201f1c4d3a0ed474a1ddde6beabc506075771aaf92c71386c14d4c0a98add620090c41196f54342335f9e93380e3268613ddadfa5704faf9d98c6
   languageName: node
   linkType: hard
 
@@ -9507,6 +9516,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dayjs@npm:^1.9.3":
+  version: 1.10.5
+  resolution: "dayjs@npm:1.10.5"
+  checksum: 11b3a952cdb77959b07318804bd982d1d377581e4752ec478da82b494da1ebb9d82e0539481ab51f90a36e35a268a730034cb6f3cac1b45609755c909329c0a1
+  languageName: node
+  linkType: hard
+
 "de-indent@npm:^1.0.2":
   version: 1.0.2
   resolution: "de-indent@npm:1.0.2"
@@ -9542,16 +9558,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^3.0.0, debug@npm:^3.1.0, debug@npm:^3.2.6":
-  version: 3.2.7
-  resolution: "debug@npm:3.2.7"
-  dependencies:
-    ms: ^2.1.1
-  checksum: 9fc1277e666db3af31df89e9e41f5c83da6e9de56d4a95b37e095d47ba1958238b8c7b49d4327b516465d46b6340bee723a97a7b2f28c5c7563f8b0a8fc9458a
-  languageName: node
-  linkType: hard
-
-"debug@npm:^4.3.1":
+"debug@npm:4.3.2, debug@npm:^4.3.1":
   version: 4.3.2
   resolution: "debug@npm:4.3.2"
   dependencies:
@@ -9560,6 +9567,15 @@ __metadata:
     supports-color:
       optional: true
   checksum: 5543570879e2274f6725d4285a034d6e0822d35faefc6f55965933fb440e8c21eb3a0bef934e66f4b6b491f898ee2de37cab980e9d4fd61372136c19d3ce4527
+  languageName: node
+  linkType: hard
+
+"debug@npm:^3.0.0, debug@npm:^3.1.0, debug@npm:^3.2.6":
+  version: 3.2.7
+  resolution: "debug@npm:3.2.7"
+  dependencies:
+    ms: ^2.1.1
+  checksum: 9fc1277e666db3af31df89e9e41f5c83da6e9de56d4a95b37e095d47ba1958238b8c7b49d4327b516465d46b6340bee723a97a7b2f28c5c7563f8b0a8fc9458a
   languageName: node
   linkType: hard
 
@@ -10597,14 +10613,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-cypress@npm:^2.11.2":
-  version: 2.11.2
-  resolution: "eslint-plugin-cypress@npm:2.11.2"
+"eslint-plugin-cypress@npm:^2.11.3":
+  version: 2.11.3
+  resolution: "eslint-plugin-cypress@npm:2.11.3"
   dependencies:
     globals: ^11.12.0
   peerDependencies:
     eslint: ">= 3.2.1"
-  checksum: e68b06a371f0523281d34085f89b85c1321fb636725b3687ebd00729a3d9277ecf1cbf7788e065318be4cf8863a37577f2f87e4ca3fdd36204e53a0e24353bb5
+  checksum: 372ce1c908ae0c04aa83fef6792a99018bbeaaefd8871c29ca8acc4a466f4fd33ee9be3e5814c255385b1e4047ad5d116a8ec3f54a9b434ad37d0487d2e516dd
   languageName: node
   linkType: hard
 
@@ -10839,9 +10855,9 @@ __metadata:
   linkType: hard
 
 "eventemitter2@npm:^6.4.2":
-  version: 6.4.3
-  resolution: "eventemitter2@npm:6.4.3"
-  checksum: a67e68e6ff9f051232d58dd85634524c2e3ea7ffbbc19066c3c87bebfe5e2bc9dc791195c8bbc82cd7df344619080949c2e39929573977b6873c35a4af6eb316
+  version: 6.4.4
+  resolution: "eventemitter2@npm:6.4.4"
+  checksum: 632e4e96be6d34c55855980dfe051d684ed9555d9ce800b824369a7f3a9ba9d792775bba45182f0280c5635eab96e8d7cbbcdd6a8f2f4c0d703304632391b9be
   languageName: node
   linkType: hard
 
@@ -15618,7 +15634,7 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.27.0":
+"moment@npm:^2.29.1":
   version: 2.29.1
   resolution: "moment@npm:2.29.1"
   checksum: 86729013febf7160de5b93da69273dd304d674b0224f9544b3abd09a87671ddd2cdd57598261ce57588910d63747ffd5590965e83c790d8bf327083c0e0a06e0
@@ -17291,9 +17307,9 @@ fsevents@~2.3.1:
   linkType: hard
 
 "pretty-bytes@npm:^5.4.1":
-  version: 5.5.0
-  resolution: "pretty-bytes@npm:5.5.0"
-  checksum: 1add1ac6526b71eed7ddff575d4f91e6c077e84563bb6d1caf59b5b834e15a4f9e6da8853a0cc14eed63f1c6bf9fb8553ece117f845ad2014bb534742d29ffa9
+  version: 5.6.0
+  resolution: "pretty-bytes@npm:5.6.0"
+  checksum: 2a2db3daaee5c7271dbc68cc875118f4e2b6697e9e4e73b4ea5d5639f50cff2c1f1f7db4775119974eff86fdbd1fac2a5d9f16bc41d90626821a9f6a0e6e26cf
   languageName: node
   linkType: hard
 
@@ -17633,10 +17649,10 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"ramda@npm:~0.26.1":
-  version: 0.26.1
-  resolution: "ramda@npm:0.26.1"
-  checksum: 22e3fbfabdf45d7f7e8e0ff198be6c1f94d1cc16dd68f4c1786436b4583f8f1ef610a3bf0e8e8984c11346791da6ebadbe5b63dd29f2939bdfed7362d277c07b
+"ramda@npm:~0.27.1":
+  version: 0.27.1
+  resolution: "ramda@npm:0.27.1"
+  checksum: 9aa4655dffdca66f8ba2ceabebe51996d6c75f6a2fb901a150885ace22c5950c211dd589868780b7a91c1443771702634d4370e7572d8c63c60e4b4f61aa57a9
   languageName: node
   linkType: hard
 
@@ -18727,7 +18743,7 @@ fsevents@~2.3.1:
     concurrently: ^6.0.0
     eslint: ^7.14.0
     eslint-config-prettier: ^6.15.0
-    eslint-plugin-cypress: ^2.11.2
+    eslint-plugin-cypress: ^2.11.3
     eslint-plugin-jest: ^24.1.3
     eslint-plugin-prettier: ^3.1.4
     eslint-plugin-react: ^7.21.5
