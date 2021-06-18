@@ -162,10 +162,21 @@ export class SongAPI {
       return
     }
 
-    await this.db.execute(sql`
-      UPDATE "song"
-      SET ${sql.join(updatesSql, ', ')}
-      WHERE "id" = ${id}
-    `)
+    try {
+      await this.db.execute(sql`
+        UPDATE "song"
+        SET ${sql.join(updatesSql, ', ')}
+        WHERE "id" = ${id}
+      `)
+    } catch (e) {
+      if (
+        e.message ==
+        'duplicate key value violates unique constraint "song_slug_key"'
+      ) {
+        throw new Error('Could not set slug: slug already in use')
+      }
+
+      throw e
+    }
   }
 }
