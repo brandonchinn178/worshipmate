@@ -3434,23 +3434,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/env@npm:11.0.0":
-  version: 11.0.0
-  resolution: "@next/env@npm:11.0.0"
-  checksum: 4ac590c0364ae52b3c71ad1da94ca79b9362d4a55d2fbcc9476ee02b2647fc00753414e4f60a96df7196b63f69c6cc0d7c41a4c666ecca1d71c84b49dfad6d70
+"@next/env@npm:11.0.1-canary.4":
+  version: 11.0.1-canary.4
+  resolution: "@next/env@npm:11.0.1-canary.4"
+  checksum: 34ccc5cc7ea0d492a91351fd9b7ecc1cc2c9d053631dc2335e4fc0f1fe861fc7f0aa84eae786c7ea772746f460fbe5b5f963a0c171686e7537ba8966fbd5476a
   languageName: node
   linkType: hard
 
-"@next/polyfill-module@npm:11.0.0":
-  version: 11.0.0
-  resolution: "@next/polyfill-module@npm:11.0.0"
-  checksum: 924012624ee10216080074685ed49254a97cf5638abfea47a06121a1a195176ac41c1bb9e5d738e97b0c6feec654008b24f265d8b74569b8c274c91ed81dcca8
+"@next/polyfill-module@npm:11.0.1-canary.4":
+  version: 11.0.1-canary.4
+  resolution: "@next/polyfill-module@npm:11.0.1-canary.4"
+  checksum: 348f66df5d1a0b104269e1055995b6000e27a243e6547c48699bcc5b3686fe384f915b9068817e2c94cc951a5a113bde3504aa5dcda5e6460ca74ef19f40d75f
   languageName: node
   linkType: hard
 
-"@next/react-dev-overlay@npm:11.0.0":
-  version: 11.0.0
-  resolution: "@next/react-dev-overlay@npm:11.0.0"
+"@next/react-dev-overlay@npm:11.0.1-canary.4":
+  version: 11.0.1-canary.4
+  resolution: "@next/react-dev-overlay@npm:11.0.1-canary.4"
   dependencies:
     "@babel/code-frame": 7.12.11
     anser: 1.4.9
@@ -3466,20 +3466,20 @@ __metadata:
   peerDependencies:
     react: ^17.0.2
     react-dom: ^17.0.2
-  checksum: 3705d28ca7567cfee17ee17dd287ffdad1905e4425f5b08748a09dc5b63434e9d990602075bb4a9e5efb610f2f0f79d7db36a484459bfa133774cb5b3f0f33fa
+  checksum: c37ca7746b805558d641f51fef7a2f3ca67821932a937a3b7b5caf330d0169c8e3e134c9acfbcb412c9afe250a73f9318022d6e092192bab310b632b09e80ca5
   languageName: node
   linkType: hard
 
-"@next/react-refresh-utils@npm:11.0.0":
-  version: 11.0.0
-  resolution: "@next/react-refresh-utils@npm:11.0.0"
+"@next/react-refresh-utils@npm:11.0.1-canary.4":
+  version: 11.0.1-canary.4
+  resolution: "@next/react-refresh-utils@npm:11.0.1-canary.4"
   peerDependencies:
     react-refresh: 0.8.3
     webpack: ^4 || ^5
   peerDependenciesMeta:
     webpack:
       optional: true
-  checksum: 6ab048beb8ed3782713801948d2fc95da282461418259af6f51022c673078848159ca6024f868b37d63d066d3e60033859fa8d247faa149731358c4005d26642
+  checksum: 71390a95386325fa4addac76745c4e6dca0f1bd36d1b4a87b18a1fb70d111e61014dcb8cde3db34640df084b8337578e44965b4181a1ea6eeed3aa2470e631ef
   languageName: node
   linkType: hard
 
@@ -6136,7 +6136,7 @@ __metadata:
     graphql: ^15.4.0
     jest: ^26.6.1
     lodash: ^4.17.20
-    next: ^11.0.0
+    next: 11.0.1-canary.4
     pnp-webpack-plugin: ^1.6.4
     react: ^17.0.2
     react-dom: ^17.0.2
@@ -15659,16 +15659,16 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
-"next@npm:^11.0.0":
-  version: 11.0.0
-  resolution: "next@npm:11.0.0"
+"next@npm:11.0.1-canary.4":
+  version: 11.0.1-canary.4
+  resolution: "next@npm:11.0.1-canary.4"
   dependencies:
     "@babel/runtime": 7.12.5
     "@hapi/accept": 5.0.2
-    "@next/env": 11.0.0
-    "@next/polyfill-module": 11.0.0
-    "@next/react-dev-overlay": 11.0.0
-    "@next/react-refresh-utils": 11.0.0
+    "@next/env": 11.0.1-canary.4
+    "@next/polyfill-module": 11.0.1-canary.4
+    "@next/react-dev-overlay": 11.0.1-canary.4
+    "@next/react-refresh-utils": 11.0.1-canary.4
     assert: 2.0.0
     ast-types: 0.13.2
     browserify-zlib: 0.2.0
@@ -15728,7 +15728,7 @@ fsevents@~2.3.1:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: 0d6dea2ce9775a06266a5b66e4a93d5b227ec7f5b7dabe62256864a904fd44e179ea558b60c08f083fe208024258127aef73b76686d1ba5e513d2ffacc2f555e
+  checksum: 63a7867e3f0a86c2efe520ff9f8cbfe813b7e6f0a061711f76b13e5fdd331786fb841c5e84138278023eb0ea744f2b8e3b46c992639a75a8d39fd615b4fab18c
   languageName: node
   linkType: hard
 
