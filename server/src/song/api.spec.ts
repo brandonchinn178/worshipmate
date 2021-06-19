@@ -3,8 +3,8 @@ import * as _ from 'lodash'
 import { Database } from 'pg-fusion'
 
 import { SongAPI } from './api'
-import { SONG_SELECT_QUERY } from './db'
 import { TimeSignature } from './models'
+import { SONG_SELECT_QUERY } from './sql'
 
 beforeEach(jest.resetAllMocks)
 

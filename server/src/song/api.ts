@@ -1,16 +1,16 @@
 import * as _ from 'lodash'
-import { Database, sql, SqlQuery } from 'pg-fusion'
+import { Database, sql } from 'pg-fusion'
 
 import { camelCaseRow } from '~/utils/db'
 
-import { SONG_SELECT_QUERY, SongSelectResult } from './db'
-import { Artist, SearchFilters, Song, TimeSignature } from './models'
+import { Artist, Song, TimeSignature } from './models'
 import { ArtistRecord, SongRecord } from './schema'
-
-export type SearchOptions = {
-  query?: string
-  filters?: SearchFilters
-}
+import {
+  getSearchCondition,
+  SearchOptions,
+  SONG_SELECT_QUERY,
+  SongSelectResult,
+} from './sql'
 
 export class SongAPI {
   constructor(private readonly db: Database) {}
@@ -18,7 +18,7 @@ export class SongAPI {
   /** Search songs **/
 
   async searchSongs(options?: SearchOptions): Promise<Song[]> {
-    const condition = this.getSearchCondition(options)
+    const condition = getSearchCondition(options)
 
     const songs = await this.db.query<SongSelectResult>(sql`
       ${SONG_SELECT_QUERY}
@@ -45,34 +45,6 @@ export class SongAPI {
     `)
 
     return song && camelCaseRow(song)
-  }
-
-  private getSearchCondition(options: SearchOptions = {}): SqlQuery {
-    const { query, filters = {} } = options
-
-    const conditions = []
-
-    if (query) {
-      conditions.push(sql`"song"."title" ILIKE ${'%' + query + '%'}`)
-    }
-
-    if (filters.recommendedKey) {
-      conditions.push(sql`"song"."recommended_key" = ${filters.recommendedKey}`)
-    }
-
-    if (filters.bpm) {
-      conditions.push(sql`"song"."bpm" = ${filters.bpm}`)
-    }
-
-    if (filters.timeSignature) {
-      const [top, bottom] = filters.timeSignature
-      conditions.push(sql`
-        "song"."time_signature_top" = ${top} AND
-        "song"."time_signature_bottom" = ${bottom}
-      `)
-    }
-
-    return sql.and(conditions)
   }
 
   /** Manage songs **/
