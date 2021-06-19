@@ -103,25 +103,9 @@ export class SongAPI {
       bpm,
     } = song
 
-    let slug = song.slug
-    if (!slug) {
-      slug = _.kebabCase(song.title)
-
-      const takenSlugs = _.map(
-        await this.db.query(sql`
-          SELECT "slug" FROM "song"
-          WHERE "slug" LIKE ${slug + '%'}
-        `),
-        'slug',
-      )
-
-      let slugId = 1
-      const originalSlug = slug
-      while (_.includes(takenSlugs, slug)) {
-        slug = `${originalSlug}-${slugId}`
-        slugId += 1
-      }
-    }
+    const slug =
+      song.slug ??
+      (await this.getAvailableSlug('song', _.kebabCase(song.title)))
 
     const result = await this.db.insert<SongRecord>('song', {
       slug,
@@ -178,5 +162,29 @@ export class SongAPI {
 
       throw e
     }
+  }
+
+  /** Helpers **/
+
+  private async getAvailableSlug(
+    table: string,
+    originalSlug: string,
+  ): Promise<string> {
+    const takenSlugs = _.map(
+      await this.db.query(sql`
+        SELECT "slug" FROM ${sql.quote(table)}
+        WHERE "slug" LIKE ${originalSlug + '%'}
+      `),
+      'slug',
+    )
+
+    let slug = originalSlug
+    let slugId = 1
+    while (_.includes(takenSlugs, slug)) {
+      slug = `${originalSlug}-${slugId}`
+      slugId += 1
+    }
+
+    return slug
   }
 }
