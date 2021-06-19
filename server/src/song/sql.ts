@@ -33,7 +33,7 @@ export type SearchOptions = {
   filters?: SearchFilters
 }
 
-export const getSearchCondition = (options: SearchOptions = {}): SqlQuery => {
+export const getSearchCondition = (options: SearchOptions): SqlQuery => {
   const { query, filters = {} } = options
 
   const conditions = []

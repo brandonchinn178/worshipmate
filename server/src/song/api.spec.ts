@@ -4,7 +4,6 @@ import { Database } from 'pg-fusion'
 
 import { SongAPI } from './api'
 import { TimeSignature } from './models'
-import { SONG_SELECT_QUERY } from './sql'
 
 beforeEach(jest.resetAllMocks)
 
@@ -22,49 +21,6 @@ beforeEach(() => {
 
 describe('SongAPI', () => {
   const songApi = new SongAPI((db as unknown) as Database)
-
-  describe('searchSongs', () => {
-    it('can return all songs', async () => {
-      await songApi.searchSongs()
-      expect(db.query).toHaveBeenCalledWith(
-        expect.sqlMatching(`
-          ${SONG_SELECT_QUERY.text}
-          WHERE TRUE
-          ORDER BY "song"."title"
-        `),
-      )
-    })
-
-    it('can return songs matching a query', async () => {
-      await songApi.searchSongs({ query: 'foo' })
-      expect(db.query).toHaveBeenCalledWith(
-        expect.sqlMatching({
-          text: `
-            ${SONG_SELECT_QUERY.text}
-            WHERE "song"."title" ILIKE $1
-            ORDER BY "song"."title"
-          `,
-          values: ['%foo%'],
-        }),
-      )
-    })
-
-    it('can return songs matching a filter', async () => {
-      await songApi.searchSongs({
-        filters: { recommendedKey: 'A' },
-      })
-      expect(db.query).toHaveBeenCalledWith(
-        expect.sqlMatching({
-          text: `
-            ${SONG_SELECT_QUERY.text}
-            WHERE "song"."recommended_key" = $1
-            ORDER BY "song"."title"
-          `,
-          values: ['A'],
-        }),
-      )
-    })
-  })
 
   describe('getSong', () => {
     it('returns null if song does not exist', async () => {

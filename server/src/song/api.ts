@@ -17,7 +17,7 @@ export class SongAPI {
 
   /** Search songs **/
 
-  async searchSongs(options?: SearchOptions): Promise<Song[]> {
+  async searchSongs(options: SearchOptions = {}): Promise<Song[]> {
     const condition = getSearchCondition(options)
 
     const songs = await this.db.query<SongSelectResult>(sql`
