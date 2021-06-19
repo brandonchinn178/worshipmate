@@ -1,20 +1,44 @@
 import * as fc from 'fast-check'
 import * as _ from 'lodash'
+import { sql } from 'pg-fusion'
 
 import { setupTestDatabase } from '~test-utils/db'
 
 import { SongAPI } from './api'
-import { SongRecord } from './schema'
+import { ArtistRecord, SongRecord } from './schema'
 
 describe('SongAPI', () => {
   const db = setupTestDatabase()
   const songApi = new SongAPI(db)
 
   describe('searchSongs', () => {
+    const allArtists = {
+      allSonsAndDaughters: {
+        id: 1,
+        slug: 'all-sons-and-daughters',
+        name: 'All Sons and Daughters',
+      },
+      bethel: {
+        id: 2,
+        slug: 'bethel-music',
+        name: 'Bethel Music',
+      },
+      housefires: {
+        id: 3,
+        slug: 'housefires',
+        name: 'Housefires',
+      },
+      mattRedman: {
+        id: 4,
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      },
+    }
     const allSongs = [
       {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: allArtists.mattRedman.id,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -23,6 +47,7 @@ describe('SongAPI', () => {
       {
         slug: 'build-my-life',
         title: 'Build My Life',
+        artist: allArtists.housefires.id,
         recommended_key: 'E',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -31,6 +56,7 @@ describe('SongAPI', () => {
       {
         slug: 'ever-be',
         title: 'Ever Be',
+        artist: allArtists.bethel.id,
         recommended_key: 'E',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -39,6 +65,7 @@ describe('SongAPI', () => {
       {
         slug: 'great-are-you-lord',
         title: 'Great Are You Lord',
+        artist: allArtists.allSonsAndDaughters.id,
         recommended_key: 'G',
         time_signature_top: 6,
         time_signature_bottom: 8,
@@ -47,6 +74,7 @@ describe('SongAPI', () => {
     ]
 
     beforeEach(async () => {
+      await db.insertAll('artist', _.values(allArtists))
       await db.insertAll('song', allSongs)
     })
 
@@ -57,6 +85,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'blessed-be-your-name',
           title: 'Blessed Be Your Name',
+          artist: 'Matt Redman',
           recommendedKey: 'A',
           timeSignature: [4, 4],
           bpm: 140,
@@ -65,6 +94,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'build-my-life',
           title: 'Build My Life',
+          artist: 'Housefires',
           recommendedKey: 'E',
           timeSignature: [4, 4],
           bpm: 68,
@@ -73,6 +103,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'ever-be',
           title: 'Ever Be',
+          artist: 'Bethel Music',
           recommendedKey: 'E',
           timeSignature: [4, 4],
           bpm: 72,
@@ -81,6 +112,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'great-are-you-lord',
           title: 'Great Are You Lord',
+          artist: 'All Sons and Daughters',
           recommendedKey: 'G',
           timeSignature: [6, 8],
           bpm: 52,
@@ -98,7 +130,7 @@ describe('SongAPI', () => {
         fc.asyncProperty(
           fc.shuffledSubarray(allSongs, { minLength: allSongs.length }),
           async (songs) => {
-            await db.clear()
+            await db.execute(sql`TRUNCATE TABLE "song"`)
             await db.insertAll('song', songs)
             const result = await songApi.searchSongs()
             expect(result).toMatchObject(songTitlesInOrder)
@@ -147,10 +179,15 @@ describe('SongAPI', () => {
   })
 
   describe('getSong', () => {
-    const createSong = () => {
+    const createSong = async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
       return db.insert<SongRecord>('song', {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: artist.id,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -165,6 +202,7 @@ describe('SongAPI', () => {
         id,
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: 'Matt Redman',
         recommendedKey: 'A',
         timeSignature: [4, 4],
         bpm: 140,
@@ -181,6 +219,7 @@ describe('SongAPI', () => {
     it('can create a song', async () => {
       const song = {
         title: 'Blessed Be Your Name',
+        artist: 'Matt Redman',
         recommendedKey: 'A',
         timeSignature: [4, 4] as [number, number],
         bpm: 140,
@@ -196,6 +235,7 @@ describe('SongAPI', () => {
     it('can create a song with unique slug', async () => {
       const song = {
         title: 'Blessed Be Your Name',
+        artist: 'Matt Redman',
         recommendedKey: 'A',
         timeSignature: [4, 4] as [number, number],
         bpm: 140,
@@ -215,6 +255,7 @@ describe('SongAPI', () => {
       const song = {
         slug: 'my-custom-slug',
         title: 'Blessed Be Your Name',
+        artist: 'Matt Redman',
         recommendedKey: 'A',
         timeSignature: [4, 4] as [number, number],
         bpm: 140,
@@ -229,6 +270,7 @@ describe('SongAPI', () => {
       const song = {
         slug: 'my-custom-slug',
         title: 'Blessed Be Your Name',
+        artist: 'Matt Redman',
         recommendedKey: 'A',
         timeSignature: [4, 4] as [number, number],
         bpm: 140,
@@ -240,10 +282,15 @@ describe('SongAPI', () => {
   })
 
   describe('updateSong', () => {
-    const createSong = () => {
+    const createSong = async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
       return db.insert<SongRecord>('song', {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: artist.id,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -295,8 +342,13 @@ describe('SongAPI', () => {
     })
 
     it('throws helpful error when setting duplicate slug', async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
       const song = {
         title: 'Blessed Be Your Name',
+        artist: artist.id,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,

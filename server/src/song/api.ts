@@ -1,8 +1,11 @@
 import * as _ from 'lodash'
 import { Database, sql, SqlQuery } from 'pg-fusion'
 
-import { SearchFilters, Song, TimeSignature } from './models'
-import { SongRecord } from './schema'
+import { camelCaseRow } from '~/utils/db'
+
+import { SONG_SELECT_QUERY, SongSelectResult } from './db'
+import { Artist, SearchFilters, Song, TimeSignature } from './models'
+import { ArtistRecord, SongRecord } from './schema'
 
 export type SearchOptions = {
   query?: string
@@ -17,31 +20,31 @@ export class SongAPI {
   async searchSongs(options?: SearchOptions): Promise<Song[]> {
     const condition = this.getSearchCondition(options)
 
-    const songs = await this.db.query<SongRecord>(sql`
-      SELECT * FROM "song"
+    const songs = await this.db.query<SongSelectResult>(sql`
+      ${SONG_SELECT_QUERY}
       WHERE ${condition}
       ORDER BY "song"."title"
     `)
 
-    return songs.map(this.fromSongRecord)
+    return _.map(songs, camelCaseRow)
   }
 
   async getSong(id: number): Promise<Song | null> {
-    const song = await this.db.queryOne<SongRecord>(sql`
-      SELECT * FROM "song"
+    const song = await this.db.queryOne<SongSelectResult>(sql`
+      ${SONG_SELECT_QUERY}
       WHERE "song"."id" = ${id}
     `)
 
-    return song && this.fromSongRecord(song)
+    return song && camelCaseRow(song)
   }
 
   async getSongBySlug(slug: string): Promise<Song | null> {
-    const song = await this.db.queryOne<SongRecord>(sql`
-      SELECT * FROM "song"
+    const song = await this.db.queryOne<SongSelectResult>(sql`
+      ${SONG_SELECT_QUERY}
       WHERE "song"."slug" = ${slug}
     `)
 
-    return song && this.fromSongRecord(song)
+    return song && camelCaseRow(song)
   }
 
   private getSearchCondition(options: SearchOptions = {}): SqlQuery {
@@ -77,31 +80,39 @@ export class SongAPI {
   async createSong(song: {
     slug?: string
     title: string
+    artist: string
     recommendedKey: string
     timeSignature: TimeSignature
     bpm: number
   }): Promise<Song> {
-    const {
-      title,
-      recommendedKey: recommended_key,
-      timeSignature: [time_signature_top, time_signature_bottom],
-      bpm,
-    } = song
+    const artist = await this.getOrCreateArtist(song.artist)
 
     const slug =
       song.slug ??
       (await this.getAvailableSlug('song', _.kebabCase(song.title)))
 
-    const result = await this.db.insert<SongRecord>('song', {
-      slug,
-      title,
-      recommended_key,
+    const {
       time_signature_top,
       time_signature_bottom,
-      bpm,
+      ...createdSong
+    } = await this.db.insert<SongRecord>('song', {
+      slug,
+      title: song.title,
+      artist: artist.id,
+      recommended_key: song.recommendedKey,
+      time_signature_top: song.timeSignature[0],
+      time_signature_bottom: song.timeSignature[1],
+      bpm: song.bpm,
     })
 
-    return this.fromSongRecord(result)
+    return camelCaseRow({
+      ...createdSong,
+      artist: artist.name,
+      timeSignature: [
+        time_signature_top,
+        time_signature_bottom,
+      ] as TimeSignature,
+    })
   }
 
   async updateSong(
@@ -149,6 +160,26 @@ export class SongAPI {
     }
   }
 
+  /** Artists **/
+
+  async getOrCreateArtist(name: string): Promise<Artist> {
+    const existingArtist = await this.db.queryOne<ArtistRecord>(sql`
+      SELECT * FROM "artist"
+      WHERE "name" = ${name}
+    `)
+
+    if (existingArtist) {
+      return existingArtist
+    }
+
+    const slug = await this.getAvailableSlug('artist', _.kebabCase(name))
+
+    return this.db.insert<ArtistRecord>('artist', {
+      slug,
+      name,
+    })
+  }
+
   /** Helpers **/
 
   private async getAvailableSlug(
@@ -171,20 +202,5 @@ export class SongAPI {
     }
 
     return slug
-  }
-
-  private fromSongRecord(record: SongRecord): Song {
-    const {
-      recommended_key,
-      time_signature_top,
-      time_signature_bottom,
-      ...song
-    } = record
-
-    return {
-      ...song,
-      recommendedKey: recommended_key,
-      timeSignature: [time_signature_top, time_signature_bottom],
-    }
   }
 }

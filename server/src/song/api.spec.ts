@@ -3,6 +3,7 @@ import * as _ from 'lodash'
 import { Database } from 'pg-fusion'
 
 import { SongAPI } from './api'
+import { SONG_SELECT_QUERY } from './db'
 import { TimeSignature } from './models'
 
 beforeEach(jest.resetAllMocks)
@@ -27,7 +28,7 @@ describe('SongAPI', () => {
       await songApi.searchSongs()
       expect(db.query).toHaveBeenCalledWith(
         expect.sqlMatching(`
-          SELECT * FROM "song"
+          ${SONG_SELECT_QUERY.text}
           WHERE TRUE
           ORDER BY "song"."title"
         `),
@@ -39,7 +40,7 @@ describe('SongAPI', () => {
       expect(db.query).toHaveBeenCalledWith(
         expect.sqlMatching({
           text: `
-            SELECT * FROM "song"
+            ${SONG_SELECT_QUERY.text}
             WHERE "song"."title" ILIKE $1
             ORDER BY "song"."title"
           `,
@@ -55,37 +56,13 @@ describe('SongAPI', () => {
       expect(db.query).toHaveBeenCalledWith(
         expect.sqlMatching({
           text: `
-            SELECT * FROM "song"
+            ${SONG_SELECT_QUERY.text}
             WHERE "song"."recommended_key" = $1
             ORDER BY "song"."title"
           `,
           values: ['A'],
         }),
       )
-    })
-
-    it('converts song record to song model', async () => {
-      const songRecord = {
-        id: 1,
-        slug: 'blessed-be-your-name',
-        title: 'Blessed Be Your Name',
-        recommended_key: 'A',
-        time_signature_top: 4,
-        time_signature_bottom: 4,
-        bpm: 140,
-      }
-
-      const songModel = {
-        id: 1,
-        slug: 'blessed-be-your-name',
-        title: 'Blessed Be Your Name',
-        recommendedKey: 'A',
-        timeSignature: [4, 4],
-        bpm: 140,
-      }
-
-      db.query.mockResolvedValue([songRecord])
-      await expect(songApi.searchSongs()).resolves.toEqual([songModel])
     })
   })
 
@@ -94,30 +71,6 @@ describe('SongAPI', () => {
       db.queryOne.mockResolvedValue(null)
       await expect(songApi.getSong(1)).resolves.toBeNull()
     })
-
-    it('converts song record to song model', async () => {
-      const songRecord = {
-        id: 1,
-        slug: 'blessed-be-your-name',
-        title: 'Blessed Be Your Name',
-        recommended_key: 'A',
-        time_signature_top: 4,
-        time_signature_bottom: 4,
-        bpm: 140,
-      }
-
-      const songModel = {
-        id: 1,
-        slug: 'blessed-be-your-name',
-        title: 'Blessed Be Your Name',
-        recommendedKey: 'A',
-        timeSignature: [4, 4],
-        bpm: 140,
-      }
-
-      db.queryOne.mockResolvedValue(songRecord)
-      await expect(songApi.getSong(1)).resolves.toEqual(songModel)
-    })
   })
 
   describe('createSong', () => {
@@ -125,6 +78,7 @@ describe('SongAPI', () => {
       const fcSong = fc.record({
         slug: fc.string({ minLength: 1 }),
         title: fc.string(),
+        artist: fc.string(),
         recommendedKey: fc.string(),
         timeSignature: fc.tuple(fc.nat(), fc.nat()),
         bpm: fc.nat(),
@@ -146,6 +100,7 @@ describe('SongAPI', () => {
     it('builds a slug from the title', async () => {
       await songApi.createSong({
         title: 'Song title here',
+        artist: 'Human',
         recommendedKey: 'A',
         timeSignature: [4, 4],
         bpm: 140,
@@ -170,6 +125,7 @@ describe('SongAPI', () => {
 
           await songApi.createSong({
             title: 'Song title here',
+            artist: 'Human',
             recommendedKey: 'A',
             timeSignature: [4, 4],
             bpm: 140,
@@ -190,6 +146,7 @@ describe('SongAPI', () => {
         id: 1,
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: 1,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -200,11 +157,17 @@ describe('SongAPI', () => {
         id: 1,
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: 'Matt Redman',
         recommendedKey: 'A',
         timeSignature: [4, 4] as TimeSignature,
         bpm: 140,
       }
 
+      jest.spyOn(songApi, 'getOrCreateArtist').mockResolvedValue({
+        id: 1,
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
       db.insert.mockResolvedValue(songRecord)
 
       await expect(songApi.createSong(songModel)).resolves.toEqual(songModel)
