@@ -9,21 +9,6 @@ export type SearchOptions = {
   filters?: SearchFilters
 }
 
-const fromRecord = (record: SongRecord): Song => {
-  const {
-    recommended_key,
-    time_signature_top,
-    time_signature_bottom,
-    ...song
-  } = record
-
-  return {
-    ...song,
-    recommendedKey: recommended_key,
-    timeSignature: [time_signature_top, time_signature_bottom],
-  }
-}
-
 export class SongAPI {
   constructor(private readonly db: Database) {}
 
@@ -38,7 +23,7 @@ export class SongAPI {
       ORDER BY "song"."title"
     `)
 
-    return songs.map(fromRecord)
+    return songs.map(this.fromSongRecord)
   }
 
   async getSong(id: number): Promise<Song | null> {
@@ -47,7 +32,7 @@ export class SongAPI {
       WHERE "song"."id" = ${id}
     `)
 
-    return song && fromRecord(song)
+    return song && this.fromSongRecord(song)
   }
 
   async getSongBySlug(slug: string): Promise<Song | null> {
@@ -56,7 +41,7 @@ export class SongAPI {
       WHERE "song"."slug" = ${slug}
     `)
 
-    return song && fromRecord(song)
+    return song && this.fromSongRecord(song)
   }
 
   private getSearchCondition(options: SearchOptions = {}): SqlQuery {
@@ -116,7 +101,7 @@ export class SongAPI {
       bpm,
     })
 
-    return fromRecord(result)
+    return this.fromSongRecord(result)
   }
 
   async updateSong(
@@ -186,5 +171,20 @@ export class SongAPI {
     }
 
     return slug
+  }
+
+  private fromSongRecord(record: SongRecord): Song {
+    const {
+      recommended_key,
+      time_signature_top,
+      time_signature_bottom,
+      ...song
+    } = record
+
+    return {
+      ...song,
+      recommendedKey: recommended_key,
+      timeSignature: [time_signature_top, time_signature_bottom],
+    }
   }
 }
