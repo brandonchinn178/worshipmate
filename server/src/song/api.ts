@@ -136,11 +136,7 @@ export class SongAPI {
   /** Artists **/
 
   async getOrCreateArtist(name: string): Promise<Artist> {
-    const existingArtist = await this.db.queryOne<ArtistRecord>(sql`
-      SELECT * FROM "artist"
-      WHERE "name" = ${name}
-    `)
-
+    const existingArtist = await this.getArtistByName(name)
     if (existingArtist) {
       return existingArtist
     }
@@ -151,6 +147,13 @@ export class SongAPI {
       slug,
       name,
     })
+  }
+
+  getArtistByName(name: string): Promise<Artist | null> {
+    return this.db.queryOne<ArtistRecord>(sql`
+      SELECT * FROM "artist"
+      WHERE "name" = ${name}
+    `)
   }
 
   /** Helpers **/

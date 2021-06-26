@@ -5,7 +5,7 @@ import { Database } from 'pg-fusion'
 import { mkMock } from '~test-utils/mock'
 
 import { SongAPI } from './api'
-import { TimeSignature } from './models'
+import { Artist, TimeSignature } from './models'
 
 const db = {
   query: jest.fn(),
@@ -146,6 +146,38 @@ describe('SongAPI', () => {
         expect.sqlMatching({
           text: 'UPDATE "song" SET "title" = $1, "bpm" = $2 WHERE "id" = $3',
           values: ['foo', 100, 1],
+        }),
+      )
+    })
+  })
+
+  describe('getOrCreateArtist', () => {
+    it('returns existing artist', async () => {
+      await fc.assert(
+        fc.asyncProperty(fc.string(), async (name) => {
+          const artist = { name } as Artist
+          jest.spyOn(songApi, 'getArtistByName').mockResolvedValue(artist)
+
+          await expect(songApi.getOrCreateArtist(name)).resolves.toBe(artist)
+          expect(songApi.getArtistByName).toHaveBeenCalledWith(name)
+          expect(db.insert).not.toHaveBeenCalled()
+        }),
+      )
+    })
+
+    it('creates new artist', async () => {
+      await fc.assert(
+        fc.asyncProperty(fc.string(), async (name) => {
+          const artist = { name } as Artist
+          jest.spyOn(songApi, 'getArtistByName').mockResolvedValue(null)
+          db.insert.mockResolvedValue(artist)
+
+          await expect(songApi.getOrCreateArtist(name)).resolves.toBe(artist)
+          expect(songApi.getArtistByName).toHaveBeenCalledWith(name)
+          expect(db.insert).toHaveBeenCalledWith(
+            'artist',
+            expect.objectContaining(artist),
+          )
         }),
       )
     })

@@ -373,4 +373,38 @@ describe('SongAPI', () => {
       ).rejects.toThrow('Could not set slug: slug already in use')
     })
   })
+
+  describe('getOrCreateArtist', () => {
+    it('returns existing artist', async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
+      await expect(songApi.getOrCreateArtist(artist.name)).resolves.toEqual(
+        artist,
+      )
+    })
+
+    it('creates new artist', async () => {
+      await expect(
+        songApi.getOrCreateArtist('Matt Redman'),
+      ).resolves.toMatchObject({ name: 'Matt Redman' })
+    })
+  })
+
+  describe('getArtistByName', () => {
+    it('returns artist if exists', async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
+      await expect(songApi.getArtistByName(artist.name)).resolves.toEqual(
+        artist,
+      )
+    })
+
+    it('returns null if artist does not exist', async () => {
+      await expect(songApi.getArtistByName('Matt Redman')).resolves.toBeNull()
+    })
+  })
 })
