@@ -44,8 +44,6 @@ const mockFilterHandler = {
   removeFilter: jest.fn(),
 }
 
-beforeEach(jest.resetAllMocks)
-
 it('renders filters', () => {
   renderUI(
     <SongFilterPanel

@@ -7,8 +7,6 @@ import { mkMock } from '~test-utils/mock'
 import { SongAPI } from './api'
 import { TimeSignature } from './models'
 
-beforeEach(jest.resetAllMocks)
-
 const db = {
   query: jest.fn(),
   queryOne: jest.fn(),

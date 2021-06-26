@@ -12,4 +12,7 @@ module.exports = {
     'react-select': '<rootDir>/jest/reactSelectMock',
   },
   setupFilesAfterEnv: ['<rootDir>/jest/setup.tsx'],
+  clearMocks: true,
+  resetMocks: true,
+  restoreMocks: true,
 }
