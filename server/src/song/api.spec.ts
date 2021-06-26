@@ -2,6 +2,8 @@ import * as fc from 'fast-check'
 import * as _ from 'lodash'
 import { Database } from 'pg-fusion'
 
+import { mkMock } from '~test-utils/mock'
+
 import { SongAPI } from './api'
 import { TimeSignature } from './models'
 
@@ -113,7 +115,7 @@ describe('SongAPI', () => {
         id: 1,
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
-        artist: 'Matt Redman',
+        artistId: 1,
         recommendedKey: 'A',
         timeSignature: [4, 4] as TimeSignature,
         bpm: 140,
@@ -126,7 +128,8 @@ describe('SongAPI', () => {
       })
       db.insert.mockResolvedValue(songRecord)
 
-      await expect(songApi.createSong(songModel)).resolves.toEqual(songModel)
+      const mock = mkMock()
+      await expect(songApi.createSong(mock)).resolves.toEqual(songModel)
     })
   })
 

@@ -2,7 +2,7 @@ export type Song = {
   id: number
   slug: string
   title: string
-  artist: string
+  artistId: number
   recommendedKey: string
   timeSignature: TimeSignature
   bpm: number

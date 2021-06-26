@@ -6,7 +6,7 @@ export type SongSelectResult = {
   id: number
   slug: string
   title: string
-  artist: string
+  artist_id: number
   recommended_key: string
   time_signature: [number, number]
   bpm: number
@@ -17,7 +17,7 @@ export const SONG_SELECT_QUERY = sql`
     "song"."id",
     "song"."slug",
     "song"."title",
-    "artist"."name" AS artist,
+    "artist"."id" AS artist_id,
     "song"."recommended_key",
     ARRAY[
       "song"."time_signature_top",

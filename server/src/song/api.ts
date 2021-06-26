@@ -66,6 +66,7 @@ export class SongAPI {
     const {
       time_signature_top,
       time_signature_bottom,
+      artist: artistId,
       ...createdSong
     } = await this.db.insert<SongRecord>('song', {
       slug,
@@ -79,7 +80,7 @@ export class SongAPI {
 
     return camelCaseRow({
       ...createdSong,
-      artist: artist.name,
+      artistId,
       timeSignature: [
         time_signature_top,
         time_signature_bottom,

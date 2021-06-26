@@ -85,7 +85,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'blessed-be-your-name',
           title: 'Blessed Be Your Name',
-          artist: 'Matt Redman',
+          artistId: allArtists.mattRedman.id,
           recommendedKey: 'A',
           timeSignature: [4, 4],
           bpm: 140,
@@ -94,7 +94,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'build-my-life',
           title: 'Build My Life',
-          artist: 'Housefires',
+          artistId: allArtists.housefires.id,
           recommendedKey: 'E',
           timeSignature: [4, 4],
           bpm: 68,
@@ -103,7 +103,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'ever-be',
           title: 'Ever Be',
-          artist: 'Bethel Music',
+          artistId: allArtists.bethel.id,
           recommendedKey: 'E',
           timeSignature: [4, 4],
           bpm: 72,
@@ -112,7 +112,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'great-are-you-lord',
           title: 'Great Are You Lord',
-          artist: 'All Sons and Daughters',
+          artistId: allArtists.allSonsAndDaughters.id,
           recommendedKey: 'G',
           timeSignature: [6, 8],
           bpm: 52,
@@ -196,13 +196,13 @@ describe('SongAPI', () => {
     }
 
     it('loads a song', async () => {
-      const { id } = await createSong()
+      const { id, artist } = await createSong()
       const song = await songApi.getSong(id)
       expect(song).toEqual({
         id,
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
-        artist: 'Matt Redman',
+        artistId: artist,
         recommendedKey: 'A',
         timeSignature: [4, 4],
         bpm: 140,
@@ -219,15 +219,20 @@ describe('SongAPI', () => {
     it('can create a song', async () => {
       const song = {
         title: 'Blessed Be Your Name',
-        artist: 'Matt Redman',
         recommendedKey: 'A',
         timeSignature: [4, 4] as [number, number],
         bpm: 140,
       }
 
-      expect(await songApi.createSong(song)).toMatchObject({
+      expect(
+        await songApi.createSong({
+          ...song,
+          artist: 'Matt Redman',
+        }),
+      ).toMatchObject({
         id: expect.any(Number),
         slug: 'blessed-be-your-name',
+        artistId: expect.any(Number),
         ...song,
       })
     })
