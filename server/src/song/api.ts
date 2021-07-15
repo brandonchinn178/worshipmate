@@ -42,21 +42,21 @@ export class SongAPI {
   }
 
   async getSong(id: number): Promise<Song | null> {
-    const [song] = await this.db.query<SongRecord>(sql`
+    const song = await this.db.queryOne<SongRecord>(sql`
       SELECT * FROM "song"
       WHERE "song"."id" = ${id}
     `)
 
-    return song ? fromRecord(song) : null
+    return song && fromRecord(song)
   }
 
   async getSongBySlug(slug: string): Promise<Song | null> {
-    const [song] = await this.db.query<SongRecord>(sql`
+    const song = await this.db.queryOne<SongRecord>(sql`
       SELECT * FROM "song"
       WHERE "song"."slug" = ${slug}
     `)
 
-    return song ? fromRecord(song) : null
+    return song && fromRecord(song)
   }
 
   private getSearchCondition(options: SearchOptions = {}): SqlQuery {
