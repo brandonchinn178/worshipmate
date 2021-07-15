@@ -284,6 +284,20 @@ describe('SongAPI', () => {
       await songApi.createSong(song)
       await expect(songApi.createSong(song)).rejects.toThrow()
     })
+
+    it('reuses existing artist', async () => {
+      const song = {
+        title: 'foo',
+        artist: 'my artist',
+        recommendedKey: 'A',
+        timeSignature: [4, 4] as [number, number],
+        bpm: 140,
+      }
+
+      const song1 = await songApi.createSong(song)
+      const song2 = await songApi.createSong(song)
+      expect(song1.artistId).toBe(song2.artistId)
+    })
   })
 
   describe('updateSong', () => {
