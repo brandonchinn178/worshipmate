@@ -25,6 +25,7 @@
     "lodash": "^4.17.20",
     "node-pg-migrate": "^5.8.1",
     "pg-fusion": "^0.3.0",
+    "type-fest": "^1.2.2",
     "yup": "^0.32.1"
   },
   "devDependencies": {
