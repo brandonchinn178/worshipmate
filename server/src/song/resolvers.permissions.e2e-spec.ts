@@ -15,6 +15,7 @@ describe('addSong', () => {
   const variables = {
     data: {
       title: 'Blessed Be Your Name',
+      artist: 'Matt Redman',
       recommendedKey: 'A',
       timeSignature: [4, 4],
       bpm: 140,

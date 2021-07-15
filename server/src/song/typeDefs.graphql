@@ -2,12 +2,19 @@ type Song {
   id: ID!
   slug: String!
   title: String!
+  artist: Artist!
   recommendedKey: String!
   timeSignature: TimeSignature!
   bpm: Int!
 }
 
 scalar TimeSignature
+
+type Artist {
+  id: ID!
+  slug: String!
+  name: String!
+}
 
 ## Search filters ##
 
@@ -31,6 +38,7 @@ input AddSongInput {
   "If a slug is not provided, a default one will be generated from the title."
   slug: String
   title: String!
+  artist: String!
   recommendedKey: String!
   timeSignature: TimeSignature!
   bpm: Int!

@@ -54,9 +54,17 @@ export type Song = {
   id: Scalars['ID']
   slug: Scalars['String']
   title: Scalars['String']
+  artist: Artist
   recommendedKey: Scalars['String']
   timeSignature: Scalars['TimeSignature']
   bpm: Scalars['Int']
+}
+
+export type Artist = {
+  __typename?: 'Artist'
+  id: Scalars['ID']
+  slug: Scalars['String']
+  name: Scalars['String']
 }
 
 export type SearchFilters = {
@@ -69,6 +77,7 @@ export type AddSongInput = {
   /** If a slug is not provided, a default one will be generated from the title. */
   slug?: Maybe<Scalars['String']>
   title: Scalars['String']
+  artist: Scalars['String']
   recommendedKey: Scalars['String']
   timeSignature: Scalars['TimeSignature']
   bpm: Scalars['Int']
