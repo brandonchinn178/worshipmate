@@ -26,9 +26,9 @@ describe('UserAPI', () => {
       await fc.assert(
         fc.asyncProperty(fcName, async (name) => {
           await db.clear()
-          await db.insertAll('user', [{ name }])
+          await db.insert('user', { name })
 
-          const { count: before } = await db.queryOne(sql`
+          const { count: before } = await db.querySingle(sql`
             SELECT COUNT(*) FROM "user"
           `)
 
@@ -36,7 +36,7 @@ describe('UserAPI', () => {
           const user = await userApi.getOrCreate(name)
           expect(user).toMatchObject({ name })
 
-          const { count: after } = await db.queryOne(sql`
+          const { count: after } = await db.querySingle(sql`
             SELECT COUNT(*) FROM "user"
           `)
           expect(after).toEqual(before)

@@ -9,6 +9,7 @@ beforeEach(jest.resetAllMocks)
 
 const db = {
   query: jest.fn(),
+  queryOne: jest.fn(),
   insert: jest.fn(),
   execute: jest.fn(),
 }
@@ -90,7 +91,7 @@ describe('SongAPI', () => {
 
   describe('getSong', () => {
     it('returns null if song does not exist', async () => {
-      db.query.mockResolvedValue([])
+      db.queryOne.mockResolvedValue(null)
       await expect(songApi.getSong(1)).resolves.toBeNull()
     })
 
@@ -114,7 +115,7 @@ describe('SongAPI', () => {
         bpm: 140,
       }
 
-      db.query.mockResolvedValue([songRecord])
+      db.queryOne.mockResolvedValue(songRecord)
       await expect(songApi.getSong(1)).resolves.toEqual(songModel)
     })
   })
