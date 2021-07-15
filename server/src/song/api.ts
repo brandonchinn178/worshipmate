@@ -93,6 +93,7 @@ export class SongAPI {
     updates: {
       slug?: string
       title?: string
+      artist?: string
       recommendedKey?: string
       timeSignature?: TimeSignature
       bpm?: number
@@ -110,6 +111,11 @@ export class SongAPI {
         `,
       updates.bpm && sql`"bpm" = ${updates.bpm}`,
     ])
+
+    if (updates.artist) {
+      const artist = await this.getOrCreateArtist(updates.artist)
+      updatesSql.push(sql`"artist" = ${artist.id}`)
+    }
 
     if (updatesSql.length === 0) {
       return

@@ -360,6 +360,35 @@ describe('SongAPI', () => {
       })
     })
 
+    it('can update to an existing artist', async () => {
+      const song = await createSong()
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'other-artist',
+        name: 'Other Artist',
+      })
+
+      await songApi.updateSong(song.id, { artist: artist.name })
+      await expect(songApi.getSong(song.id)).resolves.toMatchObject({
+        artistId: artist.id,
+      })
+    })
+
+    it('can update to a new artist', async () => {
+      const artistName = 'New artist'
+
+      const { id: songId } = await createSong()
+      await songApi.updateSong(songId, { artist: artistName })
+
+      const song = await songApi.getSong(songId)
+      if (!song) {
+        throw new Error('unexpectedly could not find song')
+      }
+
+      await expect(songApi.getArtistForSong(song)).resolves.toMatchObject({
+        name: artistName,
+      })
+    })
+
     it('throws helpful error when setting duplicate slug', async () => {
       const artist = await db.insert<ArtistRecord>('artist', {
         slug: 'matt-redman',

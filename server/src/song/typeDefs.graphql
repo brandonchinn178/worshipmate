@@ -47,6 +47,7 @@ input AddSongInput {
 input UpdateSongInput {
   slug: String
   title: String
+  artist: String
   recommendedKey: String
   timeSignature: TimeSignature
   bpm: Int
