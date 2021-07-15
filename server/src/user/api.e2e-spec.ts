@@ -26,7 +26,7 @@ describe('UserAPI', () => {
       await fc.assert(
         fc.asyncProperty(fcName, async (name) => {
           await db.clear()
-          await db.insertAll('user', [{ name }])
+          await db.insert('user', { name })
 
           const { count: before } = await db.querySingle(sql`
             SELECT COUNT(*) FROM "user"
