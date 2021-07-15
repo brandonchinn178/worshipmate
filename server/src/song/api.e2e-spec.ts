@@ -392,6 +392,30 @@ describe('SongAPI', () => {
     })
   })
 
+  describe('getArtistForSong', () => {
+    it('gets the artist for the given song', async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
+      const { id: songId } = await db.insert<SongRecord>('song', {
+        slug: 'blessed-be-your-name',
+        title: 'Blessed Be Your Name',
+        artist: artist.id,
+        recommended_key: 'A',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 140,
+      })
+
+      const song = await songApi.getSong(songId)
+      if (!song) {
+        throw new Error('unexpectedly could not find song')
+      }
+      await expect(songApi.getArtistForSong(song)).resolves.toEqual(artist)
+    })
+  })
+
   describe('getArtistByName', () => {
     it('returns artist if exists', async () => {
       const artist = await db.insert<ArtistRecord>('artist', {

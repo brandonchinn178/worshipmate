@@ -149,6 +149,13 @@ export class SongAPI {
     })
   }
 
+  getArtistForSong(song: Song): Promise<Artist> {
+    return this.db.querySingle<ArtistRecord>(sql`
+      SELECT * FROM "artist"
+      WHERE "id" = ${song.artistId}
+    `)
+  }
+
   getArtistByName(name: string): Promise<Artist | null> {
     return this.db.queryOne<ArtistRecord>(sql`
       SELECT * FROM "artist"
