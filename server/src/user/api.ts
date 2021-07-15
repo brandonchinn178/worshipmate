@@ -11,7 +11,7 @@ export class UserAPI {
       onConflict: 'ignore',
     })
 
-    const user = await this.db.queryOne<UserRecord>(sql`
+    const user = await this.db.querySingle<UserRecord>(sql`
       SELECT * FROM "user"
       WHERE "name" = ${name}
     `)
