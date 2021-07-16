@@ -17,7 +17,7 @@ export const prepopulateDB = async (db: Database) => {
     [
       {
         slug: 'all-sons-and-daughters',
-        name: 'All Songs and Daughters',
+        name: 'All Sons and Daughters',
       },
       {
         slug: 'bethel-music',
