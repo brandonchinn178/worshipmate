@@ -28,4 +28,7 @@ module.exports = {
     }),
   },
   setupFilesAfterEnv: ['<rootDir>/jest/setup.ts'],
+  clearMocks: true,
+  resetMocks: true,
+  restoreMocks: true,
 }

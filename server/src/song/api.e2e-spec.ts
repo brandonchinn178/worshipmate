@@ -1,20 +1,44 @@
 import * as fc from 'fast-check'
 import * as _ from 'lodash'
+import { sql } from 'pg-fusion'
 
 import { setupTestDatabase } from '~test-utils/db'
 
 import { SongAPI } from './api'
-import { SongRecord } from './schema'
+import { ArtistRecord, SongRecord } from './schema'
 
 describe('SongAPI', () => {
   const db = setupTestDatabase()
   const songApi = new SongAPI(db)
 
   describe('searchSongs', () => {
+    const allArtists = {
+      allSonsAndDaughters: {
+        id: 1,
+        slug: 'all-sons-and-daughters',
+        name: 'All Sons and Daughters',
+      },
+      bethel: {
+        id: 2,
+        slug: 'bethel-music',
+        name: 'Bethel Music',
+      },
+      housefires: {
+        id: 3,
+        slug: 'housefires',
+        name: 'Housefires',
+      },
+      mattRedman: {
+        id: 4,
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      },
+    }
     const allSongs = [
       {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: allArtists.mattRedman.id,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -23,6 +47,7 @@ describe('SongAPI', () => {
       {
         slug: 'build-my-life',
         title: 'Build My Life',
+        artist: allArtists.housefires.id,
         recommended_key: 'E',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -31,6 +56,7 @@ describe('SongAPI', () => {
       {
         slug: 'ever-be',
         title: 'Ever Be',
+        artist: allArtists.bethel.id,
         recommended_key: 'E',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -39,6 +65,7 @@ describe('SongAPI', () => {
       {
         slug: 'great-are-you-lord',
         title: 'Great Are You Lord',
+        artist: allArtists.allSonsAndDaughters.id,
         recommended_key: 'G',
         time_signature_top: 6,
         time_signature_bottom: 8,
@@ -47,6 +74,7 @@ describe('SongAPI', () => {
     ]
 
     beforeEach(async () => {
+      await db.insertAll('artist', _.values(allArtists))
       await db.insertAll('song', allSongs)
     })
 
@@ -57,6 +85,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'blessed-be-your-name',
           title: 'Blessed Be Your Name',
+          artistId: allArtists.mattRedman.id,
           recommendedKey: 'A',
           timeSignature: [4, 4],
           bpm: 140,
@@ -65,6 +94,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'build-my-life',
           title: 'Build My Life',
+          artistId: allArtists.housefires.id,
           recommendedKey: 'E',
           timeSignature: [4, 4],
           bpm: 68,
@@ -73,6 +103,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'ever-be',
           title: 'Ever Be',
+          artistId: allArtists.bethel.id,
           recommendedKey: 'E',
           timeSignature: [4, 4],
           bpm: 72,
@@ -81,6 +112,7 @@ describe('SongAPI', () => {
           id: expect.any(Number),
           slug: 'great-are-you-lord',
           title: 'Great Are You Lord',
+          artistId: allArtists.allSonsAndDaughters.id,
           recommendedKey: 'G',
           timeSignature: [6, 8],
           bpm: 52,
@@ -98,7 +130,7 @@ describe('SongAPI', () => {
         fc.asyncProperty(
           fc.shuffledSubarray(allSongs, { minLength: allSongs.length }),
           async (songs) => {
-            await db.clear()
+            await db.execute(sql`TRUNCATE TABLE "song"`)
             await db.insertAll('song', songs)
             const result = await songApi.searchSongs()
             expect(result).toMatchObject(songTitlesInOrder)
@@ -147,10 +179,15 @@ describe('SongAPI', () => {
   })
 
   describe('getSong', () => {
-    const createSong = () => {
+    const createSong = async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
       return db.insert<SongRecord>('song', {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: artist.id,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -159,12 +196,13 @@ describe('SongAPI', () => {
     }
 
     it('loads a song', async () => {
-      const { id } = await createSong()
+      const { id, artist } = await createSong()
       const song = await songApi.getSong(id)
       expect(song).toEqual({
         id,
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artistId: artist,
         recommendedKey: 'A',
         timeSignature: [4, 4],
         bpm: 140,
@@ -186,9 +224,15 @@ describe('SongAPI', () => {
         bpm: 140,
       }
 
-      expect(await songApi.createSong(song)).toMatchObject({
+      expect(
+        await songApi.createSong({
+          ...song,
+          artist: 'Matt Redman',
+        }),
+      ).toMatchObject({
         id: expect.any(Number),
         slug: 'blessed-be-your-name',
+        artistId: expect.any(Number),
         ...song,
       })
     })
@@ -196,6 +240,7 @@ describe('SongAPI', () => {
     it('can create a song with unique slug', async () => {
       const song = {
         title: 'Blessed Be Your Name',
+        artist: 'Matt Redman',
         recommendedKey: 'A',
         timeSignature: [4, 4] as [number, number],
         bpm: 140,
@@ -215,6 +260,7 @@ describe('SongAPI', () => {
       const song = {
         slug: 'my-custom-slug',
         title: 'Blessed Be Your Name',
+        artist: 'Matt Redman',
         recommendedKey: 'A',
         timeSignature: [4, 4] as [number, number],
         bpm: 140,
@@ -229,6 +275,7 @@ describe('SongAPI', () => {
       const song = {
         slug: 'my-custom-slug',
         title: 'Blessed Be Your Name',
+        artist: 'Matt Redman',
         recommendedKey: 'A',
         timeSignature: [4, 4] as [number, number],
         bpm: 140,
@@ -237,13 +284,32 @@ describe('SongAPI', () => {
       await songApi.createSong(song)
       await expect(songApi.createSong(song)).rejects.toThrow()
     })
+
+    it('reuses existing artist', async () => {
+      const song = {
+        title: 'foo',
+        artist: 'my artist',
+        recommendedKey: 'A',
+        timeSignature: [4, 4] as [number, number],
+        bpm: 140,
+      }
+
+      const song1 = await songApi.createSong(song)
+      const song2 = await songApi.createSong(song)
+      expect(song1.artistId).toBe(song2.artistId)
+    })
   })
 
   describe('updateSong', () => {
-    const createSong = () => {
+    const createSong = async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
       return db.insert<SongRecord>('song', {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: artist.id,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -294,9 +360,43 @@ describe('SongAPI', () => {
       })
     })
 
+    it('can update to an existing artist', async () => {
+      const song = await createSong()
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'other-artist',
+        name: 'Other Artist',
+      })
+
+      await songApi.updateSong(song.id, { artist: artist.name })
+      await expect(songApi.getSong(song.id)).resolves.toMatchObject({
+        artistId: artist.id,
+      })
+    })
+
+    it('can update to a new artist', async () => {
+      const artistName = 'New artist'
+
+      const { id: songId } = await createSong()
+      await songApi.updateSong(songId, { artist: artistName })
+
+      const song = await songApi.getSong(songId)
+      if (!song) {
+        throw new Error('unexpectedly could not find song')
+      }
+
+      await expect(songApi.getArtistForSong(song)).resolves.toMatchObject({
+        name: artistName,
+      })
+    })
+
     it('throws helpful error when setting duplicate slug', async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
       const song = {
         title: 'Blessed Be Your Name',
+        artist: artist.id,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -314,6 +414,64 @@ describe('SongAPI', () => {
       await expect(
         songApi.updateSong(song2.id, { slug: song1.slug }),
       ).rejects.toThrow('Could not set slug: slug already in use')
+    })
+  })
+
+  describe('getOrCreateArtist', () => {
+    it('returns existing artist', async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
+      await expect(songApi.getOrCreateArtist(artist.name)).resolves.toEqual(
+        artist,
+      )
+    })
+
+    it('creates new artist', async () => {
+      await expect(
+        songApi.getOrCreateArtist('Matt Redman'),
+      ).resolves.toMatchObject({ name: 'Matt Redman' })
+    })
+  })
+
+  describe('getArtistForSong', () => {
+    it('gets the artist for the given song', async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
+      const { id: songId } = await db.insert<SongRecord>('song', {
+        slug: 'blessed-be-your-name',
+        title: 'Blessed Be Your Name',
+        artist: artist.id,
+        recommended_key: 'A',
+        time_signature_top: 4,
+        time_signature_bottom: 4,
+        bpm: 140,
+      })
+
+      const song = await songApi.getSong(songId)
+      if (!song) {
+        throw new Error('unexpectedly could not find song')
+      }
+      await expect(songApi.getArtistForSong(song)).resolves.toEqual(artist)
+    })
+  })
+
+  describe('getArtistByName', () => {
+    it('returns artist if exists', async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
+      await expect(songApi.getArtistByName(artist.name)).resolves.toEqual(
+        artist,
+      )
+    })
+
+    it('returns null if artist does not exist', async () => {
+      await expect(songApi.getArtistByName('Matt Redman')).resolves.toBeNull()
     })
   })
 })

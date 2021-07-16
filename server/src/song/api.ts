@@ -1,90 +1,50 @@
 import * as _ from 'lodash'
-import { Database, sql, SqlQuery } from 'pg-fusion'
+import { Database, sql } from 'pg-fusion'
 
-import { SearchFilters, Song, TimeSignature } from './models'
-import { SongRecord } from './schema'
+import { camelCaseRow } from '~/utils/db'
 
-export type SearchOptions = {
-  query?: string
-  filters?: SearchFilters
-}
-
-const fromRecord = (record: SongRecord): Song => {
-  const {
-    recommended_key,
-    time_signature_top,
-    time_signature_bottom,
-    ...song
-  } = record
-
-  return {
-    ...song,
-    recommendedKey: recommended_key,
-    timeSignature: [time_signature_top, time_signature_bottom],
-  }
-}
+import { Artist, Song, TimeSignature } from './models'
+import { ArtistRecord, SongRecord } from './schema'
+import {
+  getSearchCondition,
+  SearchOptions,
+  SONG_SELECT_QUERY,
+  SongSelectResult,
+} from './sql'
 
 export class SongAPI {
   constructor(private readonly db: Database) {}
 
   /** Search songs **/
 
-  async searchSongs(options?: SearchOptions): Promise<Song[]> {
-    const condition = this.getSearchCondition(options)
+  async searchSongs(options: SearchOptions = {}): Promise<Song[]> {
+    const condition = getSearchCondition(options)
 
-    const songs = await this.db.query<SongRecord>(sql`
-      SELECT * FROM "song"
+    const songs = await this.db.query<SongSelectResult>(sql`
+      ${SONG_SELECT_QUERY}
       WHERE ${condition}
       ORDER BY "song"."title"
     `)
 
-    return songs.map(fromRecord)
+    return _.map(songs, camelCaseRow)
   }
 
   async getSong(id: number): Promise<Song | null> {
-    const song = await this.db.queryOne<SongRecord>(sql`
-      SELECT * FROM "song"
+    const song = await this.db.queryOne<SongSelectResult>(sql`
+      ${SONG_SELECT_QUERY}
       WHERE "song"."id" = ${id}
     `)
 
-    return song && fromRecord(song)
+    return song && camelCaseRow(song)
   }
 
   async getSongBySlug(slug: string): Promise<Song | null> {
-    const song = await this.db.queryOne<SongRecord>(sql`
-      SELECT * FROM "song"
+    const song = await this.db.queryOne<SongSelectResult>(sql`
+      ${SONG_SELECT_QUERY}
       WHERE "song"."slug" = ${slug}
     `)
 
-    return song && fromRecord(song)
-  }
-
-  private getSearchCondition(options: SearchOptions = {}): SqlQuery {
-    const { query, filters = {} } = options
-
-    const conditions = []
-
-    if (query) {
-      conditions.push(sql`"song"."title" ILIKE ${'%' + query + '%'}`)
-    }
-
-    if (filters.recommendedKey) {
-      conditions.push(sql`"song"."recommended_key" = ${filters.recommendedKey}`)
-    }
-
-    if (filters.bpm) {
-      conditions.push(sql`"song"."bpm" = ${filters.bpm}`)
-    }
-
-    if (filters.timeSignature) {
-      const [top, bottom] = filters.timeSignature
-      conditions.push(sql`
-        "song"."time_signature_top" = ${top} AND
-        "song"."time_signature_bottom" = ${bottom}
-      `)
-    }
-
-    return sql.and(conditions)
+    return song && camelCaseRow(song)
   }
 
   /** Manage songs **/
@@ -92,47 +52,40 @@ export class SongAPI {
   async createSong(song: {
     slug?: string
     title: string
+    artist: string
     recommendedKey: string
     timeSignature: TimeSignature
     bpm: number
   }): Promise<Song> {
+    const artist = await this.getOrCreateArtist(song.artist)
+
+    const slug =
+      song.slug ??
+      (await this.getAvailableSlug('song', _.kebabCase(song.title)))
+
     const {
-      title,
-      recommendedKey: recommended_key,
-      timeSignature: [time_signature_top, time_signature_bottom],
-      bpm,
-    } = song
-
-    let slug = song.slug
-    if (!slug) {
-      slug = _.kebabCase(song.title)
-
-      const takenSlugs = _.map(
-        await this.db.query(sql`
-          SELECT "slug" FROM "song"
-          WHERE "slug" LIKE ${slug + '%'}
-        `),
-        'slug',
-      )
-
-      let slugId = 1
-      const originalSlug = slug
-      while (_.includes(takenSlugs, slug)) {
-        slug = `${originalSlug}-${slugId}`
-        slugId += 1
-      }
-    }
-
-    const result = await this.db.insert<SongRecord>('song', {
-      slug,
-      title,
-      recommended_key,
       time_signature_top,
       time_signature_bottom,
-      bpm,
+      artist: artistId,
+      ...createdSong
+    } = await this.db.insert<SongRecord>('song', {
+      slug,
+      title: song.title,
+      artist: artist.id,
+      recommended_key: song.recommendedKey,
+      time_signature_top: song.timeSignature[0],
+      time_signature_bottom: song.timeSignature[1],
+      bpm: song.bpm,
     })
 
-    return fromRecord(result)
+    return camelCaseRow({
+      ...createdSong,
+      artistId,
+      timeSignature: [
+        time_signature_top,
+        time_signature_bottom,
+      ] as TimeSignature,
+    })
   }
 
   async updateSong(
@@ -140,6 +93,7 @@ export class SongAPI {
     updates: {
       slug?: string
       title?: string
+      artist?: string
       recommendedKey?: string
       timeSignature?: TimeSignature
       bpm?: number
@@ -157,6 +111,11 @@ export class SongAPI {
         `,
       updates.bpm && sql`"bpm" = ${updates.bpm}`,
     ])
+
+    if (updates.artist) {
+      const artist = await this.getOrCreateArtist(updates.artist)
+      updatesSql.push(sql`"artist" = ${artist.id}`)
+    }
 
     if (updatesSql.length === 0) {
       return
@@ -178,5 +137,59 @@ export class SongAPI {
 
       throw e
     }
+  }
+
+  /** Artists **/
+
+  async getOrCreateArtist(name: string): Promise<Artist> {
+    const existingArtist = await this.getArtistByName(name)
+    if (existingArtist) {
+      return existingArtist
+    }
+
+    const slug = await this.getAvailableSlug('artist', _.kebabCase(name))
+
+    return this.db.insert<ArtistRecord>('artist', {
+      slug,
+      name,
+    })
+  }
+
+  getArtistForSong(song: Song): Promise<Artist> {
+    return this.db.querySingle<ArtistRecord>(sql`
+      SELECT * FROM "artist"
+      WHERE "id" = ${song.artistId}
+    `)
+  }
+
+  getArtistByName(name: string): Promise<Artist | null> {
+    return this.db.queryOne<ArtistRecord>(sql`
+      SELECT * FROM "artist"
+      WHERE "name" = ${name}
+    `)
+  }
+
+  /** Helpers **/
+
+  private async getAvailableSlug(
+    table: string,
+    originalSlug: string,
+  ): Promise<string> {
+    const takenSlugs = _.map(
+      await this.db.query(sql`
+        SELECT "slug" FROM ${sql.quote(table)}
+        WHERE "slug" LIKE ${originalSlug + '%'}
+      `),
+      'slug',
+    )
+
+    let slug = originalSlug
+    let slugId = 1
+    while (_.includes(takenSlugs, slug)) {
+      slug = `${originalSlug}-${slugId}`
+      slugId += 1
+    }
+
+    return slug
   }
 }

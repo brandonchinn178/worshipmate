@@ -12,7 +12,7 @@ export function Header({ isUserLoggedIn }: HeaderProps) {
     <HeaderContainer>
       <div>
         <NextLink href="/" passHref>
-          <Title>WorshipMate</Title>
+          <Title data-testid="home-logo">WorshipMate</Title>
         </NextLink>
       </div>
       <Links>

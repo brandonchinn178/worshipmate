@@ -1,7 +1,7 @@
 import { setupTestServer } from '~test-utils/apollo'
 import { setupTestDatabase } from '~test-utils/db'
 
-import { SongRecord } from './schema'
+import { ArtistRecord, SongRecord } from './schema'
 
 const db = setupTestDatabase()
 const server = setupTestServer(db)
@@ -9,10 +9,30 @@ const server = setupTestServer(db)
 describe('Query', () => {
   describe('searchSongs', () => {
     beforeEach(async () => {
+      const [
+        artistBethel,
+        artistHousefires,
+        artistMattRedman,
+      ] = await db.insertAll<ArtistRecord>('artist', [
+        {
+          slug: 'bethel-music',
+          name: 'Bethel Music',
+        },
+        {
+          slug: 'housefires',
+          name: 'Housefires',
+        },
+        {
+          slug: 'matt-redman',
+          name: 'Matt Redman',
+        },
+      ])
+
       await db.insertAll('song', [
         {
           slug: 'blessed-be-your-name',
           title: 'Blessed Be Your Name',
+          artist: artistMattRedman.id,
           recommended_key: 'A',
           time_signature_top: 4,
           time_signature_bottom: 4,
@@ -21,6 +41,7 @@ describe('Query', () => {
         {
           slug: 'build-my-life',
           title: 'Build My Life',
+          artist: artistHousefires.id,
           recommended_key: 'E',
           time_signature_top: 4,
           time_signature_bottom: 4,
@@ -29,6 +50,7 @@ describe('Query', () => {
         {
           slug: 'ever-be',
           title: 'Ever Be',
+          artist: artistBethel.id,
           recommended_key: 'E',
           time_signature_top: 4,
           time_signature_bottom: 4,
@@ -183,10 +205,16 @@ describe('Query', () => {
   })
 
   describe('song', () => {
-    const createSong = () => {
+    const createSong = async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
+
       return db.insert<SongRecord>('song', {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: artist.id,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -251,12 +279,16 @@ describe('Mutation', () => {
             addSong(data: $data) {
               slug
               title
+              artist {
+                name
+              }
             }
           }
         `,
         variables: {
           data: {
             title: 'Blessed Be Your Name',
+            artist: 'Matt Redman',
             recommendedKey: 'A',
             timeSignature: [4, 4],
             bpm: 140,
@@ -269,6 +301,9 @@ describe('Mutation', () => {
           addSong: {
             slug: 'blessed-be-your-name',
             title: 'Blessed Be Your Name',
+            artist: {
+              name: 'Matt Redman',
+            },
           },
         },
       })
@@ -276,10 +311,16 @@ describe('Mutation', () => {
   })
 
   describe('updateSong', () => {
-    const createSong = () => {
+    const createSong = async () => {
+      const artist = await db.insert<ArtistRecord>('artist', {
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
+
       return db.insert<SongRecord>('song', {
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: artist.id,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -360,12 +401,73 @@ describe('Mutation', () => {
   })
 })
 
+describe('Song', () => {
+  const insertSong = async () => {
+    const artist = await db.insert<ArtistRecord>('artist', {
+      slug: 'matt-redman',
+      name: 'Matt Redman',
+    })
+
+    const song = await db.insert<SongRecord>('song', {
+      slug: 'blessed-be-your-name',
+      title: 'Blessed Be Your Name',
+      artist: artist.id,
+      recommended_key: 'A',
+      time_signature_top: 4,
+      time_signature_bottom: 4,
+      bpm: 140,
+    })
+
+    return { artist, song }
+  }
+
+  describe('artist', () => {
+    it('gets the artist for the song', async () => {
+      const { artist, song } = await insertSong()
+
+      const res = await server.query({
+        query: /* GraphQL */ `
+          query($slug: String!) {
+            song(slug: $slug) {
+              artist {
+                id
+                slug
+                name
+              }
+            }
+          }
+        `,
+        variables: {
+          slug: song.slug,
+        },
+      })
+
+      expect(res).toMatchObject({
+        data: {
+          song: {
+            artist: {
+              ...artist,
+              id: artist.id.toString(),
+            },
+          },
+        },
+      })
+    })
+  })
+})
+
 describe('TimeSignature', () => {
   beforeEach(async () => {
+    const artist = await db.insert<ArtistRecord>('artist', {
+      slug: 'artist1',
+      name: 'artist1',
+    })
+
     await db.insertAll('song', [
       {
         slug: 'four-four',
         title: '4/4',
+        artist: artist.id,
         recommended_key: 'C',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -374,6 +476,7 @@ describe('TimeSignature', () => {
       {
         slug: 'three-four',
         title: '3/4',
+        artist: artist.id,
         recommended_key: 'C',
         time_signature_top: 3,
         time_signature_bottom: 4,

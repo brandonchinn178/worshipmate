@@ -2,10 +2,10 @@ import * as fc from 'fast-check'
 import * as _ from 'lodash'
 import { Database } from 'pg-fusion'
 
-import { SongAPI } from './api'
-import { TimeSignature } from './models'
+import { mkMock } from '~test-utils/mock'
 
-beforeEach(jest.resetAllMocks)
+import { SongAPI } from './api'
+import { Artist, TimeSignature } from './models'
 
 const db = {
   query: jest.fn(),
@@ -22,101 +22,10 @@ beforeEach(() => {
 describe('SongAPI', () => {
   const songApi = new SongAPI((db as unknown) as Database)
 
-  describe('searchSongs', () => {
-    it('can return all songs', async () => {
-      await songApi.searchSongs()
-      expect(db.query).toHaveBeenCalledWith(
-        expect.sqlMatching(`
-          SELECT * FROM "song"
-          WHERE TRUE
-          ORDER BY "song"."title"
-        `),
-      )
-    })
-
-    it('can return songs matching a query', async () => {
-      await songApi.searchSongs({ query: 'foo' })
-      expect(db.query).toHaveBeenCalledWith(
-        expect.sqlMatching({
-          text: `
-            SELECT * FROM "song"
-            WHERE "song"."title" ILIKE $1
-            ORDER BY "song"."title"
-          `,
-          values: ['%foo%'],
-        }),
-      )
-    })
-
-    it('can return songs matching a filter', async () => {
-      await songApi.searchSongs({
-        filters: { recommendedKey: 'A' },
-      })
-      expect(db.query).toHaveBeenCalledWith(
-        expect.sqlMatching({
-          text: `
-            SELECT * FROM "song"
-            WHERE "song"."recommended_key" = $1
-            ORDER BY "song"."title"
-          `,
-          values: ['A'],
-        }),
-      )
-    })
-
-    it('converts song record to song model', async () => {
-      const songRecord = {
-        id: 1,
-        slug: 'blessed-be-your-name',
-        title: 'Blessed Be Your Name',
-        recommended_key: 'A',
-        time_signature_top: 4,
-        time_signature_bottom: 4,
-        bpm: 140,
-      }
-
-      const songModel = {
-        id: 1,
-        slug: 'blessed-be-your-name',
-        title: 'Blessed Be Your Name',
-        recommendedKey: 'A',
-        timeSignature: [4, 4],
-        bpm: 140,
-      }
-
-      db.query.mockResolvedValue([songRecord])
-      await expect(songApi.searchSongs()).resolves.toEqual([songModel])
-    })
-  })
-
   describe('getSong', () => {
     it('returns null if song does not exist', async () => {
       db.queryOne.mockResolvedValue(null)
       await expect(songApi.getSong(1)).resolves.toBeNull()
-    })
-
-    it('converts song record to song model', async () => {
-      const songRecord = {
-        id: 1,
-        slug: 'blessed-be-your-name',
-        title: 'Blessed Be Your Name',
-        recommended_key: 'A',
-        time_signature_top: 4,
-        time_signature_bottom: 4,
-        bpm: 140,
-      }
-
-      const songModel = {
-        id: 1,
-        slug: 'blessed-be-your-name',
-        title: 'Blessed Be Your Name',
-        recommendedKey: 'A',
-        timeSignature: [4, 4],
-        bpm: 140,
-      }
-
-      db.queryOne.mockResolvedValue(songRecord)
-      await expect(songApi.getSong(1)).resolves.toEqual(songModel)
     })
   })
 
@@ -125,6 +34,7 @@ describe('SongAPI', () => {
       const fcSong = fc.record({
         slug: fc.string({ minLength: 1 }),
         title: fc.string(),
+        artist: fc.string(),
         recommendedKey: fc.string(),
         timeSignature: fc.tuple(fc.nat(), fc.nat()),
         bpm: fc.nat(),
@@ -146,6 +56,7 @@ describe('SongAPI', () => {
     it('builds a slug from the title', async () => {
       await songApi.createSong({
         title: 'Song title here',
+        artist: 'Human',
         recommendedKey: 'A',
         timeSignature: [4, 4],
         bpm: 140,
@@ -170,6 +81,7 @@ describe('SongAPI', () => {
 
           await songApi.createSong({
             title: 'Song title here',
+            artist: 'Human',
             recommendedKey: 'A',
             timeSignature: [4, 4],
             bpm: 140,
@@ -190,6 +102,7 @@ describe('SongAPI', () => {
         id: 1,
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artist: 1,
         recommended_key: 'A',
         time_signature_top: 4,
         time_signature_bottom: 4,
@@ -200,14 +113,21 @@ describe('SongAPI', () => {
         id: 1,
         slug: 'blessed-be-your-name',
         title: 'Blessed Be Your Name',
+        artistId: 1,
         recommendedKey: 'A',
         timeSignature: [4, 4] as TimeSignature,
         bpm: 140,
       }
 
+      jest.spyOn(songApi, 'getOrCreateArtist').mockResolvedValue({
+        id: 1,
+        slug: 'matt-redman',
+        name: 'Matt Redman',
+      })
       db.insert.mockResolvedValue(songRecord)
 
-      await expect(songApi.createSong(songModel)).resolves.toEqual(songModel)
+      const mock = mkMock()
+      await expect(songApi.createSong(mock)).resolves.toEqual(songModel)
     })
   })
 
@@ -226,6 +146,38 @@ describe('SongAPI', () => {
         expect.sqlMatching({
           text: 'UPDATE "song" SET "title" = $1, "bpm" = $2 WHERE "id" = $3',
           values: ['foo', 100, 1],
+        }),
+      )
+    })
+  })
+
+  describe('getOrCreateArtist', () => {
+    it('returns existing artist', async () => {
+      await fc.assert(
+        fc.asyncProperty(fc.string(), async (name) => {
+          const artist = { name } as Artist
+          jest.spyOn(songApi, 'getArtistByName').mockResolvedValue(artist)
+
+          await expect(songApi.getOrCreateArtist(name)).resolves.toBe(artist)
+          expect(songApi.getArtistByName).toHaveBeenCalledWith(name)
+          expect(db.insert).not.toHaveBeenCalled()
+        }),
+      )
+    })
+
+    it('creates new artist', async () => {
+      await fc.assert(
+        fc.asyncProperty(fc.string(), async (name) => {
+          const artist = { name } as Artist
+          jest.spyOn(songApi, 'getArtistByName').mockResolvedValue(null)
+          db.insert.mockResolvedValue(artist)
+
+          await expect(songApi.getOrCreateArtist(name)).resolves.toBe(artist)
+          expect(songApi.getArtistByName).toHaveBeenCalledWith(name)
+          expect(db.insert).toHaveBeenCalledWith(
+            'artist',
+            expect.objectContaining(artist),
+          )
         }),
       )
     })

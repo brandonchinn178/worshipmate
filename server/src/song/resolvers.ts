@@ -14,10 +14,9 @@ import {
   QuerySearchSongsArgs,
   QuerySongArgs,
   Scalars,
-  Song,
 } from '~/graphql/types'
 
-import { TimeSignature } from './models'
+import { Artist, Song, TimeSignature } from './models'
 
 /** Query **/
 
@@ -70,6 +69,21 @@ const Mutation: MutationResolvers = {
   },
 }
 
+/** Song **/
+
+type SongResolvers = Resolvers<
+  Song,
+  {
+    artist: Resolver<Artist>
+  }
+>
+
+const Song: SongResolvers = {
+  artist(parent, args, { songAPI }) {
+    return songAPI.getArtistForSong(parent)
+  },
+}
+
 /** TimeSignature scalar **/
 
 const parseTimeSignature = (value: unknown): [number, number] | null => {
@@ -108,4 +122,4 @@ const TimeSignature = new GraphQLScalarType({
 
 /** Resolver Map **/
 
-export const resolvers = { Query, Mutation, TimeSignature }
+export const resolvers = { Query, Mutation, Song, TimeSignature }

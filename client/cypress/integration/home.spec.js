@@ -15,27 +15,33 @@ describe('Home page', () => {
 
   it('loads, searches, and filters songs', () => {
     cy.findByText('Recommended Key').should('exist')
-    cy.findByText('4 songs').should('exist')
+    cy.findByText('6 songs').should('exist')
     cy.findByText('Blessed Be Your Name').should('exist')
     cy.findByText('Build My Life').should('exist')
     cy.findByText('Ever Be').should('exist')
+    cy.findByText('Jireh').should('exist')
     cy.findByText('Great Are You Lord').should('exist')
+    cy.findByText('Man of Your Word').should('exist')
 
     // Add filter for key of A
     cy.getRecommendedKeyFilter('A').click()
-    cy.findByText('1 song').should('exist')
+    cy.findByText('2 songs').should('exist')
     cy.findByText('Blessed Be Your Name').should('exist')
     cy.findByText('Build My Life').should('not.exist')
     cy.findByText('Ever Be').should('not.exist')
+    cy.findByText('Jireh').should('exist')
     cy.findByText('Great Are You Lord').should('not.exist')
+    cy.findByText('Man of Your Word').should('not.exist')
 
     // Remove filter for key of A
     cy.getRecommendedKeyFilter('A').click()
-    cy.findByText('4 songs').should('exist')
+    cy.findByText('6 songs').should('exist')
     cy.findByText('Blessed Be Your Name').should('exist')
     cy.findByText('Build My Life').should('exist')
     cy.findByText('Ever Be').should('exist')
+    cy.findByText('Jireh').should('exist')
     cy.findByText('Great Are You Lord').should('exist')
+    cy.findByText('Man of Your Word').should('exist')
 
     // Add filter for key of E
     cy.getRecommendedKeyFilter('E').click()
@@ -43,7 +49,9 @@ describe('Home page', () => {
     cy.findByText('Blessed Be Your Name').should('not.exist')
     cy.findByText('Build My Life').should('exist')
     cy.findByText('Ever Be').should('exist')
+    cy.findByText('Jireh').should('not.exist')
     cy.findByText('Great Are You Lord').should('not.exist')
+    cy.findByText('Man of Your Word').should('not.exist')
 
     // Search with filter
     cy.get('input[name=search]').type('Build My Life{enter}')
@@ -51,25 +59,31 @@ describe('Home page', () => {
     cy.findByText('Blessed Be Your Name').should('not.exist')
     cy.findByText('Build My Life').should('exist')
     cy.findByText('Ever Be').should('not.exist')
+    cy.findByText('Jireh').should('not.exist')
     cy.findByText('Great Are You Lord').should('not.exist')
+    cy.findByText('Man of Your Word').should('not.exist')
   })
 
   it('persists filters', () => {
     cy.getRecommendedKeyFilter('A').click()
     cy.getRecommendedKeyFilter('A').should('have.class', 'active')
-    cy.findByText('1 song').should('exist')
+    cy.findByText('2 songs').should('exist')
     cy.findByText('Blessed Be Your Name').should('exist')
     cy.findByText('Build My Life').should('not.exist')
     cy.findByText('Ever Be').should('not.exist')
+    cy.findByText('Jireh').should('exist')
     cy.findByText('Great Are You Lord').should('not.exist')
+    cy.findByText('Man of Your Word').should('not.exist')
 
     cy.reload()
     cy.getRecommendedKeyFilter('A').should('have.class', 'active')
-    cy.findByText('1 song').should('exist')
+    cy.findByText('2 songs').should('exist')
     cy.findByText('Blessed Be Your Name').should('exist')
     cy.findByText('Build My Life').should('not.exist')
     cy.findByText('Ever Be').should('not.exist')
+    cy.findByText('Jireh').should('exist')
     cy.findByText('Great Are You Lord').should('not.exist')
+    cy.findByText('Man of Your Word').should('not.exist')
   })
 
   it('persists search', () => {

@@ -60,7 +60,7 @@ function HomePage({ initialSongs }: HomePageProps) {
 
   const songs = _.map(data?.searchSongs ?? initialSongs, (song) => ({
     ...song,
-    artist: 'TODO',
+    artist: song.artist.name,
     themes: ['TODO1', 'TODO2'],
   }))
 
