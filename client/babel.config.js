@@ -1,7 +1,16 @@
 const { extendDefaultPlugins } = require('svgo')
 
 module.exports = {
-  presets: [require.resolve('next/babel')],
+  presets: [
+    [
+      require.resolve('next/babel'),
+      {
+        'preset-react': {
+          runtime: 'automatic',
+        },
+      },
+    ],
+  ],
   plugins: [
     require.resolve('babel-plugin-styled-components'),
     require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
