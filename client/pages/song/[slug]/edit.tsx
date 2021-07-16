@@ -33,9 +33,14 @@ function EditSongPage({ id, slug }: WithAuth<EditSongPageProps>) {
     router.push({ pathname: `/song/${updatedSlug}` })
   }
 
-  const initialSong = getSongData?.song
-  if (!initialSong) {
+  const song = getSongData?.song
+  if (!song) {
     return null
+  }
+
+  const initialSong = {
+    ...song,
+    artist: song.artist.name,
   }
 
   return <SongForm initialSong={initialSong} onSubmit={onSubmit} />

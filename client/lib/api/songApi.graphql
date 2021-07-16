@@ -2,6 +2,10 @@ fragment songFields on Song {
   id
   slug
   title
+  artist {
+    id
+    name
+  }
   recommendedKey
   timeSignature
   bpm

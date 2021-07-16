@@ -11,6 +11,7 @@ import { TimeSignature } from './models'
 export type SongFormValues = {
   slug: string
   title: string
+  artist: string
   recommendedKey: string
   timeSignature: TimeSignature
   bpm: number
@@ -31,6 +32,7 @@ export function SongForm({ initialSong, onSubmit }: SongFormProps) {
     defaultValues: {
       slug: initialSong?.slug,
       title: initialSong?.title,
+      artist: initialSong?.artist,
       recommendedKey: initialSong?.recommendedKey,
       timeSignature: initialSong?.timeSignature ?? [4, 4],
       bpm: initialSong?.bpm,
@@ -57,6 +59,12 @@ export function SongForm({ initialSong, onSubmit }: SongFormProps) {
         <label htmlFor="title">Title</label>
         <input id="title" {...register('title', { required: true })} />
         <ErrorMessage name="title" errors={errors} />
+      </FormField>
+
+      <FormField>
+        <label htmlFor="artist">Artist</label>
+        <input id="artist" {...register('artist', { required: true })} />
+        <ErrorMessage name="artist" errors={errors} />
       </FormField>
 
       <FormField>

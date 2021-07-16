@@ -12,6 +12,7 @@ describe('Add song', () => {
 
   it('can add a song', () => {
     cy.findByLabelText('Title').type('Blessed Be Your Name')
+    cy.findByLabelText('Artist').type('Matt Redman')
     cy.findByLabelText('Recommended Key').type('A')
     cy.findDropdownByLabelText('Time Signature').click()
     cy.findByText('3/4').click()

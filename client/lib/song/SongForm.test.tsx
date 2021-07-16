@@ -16,6 +16,10 @@ describe('initial render', () => {
     expect(inputTitle).toBeVisible()
     expect(inputTitle).toHaveValue('')
 
+    const inputArtist = screen.getByLabelText('Artist')
+    expect(inputArtist).toBeVisible()
+    expect(inputArtist).toHaveValue('')
+
     const inputRecommendedKey = screen.getByLabelText('Recommended Key')
     expect(inputRecommendedKey).toBeVisible()
     expect(inputRecommendedKey).toHaveValue('')
@@ -33,6 +37,7 @@ describe('initial render', () => {
     const song = {
       slug: 'blessed-be-your-name',
       title: 'Blessed Be Your Name',
+      artist: 'Matt Redman',
       recommendedKey: 'A',
       timeSignature: [3, 4] as TimeSignature,
       bpm: 120,
@@ -40,6 +45,7 @@ describe('initial render', () => {
     renderUI(<SongForm initialSong={song} onSubmit={jest.fn()} />)
 
     expect(screen.getByLabelText('Title')).toHaveValue(song.title)
+    expect(screen.getByLabelText('Artist')).toHaveValue(song.artist)
     expect(screen.getByLabelText('Recommended Key')).toHaveValue(
       song.recommendedKey,
     )
@@ -54,6 +60,7 @@ describe('initial render', () => {
     const song = {
       slug: 'take-five',
       title: 'Take Five',
+      artist: 'Dave Brubeck',
       recommendedKey: 'Eb',
       timeSignature: [5, 4] as TimeSignature,
       bpm: 170,
@@ -142,6 +149,7 @@ describe('submit button', () => {
 
 const populateForm = () => {
   userEvent.type(screen.getByLabelText('Title'), 'Blessed Be Your Name')
+  userEvent.type(screen.getByLabelText('Artist'), 'Matt Redman')
   userEvent.type(screen.getByLabelText('Recommended Key'), 'A')
   userEvent.selectOptions(screen.getByLabelText('Time Signature'), '[3,4]')
   userEvent.type(screen.getByLabelText('BPM'), '120')

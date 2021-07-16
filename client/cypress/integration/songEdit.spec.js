@@ -37,7 +37,11 @@ describe('Edit song', () => {
 
     // home page should show new information
     cy.findByTestId('home-logo').click()
-    cy.findByText('New Foo Song').should('have.attr', 'href', '/song/foo')
+    cy.findByText('Blessed Be Your Name').should(
+      'have.attr',
+      'href',
+      '/song/foo',
+    )
   })
 
   it('shows new song title after editing', () => {
@@ -46,5 +50,13 @@ describe('Edit song', () => {
 
     cy.findByTestId('home-logo').click()
     cy.findByText('New Foo Song').should('exist')
+  })
+
+  it('shows new song artist after editing', () => {
+    cy.findByLabelText('Artist').clear().type('New Foo Artist')
+    cy.findByText('Submit').click()
+
+    cy.findByTestId('home-logo').click()
+    cy.findByText('New Foo Artist').should('exist')
   })
 })
