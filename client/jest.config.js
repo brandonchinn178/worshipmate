@@ -1,16 +1,26 @@
+const jest = require('ts-jest/utils')
+
+const tsconfig = require('./tsconfig')
+
 module.exports = {
   testEnvironment: 'jsdom',
   roots: ['<rootDir>/lib', '<rootDir>/pages'],
   transform: {
-    '^.+\\.tsx?$': 'babel-jest',
+    '^.+\\.tsx?$': 'ts-jest',
   },
   testRegex: 'test\\.tsx?$',
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   moduleNameMapper: {
-    '^~/(.*)': '<rootDir>/lib/$1',
-    '^~jest-utils$': '<rootDir>/jest/utils',
+    ...jest.pathsToModuleNameMapper(tsconfig.compilerOptions.paths, {
+      prefix: '<rootDir>/',
+    }),
     '\\.svg$': '<rootDir>/jest/svgMock',
     'react-select': '<rootDir>/jest/reactSelectMock',
+  },
+  globals: {
+    'ts-jest': {
+      babelConfig: true,
+    },
   },
   setupFilesAfterEnv: ['<rootDir>/jest/setup.tsx'],
   clearMocks: true,
