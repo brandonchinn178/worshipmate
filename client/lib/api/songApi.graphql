@@ -12,7 +12,7 @@ fragment songFields on Song {
 }
 
 query searchSongs($query: String, $filters: SearchFilters) {
-  searchSongs(query: $query, filters: $filters) {
+  songs(query: $query, filters: $filters) {
     ...songFields
   }
 }

@@ -11,8 +11,8 @@ import {
 import {
   MutationAddSongArgs,
   MutationUpdateSongArgs,
-  QuerySearchSongsArgs,
   QuerySongArgs,
+  QuerySongsArgs,
   Scalars,
 } from '~/graphql/types'
 
@@ -23,13 +23,13 @@ import { Artist, Song, TimeSignature } from './models'
 type QueryResolvers = Resolvers<
   QueryParent,
   {
-    searchSongs: Resolver<QuerySearchSongsArgs, Song[]>
+    songs: Resolver<QuerySongsArgs, Song[]>
     song: Resolver<QuerySongArgs, Song | null>
   }
 >
 
 const Query: QueryResolvers = {
-  searchSongs(parent, args, { songAPI }) {
+  songs(parent, args, { songAPI }) {
     const { query, filters } = args
 
     return songAPI.searchSongs({

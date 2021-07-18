@@ -21,17 +21,17 @@ export type Query = {
   __typename?: 'Query'
   /** Return the currently authenticated user, or null if not authenticated. */
   me?: Maybe<User>
-  searchSongs: Array<Song>
   song?: Maybe<Song>
-}
-
-export type QuerySearchSongsArgs = {
-  query?: Maybe<Scalars['String']>
-  filters?: Maybe<SearchFilters>
+  songs: Array<Song>
 }
 
 export type QuerySongArgs = {
   slug: Scalars['String']
+}
+
+export type QuerySongsArgs = {
+  query?: Maybe<Scalars['String']>
+  filters?: Maybe<SearchFilters>
 }
 
 export type Mutation = {
