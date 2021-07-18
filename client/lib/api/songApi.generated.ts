@@ -13,7 +13,7 @@ export type SearchSongsQueryVariables = Types.Exact<{
 }>
 
 export type SearchSongsQuery = { __typename?: 'Query' } & {
-  searchSongs: Array<{ __typename?: 'Song' } & SongFieldsFragment>
+  songs: Array<{ __typename?: 'Song' } & SongFieldsFragment>
 }
 
 export type GetSongQueryVariables = Types.Exact<{
@@ -57,7 +57,7 @@ export const SongFieldsFragmentDoc = gql`
 `
 export const SearchSongsDocument = gql`
   query searchSongs($query: String, $filters: SearchFilters) {
-    searchSongs(query: $query, filters: $filters) {
+    songs(query: $query, filters: $filters) {
       ...songFields
     }
   }

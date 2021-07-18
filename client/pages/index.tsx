@@ -39,7 +39,7 @@ type HomePageProps = {
   /**
    * The full list of songs to show at the start.
    */
-  initialSongs: SearchSongsQuery['searchSongs']
+  initialSongs: SearchSongsQuery['songs']
 }
 
 function HomePage({ initialSongs }: HomePageProps) {
@@ -58,7 +58,7 @@ function HomePage({ initialSongs }: HomePageProps) {
   const { data: currentUserData } = useCurrentUserQuery()
   const user = currentUserData?.me
 
-  const songs = _.map(data?.searchSongs ?? initialSongs, (song) => ({
+  const songs = _.map(data?.songs ?? initialSongs, (song) => ({
     ...song,
     artist: song.artist.name,
     themes: ['TODO1', 'TODO2'],
@@ -109,7 +109,7 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
 
   return {
     props: {
-      initialSongs: data.searchSongs,
+      initialSongs: data.songs,
     },
     revalidate: 30,
   }

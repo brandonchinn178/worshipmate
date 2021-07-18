@@ -7,7 +7,7 @@ const db = setupTestDatabase()
 const server = setupTestServer(db)
 
 describe('Query', () => {
-  describe('searchSongs', () => {
+  describe('songs', () => {
     beforeEach(async () => {
       const [
         artistBethel,
@@ -63,7 +63,7 @@ describe('Query', () => {
       const res = await server.query({
         query: /* GraphQL */ `
           query {
-            searchSongs {
+            songs {
               id
               slug
               title
@@ -77,7 +77,7 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          searchSongs: [
+          songs: [
             {
               id: expect.any(String),
               slug: 'blessed-be-your-name',
@@ -111,7 +111,7 @@ describe('Query', () => {
       const res = await server.query({
         query: /* GraphQL */ `
           query($query: String!) {
-            searchSongs(query: $query) {
+            songs(query: $query) {
               title
             }
           }
@@ -123,7 +123,7 @@ describe('Query', () => {
 
       expect(res).toMatchObject({
         data: {
-          searchSongs: expect.arrayContaining([
+          songs: expect.arrayContaining([
             { title: 'Blessed Be Your Name' },
             { title: 'Ever Be' },
           ]),
@@ -136,7 +136,7 @@ describe('Query', () => {
         const res = await server.query({
           query: /* GraphQL */ `
             query($filters: SearchFilters!) {
-              searchSongs(filters: $filters) {
+              songs(filters: $filters) {
                 title
               }
             }
@@ -148,7 +148,7 @@ describe('Query', () => {
 
         expect(res).toMatchObject({
           data: {
-            searchSongs: expect.arrayContaining([
+            songs: expect.arrayContaining([
               { title: 'Build My Life' },
               { title: 'Ever Be' },
             ]),
@@ -160,7 +160,7 @@ describe('Query', () => {
         const res = await server.query({
           query: /* GraphQL */ `
             query($filters: SearchFilters!) {
-              searchSongs(filters: $filters) {
+              songs(filters: $filters) {
                 title
               }
             }
@@ -175,7 +175,7 @@ describe('Query', () => {
 
         expect(res).toMatchObject({
           data: {
-            searchSongs: [{ title: 'Build My Life' }],
+            songs: [{ title: 'Build My Life' }],
           },
         })
       })
@@ -184,7 +184,7 @@ describe('Query', () => {
         const res = await server.query({
           query: /* GraphQL */ `
             query($query: String!, $filters: SearchFilters!) {
-              searchSongs(query: $query, filters: $filters) {
+              songs(query: $query, filters: $filters) {
                 title
               }
             }
@@ -197,7 +197,7 @@ describe('Query', () => {
 
         expect(res).toMatchObject({
           data: {
-            searchSongs: [{ title: 'Ever Be' }],
+            songs: [{ title: 'Ever Be' }],
           },
         })
       })
@@ -490,7 +490,7 @@ describe('TimeSignature', () => {
       const res = await server.query({
         query: /* GraphQL */ `
           query {
-            searchSongs {
+            songs {
               timeSignature
             }
           }
@@ -499,7 +499,7 @@ describe('TimeSignature', () => {
 
       expect(res).toMatchObject({
         data: {
-          searchSongs: expect.arrayContaining([
+          songs: expect.arrayContaining([
             { timeSignature: [4, 4] },
             { timeSignature: [3, 4] },
           ]),
@@ -513,7 +513,7 @@ describe('TimeSignature', () => {
       const res = await server.query({
         query: /* GraphQL */ `
           query($filters: SearchFilters!) {
-            searchSongs(filters: $filters) {
+            songs(filters: $filters) {
               title
             }
           }
@@ -525,7 +525,7 @@ describe('TimeSignature', () => {
 
       expect(res).toMatchObject({
         data: {
-          searchSongs: [{ title: '4/4' }],
+          songs: [{ title: '4/4' }],
         },
       })
     })
@@ -534,7 +534,7 @@ describe('TimeSignature', () => {
       const res = await server.query({
         query: /* GraphQL */ `
           query($filters: SearchFilters!) {
-            searchSongs(filters: $filters) {
+            songs(filters: $filters) {
               title
             }
           }
@@ -555,7 +555,7 @@ describe('TimeSignature', () => {
       const res = await server.query({
         query: /* GraphQL */ `
           query($filters: SearchFilters!) {
-            searchSongs(filters: $filters) {
+            songs(filters: $filters) {
               title
             }
           }
@@ -578,7 +578,7 @@ describe('TimeSignature', () => {
       const res = await server.query({
         query: /* GraphQL */ `
           query {
-            searchSongs(filters: { timeSignature: [4, 4] }) {
+            songs(filters: { timeSignature: [4, 4] }) {
               title
             }
           }
@@ -587,7 +587,7 @@ describe('TimeSignature', () => {
 
       expect(res).toMatchObject({
         data: {
-          searchSongs: [{ title: '4/4' }],
+          songs: [{ title: '4/4' }],
         },
       })
     })
@@ -596,7 +596,7 @@ describe('TimeSignature', () => {
       const res = await server.query({
         query: /* GraphQL */ `
           query {
-            searchSongs(filters: { timeSignature: asdf }) {
+            songs(filters: { timeSignature: asdf }) {
               title
             }
           }
