@@ -3,10 +3,10 @@
 exports[`initial render renders an empty form 1`] = `
 <div>
   <form
-    class="SongForm__FormContainer-sc-1n6uj49-0 iFVJHX"
+    class="sc-bwzfXH hdxYuB"
   >
     <div
-      class="SongForm__FormField-sc-1n6uj49-1 jkpiQR"
+      class="sc-htpNat fUJRVs"
     >
       <label
         for="title"
@@ -19,7 +19,7 @@ exports[`initial render renders an empty form 1`] = `
       />
     </div>
     <div
-      class="SongForm__FormField-sc-1n6uj49-1 jkpiQR"
+      class="sc-htpNat fUJRVs"
     >
       <label
         for="artist"
@@ -32,7 +32,7 @@ exports[`initial render renders an empty form 1`] = `
       />
     </div>
     <div
-      class="SongForm__FormField-sc-1n6uj49-1 jkpiQR"
+      class="sc-htpNat fUJRVs"
     >
       <label
         for="recommendedKey"
@@ -45,7 +45,7 @@ exports[`initial render renders an empty form 1`] = `
       />
     </div>
     <div
-      class="SongForm__FormField-sc-1n6uj49-1 jkpiQR"
+      class="sc-htpNat fUJRVs"
     >
       <label
         for="timeSignature"
@@ -78,7 +78,7 @@ exports[`initial render renders an empty form 1`] = `
       </select>
     </div>
     <div
-      class="SongForm__FormField-sc-1n6uj49-1 jkpiQR"
+      class="sc-htpNat fUJRVs"
     >
       <label
         for="bpm"

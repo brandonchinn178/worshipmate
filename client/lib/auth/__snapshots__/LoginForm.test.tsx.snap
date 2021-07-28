@@ -3,33 +3,33 @@
 exports[`renders the login form 1`] = `
 <div>
   <form
-    class="LoginForm__LoginFormContainer-vdxufc-0 ehysyc"
+    class="sc-bdVaJa IBFwZ"
   >
     <label
-      class="LoginForm__LoginLabel-vdxufc-1 eVfdSf"
+      class="sc-bwzfXH eAmrLN"
       for="username"
     >
       Username
     </label>
     <input
-      class="LoginForm__LoginInput-vdxufc-2 kqWixQ"
+      class="sc-htpNat gtvlIW"
       id="username"
       name="username"
     />
     <label
-      class="LoginForm__LoginLabel-vdxufc-1 eVfdSf"
+      class="sc-bwzfXH eAmrLN"
       for="password"
     >
       Password
     </label>
     <input
-      class="LoginForm__LoginInput-vdxufc-2 kqWixQ"
+      class="sc-htpNat gtvlIW"
       id="password"
       name="password"
       type="password"
     />
     <button
-      class="LoginForm__LoginButton-vdxufc-3 gLgGik"
+      class="sc-bxivhb bOGPmh"
     >
       Login
     </button>

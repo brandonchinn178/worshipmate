@@ -3,45 +3,45 @@
 exports[`displays data 1`] = `
 <div>
   <div
-    class="DataTable__Table-sc-1xhkibe-0 lhcMRB"
+    class="sc-bdVaJa iPUEme"
   >
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
+      class="sc-bwzfXH sc-htpNat hDapZZ"
     >
       Id
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
+      class="sc-bwzfXH sc-htpNat hDapZZ"
     >
       Name
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="sc-bwzfXH hdkBNF"
     >
       1
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="sc-bwzfXH hdkBNF"
     >
       Alice
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="sc-bwzfXH hdkBNF"
     >
       2
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="sc-bwzfXH hdkBNF"
     >
       Bob
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="sc-bwzfXH hdkBNF"
     >
       3
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="sc-bwzfXH hdkBNF"
     >
       Charlie
     </div>
@@ -52,15 +52,15 @@ exports[`displays data 1`] = `
 exports[`displays no data 1`] = `
 <div>
   <div
-    class="DataTable__Table-sc-1xhkibe-0 lhcMRB"
+    class="sc-bdVaJa iPUEme"
   >
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
+      class="sc-bwzfXH sc-htpNat hDapZZ"
     >
       Id
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
+      class="sc-bwzfXH sc-htpNat hDapZZ"
     >
       Name
     </div>
