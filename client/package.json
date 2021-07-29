@@ -53,7 +53,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-inline-react-svg": "^2.0.1",
     "babel-plugin-styled-components": "^1.11.1",
-    "cypress": "^6",
+    "cypress": "^8.1.0",
     "cypress-webpack-preprocessor-v5": "^5.0.0-alpha.1",
     "fast-check": "^2.10.0",
     "fork-ts-checker-webpack-plugin": "^6.2.1",
