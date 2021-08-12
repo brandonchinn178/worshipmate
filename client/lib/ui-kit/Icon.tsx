@@ -1,9 +1,8 @@
-import EditSvg from './icons/edit.svg'
-import SearchSvg from './icons/search.svg'
+import * as Icons from 'akar-icons'
 
 const icons = {
-  edit: EditSvg,
-  search: SearchSvg,
+  edit: Icons.Edit,
+  search: Icons.Search,
 }
 
 type IconNames = keyof typeof icons
