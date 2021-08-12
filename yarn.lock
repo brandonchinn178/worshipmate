@@ -6570,6 +6570,7 @@ __metadata:
     "@types/react-select": ^4
     "@types/styled-components": ^5.1.2
     "@types/testing-library__jest-dom": ^5.9.5
+    akar-icons: ^1.8.7
     babel-jest: ^26.6.2
     babel-loader: ^8.1.0
     babel-plugin-inline-react-svg: ^2.0.1
@@ -6852,6 +6853,17 @@ __metadata:
     json-schema-traverse: ^0.4.1
     uri-js: ^4.2.2
   checksum: 19a8f3b0a06001eb68e6268f4f9f04424b32baadd5df6ba8292cd473e22e5f4019ed9ab17c3e3510394178ed8bef9b42ad0bdb5c675d65f042421a774780ce1a
+  languageName: node
+  linkType: hard
+
+"akar-icons@npm:^1.8.7":
+  version: 1.8.7
+  resolution: "akar-icons@npm:1.8.7"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ">=16"
+  checksum: d6fb195f9896eb20ea8d0ee78539f8dc393c60b0dc004b2f101081a4f07d234c6171d6da387972d9b134d08e7bd386a57a32c99601c520a8d0bc829631d569ea
   languageName: node
   linkType: hard
 
