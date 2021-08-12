@@ -69,9 +69,4 @@ const SearchBox = styled.button`
   &:hover {
     color: inherit;
   }
-
-  // https://github.com/artcoholic/akar-icons/issues/55
-  svg {
-    display: initial;
-  }
 `
