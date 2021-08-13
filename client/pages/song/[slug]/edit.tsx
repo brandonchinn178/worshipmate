@@ -1,3 +1,4 @@
+import * as _ from 'lodash'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 
@@ -41,6 +42,7 @@ function EditSongPage({ id, slug }: WithAuth<EditSongPageProps>) {
   const initialSong = {
     ...song,
     artist: song.artist.name,
+    themes: _.map(song.themes, 'name'),
   }
 
   return <SongForm initialSong={initialSong} onSubmit={onSubmit} />

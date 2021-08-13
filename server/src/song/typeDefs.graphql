@@ -50,6 +50,7 @@ input AddSongInput {
   recommendedKey: String!
   timeSignature: TimeSignature!
   bpm: Int!
+  themes: [String!]!
 }
 
 input UpdateSongInput {
@@ -59,6 +60,7 @@ input UpdateSongInput {
   recommendedKey: String
   timeSignature: TimeSignature
   bpm: Int
+  themes: [String!]
 }
 
 extend type Mutation {

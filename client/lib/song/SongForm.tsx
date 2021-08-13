@@ -15,6 +15,7 @@ export type SongFormValues = {
   recommendedKey: string
   timeSignature: TimeSignature
   bpm: number
+  themes: string[]
 }
 
 type SongFormProps = {
@@ -36,6 +37,7 @@ export function SongForm({ initialSong, onSubmit }: SongFormProps) {
       recommendedKey: initialSong?.recommendedKey,
       timeSignature: initialSong?.timeSignature ?? [4, 4],
       bpm: initialSong?.bpm,
+      themes: initialSong?.themes ?? [],
     },
   })
 

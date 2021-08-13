@@ -41,6 +41,7 @@ describe('initial render', () => {
       recommendedKey: 'A',
       timeSignature: [3, 4] as TimeSignature,
       bpm: 120,
+      themes: [],
     }
     renderUI(<SongForm initialSong={song} onSubmit={jest.fn()} />)
 
@@ -64,6 +65,7 @@ describe('initial render', () => {
       recommendedKey: 'Eb',
       timeSignature: [5, 4] as TimeSignature,
       bpm: 170,
+      themes: [],
     }
     renderUI(<SongForm initialSong={song} onSubmit={jest.fn()} />)
 

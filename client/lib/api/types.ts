@@ -88,6 +88,7 @@ export type AddSongInput = {
   recommendedKey: Scalars['String']
   timeSignature: Scalars['TimeSignature']
   bpm: Scalars['Int']
+  themes: Array<Scalars['String']>
 }
 
 export type UpdateSongInput = {
@@ -97,6 +98,7 @@ export type UpdateSongInput = {
   recommendedKey?: Maybe<Scalars['String']>
   timeSignature?: Maybe<Scalars['TimeSignature']>
   bpm?: Maybe<Scalars['Int']>
+  themes?: Maybe<Array<Scalars['String']>>
 }
 
 export type User = {
