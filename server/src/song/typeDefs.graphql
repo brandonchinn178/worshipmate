@@ -6,11 +6,18 @@ type Song {
   recommendedKey: String!
   timeSignature: TimeSignature!
   bpm: Int!
+  themes: [Theme!]!
 }
 
 scalar TimeSignature
 
 type Artist {
+  id: ID!
+  slug: String!
+  name: String!
+}
+
+type Theme {
   id: ID!
   slug: String!
   name: String!

@@ -9,6 +9,10 @@ fragment songFields on Song {
   recommendedKey
   timeSignature
   bpm
+  themes {
+    id
+    name
+  }
 }
 
 query searchSongs($query: String, $filters: SearchFilters) {

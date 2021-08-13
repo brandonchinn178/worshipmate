@@ -16,7 +16,7 @@ import {
   Scalars,
 } from '~/graphql/types'
 
-import { Artist, Song, TimeSignature } from './models'
+import { Artist, Song, Theme, TimeSignature } from './models'
 
 /** Query **/
 
@@ -75,12 +75,19 @@ type SongResolvers = Resolvers<
   Song,
   {
     artist: Resolver<Artist>
+    themes: Resolver<Theme[]>
   }
 >
 
 const Song: SongResolvers = {
   artist(parent, args, { songAPI }) {
     return songAPI.getArtistForSong(parent)
+  },
+  themes() {
+    return [
+      { id: 1, slug: 'TODO1', name: 'TODO1' },
+      { id: 2, slug: 'TODO2', name: 'TODO2' },
+    ]
   },
 }
 

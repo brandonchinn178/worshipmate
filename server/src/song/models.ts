@@ -21,3 +21,9 @@ export type Artist = {
   slug: string
   name: string
 }
+
+export type Theme = {
+  id: number
+  slug: string
+  name: string
+}

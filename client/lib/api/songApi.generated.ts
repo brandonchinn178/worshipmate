@@ -5,7 +5,10 @@ import * as Types from './types'
 export type SongFieldsFragment = { __typename?: 'Song' } & Pick<
   Types.Song,
   'id' | 'slug' | 'title' | 'recommendedKey' | 'timeSignature' | 'bpm'
-> & { artist: { __typename?: 'Artist' } & Pick<Types.Artist, 'id' | 'name'> }
+> & {
+    artist: { __typename?: 'Artist' } & Pick<Types.Artist, 'id' | 'name'>
+    themes: Array<{ __typename?: 'Theme' } & Pick<Types.Theme, 'id' | 'name'>>
+  }
 
 export type SearchSongsQueryVariables = Types.Exact<{
   query?: Types.Maybe<Types.Scalars['String']>
@@ -53,6 +56,10 @@ export const SongFieldsFragmentDoc = gql`
     recommendedKey
     timeSignature
     bpm
+    themes {
+      id
+      name
+    }
   }
 `
 export const SearchSongsDocument = gql`

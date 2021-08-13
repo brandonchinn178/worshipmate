@@ -61,7 +61,7 @@ function HomePage({ initialSongs }: HomePageProps) {
   const songs = _.map(data?.songs ?? initialSongs, (song) => ({
     ...song,
     artist: song.artist.name,
-    themes: ['TODO1', 'TODO2'],
+    themes: _.map(song.themes, 'name'),
   }))
 
   const availableFilters = getAvailableFilters(songs)

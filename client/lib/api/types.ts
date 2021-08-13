@@ -57,10 +57,18 @@ export type Song = {
   recommendedKey: Scalars['String']
   timeSignature: Scalars['TimeSignature']
   bpm: Scalars['Int']
+  themes: Array<Theme>
 }
 
 export type Artist = {
   __typename?: 'Artist'
+  id: Scalars['ID']
+  slug: Scalars['String']
+  name: Scalars['String']
+}
+
+export type Theme = {
+  __typename?: 'Theme'
   id: Scalars['ID']
   slug: Scalars['String']
   name: Scalars['String']
