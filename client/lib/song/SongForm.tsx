@@ -1,10 +1,10 @@
 import * as _ from 'lodash'
-import { Controller, useForm } from 'react-hook-form'
-import Select from 'react-select'
+import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
 import { color } from '~/theme'
 import { ErrorMessage } from '~/ui-kit/ErrorMessage'
+import { Select } from '~/ui-kit/Select'
 
 import { TimeSignature } from './models'
 
@@ -80,22 +80,10 @@ export function SongForm({ initialSong, onSubmit }: SongFormProps) {
 
       <FormField>
         <label htmlFor="timeSignature">Time Signature</label>
-        <Controller
+        <Select
           name="timeSignature"
           control={control}
-          render={({ field: { onChange, onBlur, value } }) => {
-            return (
-              <Select
-                instanceId="timeSignature"
-                inputId="timeSignature"
-                options={timeSignatureOptions}
-                value={_.find(timeSignatureOptions, { value })}
-                onChange={(option) => onChange(option?.value)}
-                onBlur={onBlur}
-                className="time-signature-container"
-              />
-            )
-          }}
+          options={timeSignatureOptions}
         />
       </FormField>
 
