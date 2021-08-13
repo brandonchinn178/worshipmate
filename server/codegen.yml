@@ -17,4 +17,4 @@ config:
 
 hooks:
   afterAllFileWrite:
-    - eslint --ext .ts --fix
+    - yarn g:lint --fix
