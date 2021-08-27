@@ -8,9 +8,12 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     font-size: 100%;
-    font-weight: normal;
     line-height: 100%;
     box-sizing: border-box;
+
+    &:not(b) {
+      font-weight: normal;
+    }
   }
 
   html,

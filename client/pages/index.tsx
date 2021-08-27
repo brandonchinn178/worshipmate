@@ -84,9 +84,9 @@ function HomePage({ initialSongs }: HomePageProps) {
         />
       </SongSearchArea>
       <SongTableMetaArea>
-        <SongCount>
+        <b>
           {songs.length} {pluralize('song', songs.length)}
-        </SongCount>
+        </b>
         {user && (
           <NextLink href="/add-song" passHref>
             <AddSongLink>Add Song</AddSongLink>
@@ -137,10 +137,6 @@ const SongSearchArea = styled.div`
 
 const SongTableMetaArea = styled.div`
   grid-area: table-meta;
-`
-
-const SongCount = styled.span`
-  font-weight: bold;
 `
 
 const AddSongLink = styled.a`
