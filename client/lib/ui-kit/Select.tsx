@@ -29,7 +29,12 @@ export function Select<FormValues>({
             inputId={name}
             options={options}
             value={_.find(options, { value })}
-            onChange={(option) => onChange(option?.value)}
+            onChange={(option) => {
+              const input = _.isArray(option)
+                ? _.map(option, 'value')
+                : option?.value
+              onChange(input)
+            }}
             onBlur={onBlur}
             {...props}
           />

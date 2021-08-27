@@ -22,6 +22,7 @@ export type Query = {
   me?: Maybe<User>
   song?: Maybe<Song>
   songs: Array<Song>
+  themes: Array<Theme>
 }
 
 export type QuerySongArgs = {

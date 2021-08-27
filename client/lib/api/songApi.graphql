@@ -38,3 +38,10 @@ mutation updateSong($id: ID!, $data: UpdateSongInput!) {
     ...songFields
   }
 }
+
+query getThemes {
+  themes {
+    id
+    name
+  }
+}

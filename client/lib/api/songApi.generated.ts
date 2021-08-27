@@ -44,6 +44,12 @@ export type UpdateSongMutation = { __typename?: 'Mutation' } & {
   updateSong?: Types.Maybe<{ __typename?: 'Song' } & SongFieldsFragment>
 }
 
+export type GetThemesQueryVariables = Types.Exact<{ [key: string]: never }>
+
+export type GetThemesQuery = { __typename?: 'Query' } & {
+  themes: Array<{ __typename?: 'Theme' } & Pick<Types.Theme, 'id' | 'name'>>
+}
+
 export const SongFieldsFragmentDoc = gql`
   fragment songFields on Song {
     id
@@ -264,4 +270,58 @@ export type UpdateSongMutationResult = Apollo.MutationResult<UpdateSongMutation>
 export type UpdateSongMutationOptions = Apollo.BaseMutationOptions<
   UpdateSongMutation,
   UpdateSongMutationVariables
+>
+export const GetThemesDocument = gql`
+  query getThemes {
+    themes {
+      id
+      name
+    }
+  }
+`
+
+/**
+ * __useGetThemesQuery__
+ *
+ * To run a query within a React component, call `useGetThemesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetThemesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetThemesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetThemesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetThemesQuery,
+    GetThemesQueryVariables
+  >,
+) {
+  return Apollo.useQuery<GetThemesQuery, GetThemesQueryVariables>(
+    GetThemesDocument,
+    baseOptions,
+  )
+}
+export function useGetThemesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetThemesQuery,
+    GetThemesQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<GetThemesQuery, GetThemesQueryVariables>(
+    GetThemesDocument,
+    baseOptions,
+  )
+}
+export type GetThemesQueryHookResult = ReturnType<typeof useGetThemesQuery>
+export type GetThemesLazyQueryHookResult = ReturnType<
+  typeof useGetThemesLazyQuery
+>
+export type GetThemesQueryResult = Apollo.QueryResult<
+  GetThemesQuery,
+  GetThemesQueryVariables
 >

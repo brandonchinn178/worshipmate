@@ -2,6 +2,7 @@ import * as _ from 'lodash'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 
+import { useGetThemesQuery } from '~/api/songApi.generated'
 import { color } from '~/theme'
 import { ErrorMessage } from '~/ui-kit/ErrorMessage'
 import { Select } from '~/ui-kit/Select'
@@ -24,6 +25,12 @@ type SongFormProps = {
 }
 
 export function SongForm({ initialSong, onSubmit }: SongFormProps) {
+  const { data } = useGetThemesQuery()
+  const themes = _.map(data?.themes, ({ name }) => ({
+    label: name,
+    value: name,
+  }))
+
   const {
     formState: { isSubmitting, isSubmitSuccessful, errors },
     control,
@@ -97,6 +104,34 @@ export function SongForm({ initialSong, onSubmit }: SongFormProps) {
         <ErrorMessage name="bpm" errors={errors} />
       </FormField>
 
+      <FormField layout="vertical">
+        <label htmlFor="themes">Themes</label>
+        <Select
+          name="themes"
+          control={control}
+          options={themes}
+          isMulti
+          components={{
+            DropdownIndicator: null,
+          }}
+          styles={{
+            valueContainer: (provided: Record<string, unknown>) => ({
+              ...provided,
+              cursor: 'text',
+            }),
+            multiValueLabel: (provided: Record<string, unknown>) => ({
+              ...provided,
+              cursor: 'default',
+            }),
+            multiValueRemove: (provided: Record<string, unknown>) => ({
+              ...provided,
+              cursor: 'pointer',
+            }),
+          }}
+          placeholder={null}
+        />
+      </FormField>
+
       <button disabled={postSubmitLoading}>Submit</button>
     </FormContainer>
   )
@@ -131,13 +166,27 @@ const FormContainer = styled.form`
   padding: 25px 75px;
 `
 
-const FormField = styled.div`
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  grid-template-areas:
-    'label input'
-    'error error';
-  align-items: center;
+const FormField = styled.div<{ layout?: 'horizontal' | 'vertical' }>`
+  ${({ layout = 'horizontal' }) => {
+    switch (layout) {
+      case 'horizontal':
+        return `
+          display: grid;
+          grid-template-columns: 200px 1fr;
+          grid-template-areas:
+            'label input'
+            'error error';
+          align-items: center;
+        `
+      case 'vertical':
+        return `
+          label {
+            display: block;
+            margin-bottom: 0.5rem;
+          }
+        `
+    }
+  }}
 
   margin-bottom: 1rem;
 
