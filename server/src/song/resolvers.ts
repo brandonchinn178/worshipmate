@@ -25,6 +25,7 @@ type QueryResolvers = Resolvers<
   {
     songs: Resolver<QuerySongsArgs, Song[]>
     song: Resolver<QuerySongArgs, Song | null>
+    themes: Resolver<Theme[]>
   }
 >
 
@@ -41,6 +42,13 @@ const Query: QueryResolvers = {
     const { slug } = args
 
     return songAPI.getSongBySlug(slug)
+  },
+  themes() {
+    return [
+      { id: 1, slug: 'TODO1', name: 'TODO1' },
+      { id: 2, slug: 'TODO2', name: 'TODO2' },
+      { id: 3, slug: 'TODO3', name: 'TODO3' },
+    ]
   },
 }
 
