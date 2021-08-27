@@ -68,22 +68,22 @@ function HomePage({ initialSongs }: HomePageProps) {
 
   return (
     <HomePageContent>
-      <SidebarArea>
+      <div css="grid-area: sidebar">
         <SongFilterPanel
           availableFilters={availableFilters}
           activeFilters={activeFilters}
           filterHandler={mkFilterHandler(router)}
         />
-      </SidebarArea>
-      <SongSearchArea>
+      </div>
+      <div css="grid-area: search">
         <SearchBar
           initial={search}
           onSubmit={(query: string) => {
             setQueryString(router, 'search', query)
           }}
         />
-      </SongSearchArea>
-      <SongTableMetaArea>
+      </div>
+      <div css="grid-area: table-meta">
         <b>
           {songs.length} {pluralize('song', songs.length)}
         </b>
@@ -92,10 +92,10 @@ function HomePage({ initialSongs }: HomePageProps) {
             <AddSongLink>Add Song</AddSongLink>
           </NextLink>
         )}
-      </SongTableMetaArea>
-      <SongTableArea>
+      </div>
+      <div css="grid-area: table">
         <SongTable songs={songs} isAdmin={!!user} />
-      </SongTableArea>
+      </div>
     </HomePageContent>
   )
 }
@@ -127,28 +127,12 @@ const HomePageContent = styled.div`
   grid-row-gap: 10px;
 `
 
-const SidebarArea = styled.div`
-  grid-area: sidebar;
-`
-
-const SongSearchArea = styled.div`
-  grid-area: search;
-`
-
-const SongTableMetaArea = styled.div`
-  grid-area: table-meta;
-`
-
 const AddSongLink = styled.a`
   float: right;
   &:before {
     content: '\\FF0B';
     font-size: 1rem;
   }
-`
-
-const SongTableArea = styled.div`
-  grid-area: table;
 `
 
 export default HomePage
