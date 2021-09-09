@@ -17047,9 +17047,9 @@ fsevents@~2.1.2:
   linkType: hard
 
 "object-path@npm:^0.11.4":
-  version: 0.11.5
-  resolution: "object-path@npm:0.11.5"
-  checksum: 25525900930e1772d6da5d8c8e0ea703b9e504574b1428b6f6987c1ad6b0bc143ce2c8fcf2616abdc80bd1af127760136a1a027a867759b042f68513fc387426
+  version: 0.11.7
+  resolution: "object-path@npm:0.11.7"
+  checksum: 63013c6511e2ffe47bf5c4ed5b6ffc626e38e09218baa4cd42e028ced1e86bf2bfc14faf8359b042603052a5cbdfb606cebd62b5de30fad8ca72f05f040d1d31
   languageName: node
   linkType: hard
 
