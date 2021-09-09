@@ -6537,7 +6537,7 @@ __metadata:
     cypress-webpack-preprocessor-v5: ^5.0.0-alpha.1
     fast-check: ^2.10.0
     fork-ts-checker-webpack-plugin: ^6.2.1
-    graphql: ^15.4.0
+    graphql: ^15.5.3
     jest: ^27.0.6
     lodash: ^4.17.20
     next: ^11.1.0
@@ -6572,7 +6572,7 @@ __metadata:
     dotenv: ^8.2.0
     express: ^4.17.1
     fast-check: ^2.6.0
-    graphql: ^15.2.0
+    graphql: ^15.5.3
     jest: ^27.0.6
     lodash: ^4.17.20
     node-pg-migrate: ^5.8.1
@@ -12612,10 +12612,10 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"graphql@npm:^15.2.0, graphql@npm:^15.4.0":
-  version: 15.4.0
-  resolution: "graphql@npm:15.4.0"
-  checksum: 6b3240e5518dc2e7b2ba95fa251594e1a3c2f421b457759093c918986d218077c72117222bc2571be2cbd50b659793ae50e9e0eb2729c5858e6c2894e86011c1
+"graphql@npm:^15.5.3":
+  version: 15.5.3
+  resolution: "graphql@npm:15.5.3"
+  checksum: 0d507c7fdc1fd42b012827440473bb92b61cf3327f1ef837241c9344e87d2c8bcd400ae3f7acbfd20837e4aa90a31075b9f6d3abb0cc4dacad417bbb1306b89b
   languageName: node
   linkType: hard
 

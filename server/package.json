@@ -21,7 +21,7 @@
     "@graphql-toolkit/schema-merging": "^0.10.7",
     "@okta/jwt-verifier": "^2.0.1",
     "apollo-server": "^3.3.0",
-    "graphql": "^15.2.0",
+    "graphql": "^15.5.3",
     "lodash": "^4.17.20",
     "node-pg-migrate": "^5.8.1",
     "pg-fusion": "^0.3.0",
