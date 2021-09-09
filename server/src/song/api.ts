@@ -129,8 +129,9 @@ export class SongAPI {
       `)
     } catch (e) {
       if (
+        e instanceof Error &&
         e.message ==
-        'duplicate key value violates unique constraint "song_slug_key"'
+          'duplicate key value violates unique constraint "song_slug_key"'
       ) {
         throw new Error('Could not set slug: slug already in use')
       }

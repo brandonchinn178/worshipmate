@@ -38,7 +38,7 @@ function Login() {
       await login(username, password)
     } catch (e) {
       console.error(e)
-      toast.error(e)
+      toast.error(e as Error)
       throw e
     }
   }

@@ -41,7 +41,7 @@ const verifyToken = async (token: string) => {
     const jwt = await oktaJwtVerifier.verifyAccessToken(token, 'api://default')
     return jwt
   } catch (e) {
-    if (e.message === 'Jwt is expired') {
+    if (e instanceof Error && e.message === 'Jwt is expired') {
       throw new AuthenticationError('Token is expired')
     }
     throw e
