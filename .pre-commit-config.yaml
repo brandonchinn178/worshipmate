@@ -16,3 +16,5 @@ repos:
         language: system
         files: '\.(js|ts|tsx)$'
         require_serial: true
+
+exclude: '^\.yarn/'
