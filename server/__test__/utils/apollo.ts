@@ -1,5 +1,4 @@
 import { ApolloServer } from 'apollo-server'
-import { ApolloServerTestClient, createTestClient } from 'apollo-server-testing'
 import { Database } from 'pg-fusion'
 
 import * as apollo from '~/apollo'
@@ -34,7 +33,7 @@ type TestServerOptions = {
   autoAuth?: boolean
 }
 
-type TestServerQueryArgs = Parameters<ApolloServerTestClient['query']>[0] & {
+type TestServerQueryArgs = Parameters<ApolloServer['executeOperation']>[0] & {
   /**
    * The user to run the query as. If not provided, defers to autoAuth.
    *
@@ -45,13 +44,14 @@ type TestServerQueryArgs = Parameters<ApolloServerTestClient['query']>[0] & {
 }
 
 class TestServer {
-  private client: ApolloServerTestClient
   private autoAuth: boolean
 
-  constructor(server: ApolloServer, options: TestServerOptions = {}) {
+  constructor(
+    private readonly server: ApolloServer,
+    options: TestServerOptions = {},
+  ) {
     const { autoAuth = true } = options
 
-    this.client = createTestClient(server)
     this.autoAuth = autoAuth
   }
 
@@ -63,7 +63,7 @@ class TestServer {
       mockUsername.mockReturnValue(authUser)
     }
 
-    return this.client.query(args)
+    return this.server.executeOperation(args)
   }
 }
 

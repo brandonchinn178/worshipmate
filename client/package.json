@@ -16,7 +16,7 @@
     "@apollo/client": "^3.2.5",
     "@okta/okta-auth-js": "^4.7.1",
     "akar-icons": "^1.8.8",
-    "graphql": "^15.4.0",
+    "graphql": "^15.5.3",
     "lodash": "^4.17.20",
     "next": "^11.1.0",
     "react": "^17.0.2",
