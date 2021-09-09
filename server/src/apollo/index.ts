@@ -1,7 +1,9 @@
-import { loadTypedefsSync } from '@graphql-toolkit/core'
-import { GraphQLFileLoader } from '@graphql-toolkit/graphql-file-loader'
-import { mergeTypeDefs } from '@graphql-toolkit/schema-merging'
+import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
+import { loadSchemaSync } from '@graphql-tools/load'
+import { makeExecutableSchema } from '@graphql-tools/schema'
 import { ApolloServer } from 'apollo-server'
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
+import * as _ from 'lodash'
 import { Database } from 'pg-fusion'
 
 import { schemaDirectives } from '~/graphql/directives'
@@ -10,23 +12,22 @@ import * as user from '~/user/resolvers'
 
 import { getContext } from './context'
 
-const getTypeDefs = () => {
-  const typeDefs = loadTypedefsSync('**/*.graphql', {
-    loaders: [new GraphQLFileLoader()],
+const getSchema = () => {
+  const schema = makeExecutableSchema({
+    typeDefs: loadSchemaSync('**/*.graphql', {
+      loaders: [new GraphQLFileLoader()],
+    }),
+    resolvers: [song.resolvers, user.resolvers],
   })
 
-  return mergeTypeDefs(
-    typeDefs.flatMap((r) => (r.document ? [r.document] : [])),
-  )
+  return _.flow(schemaDirectives)(schema)
 }
 
 export const initServer = (db: Database) => {
   return new ApolloServer({
-    typeDefs: getTypeDefs(),
-    resolvers: [song.resolvers, user.resolvers],
-    schemaDirectives,
+    schema: getSchema(),
     context: ({ req }) => getContext(req, db),
     introspection: true,
-    playground: true,
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
   })
 }

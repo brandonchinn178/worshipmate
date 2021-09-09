@@ -379,9 +379,7 @@ describe('Mutation', () => {
         },
       })
 
-      const {
-        data: { song },
-      } = await server.query({
+      const { data } = await server.query({
         query: /* GraphQL */ `
           query($slug: String!) {
             song(slug: $slug) {
@@ -394,7 +392,7 @@ describe('Mutation', () => {
         },
       })
 
-      expect(song).toEqual({
+      expect(data?.song).toEqual({
         recommendedKey: 'G',
       })
     })
