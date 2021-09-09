@@ -61,7 +61,7 @@
     "jest": "^27.0.6",
     "snapshot-diff": "^0.8.1",
     "svgo": "^2.3.0",
-    "typescript": "^4.3.4",
+    "typescript": "^4.4.2",
     "webpack": "^5.28.0"
   }
 }
