@@ -22,7 +22,7 @@
     "@graphql-tools/utils": "^8.2.2",
     "@okta/jwt-verifier": "^2.0.1",
     "apollo-server": "^3.3.0",
-    "apollo-server-core": "^3.3.0",
+    "apollo-server-core": "^3.10.1",
     "graphql": "^15.5.3",
     "lodash": "^4.17.20",
     "node-pg-migrate": "^5.8.1",
