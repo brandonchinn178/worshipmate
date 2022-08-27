@@ -22,7 +22,7 @@ yarn server test
 
 ### Run end-to-end tests
 
-1. Have the `worship_mate` Postgres database running
+1. Have the `worshipmate` Postgres database running
 
 1. `yarn server test:e2e`
 

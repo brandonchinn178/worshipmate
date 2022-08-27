@@ -5,8 +5,7 @@ import { env } from '~/env'
 
 const { NODE_ENV, DATABASE_URL } = env
 
-export const DB_NAME =
-  NODE_ENV === 'test' ? 'worship_mate_test' : 'worship_mate'
+export const DB_NAME = NODE_ENV === 'test' ? 'worshipmate_test' : 'worshipmate'
 
 export const initDatabase = async () => {
   await createTestDatabase()

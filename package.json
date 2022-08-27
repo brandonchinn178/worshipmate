@@ -5,8 +5,8 @@
     "server"
   ],
   "scripts": {
-    "client": "yarn workspace @worship-mate/client",
-    "server": "yarn workspace @worship-mate/server",
+    "client": "yarn workspace @worshipmate/client",
+    "server": "yarn workspace @worshipmate/server",
     "g:lint": "HERE=$(pwd) && cd $INIT_CWD && eslint --ext .js,.ts,.tsx --max-warnings=0 --resolve-plugins-relative-to=$HERE",
     "lint": "yarn g:lint",
     "start:dev": "ts-node-script bin/start.ts",

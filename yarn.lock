@@ -6478,9 +6478,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@worship-mate/client@workspace:client":
+"@worshipmate/client@workspace:client":
   version: 0.0.0-use.local
-  resolution: "@worship-mate/client@workspace:client"
+  resolution: "@worshipmate/client@workspace:client"
   dependencies:
     "@apollo/client": ^3.2.5
     "@babel/core": ^7.12.9
@@ -6533,9 +6533,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@worship-mate/server@workspace:server":
+"@worshipmate/server@workspace:server":
   version: 0.0.0-use.local
-  resolution: "@worship-mate/server@workspace:server"
+  resolution: "@worshipmate/server@workspace:server"
   dependencies:
     "@graphql-codegen/add": ^2.0.2
     "@graphql-codegen/cli": ^1.20.0

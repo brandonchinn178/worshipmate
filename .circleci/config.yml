@@ -2,7 +2,7 @@ version: 2.1
 
 aliases:
   - &ci_executor
-    working_directory: ~/worship_mate/
+    working_directory: ~/worshipmate/
     shell: /bin/bash -eux -o pipefail
   - &docker_node_image circleci/node:12.8.1-stretch
 
@@ -22,10 +22,10 @@ executors:
       - image: *docker_node_image
       - image: circleci/postgres:9.6-alpine
         environment:
-          POSTGRES_DB: worship_mate
+          POSTGRES_DB: worshipmate
     environment:
       PGUSER: postgres
-      PGDATABASE: worship_mate
+      PGDATABASE: worshipmate
 
 commands:
   install_yarn_and_deps:
