@@ -176,8 +176,8 @@ jobs:
     executor: docker_node
     steps:
       - checkout
-      - heroku/deploy-via-git:
-          force: true
+      # - heroku/deploy-via-git:
+      #     force: true
       - run:
           name: Install Vercel CLI
           command: sudo npm install -g vercel
