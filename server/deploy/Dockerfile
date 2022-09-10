@@ -1,5 +1,7 @@
 FROM node:18-slim
 
+ENV NODE_ENV=production
+
 WORKDIR /app
 
 COPY package.json .
@@ -15,6 +17,7 @@ RUN yarn install
 
 COPY tsconfig.base.json .
 COPY server/ server/
+RUN yarn server build
 
 EXPOSE 8080
-CMD ["yarn", "server", "start:prod"]
+CMD ["yarn", "server", "node", "dist/src/main.js"]
