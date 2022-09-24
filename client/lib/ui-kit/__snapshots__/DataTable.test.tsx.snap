@@ -3,45 +3,45 @@
 exports[`displays data 1`] = `
 <div>
   <div
-    class="DataTable__Table-sc-1xhkibe-0 lhcMRB"
+    class="DataTable__Table-sc-1vek8hu-0 jagbnN"
   >
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
+      class="DataTable__TableCell-sc-1vek8hu-1 DataTable__TableHeaderCell-sc-1vek8hu-2 Plhzd"
     >
       Id
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
+      class="DataTable__TableCell-sc-1vek8hu-1 DataTable__TableHeaderCell-sc-1vek8hu-2 Plhzd"
     >
       Name
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="DataTable__TableCell-sc-1vek8hu-1 lhtQEX"
     >
       1
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="DataTable__TableCell-sc-1vek8hu-1 lhtQEX"
     >
       Alice
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="DataTable__TableCell-sc-1vek8hu-1 lhtQEX"
     >
       2
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="DataTable__TableCell-sc-1vek8hu-1 lhtQEX"
     >
       Bob
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="DataTable__TableCell-sc-1vek8hu-1 lhtQEX"
     >
       3
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 eNzmHX"
+      class="DataTable__TableCell-sc-1vek8hu-1 lhtQEX"
     >
       Charlie
     </div>
@@ -52,15 +52,15 @@ exports[`displays data 1`] = `
 exports[`displays no data 1`] = `
 <div>
   <div
-    class="DataTable__Table-sc-1xhkibe-0 lhcMRB"
+    class="DataTable__Table-sc-1vek8hu-0 jagbnN"
   >
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
+      class="DataTable__TableCell-sc-1vek8hu-1 DataTable__TableHeaderCell-sc-1vek8hu-2 Plhzd"
     >
       Id
     </div>
     <div
-      class="DataTable__TableCell-sc-1xhkibe-1 DataTable__TableHeaderCell-sc-1xhkibe-2 kkGvbz"
+      class="DataTable__TableCell-sc-1vek8hu-1 DataTable__TableHeaderCell-sc-1vek8hu-2 Plhzd"
     >
       Name
     </div>
