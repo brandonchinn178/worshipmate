@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "allowJs": false,
     "paths": {
       "~/*": ["lib/*"],
       "~jest-utils": ["jest/utils"],

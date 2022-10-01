@@ -1,0 +1,13 @@
+*
+
+!package.json
+!yarn.lock
+!.yarnrc.yml
+!.yarn/plugins/
+!tsconfig.base.json
+
+!server/
+server/**/.env
+server/deploy/
+server/dist/
+server/coverage/
