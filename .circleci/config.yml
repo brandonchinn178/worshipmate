@@ -50,14 +50,10 @@ jobs:
       - install_yarn_and_deps
 
       - run: yarn server typecheck
-
       - run: yarn server test --coverage
-      - codecov/upload:
-          file: server/coverage/lcov.info
-
       - run: yarn server test:e2e --coverage
       - codecov/upload:
-          file: server/coverage/lcov.info
+          file: server/coverage/lcov.info,server/coverage-e2e/lcov.info
 
   build_client:
     executor: docker_node_postgres
