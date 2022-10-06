@@ -11,15 +11,15 @@ import { ReactNode } from 'react'
 import { toast } from 'react-toastify'
 
 import { getToken } from '~/auth/client'
+import { GRAPHQL_URL } from '~/config'
 
 const IS_SSR = typeof window === 'undefined'
-const { NEXT_PUBLIC_GRAPHQL_URL } = process.env
 
 export const apolloCache = new InMemoryCache()
 
 export const getApolloClient = () => {
   const httpLink = new HttpLink({
-    uri: NEXT_PUBLIC_GRAPHQL_URL ?? 'http://localhost:4000/graphql',
+    uri: GRAPHQL_URL ?? 'http://localhost:4000/graphql',
     credentials: 'same-origin',
   })
 
