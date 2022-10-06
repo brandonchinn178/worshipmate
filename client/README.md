@@ -24,6 +24,8 @@ yarn client test
 
 ### Run cypress tests
 
+Cypress tests rely on authentication being mocked out. See the top-level `README.md` for more information.
+
 1. `docker-compose up -d`
 1. `yarn start:test`
 1. `yarn client cypress open`

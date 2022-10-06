@@ -1,0 +1,200 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # install pre-commit dependencies
+      - uses: actions/setup-node@v3
+      - run: corepack enable
+      - run: yarn install --immutable
+      # run pre-commit
+      - uses: pre-commit/action@v3.0.0
+      # check graphql codegen
+      - name: Check that server GraphQL files are up to date
+        run: |
+          yarn server codegen
+          git diff --exit-code server/
+      - name: Check that client GraphQL files are up to date
+        run: |
+          yarn client codegen
+          git diff --exit-code client/
+
+  build_server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # build image
+      - run: server/deploy/build.sh
+      - name: Export image
+        run: docker save worshipmate/server -o worshipmate-server-image.tar.gz
+      # upload image
+      - uses: actions/upload-artifact@v3
+        with:
+          name: worshipmate-server-image
+          path: worshipmate-server-image.tar.gz
+
+  test_server:
+    runs-on: ubuntu-latest
+    env:
+      PGUSER: postgres
+      PGDATABASE: worshipmate
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: worshipmate
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v3
+      # install dependencies
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: corepack enable
+      - run: yarn install --immutable
+      # typecheck
+      - run: yarn server typecheck
+      # run tests
+      - run: yarn server test --coverage
+      - run: yarn server test:e2e --coverage
+      - uses: codecov/codecov-action@v3
+
+  build_client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # install dependencies
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: corepack enable
+      - run: yarn install --immutable
+      # build client
+      - uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-next-cache-${{ hashFiles('yarn.lock') }}
+          path: client/.next/cache
+      - run: yarn client build
+        env:
+          NEXT_PUBLIC_MOCK_APOLLO_QUERIES: 1
+
+  test_client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # install dependencies
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: corepack enable
+      - run: yarn install --immutable
+      # typecheck
+      - run: yarn client typecheck
+      # run tests
+      - run: yarn client test --coverage
+      - uses: codecov/codecov-action@v3
+
+  test_cypress:
+    needs:
+      - build_server
+      - build_client
+
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+      PGUSER: postgres
+      PGDATABASE: worshipmate
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_DB: worshipmate
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v3
+      # install dependencies
+      - uses: actions/setup-node@v3
+      - run: corepack enable
+      - run: yarn install --immutable
+      # load services
+      - name: Download server Docker image
+        uses: actions/download-artifact@v3
+        with:
+          name: worshipmate-server-image
+      - name: Load server Docker image
+        run: docker load -i worshipmate-server-image.tar.gz
+      # migrate database
+      - name: Run migrations
+        run: yarn server migrate up
+      # start services
+      - run: mkdir -p ~/.logs
+      - name: Start server
+        run: |
+          docker run --rm \
+            --network host \
+            -e DATABASE_URL=postgresql://postgres@localhost/worshipmate \
+            -e UNSAFE_IGNORE_AUTH=1 \
+            worshipmate/server \
+            &> ~/.logs/server.log &
+      - name: Build client
+        run: |
+          # wait on server so that build doesn't fail when prefetching data
+          npm install -g wait-on && wait-on tcp:4000
+          yarn client build
+        env:
+          NEXT_PUBLIC_UNSAFE_IGNORE_AUTH: 1
+      - name: Start client
+        run: yarn client start:prod &> ~/.logs/client.log &
+      - name: Start test database server
+        run: yarn server db:run-test-server &> ~/.logs/db-test-server.log &
+      # run cypress
+      # https://github.com/cypress-io/github-action/pull/599
+      - uses: cypress-io/github-action@v3.1.0
+        with:
+          install: false
+          command: yarn client cypress run
+          wait-on: |
+            http://localhost:4000,
+            http://localhost:3000,
+            http://localhost:4040,
+      # store artifacts
+      - if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-service-logs
+          path: ~/.logs/
+      - if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-screenshots
+          path: client/cypress/screenshots/
+      - if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-videos
+          path: client/cypress/videos
