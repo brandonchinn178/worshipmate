@@ -56,19 +56,10 @@ jobs:
           file: server/coverage/lcov.info,server/coverage-e2e/lcov.info
 
   build_client:
-    executor: docker_node_postgres
+    executor: docker_node
     steps:
       - checkout
       - install_yarn_and_deps
-
-      # need running server for getStaticProps in NextJS build
-      - run: yarn server migrate up
-      - run:
-          command: yarn server start:prod
-          background: true
-      - run:
-          name: Wait for server to start
-          command: yarn wait-on tcp:4000
 
       # builds client for testing in CI -- production will
       # build its own Next.js app
@@ -78,6 +69,7 @@ jobs:
           command: yarn client build
           environment:
             NEXT_PUBLIC_UNSAFE_IGNORE_AUTH: 1
+            NEXT_PUBLIC_MOCK_APOLLO_QUERIES: 1
       - save_cache:
           key: v1-next-{{ checksum "yarn.lock" }}
           paths:

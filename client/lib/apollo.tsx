@@ -7,17 +7,34 @@ import {
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
+import { MockLink } from '@apollo/client/testing'
 import { ReactNode } from 'react'
 import { toast } from 'react-toastify'
 
+import { SearchSongsDocument } from '~/api/songApi.generated'
 import { getToken } from '~/auth/client'
-import { GRAPHQL_URL } from '~/config'
+import { GRAPHQL_URL, MOCK_APOLLO_QUERIES } from '~/config'
 
 const IS_SSR = typeof window === 'undefined'
 
 export const apolloCache = new InMemoryCache()
 
-export const getApolloClient = () => {
+const getApolloLink = () => {
+  if (MOCK_APOLLO_QUERIES) {
+    return new MockLink([
+      {
+        request: {
+          query: SearchSongsDocument,
+        },
+        result: {
+          data: {
+            songs: [],
+          },
+        },
+      },
+    ])
+  }
+
   const httpLink = new HttpLink({
     uri: GRAPHQL_URL ?? 'http://localhost:4000/graphql',
     credentials: 'same-origin',
@@ -58,9 +75,13 @@ export const getApolloClient = () => {
     }
   })
 
+  return from([authLink, errorLink, httpLink])
+}
+
+export const getApolloClient = () => {
   const apolloOptions = {
     ssrMode: IS_SSR,
-    link: from([authLink, errorLink, httpLink]),
+    link: getApolloLink(),
     cache: apolloCache,
   }
 

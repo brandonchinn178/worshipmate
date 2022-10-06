@@ -8,3 +8,5 @@ export const OKTA_DOMAIN: string | undefined =
   process.env.NEXT_PUBLIC_OKTA_DOMAIN
 export const OKTA_CLIENT_ID: string | undefined =
   process.env.NEXT_PUBLIC_OKTA_CLIENT_ID
+
+export const MOCK_APOLLO_QUERIES = !!process.env.NEXT_PUBLIC_MOCK_APOLLO_QUERIES
