@@ -21,6 +21,8 @@ const handle = (callback: (db: Database) => Promise<void>) => {
   }
 }
 
+app.get('/', (req, res) => res.status(200).send())
+
 app.post(
   '/clearDatabase',
   handle((db) => db.clear()),
