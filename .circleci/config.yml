@@ -20,7 +20,7 @@ executors:
     <<: *ci_executor
     docker:
       - image: *docker_node_image
-      - image: cimg/postgres:12.12
+      - image: cimg/postgres:14
         environment:
           POSTGRES_DB: worshipmate
     environment:
