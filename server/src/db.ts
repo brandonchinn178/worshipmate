@@ -8,7 +8,9 @@ const { NODE_ENV, DATABASE_URL } = env
 export const DB_NAME = NODE_ENV === 'test' ? 'worshipmate_test' : 'worshipmate'
 
 export const initDatabase = async () => {
-  await createTestDatabase()
+  if (NODE_ENV === 'test') {
+    await createTestDatabase()
+  }
 
   const connOptions = DATABASE_URL
     ? { connectionString: DATABASE_URL }
@@ -46,10 +48,6 @@ const withAdminDatabase = async <T>(
  * Create the test database if it doesn't already exist.
  */
 export const createTestDatabase = async () => {
-  if (NODE_ENV !== 'test') {
-    return
-  }
-
   await withAdminDatabase(async (admin) => {
     const databases = await admin.query(sql`SELECT datname FROM pg_database`)
 
@@ -63,10 +61,6 @@ export const createTestDatabase = async () => {
  * Drop the test database if it exists.
  */
 export const dropTestDatabase = async () => {
-  if (NODE_ENV !== 'test') {
-    return
-  }
-
   await withAdminDatabase(async (admin) => {
     await admin.query(sql`DROP DATABASE IF EXISTS ${sql.quote(DB_NAME)}`)
   })
