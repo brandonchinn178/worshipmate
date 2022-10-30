@@ -61,7 +61,8 @@ export const getStaticProps: GetStaticProps<SongPageProps> = async ({
 
   return {
     props: { song },
-    revalidate: 30,
+    // https://github.com/vercel/next.js/issues/42186
+    revalidate: process.env.NEXT_PUBLIC_DISABLE_ISR ? false : 30,
   }
 }
 

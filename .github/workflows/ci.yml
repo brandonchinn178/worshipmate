@@ -168,6 +168,7 @@ jobs:
           yarn client build
         env:
           NEXT_PUBLIC_UNSAFE_IGNORE_AUTH: 1
+          NEXT_PUBLIC_DISABLE_ISR: 1
       - name: Start client
         run: yarn client start:prod &> ~/.logs/client.log &
       - name: Start test database server
