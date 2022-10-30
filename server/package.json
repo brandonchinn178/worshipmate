@@ -14,7 +14,8 @@
     "codegen": "graphql-codegen",
     "migrate": "yarn :ts-node -s bin/migrate.ts",
     "migrate:create": "node-pg-migrate create",
-    "db:start-test-server": "NODE_ENV=test yarn :ts-node -s bin/startDatabaseTestServer.ts",
+    "db:run-test-server": "yarn :ts-node -s bin/startDatabaseTestServer.ts",
+    "db:start-test-server": "NODE_ENV=test yarn db:run-test-server",
     ":ts-node": "ts-node -r tsconfig-paths/register"
   },
   "dependencies": {

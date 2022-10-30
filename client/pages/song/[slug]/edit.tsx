@@ -76,7 +76,6 @@ export const getStaticProps: GetStaticProps<EditSongPageProps> = async ({
       id: song.id,
       slug: slug as string,
     },
-    revalidate: 300,
   }
 }
 

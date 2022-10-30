@@ -16,19 +16,33 @@ const handle = (callback: (db: Database) => Promise<void>) => {
         res.status(201).send()
       })
       .catch((e) => {
+        console.error(e)
         res.status(500).send(e.toString())
       })
   }
 }
 
+const log = (message: string) => {
+  const timestamp = new Date().toISOString()
+  console.log(`[${timestamp}] ${message}`)
+}
+
+app.get('/', (req, res) => res.status(200).send())
+
 app.post(
   '/clearDatabase',
-  handle((db) => db.clear()),
+  handle(async (db) => {
+    await db.clear()
+    log('Finished: /clearDatabase')
+  }),
 )
 
 app.post(
   '/seedDatabase',
-  handle((db) => prepopulateDB(db)),
+  handle(async (db) => {
+    await prepopulateDB(db)
+    log('Finished: /seedDatabase')
+  }),
 )
 
 app.listen(4040, () => {

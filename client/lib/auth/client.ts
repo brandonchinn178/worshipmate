@@ -1,5 +1,12 @@
 import { OktaAuth } from '@okta/okta-auth-js'
 
+import {
+  NODE_ENV,
+  OKTA_CLIENT_ID,
+  OKTA_DOMAIN,
+  UNSAFE_IGNORE_AUTH,
+} from '~/config'
+
 abstract class AuthClientBase {
   abstract getToken(): Promise<string | null>
   abstract onUpdateToken(callback: (token: string | null) => void): void
@@ -13,12 +20,9 @@ class AuthClientOkta extends AuthClientBase {
   constructor() {
     super()
 
-    const oktaDomain = process.env.NEXT_PUBLIC_OKTA_DOMAIN
-    const oktaClientId = process.env.NEXT_PUBLIC_OKTA_CLIENT_ID
-
     this.oktaAuth = new OktaAuth({
-      issuer: `https://${oktaDomain}/oauth2/default`,
-      clientId: oktaClientId,
+      issuer: `https://${OKTA_DOMAIN}/oauth2/default`,
+      clientId: OKTA_CLIENT_ID,
     })
   }
 
@@ -126,9 +130,6 @@ const getAuthClient = (): AuthClientBase => {
   if (typeof window === 'undefined') {
     return new AuthClientSSR()
   }
-
-  const NODE_ENV = process.env.NEXT_PUBLIC_NODE_ENV
-  const UNSAFE_IGNORE_AUTH = process.env.NEXT_PUBLIC_UNSAFE_IGNORE_AUTH
 
   if (NODE_ENV === 'test' || UNSAFE_IGNORE_AUTH) {
     return new AuthClientFake()

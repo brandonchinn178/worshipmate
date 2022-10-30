@@ -10,6 +10,12 @@ This directory serves the backend for the website.
    docker-compose up -d
    ```
 
+1. Add `server/.env` with:
+
+   ```
+   PGUSER=postgres
+   ```
+
 1. `yarn server start:dev`
 
 ## Tests

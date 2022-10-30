@@ -4,6 +4,7 @@
 # NodeJS
 node_modules/
 coverage/
+coverage-e2e/
 dist/
 
 # NextJS

@@ -3,6 +3,7 @@
 import { Database, loadCLIMigrateArgs } from 'pg-fusion'
 
 import { dropTestDatabase, withDatabase } from '~/db'
+import { env } from '~/env'
 
 const cliMigrateArgs = loadCLIMigrateArgs()
 
@@ -16,7 +17,10 @@ const runMigrations = async (db: Database) => {
 }
 
 const bootstrap = async () => {
-  await dropTestDatabase()
+  if (env.NODE_ENV === 'test') {
+    await dropTestDatabase()
+  }
+
   return withDatabase(runMigrations)
 }
 

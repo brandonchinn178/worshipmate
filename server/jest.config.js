@@ -14,7 +14,7 @@ module.exports = {
   transform: {
     '^.+\\.ts$': 'ts-jest',
   },
-  coverageDirectory: './coverage',
+  coverageDirectory: isE2E ? './coverage-e2e' : './coverage',
   coveragePathIgnorePatterns: [
     '/node_modules/',
     '/dist/',

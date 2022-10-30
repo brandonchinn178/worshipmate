@@ -1,0 +1,37 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - ci
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # deploy server
+      - name: Download server Docker image
+        uses: actions/download-artifact@v3
+        with:
+          name: worshipmate-server-image
+          path: /tmp/
+      - name: Load server Docker image
+        run: docker load -i /tmp/worshipmate-server-image.tar.gz
+      - name: Install flyctl
+        run: curl -L https://fly.io/install.sh | sh
+      - run: server/deploy/deploy.sh
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      # deploy client
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      - name: Deploy client
+        run: vercel --token "${{ secrets.VERCEL_TOKEN }}" --prod --yes
