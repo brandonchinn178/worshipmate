@@ -119,7 +119,7 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
 const HomePageContent = styled.div`
   display: grid;
   grid-template-columns: 400px auto;
-  grid-template-rows: max-content max-content auto;
+  grid-template-rows: min-content min-content 1fr;
   grid-template-areas:
     'sidebar search'
     'sidebar table-meta'
