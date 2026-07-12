@@ -1,11 +1,34 @@
 <script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
+  import "../app.css"
 
-	let { children } = $props();
+  import { page } from "$app/state"
+  import Header from "$lib/Header.svelte"
+
+  let { children } = $props()
+
+  let showHeader = $derived(page.data.header ?? true)
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+  <title>WorshipMate</title>
 </svelte:head>
 
-{@render children()}
+<div class="container">
+  {#if showHeader}
+    <Header />
+  {/if}
+
+  <div class="content">
+    {@render children()}
+  </div>
+</div>
+
+<style>
+  .container {
+    min-width: min-content;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+</style>

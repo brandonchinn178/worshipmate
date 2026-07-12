@@ -1,0 +1,42 @@
+:root {
+  /* Base colors */
+  --dark-teal: #134b4e;
+  --pink: #ff9797;
+  --red: #a8201a;
+  --white: #fff;
+  --black: #000;
+  --light-gray: #999;
+
+  /* Theme colors */
+  --primary: var(--dark-teal);
+  --secondary: var(--pink);
+  --error: var(--red);
+
+  /* Fonts */
+  --font-noto-serif: "Noto Serif", serif;
+  --font-alegreya: "Alegreya Sans", sans-serif;
+  --font-alegreya-sc: "Alegreya Sans SC", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  font-family: var(--font-noto-serif);
+}
+
+a {
+  color: var(--primary);
+  font-weight: bold;
+  text-decoration: none;
+  &:hover {
+    color: var(--secondary);
+  }
+}
+
+li {
+  list-style-type: none;
+}
