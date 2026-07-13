@@ -21,6 +21,8 @@
 * {
   margin: 0;
   padding: 0;
+  position: relative;
+  box-sizing: border-box;
 }
 
 html,
@@ -39,4 +41,12 @@ a {
 
 li {
   list-style-type: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
 }

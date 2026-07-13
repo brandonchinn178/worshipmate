@@ -2,6 +2,7 @@
   import "../app.css"
 
   import { page } from "$app/state"
+  import AppProviders from "$lib/AppProviders.svelte"
   import Header from "$lib/Header.svelte"
 
   let { children } = $props()
@@ -13,15 +14,17 @@
   <title>WorshipMate</title>
 </svelte:head>
 
-<div class="container">
-  {#if showHeader}
-    <Header />
-  {/if}
+<AppProviders>
+  <div class="container">
+    {#if showHeader}
+      <Header />
+    {/if}
 
-  <div class="content">
-    {@render children()}
+    <div class="content">
+      {@render children()}
+    </div>
   </div>
-</div>
+</AppProviders>
 
 <style>
   .container {

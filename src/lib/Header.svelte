@@ -1,8 +1,6 @@
 <script>
   import { resolve } from "$app/paths"
-
-  // TODO: supabase auth
-  const userLoggedIn = false
+  import { session } from "$lib/auth.svelte"
 </script>
 
 <header>
@@ -10,10 +8,10 @@
   <nav>
     <ul>
       <li><a href={resolve("/about")}>About</a></li>
-      {#if userLoggedIn}
+      {#if session !== null}
         <li><a href={resolve("/dashboard")}>Dashboard</a></li>
       {/if}
-      {#if !userLoggedIn}
+      {#if session === null}
         <li><a href={resolve("/login")}>Login</a></li>
       {/if}
     </ul>
