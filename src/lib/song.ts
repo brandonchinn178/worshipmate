@@ -11,7 +11,7 @@ export type Song = {
 }
 
 export const listSongs = () => {
-  return createQuery(() => ({
+  return createQuery<Song[]>(() => ({
     queryKey: ["list-songs"],
     queryFn: async () => {
       const { data, error } = await supabase.from("songs").select(`
@@ -26,6 +26,34 @@ export const listSongs = () => {
         ...song,
         artist: song.artist.name,
       }))
+    },
+  }))
+}
+
+export const getSong = (slug: string) => {
+  return createQuery<Song | null>(() => ({
+    queryKey: ["get-song"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("songs")
+        .select(
+          `
+        id,
+        slug,
+        title,
+        artist (name),
+        key
+      `,
+        )
+        .eq("slug", slug)
+        .single()
+      if (error) throw error
+      return (
+        data && {
+          ...data,
+          artist: data.artist.name,
+        }
+      )
     },
   }))
 }

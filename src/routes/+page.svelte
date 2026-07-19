@@ -24,7 +24,7 @@
   let activeFilters: Array<{ key: string }> = $state([])
 
   const songsQuery = listSongs()
-  const songs = songsQuery.data ?? []
+  const songs = $derived(songsQuery.data ?? [])
 </script>
 
 <main>
@@ -58,7 +58,7 @@
         </tr>
         {#each songs as song (song.slug)}
           <tr>
-            <td>{song.title}</td>
+            <td><a href={resolve("/song/[slug]", { slug: song.slug })}>{song.title}</a></td>
             <td>{song.artist}</td>
             <td>{song.key}</td>
           </tr>
@@ -122,7 +122,13 @@
       text-transform: lowercase;
       font-size: 1.5rem;
     }
+    th,
+    td {
+      text-align: center;
+      padding: 0.25rem;
+    }
 
+    /* Borders */
     --border: 1px solid var(--black);
     border: var(--border);
     th,
