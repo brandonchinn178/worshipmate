@@ -5,7 +5,8 @@
   import { resolve } from "$app/paths"
   import { page } from "$app/state"
   import { session } from "$lib/auth.svelte"
-  import type { Song } from "$lib/song"
+  import { listSongs } from "$lib/song"
+  import Spinner from "$lib/Spinner.svelte"
   import { pluralize } from "$lib/utils/pluralize"
 
   const search = page.url.searchParams.get("search")
@@ -22,43 +23,49 @@
   // TODO: activate filters
   let activeFilters: Array<{ key: string }> = $state([])
 
-  // TODO: query db with `search`
-  const songs: Song[] = []
+  const songsQuery = listSongs()
+  const songs = songsQuery.data ?? []
 </script>
 
 <main>
-  <form class="searchbar" onsubmit={setSearch}>
-    <input bind:value={searchInput} />
-    <button>
-      <SearchIcon width="20px" />
-    </button>
-  </form>
-  <div class="table-meta">
-    <p class="song-count">{songs.length} {pluralize("song", songs.length)}</p>
-    {#each activeFilters as filter (filter.key)}
-      <p>TODO</p>
-    {/each}
-    <button>Add filter</button>
-    {#if session !== null}
-      <p><a href="#todo">Add song</a></p>
-    {/if}
-  </div>
-  <table>
-    <tbody>
-      <tr>
-        <th>Title</th>
-        <th>Artist</th>
-        <th>Key</th>
-      </tr>
-      {#each songs as song (song.slug)}
-        <tr>
-          <td>{song.title}</td>
-          <td>{song.artist}</td>
-          <td>{song.key}</td>
-        </tr>
+  {#if songsQuery.isPending}
+    <div class="loading">
+      <Spinner height="50px" />
+    </div>
+  {:else}
+    <form class="searchbar" onsubmit={setSearch}>
+      <input bind:value={searchInput} />
+      <button>
+        <SearchIcon width="20px" />
+      </button>
+    </form>
+    <div class="table-meta">
+      <p class="song-count">{songs.length} {pluralize("song", songs.length)}</p>
+      {#each activeFilters as filter (filter.key)}
+        <p>TODO</p>
       {/each}
-    </tbody>
-  </table>
+      <button>Add filter</button>
+      {#if session !== null}
+        <p><a href="#todo">Add song</a></p>
+      {/if}
+    </div>
+    <table>
+      <tbody>
+        <tr>
+          <th>Title</th>
+          <th>Artist</th>
+          <th>Key</th>
+        </tr>
+        {#each songs as song (song.slug)}
+          <tr>
+            <td>{song.title}</td>
+            <td>{song.artist}</td>
+            <td>{song.key}</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  {/if}
 </main>
 
 <style>
@@ -68,6 +75,12 @@
 
     display: grid;
     gap: 0.5rem;
+  }
+
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .searchbar {
