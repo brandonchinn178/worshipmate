@@ -42,6 +42,7 @@
 	"dependencies": {
 		"@iconify-svelte/material-symbols": "^1.0.44",
 		"@supabase/supabase-js": "^2.110.7",
-		"@tanstack/svelte-query": "^6.1.36"
+		"@tanstack/svelte-query": "^6.1.36",
+		"svelte-sonner": "^1.1.1"
 	}
 }
