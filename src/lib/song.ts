@@ -10,7 +10,7 @@ export type Song = {
   key: string
 }
 
-export const listSongs = () => {
+export const createListSongsQuery = () => {
   return createQuery<Song[]>(() => ({
     queryKey: ["list-songs"],
     queryFn: async () => {
@@ -30,7 +30,7 @@ export const listSongs = () => {
   }))
 }
 
-export const getSong = (slug: string) => {
+export const createGetSongQuery = (slug: string) => {
   return createQuery<Song | null>(() => ({
     queryKey: ["get-song"],
     queryFn: async () => {

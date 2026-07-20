@@ -28,6 +28,7 @@
 html,
 body {
   font-family: var(--font-noto-serif);
+  font-size: 18px;
 }
 
 a {
@@ -49,4 +50,21 @@ button {
 
 table {
   border-collapse: collapse;
+}
+
+input {
+  height: 100%;
+  padding: 0.25rem;
+  font-size: 1em;
+  border: 1px solid var(--black);
+}
+
+button {
+  padding: 0.2rem 1rem;
+  background: var(--white);
+  border: 1px solid var(--black);
+
+  font-family: var(--font-alegreya-sc);
+  font-size: 1.2em;
+  text-transform: lowercase;
 }

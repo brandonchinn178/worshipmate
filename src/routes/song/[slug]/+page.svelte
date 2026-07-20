@@ -1,12 +1,12 @@
 <script lang="ts">
   import { resolve } from "$app/paths"
-  import { getSong } from "$lib/song"
+  import { createGetSongQuery } from "$lib/song"
 
   import type { PageProps } from "./$types"
 
   let { params }: PageProps = $props()
 
-  const songQuery = $derived(getSong(params.slug))
+  const songQuery = $derived(createGetSongQuery(params.slug))
 </script>
 
 <p><a href={resolve("/")}>Back to song list</a></p>

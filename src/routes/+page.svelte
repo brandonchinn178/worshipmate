@@ -4,12 +4,14 @@
   import { goto } from "$app/navigation"
   import { resolve } from "$app/paths"
   import { page } from "$app/state"
-  import { session } from "$lib/auth.svelte"
-  import { listSongs } from "$lib/song"
+  import { createSessionQuery } from "$lib/auth.svelte"
+  import { createListSongsQuery } from "$lib/song"
   import Spinner from "$lib/Spinner.svelte"
   import { pluralize } from "$lib/utils/pluralize"
 
   const search = page.url.searchParams.get("search")
+
+  const { data: session } = createSessionQuery()
 
   // Searchbar
   let searchInput = $state(search ?? "")
@@ -23,7 +25,7 @@
   // TODO: activate filters
   let activeFilters: Array<{ key: string }> = $state([])
 
-  const songsQuery = listSongs()
+  const songsQuery = createListSongsQuery()
   const songs = $derived(songsQuery.data ?? [])
 </script>
 
@@ -88,20 +90,9 @@
     grid-template-columns: auto min-content;
     gap: 0.5rem;
 
-    input {
-      height: 100%;
-      padding: 0.25rem;
-      font-size: 1.2rem;
-    }
-
     button {
-      padding: 2px 6px 0;
-    }
-
-    input,
-    button {
-      border: 1px solid var(--black);
-      background: var(--white);
+      padding: 2px 5px 0;
+      font-size: 0;
     }
   }
 
