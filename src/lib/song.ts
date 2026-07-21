@@ -14,18 +14,9 @@ export const createListSongsQuery = () => {
   return createQuery<Song[]>(() => ({
     queryKey: ["list-songs"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("songs").select(`
-        id,
-        slug,
-        title,
-        artist (name),
-        key
-      `)
+      const { data: songs, error } = await SongQuery.query
       if (error) throw error
-      return data.map((song) => ({
-        ...song,
-        artist: song.artist.name,
-      }))
+      return songs.map(SongQuery.deserialize)
     },
   }))
 }
@@ -34,26 +25,29 @@ export const createGetSongQuery = (slug: string) => {
   return createQuery<Song | null>(() => ({
     queryKey: ["get-song"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("songs")
-        .select(
-          `
-        id,
-        slug,
-        title,
-        artist (name),
-        key
-      `,
-        )
-        .eq("slug", slug)
-        .single()
+      const { data: song, error } = await SongQuery.query.eq("slug", slug).maybeSingle()
       if (error) throw error
-      return (
-        data && {
-          ...data,
-          artist: data.artist.name,
-        }
-      )
+      return song && SongQuery.deserialize(song)
     },
   }))
+}
+
+type SongQueryRow = NonNullable<Awaited<typeof SongQuery.query>["data"]>[number]
+class SongQuery {
+  static get query() {
+    return supabase.from("songs").select(`
+      id,
+      slug,
+      title,
+      artist (name),
+      key
+    `)
+  }
+
+  static deserialize(song: SongQueryRow): Song {
+    return {
+      ...song,
+      artist: song.artist.name,
+    }
+  }
 }
