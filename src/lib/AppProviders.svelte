@@ -4,10 +4,10 @@
 
   import { queryClient } from "$lib/tanstack-query"
 
-  let { children } = $props()
+  let { queryClient: queryClientProp = null, children } = $props()
 </script>
 
-<QueryClientProvider client={queryClient}>
+<QueryClientProvider client={queryClientProp ?? queryClient}>
   {@render children()}
   <Toaster richColors />
 </QueryClientProvider>

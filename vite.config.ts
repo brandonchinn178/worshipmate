@@ -1,6 +1,6 @@
 import adapter from "@sveltejs/adapter-static"
 import { sveltekit } from "@sveltejs/kit/vite"
-import { playwright } from "@vitest/browser-playwright"
+import { svelteTesting } from "@testing-library/svelte/vite"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
@@ -16,7 +16,12 @@ export default defineConfig({
       // If your environment is not supported, or you settled on a specific environment, switch out the adapter.
       // See https://svelte.dev/docs/kit/adapters for more information about adapters.
       adapter: adapter(),
+
+      alias: {
+        $testlib: "./src/__test__",
+      },
     }),
+    svelteTesting(),
   ],
   ssr: {
     noExternal: ["@tanstack/svelte-query", "svelte-sonner"],
@@ -28,23 +33,13 @@ export default defineConfig({
         extends: "./vite.config.ts",
         test: {
           name: "client",
-          browser: {
-            enabled: true,
-            provider: playwright(),
-            instances: [{ browser: "chromium", headless: true }],
-          },
-          include: ["src/**/*.svelte.{test,spec}.{js,ts}"],
-          exclude: ["src/lib/server/**"],
+          environment: "jsdom",
+          include: ["src/**/*.spec.ts"],
+          setupFiles: ["src/__test__/setup.ts"],
+          mockReset: true,
         },
-      },
-
-      {
-        extends: "./vite.config.ts",
-        test: {
-          name: "server",
-          environment: "node",
-          include: ["src/**/*.{test,spec}.{js,ts}"],
-          exclude: ["src/**/*.svelte.{test,spec}.{js,ts}"],
+        resolve: {
+          conditions: ["browser"],
         },
       },
     ],
