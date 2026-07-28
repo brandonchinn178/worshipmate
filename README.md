@@ -4,56 +4,22 @@ A website for worship leaders to browse songs for worshipping individually or co
 
 ## Quickstart
 
-Pre-requirements: Install yarn and Docker
+1. `npm install`
+2. `npm run dev`
+3. `npx supabase start`
 
-1. Install yarn dependencies
+This runs the following services:
+* UI: http://localhost:5173
+* Supabase Studio: http://127.0.0.1:54323
 
-   ```bash
-   yarn --immutable
-   ```
+Create a `.env` file containing:
+```sh
+VITE_SUPABASE_URL=http://127.0.0.1:54321
+VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
+```
 
-1. Run a Postgres server in Docker
+## Migrations
 
-   ```bash
-   docker-compose up -d
-   ```
-
-1. Start the GraphQL server and front end concurrently
-
-   ```bash
-   yarn start:dev
-   ```
-
-1. Go to `http://localhost:3000`
-
-## Package overview
-
-This repository is organized using the following Yarn workspaces:
-
-- `client`: The NextJS project that runs the web frontend
-- `server`: The apollo-server project that runs the GraphQL backend
-
-## Authentication
-
-This project uses [Okta](https://developer.okta.com/) to store user information and handle authentication.
-
-### Set up Okta
-
-1. Create a new Okta application
-    * Application type: SPA
-    * Set the Login redirect URI to your domain, e.g. `http://localhost:3000/`
-1. Go to Security > API > Trusted Origins and add your domain
-1. Copy the client ID and Okta domain
-1. Set the following environment variables in `client/.env.local`:
-    * `NEXT_PUBLIC_OKTA_CLIENT_ID`
-    * `NEXT_PUBLIC_OKTA_DOMAIN`
-1. Set the following environment variables in `server/.env`:
-    * `OKTA_CLIENT_ID`
-    * `OKTA_DOMAIN`
-
-### Mock out authentication
-
-To mock out authentication, set `NEXT_PUBLIC_UNSAFE_IGNORE_AUTH=1` in `client/.env.local` and `UNSAFE_IGNORE_AUTH=1` in `server/.env`. With these environment variables set, you may use these credentials to login:
-
-* Username: `testuser`
-* Password: `password`
+1. `npx supabase migration new my_new_migration`
+2. `npx supabase db reset`
+3. `npx supabase gen types --lang typescript --local > src/lib/supabase/types.ts`

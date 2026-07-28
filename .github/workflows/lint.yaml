@@ -1,0 +1,30 @@
+name: Lint
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+
+      - name: Install hooky
+        run: |
+          curl -fsSL \
+            https://github.com/brandonchinn178/hooky/releases/download/v1.0.4/hooky-1.0.4-linux-x86_64 \
+            -o /usr/local/bin/hooky
+          chmod +x /usr/local/bin/hooky
+
+      - name: Run hooky
+        run: hooky run --all --format=verbose
+        env:
+          SKIP: no_commit_to_branch

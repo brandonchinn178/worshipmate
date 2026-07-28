@@ -1,0 +1,70 @@
+:root {
+  /* Base colors */
+  --dark-teal: #134b4e;
+  --pink: #ff9797;
+  --red: #a8201a;
+  --white: #fff;
+  --black: #000;
+  --light-gray: #999;
+
+  /* Theme colors */
+  --primary: var(--dark-teal);
+  --secondary: var(--pink);
+  --error: var(--red);
+
+  /* Fonts */
+  --font-noto-serif: "Noto Serif", serif;
+  --font-alegreya: "Alegreya Sans", sans-serif;
+  --font-alegreya-sc: "Alegreya Sans SC", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: var(--font-noto-serif);
+  font-size: 18px;
+}
+
+a {
+  color: var(--primary);
+  font-weight: bold;
+  text-decoration: none;
+  &:hover {
+    color: var(--secondary);
+  }
+}
+
+li {
+  list-style-type: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+input {
+  height: 100%;
+  padding: 0.25rem;
+  font-size: 1em;
+  border: 1px solid var(--black);
+}
+
+button {
+  padding: 0.2rem 1rem;
+  background: var(--white);
+  border: 1px solid var(--black);
+
+  font-family: var(--font-alegreya-sc);
+  font-size: 1.2em;
+  text-transform: lowercase;
+}

@@ -1,0 +1,31 @@
+hook hooky {
+    command hooky lint {
+        fix_args --fix
+        pass_files file
+    }
+    files *
+}
+
+hook eslint {
+    command npx eslint {
+        fix_args --fix
+    }
+    files *.js *.ts *.tsx
+}
+
+hook prettier {
+    command npx prettier {
+        check_args --check
+        fix_args --write
+    }
+    files *.js *.ts *.tsx
+}
+
+lint_rules {
+    - check_broken_symlinks
+    - check_case_conflict
+    - check_merge_conflict
+    - end_of_file_fixer
+    - no_commit_to_branch
+    - trailing_whitespace
+}

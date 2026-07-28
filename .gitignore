@@ -1,28 +1,23 @@
-# Mac OSX
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+
+# OS
 .DS_Store
+Thumbs.db
 
-# NodeJS
-node_modules/
-coverage/
-coverage-e2e/
-dist/
-
-# NextJS
-.next/
-
-# Yarn
-yarn-error.log
-.yarn/*
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
-.pnp.*
-
-# Cypress
-/client/cypress/videos/
-/client/cypress/screenshots/
-
-# Developer files
+# Env
 .env
-.env.local
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

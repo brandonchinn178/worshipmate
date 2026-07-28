@@ -1,6 +1,0 @@
-{
-  "watch": ["src"],
-  "ignore": ["*.spec.ts", "*.e2e-spec.ts"],
-  "ext": "ts",
-  "exec": "yarn :ts-node ./src/main.ts"
-}
