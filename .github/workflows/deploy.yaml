@@ -4,6 +4,15 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   build:
     uses: ./.github/workflows/build.yaml
@@ -11,18 +20,24 @@ jobs:
   test:
     uses: ./.github/workflows/test.yaml
 
-  deploy:
+  migrate:
     needs: [build, test]
     runs-on: ubuntu-latest
     steps:
-      - run: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v8
+      - uses: supabase/setup-cli@v1
         with:
-          name: worshipmate-build
+          version: latest
+
+      - name: Run Supabase migrations
+        run: supabase db push --db-url "$SUPABASE_DB_URL"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
 
   deploy:
-    needs: [build, test]
+    needs: migrate
     runs-on: ubuntu-latest
 
     environment:
