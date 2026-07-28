@@ -4,14 +4,11 @@
   import { goto } from "$app/navigation"
   import { resolve } from "$app/paths"
   import { page } from "$app/state"
-  import { createSessionQuery } from "$lib/auth.svelte"
-  import { createListSongsQuery } from "$lib/song"
-  import Spinner from "$lib/Spinner.svelte"
   import { pluralize } from "$lib/utils/pluralize"
 
   const search = page.url.searchParams.get("search")
 
-  const { data: session } = createSessionQuery()
+  const { session, songs } = page.data
 
   // Searchbar
   let searchInput = $state(search ?? "")
@@ -24,50 +21,41 @@
 
   // TODO: activate filters
   let activeFilters: Array<{ key: string }> = $state([])
-
-  const songsQuery = createListSongsQuery()
-  const songs = $derived(songsQuery.data ?? [])
 </script>
 
 <main>
-  {#if songsQuery.isPending}
-    <div class="loading">
-      <Spinner height="50px" />
-    </div>
-  {:else}
-    <form class="searchbar" onsubmit={setSearch}>
-      <input bind:value={searchInput} />
-      <button>
-        <SearchIcon width="20px" />
-      </button>
-    </form>
-    <div class="table-meta">
-      <p class="song-count">{songs.length} {pluralize("song", songs.length)}</p>
-      {#each activeFilters as filter (filter.key)}
-        <p>TODO</p>
-      {/each}
-      <button>Add filter</button>
-      {#if session !== null}
-        <p><a href="#todo">Add song</a></p>
-      {/if}
-    </div>
-    <table>
-      <tbody>
+  <form class="searchbar" onsubmit={setSearch}>
+    <input bind:value={searchInput} />
+    <button>
+      <SearchIcon width="20px" />
+    </button>
+  </form>
+  <div class="table-meta">
+    <p class="song-count">{songs.length} {pluralize("song", songs.length)}</p>
+    {#each activeFilters as filter (filter.key)}
+      <p>TODO</p>
+    {/each}
+    <button>Add filter</button>
+    {#if session !== null}
+      <p><a href="#todo">Add song</a></p>
+    {/if}
+  </div>
+  <table>
+    <tbody>
+      <tr>
+        <th>Title</th>
+        <th>Artist</th>
+        <th>Key</th>
+      </tr>
+      {#each songs as song (song.slug)}
         <tr>
-          <th>Title</th>
-          <th>Artist</th>
-          <th>Key</th>
+          <td><a href={resolve("/song/[slug]", { slug: song.slug })}>{song.title}</a></td>
+          <td>{song.artist}</td>
+          <td>{song.key}</td>
         </tr>
-        {#each songs as song (song.slug)}
-          <tr>
-            <td><a href={resolve("/song/[slug]", { slug: song.slug })}>{song.title}</a></td>
-            <td>{song.artist}</td>
-            <td>{song.key}</td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
-  {/if}
+      {/each}
+    </tbody>
+  </table>
 </main>
 
 <style>
@@ -77,12 +65,6 @@
 
     display: grid;
     gap: 0.5rem;
-  }
-
-  .loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   .searchbar {

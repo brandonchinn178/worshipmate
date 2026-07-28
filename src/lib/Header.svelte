@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
   import { resolve } from "$app/paths"
-  import { createSessionQuery } from "$lib/auth.svelte"
+  import { page } from "$app/state"
 
-  const { data: session } = createSessionQuery()
+  const { session } = page.data
 </script>
 
 <header>

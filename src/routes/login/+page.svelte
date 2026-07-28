@@ -1,20 +1,21 @@
 <script lang="ts">
-  import { createLoginMutation } from "$lib/auth.svelte"
+  import { login } from "$lib/auth.svelte"
   import Spinner from "$lib/Spinner.svelte"
 
+  let loginPending = $state(false)
   let input = $state({
     email: "",
     password: "",
   })
-
-  const loginMutation = createLoginMutation()
 </script>
 
 <main>
   <form
     onsubmit={async (e) => {
       e.preventDefault()
-      await loginMutation.mutateAsync(input)
+      loginPending = true
+      await login(input)
+      loginPending = false
     }}
   >
     <div class="field">
@@ -26,10 +27,10 @@
       <input id="password" name="password" type="password" bind:value={input.password} />
     </div>
     <div class="submit">
-      {#if loginMutation.isPending}
+      {#if loginPending}
         <Spinner height="2em" />
       {:else}
-        <button> Login </button>
+        <button>Login</button>
       {/if}
     </div>
   </form>

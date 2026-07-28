@@ -24,7 +24,7 @@ export default defineConfig({
     svelteTesting(),
   ],
   ssr: {
-    noExternal: ["@tanstack/svelte-query", "svelte-sonner"],
+    noExternal: ["svelte-sonner"],
   },
   test: {
     expect: { requireAssertions: true },

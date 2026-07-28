@@ -1,16 +1,12 @@
 <script lang="ts">
   import { resolve } from "$app/paths"
-  import { createGetSongQuery } from "$lib/song"
+  import { page } from "$app/state"
 
-  import type { PageProps } from "./$types"
-
-  let { params }: PageProps = $props()
-
-  const songQuery = $derived(createGetSongQuery(params.slug))
+  let { song } = page.data
 </script>
 
 <p><a href={resolve("/")}>Back to song list</a></p>
 <pre>
 <!-- TODO -->
-{JSON.stringify(songQuery.data, null, 2)}
+{JSON.stringify(song, null, 2)}
 </pre>

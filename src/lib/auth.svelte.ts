@@ -1,18 +1,21 @@
 import type { Session } from "@supabase/supabase-js"
-import { createMutation, createQuery } from "@tanstack/svelte-query"
+import { toast } from "svelte-sonner"
 
+import { invalidate } from "$app/navigation"
 import { goto } from "$app/navigation"
 import { resolve } from "$app/paths"
 import { supabase } from "$lib/supabase"
 
-export const createSessionQuery = () => {
-  return createQuery<Session | null>(() => ({
-    queryKey: ["session"],
-    queryFn: async () => {
-      const { data } = await supabase.auth.getSession()
-      return data.session
-    },
-  }))
+const AUTH_KEY = "app:auth" as const
+
+export type AuthSessionLoader = {
+  depends: (...deps: `${string}:${string}`[]) => void
+}
+
+export const getAuthSession = async ({ depends }: AuthSessionLoader): Promise<Session | null> => {
+  depends(AUTH_KEY)
+  const { data } = await supabase.auth.getSession()
+  return data.session
 }
 
 export type LoginInput = {
@@ -20,16 +23,11 @@ export type LoginInput = {
   password: string
 }
 
-export const createLoginMutation = () => {
-  return createMutation(() => ({
-    mutationKey: ["login"],
-    mutationFn: async (input: LoginInput) => {
-      const { error } = await supabase.auth.signInWithPassword(input)
-      if (error) throw error
-    },
-    onSuccess: async (_data, _variables, _onMutateResult, context) => {
-      await context.client.invalidateQueries({ queryKey: ["session"] })
-      goto(resolve("/"))
-    },
-  }))
+export const login = async (input: LoginInput) => {
+  const { error } = await supabase.auth.signInWithPassword(input)
+  if (error) {
+    toast.error(error.message)
+  }
+  invalidate(AUTH_KEY)
+  goto(resolve("/"))
 }
