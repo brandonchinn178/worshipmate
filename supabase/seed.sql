@@ -21,51 +21,51 @@ INSERT INTO songs (id, slug, title, artist, key, sheet) VALUES
         '00000000-0000-0000-0000-000000000001',
         'E',
         $$
-{start_of_verse: Intro}
+{section Intro}
 [E] [A]
 [E/G#] [A]
-{end_of_verse}
+{/section}
 
-{start_of_verse: Verse 1}
-[E] <strut w="1em"/> Worthy of every [A]song we could ever sing
-[E/G#] <strut w="1em"/> Worthy of all the [A]praise we could ever bring
-[E] <strut w="1em"/> Worthy of every [A]breath we could ever breathe
+{section Verse 1}
+[E]_ Worthy of every [A]song we could ever sing
+[E/G#]_ Worthy of all the [A]praise we could ever bring
+[E]_ Worthy of every [A]breath we could ever breathe
 We live for [E/G#]You [A]
-{end_of_verse}
+{/section}
 
-{start_of_verse: Verse 2}
-[E] <strut w="1em"/> Jesus the name a[A]bove every other name
-[E/G#] <strut w="1em"/> Jesus the only [A]One who could ever save
-[E] <strut w="1em"/> Worthy of every [A]breath we could ever breathe
+{section Verse 2}
+[E]_ Jesus the name a[A]bove every other name
+[E/G#]_ Jesus the only [A]One who could ever save
+[E]_ Worthy of every [A]breath we could ever breathe
 We live for [E/G#]You
 We live for [A]You
-{end_of_verse}
+{/section}
 
-{start_of_chorus: Chorus}
+{section Chorus}
 [A]Holy, there is no one [F#m]like you
 There is none be[E]side you
 Open up my [C#m]eyes in wonder
 [A]Show me who You are and [F#m]fill me with Your heart
 And [E]lead me in Your love to [C#m]those around me
-{end_of_chorus}
+{/section}
 
-{comment: Verse 1}
-{comment: Verse 2}
-{comment: Chorus (2x)}
+{goto Verse 1}
+{goto Verse 2}
+{goto Chorus #repeat=2}
 
-{start_of_verse: Instrumental}
+{section Instrumental}
 [A] [B] [C#m] [E/G#]
-{end_of_verse}
+{/section}
 
-{start_of_bridge: Bridge (2x)}
+{section Bridge #repeat=2}
 [A]I will build my [B]life upon Your [C#m]love
 It is a [E/G#]firm foundation
 [A]I will put my [B]trust in You a[C#m]lone
 And I will [E/G#]not be shaken
-{end_of_bridge}
+{/section}
 
-{comment: Chorus (2x)}
-{comment: Bridge}
+{goto Chorus #repeat=2}
+{goto Bridge}
         $$
     ),
     (
