@@ -19,6 +19,9 @@ jobs:
       - run: npm run test
 
       - run: npm run check
+        env:
+          PUBLIC_SUPABASE_URL: ""
+          PUBLIC_SUPABASE_PUBLISHABLE_KEY: ""
 
       - name: Check for modified files
         run: git diff --exit-code
