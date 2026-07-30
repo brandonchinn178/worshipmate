@@ -6,6 +6,7 @@ export type Chord = {
   bass?: Key
 }
 
+// TODO: render chord in context of key; A# in key of F should be Bb
 export const renderChord = (chord: Chord): string =>
   [chord.root, chord.ext ?? "", chord.bass ? `/${chord.bass}` : ""].join("")
 

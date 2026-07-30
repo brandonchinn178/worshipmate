@@ -138,6 +138,7 @@ const p_Chord: P.Parser<Chord> = P.lazy(() => {
 
 const p_Key: P.Parser<Key> = P.lazy(() => {
   // Sort keys longest to shortest, to ensure C# parses before C
+  // TODO: accept flats
   const keys = KEYS.toSorted((a, b) => -(a.length - b.length))
   return P.alt(...keys.map(P.string))
 })

@@ -51,6 +51,7 @@ class SongQuery {
 export const transposeSong = (song: Song, n: number): Song => {
   return {
     ...song,
+    // TODO: key of song should use "standard names", e.g. Bb instead of A#
     key: transposeChord(song.key, n),
     sheet: transposeSongSheet(song.sheet, n),
   }
