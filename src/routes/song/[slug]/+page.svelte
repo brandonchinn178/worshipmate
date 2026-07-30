@@ -1,8 +1,9 @@
 <script lang="ts">
   import { resolve } from "$app/paths"
-  import { page } from "$app/state"
 
-  let { song } = page.data
+  let { data } = $props()
+  const { song } = $derived(data)
+  $effect(() => console.log(song.sheet))
 </script>
 
 <p><a href={resolve("/")}>Back to song list</a></p>
