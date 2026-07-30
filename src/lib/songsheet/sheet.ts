@@ -1,4 +1,4 @@
-import type { Chord } from "./chord"
+import { type Chord, transposeChord } from "./chord"
 
 export type { Chord } from "./chord"
 export type { Key } from "./key"
@@ -6,6 +6,33 @@ export type { Key } from "./key"
 export type SongSheet = {
   parts: readonly SongSheetPart[]
 }
+
+export const transposeSongSheet = (sheet: SongSheet, n: number): SongSheet => {
+  return {
+    parts: sheet.parts.map((part) => {
+      switch (part.type) {
+        case "section":
+          return {
+            ...part,
+            lines: part.lines.map((line) => {
+              return {
+                pieces: line.pieces.map((piece) => {
+                  return {
+                    ...piece,
+                    ...("chord" in piece && { chord: transposeChord(piece.chord, n) }),
+                  }
+                }),
+              }
+            }),
+          }
+        case "goto":
+          return part
+      }
+    }),
+  }
+}
+
+/* ----- Parts ----- */
 
 export type SongSheetPart = SongSheetSection | SongSheetGoto
 

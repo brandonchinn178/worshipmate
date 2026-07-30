@@ -15,3 +15,14 @@ export const KEYS = [
 ] as const
 
 export type Key = (typeof KEYS)[number]
+
+export const transposeKey = (key: Key, n: number): Key => {
+  const oldKey = KEYS.indexOf(key)
+
+  let newKey = (oldKey + n) % KEYS.length
+  if (newKey < 0) {
+    newKey += KEYS.length
+  }
+
+  return KEYS[newKey]
+}

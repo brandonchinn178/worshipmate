@@ -2,7 +2,7 @@
   import ArrowRightAltRoundedIcon from "@iconify-svelte/material-symbols/arrow-right-alt-rounded"
 
   import { renderChord } from "./chord"
-  import type { SongSheet, SongSheetGoto, SongSheetPartMeta, SongSheetSection } from "./types"
+  import type { SongSheet, SongSheetGoto, SongSheetPartMeta, SongSheetSection } from "./sheet"
 
   let { sheet }: { sheet: SongSheet } = $props()
 </script>

@@ -11,10 +11,14 @@ import {
   type SongSheetPart,
   type SongSheetPartMeta,
   type SongSheetSection,
-} from "./types"
+} from "./sheet"
 
 export const parseSongSheet = (input: string): SongSheet => {
   return p_SongSheet.skip(P.eof).tryParse(input)
+}
+
+export const parseChord = (input: string): Chord => {
+  return p_Chord.skip(P.eof).tryParse(input)
 }
 
 const p_SongSheet: P.Parser<SongSheet> = P.lazy(() => {
@@ -134,6 +138,7 @@ const p_Chord: P.Parser<Chord> = P.lazy(() => {
 
 const p_Key: P.Parser<Key> = P.lazy(() => {
   // Sort keys longest to shortest, to ensure C# parses before C
+  // TODO: accept flats
   const keys = KEYS.toSorted((a, b) => -(a.length - b.length))
   return P.alt(...keys.map(P.string))
 })
