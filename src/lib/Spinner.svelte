@@ -1,7 +1,7 @@
 <script lang="ts">
   import ProgressActivityIcon from "@iconify-svelte/material-symbols/progress-activity"
 
-  const props = $props();
+  const props = $props()
 </script>
 
 <ProgressActivityIcon class="spinner" {...props} />

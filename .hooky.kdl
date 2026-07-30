@@ -10,7 +10,7 @@ hook eslint {
     command npx eslint {
         fix_args --fix
     }
-    files *.js *.ts *.tsx
+    files *.js *.ts *.tsx *.svelte
 }
 
 hook prettier {
@@ -18,7 +18,7 @@ hook prettier {
         check_args --check
         fix_args --write
     }
-    files *.js *.ts *.tsx
+    files *.js *.ts *.tsx *.svelte
 }
 
 lint_rules {
