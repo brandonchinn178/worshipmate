@@ -1,9 +1,9 @@
 import P from "parsimmon"
 
+import { KEYS } from "./key"
 import {
   type Chord,
   type Key,
-  KEYS,
   type SongSheet,
   type SongSheetGoto,
   type SongSheetLine,
