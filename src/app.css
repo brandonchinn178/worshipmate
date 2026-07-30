@@ -68,3 +68,8 @@ button {
   font-size: 1.2em;
   text-transform: lowercase;
 }
+
+h1,
+h2 {
+  font-family: var(--font-alegreya);
+}

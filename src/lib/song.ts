@@ -1,4 +1,6 @@
-import { supabase } from "./supabase"
+import { parseSongSheet } from "$lib/songsheet/parser"
+import type { SongSheet } from "$lib/songsheet/types"
+import { supabase } from "$lib/supabase"
 
 export type Song = {
   id: string
@@ -6,6 +8,7 @@ export type Song = {
   title: string
   artist: string
   key: string
+  sheet: SongSheet
 }
 
 export const listSongs = async () => {
@@ -28,7 +31,8 @@ class SongQuery {
       slug,
       title,
       artist (name),
-      key
+      key,
+      sheet
     `)
   }
 
@@ -36,6 +40,7 @@ class SongQuery {
     return {
       ...song,
       artist: song.artist.name,
+      sheet: parseSongSheet(song.sheet),
     }
   }
 }

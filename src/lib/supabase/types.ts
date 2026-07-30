@@ -48,6 +48,7 @@ export type Database = {
           artist: string
           id: string
           key: string
+          sheet: string
           slug: string
           title: string
         }
@@ -55,6 +56,7 @@ export type Database = {
           artist: string
           id?: string
           key: string
+          sheet?: string
           slug: string
           title: string
         }
@@ -62,6 +64,7 @@ export type Database = {
           artist?: string
           id?: string
           key?: string
+          sheet?: string
           slug?: string
           title?: string
         }
