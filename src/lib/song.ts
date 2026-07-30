@@ -1,13 +1,15 @@
-import { parseSongSheet } from "$lib/songsheet/parser"
-import type { SongSheet } from "$lib/songsheet/types"
+import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
+import { type Chord, type SongSheet, transposeSongSheet } from "$lib/songsheet/sheet"
 import { supabase } from "$lib/supabase"
+
+import { transposeChord } from "./songsheet/chord"
 
 export type Song = {
   id: string
   slug: string
   title: string
   artist: string
-  key: string
+  key: Chord
   sheet: SongSheet
 }
 
@@ -40,7 +42,16 @@ class SongQuery {
     return {
       ...song,
       artist: song.artist.name,
+      key: parseChord(song.key),
       sheet: parseSongSheet(song.sheet),
     }
+  }
+}
+
+export const transposeSong = (song: Song, n: number): Song => {
+  return {
+    ...song,
+    key: transposeChord(song.key, n),
+    sheet: transposeSongSheet(song.sheet, n),
   }
 }

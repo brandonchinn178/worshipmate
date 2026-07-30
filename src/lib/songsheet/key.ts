@@ -15,3 +15,8 @@ export const KEYS = [
 ] as const
 
 export type Key = (typeof KEYS)[number]
+
+export const transposeKey = (key: Key, n: number): Key => {
+  const i = KEYS.indexOf(key)
+  return KEYS[(i + n) % KEYS.length]
+}

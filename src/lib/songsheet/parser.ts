@@ -11,10 +11,14 @@ import {
   type SongSheetPart,
   type SongSheetPartMeta,
   type SongSheetSection,
-} from "./types"
+} from "./sheet"
 
 export const parseSongSheet = (input: string): SongSheet => {
   return p_SongSheet.skip(P.eof).tryParse(input)
+}
+
+export const parseChord = (input: string): Chord => {
+  return p_Chord.skip(P.eof).tryParse(input)
 }
 
 const p_SongSheet: P.Parser<SongSheet> = P.lazy(() => {
