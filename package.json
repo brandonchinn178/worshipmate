@@ -32,6 +32,7 @@
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-simple-import-sort": "^13.0.0",
 		"eslint-plugin-svelte": "^3.19.0",
+		"fast-check": "^4.9.0",
 		"globals": "^17.6.0",
 		"jsdom": "^29.1.1",
 		"playwright": "^1.60.0",
