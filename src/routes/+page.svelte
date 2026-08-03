@@ -4,11 +4,14 @@
   import { goto } from "$app/navigation"
   import { resolve } from "$app/paths"
   import { page } from "$app/state"
+  import { renderChord } from "$lib/songsheet/chord"
   import { pluralize } from "$lib/utils/pluralize"
 
   const search = page.url.searchParams.get("search")
 
-  const { session, songs } = page.data
+  const { session } = page.data
+  let { data } = $props()
+  let songs = $derived(data.songs)
 
   // Searchbar
   let searchInput = $state(search ?? "")
@@ -51,7 +54,7 @@
         <tr>
           <td><a href={resolve("/song/[slug]", { slug: song.slug })}>{song.title}</a></td>
           <td>{song.artist}</td>
-          <td>{song.key}</td>
+          <td>{renderChord(song.key)}</td>
         </tr>
       {/each}
     </tbody>
