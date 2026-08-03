@@ -116,3 +116,76 @@ describe("p_SongSheetSection", () => {
     })
   })
 })
+
+describe("p_Key", () => {
+  it("parses basic chords", () => {
+    const input = `
+      {section Intro}
+      [C] [D] [E]
+      {/section}
+    `
+    expect(parseSongSheet(input)).toMatchObject({
+      parts: [
+        {
+          lines: [
+            {
+              pieces: [
+                { chord: { root: "C" } },
+                { chord: { root: "D" } },
+                { chord: { root: "E" } },
+              ],
+            },
+          ],
+        },
+      ],
+    })
+  })
+
+  it("parses accidentals", () => {
+    const input = `
+      {section Intro}
+      [F#] [Gb] [A#] [Bb]
+      {/section}
+    `
+    expect(parseSongSheet(input)).toMatchObject({
+      parts: [
+        {
+          lines: [
+            {
+              pieces: [
+                { chord: { root: "F#" } },
+                { chord: { root: "F#" } },
+                { chord: { root: "A#" } },
+                { chord: { root: "A#" } },
+              ],
+            },
+          ],
+        },
+      ],
+    })
+  })
+
+  it("parses enharmonics", () => {
+    const input = `
+      {section Intro}
+      [E#] [B#] [Fb] [Cb]
+      {/section}
+    `
+    expect(parseSongSheet(input)).toMatchObject({
+      parts: [
+        {
+          lines: [
+            {
+              pieces: [
+                { chord: { root: "F" } },
+                { chord: { root: "C" } },
+                { chord: { root: "E" } },
+                { chord: { root: "B" } },
+              ],
+            },
+          ],
+        },
+      ],
+    })
+  })
+})

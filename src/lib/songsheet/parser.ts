@@ -1,6 +1,6 @@
 import P from "parsimmon"
 
-import { KEYS } from "./key"
+import { BASE_KEYS, ENHARMONICS } from "./key"
 import {
   type Chord,
   type Key,
@@ -137,10 +137,18 @@ const p_Chord: P.Parser<Chord> = P.lazy(() => {
 })
 
 const p_Key: P.Parser<Key> = P.lazy(() => {
-  // Sort keys longest to shortest, to ensure C# parses before C
-  // TODO: accept flats
-  const keys = KEYS.toSorted((a, b) => -(a.length - b.length))
-  return P.alt(...keys.map(P.string))
+  const allKeys = [
+    ...BASE_KEYS.map((k) => {
+      const k2 = `${k}#` as const
+      return P.string(k2).result(k2 === "B#" || k2 === "E#" ? ENHARMONICS[k2] : k2)
+    }),
+    ...BASE_KEYS.map((k) => {
+      const k2 = `${k}b` as const
+      return P.string(k2).result(ENHARMONICS[k2])
+    }),
+    ...BASE_KEYS.map(P.string),
+  ]
+  return P.alt(...allKeys)
 })
 
 /* ----- Utilities ----- */
