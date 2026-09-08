@@ -1,3 +1,5 @@
+import type { QueryData } from "@supabase/supabase-js"
+
 import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
 import { type Chord, type SongSheet, transposeSongSheet } from "$lib/songsheet/sheet"
 import { supabase } from "$lib/supabase"
@@ -13,30 +15,47 @@ export type Song = {
   sheet: SongSheet
 }
 
-export const listSongs = async () => {
-  const { data: songs, error } = await SongQuery.query
+export type ListSongsOpts = {
+  search?: string
+}
+
+export const listSongs = async ({ search }: ListSongsOpts) => {
+  const query = search
+    ? supabase.rpc("search_songs", { q: search }).select(SongQuery.cols)
+    : supabase.from("songs").select(SongQuery.cols)
+
+  const { data: songs, error } = await query
   if (error) throw error
-  return songs.map(SongQuery.deserialize)
+
+  // search_songs is a VIEW, which doesn't propagate NOT NULL constraints.
+  // Just cast it to the correct type
+  const notNullSongs = songs as SongQueryRow[]
+
+  return notNullSongs.map(SongQuery.deserialize)
 }
 
 export const getSong = async (slug: string) => {
-  const { data: song, error } = await SongQuery.query.eq("slug", slug).maybeSingle()
+  const { data: song, error } = await supabase
+    .from("songs")
+    .select(SongQuery.cols)
+    .eq("slug", slug)
+    .maybeSingle()
   if (error) throw error
   return song && SongQuery.deserialize(song)
 }
 
-type SongQueryRow = NonNullable<Awaited<typeof SongQuery.query>["data"]>[number]
+type SongQueryRow = QueryData<typeof SongQuery._rowShape>
 class SongQuery {
-  static get query() {
-    return supabase.from("songs").select(`
-      id,
-      slug,
-      title,
-      artist (name),
-      key,
-      sheet
-    `)
-  }
+  static cols = `
+    id,
+    slug,
+    title,
+    artist (name),
+    key,
+    sheet
+  ` as const
+
+  static _rowShape = supabase.from("songs").select(this.cols).single()
 
   static deserialize(song: SongQueryRow): Song {
     return {
