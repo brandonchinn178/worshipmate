@@ -80,10 +80,46 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      songs_search: {
+        Row: {
+          artist: string | null
+          id: string | null
+          key: string | null
+          search_vector: unknown
+          sheet: string | null
+          slug: string | null
+          title: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "songs_artist_fkey"
+            columns: ["artist"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
-      [_ in never]: never
+      search_songs: {
+        Args: { q: string }
+        Returns: {
+          artist: string | null
+          id: string | null
+          key: string | null
+          search_vector: unknown
+          sheet: string | null
+          slug: string | null
+          title: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "songs_search"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
     }
     Enums: {
       [_ in never]: never

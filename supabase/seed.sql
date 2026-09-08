@@ -100,3 +100,5 @@ And I will [E/G#]not be shaken
         'A',
         ''
     );
+
+REFRESH MATERIALIZED VIEW CONCURRENTLY songs_search;
