@@ -44,7 +44,7 @@ export const getSong = async (slug: string) => {
   return song && SongQuery.deserialize(song)
 }
 
-type SongQueryRow = QueryData<typeof SongQuery._rowShape>
+type SongQueryRow = QueryData<ReturnType<typeof SongQuery._rowShape>>
 class SongQuery {
   static cols = `
     id,
@@ -55,7 +55,7 @@ class SongQuery {
     sheet
   ` as const
 
-  static _rowShape = supabase.client.from("songs").select(this.cols).single()
+  static _rowShape = () => supabase.nullClient.from("songs").select(this.cols).single()
 
   static deserialize(song: SongQueryRow): Song {
     return {
