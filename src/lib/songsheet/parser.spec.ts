@@ -153,10 +153,10 @@ describe("p_Key", () => {
           lines: [
             {
               pieces: [
-                { chord: { root: "F#" } },
-                { chord: { root: "F#" } },
-                { chord: { root: "A#" } },
-                { chord: { root: "A#" } },
+                { chord: { root: "Gb" } },
+                { chord: { root: "Gb" } },
+                { chord: { root: "Bb" } },
+                { chord: { root: "Bb" } },
               ],
             },
           ],

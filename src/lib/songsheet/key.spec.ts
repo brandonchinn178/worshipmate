@@ -14,15 +14,16 @@ describe("transposeKey", () => {
 
   it.each`
     input   | count | expected
-    ${"C"}  | ${1}  | ${"C#"}
-    ${"C#"} | ${1}  | ${"D"}
+    ${"C"}  | ${1}  | ${"Db"}
+    ${"Db"} | ${1}  | ${"D"}
     ${"C"}  | ${2}  | ${"D"}
   `("transposeKey($input, $count) == $expected", ({ input, count, expected }) => {
     expect(transposeKey(input, count)).toBe(expected)
   })
 
   it("wraps around", () => {
-    expect(transposeKey("B", 11)).toBe("A#")
+    expect(transposeKey("B", 11)).toBe("Bb")
     expect(transposeKey("F", 11)).toBe("E")
+    expect(transposeKey("C", -2)).toBe("Bb")
   })
 })

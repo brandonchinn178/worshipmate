@@ -1,6 +1,6 @@
 import P from "parsimmon"
 
-import { BASE_KEYS, ENHARMONICS } from "./key"
+import { BASE_KEYS, resolveKey } from "./key"
 import {
   type Chord,
   type Key,
@@ -138,13 +138,15 @@ const p_Chord: P.Parser<Chord> = P.lazy(() => {
 
 const p_Key: P.Parser<Key> = P.lazy(() => {
   const allKeys = [
+    // Make sure to parse accidentals before base keys, or else the base keys
+    // will take precedence
     ...BASE_KEYS.map((k) => {
       const k2 = `${k}#` as const
-      return P.string(k2).result(k2 === "B#" || k2 === "E#" ? ENHARMONICS[k2] : k2)
+      return P.string(k2).map(resolveKey)
     }),
     ...BASE_KEYS.map((k) => {
       const k2 = `${k}b` as const
-      return P.string(k2).result(ENHARMONICS[k2])
+      return P.string(k2).map(resolveKey)
     }),
     ...BASE_KEYS.map(P.string),
   ]

@@ -1,25 +1,32 @@
 export const KEYS = [
   // keep-multiline
   "C",
-  "C#",
+  "Db",
   "D",
-  "D#",
+  "Eb",
   "E",
   "F",
-  "F#",
+  "Gb",
   "G",
-  "G#",
+  "Ab",
   "A",
-  "A#",
+  "Bb",
   "B",
 ] as const
 
 export type Key = (typeof KEYS)[number]
 
-type ExcludeSharps<T extends string> = T extends `${string}#` ? never : T
-export const BASE_KEYS = KEYS.filter((s): s is ExcludeSharps<Key> => !s.includes("#"))
+// A key is a base key if its length == 1
+type BaseKey<S extends string> = S extends `${infer _First}${infer Rest}`
+  ? Rest extends ""
+    ? S
+    : never
+  : never
 
-export const ENHARMONICS = {
+const isBaseKey = <K extends Key>(s: K): s is BaseKey<K> => s.length === 1
+export const BASE_KEYS = KEYS.filter(isBaseKey)
+
+const ENHARMONICS = {
   "C#": "Db",
   "D#": "Eb",
   "E#": "F",
@@ -35,6 +42,16 @@ export const ENHARMONICS = {
   Ab: "G#",
   Bb: "A#",
 } as const
+
+const endsWithSharp = <T extends string>(s: T): s is T & `${string}#` => {
+  return s.endsWith("#")
+}
+
+export const resolveKey = (key: Key | keyof typeof ENHARMONICS): Key => {
+  return endsWithSharp(key) || key === "Cb" || key == "Fb" // keep-multiline
+    ? ENHARMONICS[key]
+    : key
+}
 
 export const transposeKey = (key: Key, n: number): Key => {
   const oldKey = KEYS.indexOf(key)
