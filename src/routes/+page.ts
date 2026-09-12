@@ -1,7 +1,8 @@
+import { getSearchFilters } from "$lib/search.js"
 import { listSongs } from "$lib/song"
 
 export const load = async (page) => {
-  const search = page.url.searchParams.get("search") ?? ""
-  const songs = await listSongs({ search })
+  const search = getSearchFilters(page.url)
+  const songs = await listSongs({ search: search.query })
   return { songs }
 }

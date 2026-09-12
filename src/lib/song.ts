@@ -16,7 +16,7 @@ export type Song = {
 }
 
 export type ListSongsOpts = {
-  search?: string
+  search?: string | null
 }
 
 export const listSongs = async ({ search }: ListSongsOpts) => {
