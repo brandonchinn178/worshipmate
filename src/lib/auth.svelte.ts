@@ -28,6 +28,6 @@ export const login = async (input: LoginInput) => {
   if (error) {
     toast.error(error.message)
   }
-  invalidate(AUTH_KEY)
-  goto(resolve("/"))
+  await invalidate(AUTH_KEY)
+  await goto(resolve("/"))
 }
