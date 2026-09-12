@@ -4,26 +4,25 @@
   import { goto } from "$app/navigation"
   import { resolve } from "$app/paths"
   import { page } from "$app/state"
+  import { getSearchFilters, setSearchFilters } from "$lib/search.js"
   import { renderChord } from "$lib/songsheet/chord"
   import { pluralize } from "$lib/utils/pluralize"
 
-  const search = page.url.searchParams.get("search")
+  const search = getSearchFilters(page.url)
 
-  const { session } = page.data
+  const session = $derived(page.data.session)
   let { data } = $props()
   let songs = $derived(data.songs)
 
   // Searchbar
-  let searchInput = $state(search ?? "")
+  let searchInput = $state(search.query ?? "")
   const setSearch = (e: Event) => {
     e.preventDefault()
-    const url = new URL(page.url)
-    url.searchParams.set("search", searchInput)
+    const url = setSearchFilters(page.url, {
+      query: searchInput,
+    })
     goto(resolve(`/?${url.searchParams}`))
   }
-
-  // TODO: activate filters
-  let activeFilters: Array<{ key: string }> = $state([])
 </script>
 
 <main>
@@ -35,10 +34,6 @@
   </form>
   <div class="table-meta">
     <p class="song-count">{songs.length} {pluralize("song", songs.length)}</p>
-    {#each activeFilters as filter (filter.key)}
-      <p>TODO</p>
-    {/each}
-    <button>Add filter</button>
     {#if session !== null}
       <p><a href="#todo">Add song</a></p>
     {/if}

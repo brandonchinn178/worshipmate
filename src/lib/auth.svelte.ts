@@ -1,10 +1,7 @@
 import type { Session } from "@supabase/supabase-js"
-import { toast } from "svelte-sonner"
 
 import { invalidate } from "$app/navigation"
-import { goto } from "$app/navigation"
-import { resolve } from "$app/paths"
-import { supabase } from "$lib/supabase"
+import * as supabase from "$lib/supabase"
 
 const AUTH_KEY = "app:auth" as const
 
@@ -14,7 +11,8 @@ export type AuthSessionLoader = {
 
 export const getAuthSession = async ({ depends }: AuthSessionLoader): Promise<Session | null> => {
   depends(AUTH_KEY)
-  const { data } = await supabase.auth.getSession()
+  const client = supabase.getClient()
+  const { data } = await client.auth.getSession()
   return data.session
 }
 
@@ -24,10 +22,10 @@ export type LoginInput = {
 }
 
 export const login = async (input: LoginInput) => {
-  const { error } = await supabase.auth.signInWithPassword(input)
+  const client = supabase.getClient()
+  const { error } = await client.auth.signInWithPassword(input)
   if (error) {
-    toast.error(error.message)
+    throw error
   }
-  invalidate(AUTH_KEY)
-  goto(resolve("/"))
+  await invalidate(AUTH_KEY)
 }

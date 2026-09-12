@@ -2,7 +2,7 @@ import type { QueryData } from "@supabase/supabase-js"
 
 import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
 import { type Chord, type SongSheet, transposeSongSheet } from "$lib/songsheet/sheet"
-import { supabase } from "$lib/supabase"
+import * as supabase from "$lib/supabase"
 
 import { transposeChord } from "./songsheet/chord"
 
@@ -16,13 +16,14 @@ export type Song = {
 }
 
 export type ListSongsOpts = {
-  search?: string
+  search?: string | null
 }
 
 export const listSongs = async ({ search }: ListSongsOpts) => {
+  const client = supabase.getClient()
   const query = search
-    ? supabase.rpc("search_songs", { q: search }).select(SongQuery.cols)
-    : supabase.from("songs").select(SongQuery.cols)
+    ? client.rpc("search_songs", { q: search }).select(SongQuery.cols)
+    : client.from("songs").select(SongQuery.cols)
 
   const { data: songs, error } = await query
   if (error) throw error
@@ -35,7 +36,8 @@ export const listSongs = async ({ search }: ListSongsOpts) => {
 }
 
 export const getSong = async (slug: string) => {
-  const { data: song, error } = await supabase
+  const client = supabase.getClient()
+  const { data: song, error } = await client
     .from("songs")
     .select(SongQuery.cols)
     .eq("slug", slug)
@@ -44,7 +46,7 @@ export const getSong = async (slug: string) => {
   return song && SongQuery.deserialize(song)
 }
 
-type SongQueryRow = QueryData<typeof SongQuery._rowShape>
+type SongQueryRow = QueryData<ReturnType<typeof SongQuery._rowShape>>
 class SongQuery {
   static cols = `
     id,
@@ -55,7 +57,7 @@ class SongQuery {
     sheet
   ` as const
 
-  static _rowShape = supabase.from("songs").select(this.cols).single()
+  static _rowShape = () => supabase.nullClient.from("songs").select(this.cols).single()
 
   static deserialize(song: SongQueryRow): Song {
     return {
