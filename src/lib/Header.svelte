@@ -2,7 +2,7 @@
   import { resolve } from "$app/paths"
   import { page } from "$app/state"
 
-  const { session } = page.data
+  const session = $derived(page.data.session)
 </script>
 
 <header>

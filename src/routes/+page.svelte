@@ -10,7 +10,7 @@
 
   const search = getSearchFilters(page.url)
 
-  const { session } = page.data
+  const session = $derived(page.data.session)
   let { data } = $props()
   let songs = $derived(data.songs)
 

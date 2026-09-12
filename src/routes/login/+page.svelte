@@ -1,6 +1,19 @@
 <script lang="ts">
+  import { AuthError } from "@supabase/supabase-js"
+  import { toast } from "svelte-sonner"
+
+  import { goto } from "$app/navigation"
+  import { resolve } from "$app/paths"
+  import { page } from "$app/state"
   import { login } from "$lib/auth.svelte"
   import Spinner from "$lib/Spinner.svelte"
+
+  const session = $derived(page.data.session)
+  $effect(() => {
+    if (session !== null) {
+      goto(resolve("/"))
+    }
+  })
 
   let loginPending = $state(false)
   let input = $state({
@@ -14,8 +27,13 @@
     onsubmit={async (e) => {
       e.preventDefault()
       loginPending = true
-      await login(input)
-      loginPending = false
+      try {
+        await login(input)
+      } catch (e) {
+        toast.error(e instanceof AuthError ? e.message : `${e}`)
+      } finally {
+        loginPending = false
+      }
     }}
   >
     <div class="field">

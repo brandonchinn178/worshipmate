@@ -1,9 +1,6 @@
 import type { Session } from "@supabase/supabase-js"
-import { toast } from "svelte-sonner"
 
 import { invalidate } from "$app/navigation"
-import { goto } from "$app/navigation"
-import { resolve } from "$app/paths"
 import * as supabase from "$lib/supabase"
 
 const AUTH_KEY = "app:auth" as const
@@ -26,8 +23,7 @@ export type LoginInput = {
 export const login = async (input: LoginInput) => {
   const { error } = await supabase.client.auth.signInWithPassword(input)
   if (error) {
-    toast.error(error.message)
+    throw error
   }
   await invalidate(AUTH_KEY)
-  await goto(resolve("/"))
 }
