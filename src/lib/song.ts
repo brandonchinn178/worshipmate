@@ -20,9 +20,10 @@ export type ListSongsOpts = {
 }
 
 export const listSongs = async ({ search }: ListSongsOpts) => {
+  const client = supabase.getClient()
   const query = search
-    ? supabase.client.rpc("search_songs", { q: search }).select(SongQuery.cols)
-    : supabase.client.from("songs").select(SongQuery.cols)
+    ? client.rpc("search_songs", { q: search }).select(SongQuery.cols)
+    : client.from("songs").select(SongQuery.cols)
 
   const { data: songs, error } = await query
   if (error) throw error
@@ -35,7 +36,8 @@ export const listSongs = async ({ search }: ListSongsOpts) => {
 }
 
 export const getSong = async (slug: string) => {
-  const { data: song, error } = await supabase.client
+  const client = supabase.getClient()
+  const { data: song, error } = await client
     .from("songs")
     .select(SongQuery.cols)
     .eq("slug", slug)
