@@ -4,7 +4,7 @@ import { toast } from "svelte-sonner"
 import { invalidate } from "$app/navigation"
 import { goto } from "$app/navigation"
 import { resolve } from "$app/paths"
-import { supabase } from "$lib/supabase"
+import * as supabase from "$lib/supabase"
 
 const AUTH_KEY = "app:auth" as const
 
@@ -14,7 +14,7 @@ export type AuthSessionLoader = {
 
 export const getAuthSession = async ({ depends }: AuthSessionLoader): Promise<Session | null> => {
   depends(AUTH_KEY)
-  const { data } = await supabase.auth.getSession()
+  const { data } = await supabase.client.auth.getSession()
   return data.session
 }
 
@@ -24,7 +24,7 @@ export type LoginInput = {
 }
 
 export const login = async (input: LoginInput) => {
-  const { error } = await supabase.auth.signInWithPassword(input)
+  const { error } = await supabase.client.auth.signInWithPassword(input)
   if (error) {
     toast.error(error.message)
   }
