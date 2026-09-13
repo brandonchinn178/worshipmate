@@ -10,7 +10,8 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"test": "vitest --run"
+		"test": "vitest --run",
+		"regen-keys-data": "scripts/regen_keys_data.py"
 	},
 	"dependencies": {
 		"@iconify-svelte/material-symbols": "^1.0.44",
