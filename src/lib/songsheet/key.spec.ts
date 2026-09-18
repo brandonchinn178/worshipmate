@@ -1,7 +1,21 @@
 import * as fc from "fast-check"
 import { describe, expect, it } from "vitest"
 
-import { KEYS, transposeKey } from "./key"
+import { KEYS, renderKey, transposeKey } from "./key"
+
+describe("renderKey", () => {
+  it.each`
+    key     | base    | expected
+    ${"Db"} | ${"E"}  | ${"C#"}
+    ${"Db"} | ${"Bb"} | ${"Db"}
+    ${"Db"} | ${"C"}  | ${"Db"}
+    ${"C"}  | ${"E"}  | ${"C"}
+    ${"C"}  | ${"Bb"} | ${"C"}
+    ${"C"}  | ${"C"}  | ${"C"}
+  `("renderKey($key, { base: $base }) == $expected", ({ key, base, expected }) => {
+    expect(renderKey(key, { base })).toBe(expected)
+  })
+})
 
 describe("transposeKey", () => {
   it("returns same key for any multiple of 12", () => {

@@ -2,9 +2,9 @@
   import ArrowRightAltRoundedIcon from "@iconify-svelte/material-symbols/arrow-right-alt-rounded"
 
   import { renderChord } from "./chord"
-  import type { SongSheet, SongSheetGoto, SongSheetPartMeta, SongSheetSection } from "./sheet"
+  import type { Key, SongSheet, SongSheetGoto, SongSheetPartMeta, SongSheetSection } from "./sheet"
 
-  let { sheet }: { sheet: SongSheet } = $props()
+  let { sheet, key }: { sheet: SongSheet; key: Key } = $props()
 </script>
 
 {#each sheet.parts as part, i (i)}
@@ -27,7 +27,7 @@
           <div class="chord">
             {#if "chord" in piece}
               <span class={{ leading: "space" in piece }}>
-                {renderChord(piece.chord)}
+                {renderChord(piece.chord, { base: key })}
               </span>
             {/if}
           </div>
