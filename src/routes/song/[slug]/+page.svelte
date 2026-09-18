@@ -39,7 +39,7 @@
       <Transposer bind:song />
     </div>
   </div>
-  <SongSheetViewer sheet={song.sheet} />
+  <SongSheetViewer sheet={song.sheet} key={song.key.root} />
 </main>
 
 <style>

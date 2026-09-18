@@ -1,4 +1,4 @@
-import { type Key, transposeKey } from "./key"
+import { type Key, renderKey as renderKey_, transposeKey } from "./key"
 
 export type Chord = {
   root: Key
@@ -6,9 +6,14 @@ export type Chord = {
   bass?: Key
 }
 
-// TODO: render chord in context of key; A# in key of F should be Bb
-export const renderChord = (chord: Chord): string =>
-  [chord.root, chord.ext ?? "", chord.bass ? `/${chord.bass}` : ""].join("")
+export const renderChord = (chord: Chord, options: { base?: Key } = {}): string => {
+  const renderKey = (k: Key) => renderKey_(k, options)
+  return [
+    renderKey(chord.root),
+    chord.ext ?? "",
+    chord.bass ? `/${renderKey(chord.bass)}` : "",
+  ].join("")
+}
 
 export const transposeChord = (chord: Chord, n: number): Chord => {
   return {

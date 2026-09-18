@@ -1,43 +1,36 @@
-export const KEYS = [
-  // keep-multiline
-  "C",
-  "C#",
-  "D",
-  "D#",
-  "E",
-  "F",
-  "F#",
-  "G",
-  "G#",
-  "A",
-  "A#",
-  "B",
-] as const
+import {
+  ACCIDENTALS,
+  BASE_KEYS,
+  KEY_ALIASES,
+  KEY_DEGREES,
+  KEYS,
+  TO_FLATS,
+  TO_SHARPS,
+} from "./key.data.ts"
 
 export type Key = (typeof KEYS)[number]
 
-type ExcludeSharps<T extends string> = T extends `${string}#` ? never : T
-export const BASE_KEYS = KEYS.filter((s): s is ExcludeSharps<Key> => !s.includes("#"))
+export { BASE_KEYS, KEYS }
 
-export const ENHARMONICS = {
-  "C#": "Db",
-  "D#": "Eb",
-  "E#": "F",
-  "F#": "Gb",
-  "G#": "Ab",
-  "A#": "Bb",
-  "B#": "C",
-  Cb: "B",
-  Db: "C#",
-  Eb: "D#",
-  Fb: "E",
-  Gb: "F#",
-  Ab: "G#",
-  Bb: "A#",
-} as const
+const isAlias = (s: string): s is keyof typeof KEY_ALIASES => s in KEY_ALIASES
+
+export const resolveKey = (key: Key | keyof typeof KEY_ALIASES): Key => {
+  return isAlias(key) ? KEY_ALIASES[key] : key
+}
+
+export const renderKey = (key: Key, { base }: { base?: Key }): string => {
+  switch (base ? ACCIDENTALS[base] : null) {
+    case null:
+      return key
+    case "flats":
+      return TO_FLATS[key]
+    case "sharps":
+      return TO_SHARPS[key]
+  }
+}
 
 export const transposeKey = (key: Key, n: number): Key => {
-  const oldKey = KEYS.indexOf(key)
+  const oldKey = KEY_DEGREES[key]
 
   let newKey = (oldKey + n) % KEYS.length
   if (newKey < 0) {

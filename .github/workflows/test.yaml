@@ -23,5 +23,7 @@ jobs:
           PUBLIC_SUPABASE_URL: ""
           PUBLIC_SUPABASE_PUBLISHABLE_KEY: ""
 
+      - run: npm run regen-keys-data
+
       - name: Check for modified files
         run: git diff --exit-code

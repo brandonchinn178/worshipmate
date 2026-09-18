@@ -3,3 +3,6 @@ package-lock.json
 
 # Miscellaneous
 /static/
+
+# Generated data
+key.data.ts
