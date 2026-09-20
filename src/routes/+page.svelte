@@ -35,7 +35,7 @@
   <div class="table-meta">
     <p class="song-count">{songs.length} {pluralize("song", songs.length)}</p>
     {#if session !== null}
-      <p><a href="#todo">Add song</a></p>
+      <p><a href={resolve("/add-song")}>Add song</a></p>
     {/if}
   </div>
   <table>

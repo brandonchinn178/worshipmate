@@ -18,6 +18,9 @@
 <div class="field">
   <label for={form.fieldId(name)}>{label}</label>
   {@render children()}
+  {#if form.errors[name]}
+    <p class="error">{form.errors[name]}</p>
+  {/if}
 </div>
 
 <style>
@@ -29,5 +32,9 @@
   label {
     font-family: var(--font-alegreya-sc);
     text-transform: lowercase;
+  }
+
+  .error {
+    color: var(--red);
   }
 </style>

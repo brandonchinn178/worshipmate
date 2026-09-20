@@ -1,5 +1,5 @@
 import { createContext } from "svelte"
-import type { HTMLInputAttributes } from "svelte/elements"
+import type { HTMLInputAttributes, HTMLTextareaAttributes } from "svelte/elements"
 
 // All Form values types should subclass this
 export type BaseFormValues = Record<string, string>
@@ -9,12 +9,14 @@ export type FormProps<T extends BaseFormValues> = {
   values: T
 }
 
+type InputAttrs = HTMLInputAttributes & HTMLTextareaAttributes
+
 export type FormState<T extends BaseFormValues> = {
   isPending: boolean
   values: T
   errors: { [K in keyof T]?: string | null }
   fieldId: (name: FieldName<T>) => string
-  field: (name: FieldName<T>) => HTMLInputAttributes
+  field: (name: FieldName<T>) => InputAttrs
   onsubmit: (callback: () => Promise<void>) => (e: SubmitEvent) => Promise<void>
 }
 
@@ -29,13 +31,13 @@ export const getForm = <T extends BaseFormValues>(): FormState<T> => {
 export const init = <T extends BaseFormValues>({ id, values }: FormProps<T>): FormState<T> => {
   const fieldId = (name: FieldName<T>) => `${id}-${name}`
 
-  const form: FormState<T> = {
+  const form: FormState<T> = $state({
     isPending: false,
     values,
     errors: {},
     fieldId,
     field: (name: FieldName<T>) => {
-      const oninput: HTMLInputAttributes["oninput"] = (e) => {
+      const oninput: InputAttrs["oninput"] = (e) => {
         const values = form.values as BaseFormValues
         values[name] = e.currentTarget.value
       }
@@ -55,7 +57,7 @@ export const init = <T extends BaseFormValues>({ id, values }: FormProps<T>): Fo
         form.isPending = false
       }
     },
-  }
+  })
 
   setFormContext(form)
   return form
