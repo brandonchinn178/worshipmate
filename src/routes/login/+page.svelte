@@ -6,7 +6,7 @@
   import { resolve } from "$app/paths"
   import { page } from "$app/state"
   import { login } from "$lib/auth.svelte"
-  import Spinner from "$lib/Spinner.svelte"
+  import * as Form from "$lib/form"
 
   const session = $derived(page.data.session)
   $effect(() => {
@@ -15,43 +15,36 @@
     }
   })
 
-  let loginPending = $state(false)
-  let input = $state({
-    email: "",
-    password: "",
+  const formId = $props.id()
+  const form = Form.init({
+    id: formId,
+    values: {
+      email: "",
+      password: "",
+    },
   })
+
+  const onSubmit = async () => {
+    try {
+      await login(form.values)
+    } catch (e) {
+      toast.error(e instanceof AuthError ? e.message : `${e}`)
+    }
+  }
 </script>
 
 <main>
-  <form
-    onsubmit={async (e) => {
-      e.preventDefault()
-      loginPending = true
-      try {
-        await login(input)
-      } catch (e) {
-        toast.error(e instanceof AuthError ? e.message : `${e}`)
-      } finally {
-        loginPending = false
-      }
-    }}
-  >
-    <div class="field">
-      <label for="email">Email</label>
-      <input id="email" name="email" bind:value={input.email} />
-    </div>
-    <div class="field">
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" bind:value={input.password} />
-    </div>
-    <div class="submit">
-      {#if loginPending}
-        <Spinner height="2em" />
-      {:else}
-        <button>Login</button>
-      {/if}
-    </div>
-  </form>
+  <div class="container">
+    <Form.Form {onSubmit}>
+      <Form.Field name="email" label="Email">
+        <input {...form.field("email")} />
+      </Form.Field>
+      <Form.Field name="password" label="Password">
+        <input {...form.field("password")} type="password" />
+      </Form.Field>
+      <Form.SubmitButton label="Login" />
+    </Form.Form>
+  </div>
 </main>
 
 <style>
@@ -61,26 +54,9 @@
     padding: 2rem 0;
   }
 
-  form {
-    display: grid;
+  .container {
     padding: 2rem 3rem;
-    gap: 1rem;
     border: 1px solid var(--black);
     width: 500px;
-
-    .field {
-      display: flex;
-      flex-direction: column;
-    }
-  }
-
-  label {
-    font-family: var(--font-alegreya-sc);
-    text-transform: lowercase;
-  }
-
-  .submit {
-    display: flex;
-    justify-content: center;
   }
 </style>
