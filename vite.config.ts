@@ -1,6 +1,7 @@
 import adapter from "@sveltejs/adapter-static"
 import { sveltekit } from "@sveltejs/kit/vite"
 import { svelteTesting } from "@testing-library/svelte/vite"
+import { mdsvex } from "mdsvex"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
@@ -11,6 +12,9 @@ export default defineConfig({
         runes: ({ filename }) =>
           filename.split(/[/\\]/).includes("node_modules") ? undefined : true,
       },
+
+      extensions: [".svelte", ".md"],
+      preprocess: [mdsvex({ extensions: [".md"] })],
 
       // adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
       // If your environment is not supported, or you settled on a specific environment, switch out the adapter.
