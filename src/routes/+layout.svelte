@@ -11,7 +11,10 @@
 </script>
 
 <svelte:head>
-  <title>WorshipMate</title>
+  <title>{page.data.title ? `${page.data.title} |` : ""} WorshipMate</title>
+  {#if page.data.description}
+    <meta name="description" content={page.data.description} />
+  {/if}
 </svelte:head>
 
 <AppProviders>

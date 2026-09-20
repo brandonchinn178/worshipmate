@@ -8,5 +8,5 @@ export const load = async ({ params }) => {
     error(404, `Song not found: ${params.slug}`)
   }
 
-  return { song }
+  return { song, title: song.title }
 }
