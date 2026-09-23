@@ -13,13 +13,15 @@
     label: string
     children: Snippet
   } = $props()
+
+  const errors = $derived(form.errors.get(name))
 </script>
 
 <div class="field">
   <label for={form.fieldId(name)}>{label}</label>
   {@render children()}
-  {#if form.errors[name]}
-    <p class="error">{form.errors[name]}</p>
+  {#if form.touched[name] && errors}
+    <p class="error">{errors}</p>
   {/if}
 </div>
 

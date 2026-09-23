@@ -1,48 +1,52 @@
 <script lang="ts">
   import * as Form from "$lib/form"
+  import type { Key } from "$lib/songsheet/key"
   import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
+  import type { SongSheet } from "$lib/songsheet/sheet"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
 
+  type AddSongForm = {
+    title: string
+    artist: string
+    key: Key
+    sheet: { raw: string; parsed: SongSheet }
+  }
   const formId = $props.id()
-  let form = Form.init({
+  let form = Form.init<AddSongForm>({
     id: formId,
-    values: {
-      title: "",
-      artist: "",
-      key: "",
-      sheet: "",
+    fields: {
+      title: {
+        initial: "",
+        required: true,
+      },
+      artist: {
+        initial: "",
+        required: true,
+      },
+      key: {
+        initial: "",
+        required: true,
+        parse: parseKey,
+      },
+      sheet: {
+        initial: "",
+        required: true,
+        parse: (value) => {
+          return { raw: value, parsed: parseSongSheet(value) }
+        },
+      },
+    },
+    onSubmit: async (values) => {
+      console.log("TODO: submit", values)
     },
   })
 
-  const onSubmit = async () => {
-    console.log("TODO: submit", form.values)
-  }
-
-  let parsedSheet = $derived.by(() => {
-    try {
-      return { result: parseSongSheet(form.values.sheet), error: null }
-    } catch (e) {
-      return { result: null, error: (e as Error).message }
-    }
-  })
-
-  let parsedKey = $derived.by(() => {
-    if (form.values.key === "") {
-      return {
-        result: null,
-        error: form.values.sheet !== "" && parsedSheet.result !== null ? "Key is missing" : null,
-      }
-    }
-    try {
-      return { result: parseKey(form.values.key), error: null }
-    } catch (e) {
-      return { result: null, error: `Failed to parse key: ${(e as Error).message}` }
-    }
-  })
+  const sheetErrors = $derived(form.errors.get("sheet")?.trim())
+  const keyErrors = $derived(form.errors.get("key")?.trim())
 </script>
 
 <main>
-  <Form.Form {onSubmit}>
+  <Form.Form>
     <Form.Field name="title" label="Title">
       <input {...form.field("title")} />
     </Form.Field>
@@ -57,18 +61,20 @@
     </Form.Field>
     <Form.SubmitButton />
   </Form.Form>
-  {#if parsedSheet.result && parsedKey.result}
+  {#if form.values.sheet && form.values.key}
     <div>
-      <SongSheetViewer sheet={parsedSheet.result} key={parsedKey.result} />
+      <SongSheetViewer sheet={form.values.sheet.parsed} key={form.values.key} />
     </div>
-  {:else if parsedSheet.error || parsedKey.error}
+  {:else if sheetErrors || keyErrors}
     <div class="song-sheet-error">
       <pre>Unable to render song sheet:</pre>
-      {#if parsedSheet.error}
-        <pre>{parsedSheet.error}</pre>
+      {#if sheetErrors}
+        <b><pre>- Sheet</pre></b>
+        <pre>{sheetErrors}</pre>
       {/if}
-      {#if parsedKey.error}
-        <pre>{parsedKey.error}</pre>
+      {#if keyErrors}
+        <b><pre>- Key</pre></b>
+        <pre>{keyErrors}</pre>
       {/if}
     </div>
   {/if}

@@ -5,7 +5,7 @@
   import { goto } from "$app/navigation"
   import { resolve } from "$app/paths"
   import { page } from "$app/state"
-  import { login } from "$lib/auth.svelte"
+  import { login, type LoginInput } from "$lib/auth.svelte"
   import * as Form from "$lib/form"
 
   const session = $derived(page.data.session)
@@ -16,26 +16,25 @@
   })
 
   const formId = $props.id()
-  const form = Form.init({
+  const form = Form.init<LoginInput>({
     id: formId,
-    values: {
-      email: "",
-      password: "",
+    fields: {
+      email: { initial: "", required: true },
+      password: { initial: "", required: true },
+    },
+    onSubmit: async (values) => {
+      try {
+        await login(values)
+      } catch (e) {
+        toast.error(e instanceof AuthError ? e.message : `${e}`)
+      }
     },
   })
-
-  const onSubmit = async () => {
-    try {
-      await login(form.values)
-    } catch (e) {
-      toast.error(e instanceof AuthError ? e.message : `${e}`)
-    }
-  }
 </script>
 
 <main>
   <div class="container">
-    <Form.Form {onSubmit}>
+    <Form.Form>
       <Form.Field name="email" label="Email">
         <input {...form.field("email")} />
       </Form.Field>
