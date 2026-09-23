@@ -1,9 +1,15 @@
 <script lang="ts">
+  import slugify from "slugify"
+  import { toast } from "svelte-sonner"
+
+  import { goto } from "$app/navigation"
+  import { resolve } from "$app/paths"
   import * as Form from "$lib/form"
   import type { Key } from "$lib/songsheet/key"
   import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
   import type { SongSheet } from "$lib/songsheet/sheet"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
+  import { getClient } from "$lib/supabase"
 
   type AddSongForm = {
     title: string
@@ -37,7 +43,31 @@
       },
     },
     onSubmit: async (values) => {
-      console.log("TODO: submit", values)
+      const supabase = getClient()
+      try {
+        const { data: artist, error: artistError } = await supabase
+          .from("artists")
+          .upsert({ name: values.artist }, { onConflict: "name", ignoreDuplicates: true })
+          .select("id")
+          .single()
+        if (artistError) throw artistError
+
+        // TODO: handle duplicate slugs
+        const slug = slugify(values.title)
+
+        const { error: songError } = await supabase.from("songs").insert({
+          slug,
+          title: values.title,
+          artist: artist.id,
+          key: values.key,
+          sheet: values.sheet.raw,
+        })
+        if (songError) throw songError
+
+        goto(resolve("/song/[slug]", { slug }))
+      } catch (e) {
+        toast.error((e as Error).message)
+      }
     },
   })
 
