@@ -10,10 +10,6 @@
   // svelte-ignore state_referenced_locally
   let song = $state(data.song)
 
-  // Need to escape the slash to avoid the <script> block ending early
-  // eslint-disable-next-line no-useless-escape
-  const endScript = "<\/script>"
-
   const metadata = $derived({
     "@content": "https://schema.org",
     "@type": "SheetMusic",
@@ -23,7 +19,7 @@
   const jsonLd = $derived(`
     <script type="application/ld+json">
       ${JSON.stringify(metadata).replace(/</g, "\\u003c")}
-    ${endScript}
+    </${"script>" /* Need to obfuscate to avoid Svelte parser from ending script block */}
   `)
 </script>
 
