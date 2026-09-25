@@ -7,17 +7,22 @@
   let { sheet, key }: { sheet: SongSheet; key: Key } = $props()
 
   const setWidths = (songLine: HTMLDivElement) => {
-    const [chordsTrack, lyricsTrack] = songLine.children
-    for (const i of Array(chordsTrack.children.length).keys()) {
-      const chordDiv = chordsTrack.children[i] as HTMLSpanElement
-      const lyricDiv = lyricsTrack.children[i] as HTMLSpanElement
-      const width = Math.max(
-        chordDiv.getBoundingClientRect().width,
-        lyricDiv.getBoundingClientRect().width,
-      )
-      chordDiv.style.width = `${width}px`
-      lyricDiv.style.width = `${width}px`
+    const run = async () => {
+      await document.fonts.ready
+
+      const [chordsTrack, lyricsTrack] = songLine.children
+      for (const i of Array(chordsTrack.children.length).keys()) {
+        const chordDiv = chordsTrack.children[i] as HTMLSpanElement
+        const lyricDiv = lyricsTrack.children[i] as HTMLSpanElement
+        const width = Math.max(
+          chordDiv.getBoundingClientRect().width,
+          lyricDiv.getBoundingClientRect().width,
+        )
+        chordDiv.style.width = `${width}px`
+        lyricDiv.style.width = `${width}px`
+      }
     }
+    run()
   }
 
   // An explicit space, to put spaces between chords/lyrics in copy/paste.
