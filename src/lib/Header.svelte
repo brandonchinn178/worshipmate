@@ -68,4 +68,11 @@
       font-weight: 400;
     }
   }
+
+  ul {
+    margin: 0;
+    li {
+      list-style: none;
+    }
+  }
 </style>

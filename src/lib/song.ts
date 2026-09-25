@@ -21,9 +21,13 @@ export type ListSongsOpts = {
 
 export const listSongs = async ({ search }: ListSongsOpts) => {
   const client = supabase.getClient()
-  const query = search
-    ? client.rpc("search_songs", { q: search }).select(SongQuery.cols)
-    : client.from("songs").select(SongQuery.cols)
+  const query = (
+    search // keep-multiline
+      ? client.rpc("search_songs", { q: search })
+      : client.from("songs")
+  )
+    .select(SongQuery.cols)
+    .order("title")
 
   const { data: songs, error } = await query
   if (error) throw error

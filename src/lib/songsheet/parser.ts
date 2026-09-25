@@ -21,6 +21,10 @@ export const parseChord = (input: string): Chord => {
   return p_Chord.skip(P.eof).tryParse(input)
 }
 
+export const parseKey = (input: string): Key => {
+  return p_Key.skip(P.eof).tryParse(input)
+}
+
 const p_SongSheet: P.Parser<SongSheet> = P.lazy(() => {
   return p_SongSheetPart
     .sepBy(p_newline.many())
@@ -79,7 +83,7 @@ const p_labelTag = (name: string): P.Parser<{ label: string; meta: SongSheetPart
           (label, _, meta) => ({ label, meta }),
         ),
       )
-      .wrap(P.string("{"), P.string("}")),
+      .wrap(P.string("{").desc(`${name} tag`), P.string("}")),
   )
 
 /* ----- Section ----- */

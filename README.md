@@ -7,6 +7,7 @@ A website for worship leaders to browse songs for worshipping individually or co
 1. `npm install`
 2. `npm run dev`
 3. `npx supabase start`
+4. `node scripts/add_admin_user.js admin@example.com testpassword`
 
 This runs the following services:
 * UI: http://localhost:5173

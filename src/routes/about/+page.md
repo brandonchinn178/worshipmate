@@ -25,11 +25,4 @@ h1, h2, h3 {
 p {
   margin-bottom: 0.5rem;
 }
-
-ul {
-  padding-left: 2rem;
-}
-li {
-  list-style-type: initial;
-}
 </style>

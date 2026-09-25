@@ -5,6 +5,24 @@
   import type { Key, SongSheet, SongSheetGoto, SongSheetPartMeta, SongSheetSection } from "./sheet"
 
   let { sheet, key }: { sheet: SongSheet; key: Key } = $props()
+
+  const setWidths = (songLine: HTMLDivElement) => {
+    const [chordsTrack, lyricsTrack] = songLine.children
+    for (const i of Array(chordsTrack.children.length).keys()) {
+      const chordDiv = chordsTrack.children[i] as HTMLSpanElement
+      const lyricDiv = lyricsTrack.children[i] as HTMLSpanElement
+      const width = Math.max(
+        chordDiv.getBoundingClientRect().width,
+        lyricDiv.getBoundingClientRect().width,
+      )
+      chordDiv.style.width = `${width}px`
+      lyricDiv.style.width = `${width}px`
+    }
+  }
+
+  // An explicit space, to put spaces between chords/lyrics in copy/paste.
+  // Defining constant to avoid react/jsx-curly-brace-presence lint error
+  const SPACE = " "
 </script>
 
 {#each sheet.parts as part, i (i)}
@@ -21,29 +39,33 @@
   <section>
     <h3>{@render label(part.label, part.meta)}</h3>
     {#each part.lines as line, i (i)}
-      <div class="song-line">
+      <div class="song-line" use:setWidths>
         <!-- Chords track -->
-        {#each line.pieces as piece, i (i)}
-          <div class="chord">
-            {#if "chord" in piece}
-              <span class={{ leading: "space" in piece }}>
-                {renderChord(piece.chord, { base: key })}
-              </span>
-            {/if}
-          </div>
-        {/each}
-        <!-- Break -->
-        <div class="row-break"></div>
+        <div class="track">
+          {#each line.pieces as piece, i (i)}
+            <span class="chord">
+              {#if "chord" in piece}
+                <span class={{ leading: "space" in piece }}>
+                  {renderChord(piece.chord, { base: key })}
+                </span>
+              {/if}
+            </span>
+            {SPACE}
+          {/each}
+        </div>
         <!-- Lyrics track -->
-        {#each line.pieces as piece, i (i)}
-          <div class="lyrics">
-            {#if "lyrics" in piece}
-              <span>{piece.lyrics}</span>
-            {:else if "space" in piece}
-              <span class="space"></span>
-            {/if}
-          </div>
-        {/each}
+        <div class="track">
+          {#each line.pieces as piece, i (i)}
+            <span class="lyrics">
+              {#if "lyrics" in piece}
+                <span>{piece.lyrics}</span>
+              {:else if "space" in piece}
+                <span class="space"></span>
+              {/if}
+            </span>
+            {SPACE}
+          {/each}
+        </div>
       </div>
     {/each}
   </section>
@@ -70,14 +92,9 @@
     margin: 1em 0;
 
     .song-line {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(0, auto));
-
-      .row-break {
-        /* Force element to be on its own row */
-        grid-column: 1 / -1;
-        /* Force element to be invisible */
-        height: 0;
+      .track {
+        display: flex;
+        flex-wrap: wrap;
       }
 
       .chord {

@@ -17,6 +17,7 @@
 		"@iconify-svelte/material-symbols": "^1.0.44",
 		"@supabase/supabase-js": "^2.110.7",
 		"parsimmon": "^1.18.1",
+		"slugify": "^1.6.9",
 		"svelte-sonner": "^1.1.1"
 	},
 	"devDependencies": {
