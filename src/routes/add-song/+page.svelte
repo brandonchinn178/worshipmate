@@ -53,7 +53,7 @@
         if (artistError) throw artistError
 
         // TODO: handle duplicate slugs
-        const slug = slugify(values.title)
+        const slug = slugify(values.title, { lower: true })
 
         const { error: songError } = await supabase.from("songs").insert({
           slug,
