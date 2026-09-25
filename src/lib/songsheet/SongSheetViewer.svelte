@@ -2,21 +2,47 @@
   import ArrowRightAltRoundedIcon from "@iconify-svelte/material-symbols/arrow-right-alt-rounded"
 
   import { renderChord } from "./chord"
-  import type { Key, SongSheet, SongSheetGoto, SongSheetPartMeta, SongSheetSection } from "./sheet"
+  import type {
+    Key,
+    SongSheet,
+    SongSheetGoto,
+    SongSheetLine,
+    SongSheetPartMeta,
+    SongSheetSection,
+  } from "./sheet"
 
   let { sheet, key }: { sheet: SongSheet; key: Key } = $props()
 
-  const setWidths = (songLine: HTMLDivElement) => {
+  const setWidths = (line: SongSheetLine) => (songLine: HTMLDivElement) => {
+    // Just register `line` as a dependency, to rerun whenever it changes, e.g.
+    // after transposing song
+    void line
+
     const [chordsTrack, lyricsTrack] = songLine.children
-    for (const i of Array(chordsTrack.children.length).keys()) {
-      const chordDiv = chordsTrack.children[i] as HTMLSpanElement
-      const lyricDiv = lyricsTrack.children[i] as HTMLSpanElement
-      const width = Math.max(
-        chordDiv.getBoundingClientRect().width,
-        lyricDiv.getBoundingClientRect().width,
-      )
-      chordDiv.style.width = `${width}px`
-      lyricDiv.style.width = `${width}px`
+    const divs = [...Array(chordsTrack.children.length).keys()].map(
+      (i) =>
+        [chordsTrack.children[i], lyricsTrack.children[i]] as [HTMLSpanElement, HTMLSpanElement],
+    )
+
+    const run = async () => {
+      await document.fonts.ready
+
+      divs.forEach(([chordDiv, lyricDiv]) => {
+        const width = Math.max(
+          chordDiv.getBoundingClientRect().width,
+          lyricDiv.getBoundingClientRect().width,
+        )
+        chordDiv.style.width = `${width}px`
+        lyricDiv.style.width = `${width}px`
+      })
+    }
+    run()
+
+    return () => {
+      divs.forEach(([chordDiv, lyricDiv]) => {
+        chordDiv.style.width = "initial"
+        lyricDiv.style.width = "initial"
+      })
     }
   }
 
@@ -39,7 +65,7 @@
   <section>
     <h3>{@render label(part.label, part.meta)}</h3>
     {#each part.lines as line, i (i)}
-      <div class="song-line" use:setWidths>
+      <div class="song-line" {@attach setWidths(line)}>
         <!-- Chords track -->
         <div class="track">
           {#each line.pieces as piece, i (i)}

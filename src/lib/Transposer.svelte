@@ -24,6 +24,7 @@
     }}
     role="button"
     tabindex={0}
+    title="Transpose song"
   >
     <EditIcon height="1em" />
   </span>
