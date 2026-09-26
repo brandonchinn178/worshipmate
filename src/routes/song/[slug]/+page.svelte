@@ -2,6 +2,7 @@
   import ArrowLeftAltIcon from "@iconify-svelte/material-symbols/arrow-left-alt"
 
   import { resolve } from "$app/paths"
+  import SongCopier from "$lib/SongCopier"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
 
@@ -41,6 +42,9 @@
     <div class="song-key">
       Key:
       <Transposer bind:song />
+    </div>
+    <div class="copy">
+      <SongCopier {song} />
     </div>
   </div>
 </div>
