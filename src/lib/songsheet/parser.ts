@@ -105,7 +105,7 @@ const p_SongSheetLinePiece: P.Parser<SongSheetLinePiece> = P.lazy(() => {
   const p_lyrics = P.regexp(/[^{[\n]+/).desc("lyrics")
 
   return P.alt(
-    P.seqMap(p_chordTag, P.string("_"), (chord) => {
+    P.seqMap(p_chordTag, P.string("_").skip(P.string(" ").many()), (chord) => {
       return { chord, space: true }
     }),
     P.seqMap(

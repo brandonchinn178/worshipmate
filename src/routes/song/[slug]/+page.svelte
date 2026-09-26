@@ -2,7 +2,7 @@
   import ArrowLeftAltIcon from "@iconify-svelte/material-symbols/arrow-left-alt"
 
   import { resolve } from "$app/paths"
-  import { renderChord } from "$lib/songsheet/chord"
+  import SongCopier from "$lib/SongCopier"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
 
@@ -32,17 +32,22 @@
     Back to song list
   </a>
 </p>
-<main>
-  <h1>{song.title}</h1>
-  <h2>{song.artist}</h2>
-  <div class="song-key">
-    Key of {renderChord(song.key)}
-    <div class="transpose">
+<div class="main-container">
+  <main>
+    <h1>{song.title}</h1>
+    <h2>{song.artist}</h2>
+    <SongSheetViewer sheet={song.sheet} key={song.key.root} />
+  </main>
+  <div class="song-metadata">
+    <div class="song-key">
+      Key:
       <Transposer bind:song />
     </div>
+    <div class="copy">
+      <SongCopier {song} />
+    </div>
   </div>
-  <SongSheetViewer sheet={song.sheet} key={song.key.root} />
-</main>
+</div>
 
 <style>
   .backlink {
@@ -51,12 +56,22 @@
     gap: 0.2em;
   }
 
-  main {
+  .main-container {
     margin: 2rem;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: start;
   }
 
-  .song-key .transpose {
-    display: inline-block;
-    margin-left: 0.2em;
+  .song-metadata {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 1rem;
+    gap: 1rem;
+    border: 4px double var(--primary);
   }
 </style>

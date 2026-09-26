@@ -117,6 +117,30 @@ describe("p_SongSheetSection", () => {
   })
 })
 
+describe("p_SongSheetLinePiece", () => {
+  it("parses lyrical space", () => {
+    const input = `
+      {section Verse}
+      [G]_ This has a space in the beginning
+      {/section}
+    `
+    expect(parseSongSheet(input)).toMatchObject({
+      parts: [
+        {
+          lines: [
+            {
+              pieces: [
+                { chord: { root: "G" }, space: true },
+                { lyrics: "This has a space in the beginning" },
+              ],
+            },
+          ],
+        },
+      ],
+    })
+  })
+})
+
 describe("p_Key", () => {
   it("parses basic chords", () => {
     const input = `

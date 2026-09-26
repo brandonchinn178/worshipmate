@@ -61,12 +61,23 @@ input {
 
 button {
   padding: 0.2rem 1rem;
-  background: var(--white);
-  border: 1px solid var(--black);
 
   font-family: var(--font-alegreya-sc);
   font-size: 1.2em;
   text-transform: lowercase;
+
+  border: 2px solid var(--primary);
+  border-radius: 3px;
+
+  color: var(--primary);
+  background: var(--white);
+  transition-property: background, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+  &:hover {
+    color: var(--white);
+    background: var(--primary);
+  }
 }
 
 h1,

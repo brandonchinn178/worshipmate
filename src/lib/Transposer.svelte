@@ -1,54 +1,35 @@
 <script lang="ts">
-  import EditIcon from "@iconify-svelte/material-symbols/edit"
-
   import { type Song, transposeSong } from "$lib/song"
 
-  let { song = $bindable() }: { song: Song } = $props()
+  import { renderChord } from "./songsheet/chord"
 
-  let transposeActive = $state(false)
+  let { song = $bindable() }: { song: Song } = $props()
+  const transpose = (n: number) => () => {
+    song = transposeSong(song, n)
+  }
 </script>
 
-{#if !transposeActive}
-  <span
-    class="edit-icon"
-    onclick={() => {
-      transposeActive = true
-    }}
-    onkeydown={(e) => {
-      switch (e.code) {
-        case "Space":
-        case "Enter":
-          e.preventDefault()
-          transposeActive = true
-      }
-    }}
-    role="button"
-    tabindex={0}
-    title="Transpose song"
-  >
-    <EditIcon height="1em" />
-  </span>
-{:else}
-  <!-- TODO: prettier -->
-  <button
-    onclick={() => {
-      song = transposeSong(song, -1)
-    }}>-</button
-  >
-  <button
-    onclick={() => {
-      song = transposeSong(song, 1)
-    }}>+</button
-  >
-{/if}
+<div class="container">
+  <button onclick={transpose(-1)}>-</button>
+  <span class="key">{renderChord(song.key)}</span>
+  <button onclick={transpose(1)}>+</button>
+</div>
 
 <style>
-  .edit-icon {
-    color: var(--primary);
+  .container {
+    display: inline-block;
+    margin: 0 0.5rem;
+  }
 
-    &:hover {
-      cursor: pointer;
-      color: var(--secondary);
-    }
+  button {
+    width: 1.5rem;
+    padding: 0;
+    font-weight: bold;
+  }
+
+  .key {
+    display: inline-block;
+    width: 2rem;
+    text-align: center;
   }
 </style>
