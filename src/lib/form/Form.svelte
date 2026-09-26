@@ -1,7 +1,7 @@
 <script lang="ts" generics="T extends BaseFormValues">
   import type { Snippet } from "svelte"
 
-  import { type BaseFormValues, getForm } from "./init.svelte"
+  import { type BaseFormValues, getForm } from "./init.svelte.ts"
 
   let { children }: { children: Snippet } = $props()
 

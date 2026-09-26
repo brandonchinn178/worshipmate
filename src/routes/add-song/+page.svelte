@@ -71,8 +71,8 @@
     },
   })
 
-  const sheetErrors = $derived(form.errors.get("sheet")?.trim())
-  const keyErrors = $derived(form.errors.get("key")?.trim())
+  const sheetErrors = $derived(form.errors.sheet?.trim())
+  const keyErrors = $derived(form.errors.key?.trim())
 </script>
 
 <main>
