@@ -15,6 +15,10 @@ export type RenderOptions = {
   includeChords: boolean
 }
 
+export const DEFAULT_OPTIONS = {
+  includeChords: true,
+}
+
 export class Renderer {
   private readonly options: RenderOptions
   private readonly songKey: Key
@@ -22,7 +26,7 @@ export class Renderer {
   constructor(songKey: Key, options: Partial<RenderOptions> = {}) {
     this.songKey = songKey
     this.options = {
-      includeChords: options.includeChords ?? true,
+      includeChords: options.includeChords ?? DEFAULT_OPTIONS.includeChords,
     }
   }
 

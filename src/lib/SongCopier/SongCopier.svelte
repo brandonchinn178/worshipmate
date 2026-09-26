@@ -7,14 +7,16 @@
   import type { Song } from "$lib/song"
 
   import { Renderer, type RenderOptions } from "./render"
+  import { getOptions, setOptions } from "./storage"
 
   let { song }: { song: Song } = $props()
+  const initialOptions = getOptions()
 
   const formId = $props.id()
   const form = Form.init<RenderOptions>({
     id: formId,
     fields: {
-      includeChords: { initial: true },
+      includeChords: { initial: initialOptions.includeChords },
     },
     onSubmit: async (values) => {
       try {
@@ -25,6 +27,12 @@
         toast.error(`Failed to copy: ${(e as Error).message}`)
       }
     },
+  })
+
+  $effect(() => {
+    if (form.isValid) {
+      setOptions(form.values as RenderOptions)
+    }
   })
 </script>
 
