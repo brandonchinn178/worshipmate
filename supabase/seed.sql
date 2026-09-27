@@ -34,7 +34,7 @@ We live for [E/G#]You [A]
 {/section}
 
 {section Verse 2}
-[E]_ Jesus the name a[A]bove every other name
+[E]_ Jesus the name a-[A]bove every other name
 [E/G#]_ Jesus the only [A]One who could ever save
 [E]_ Worthy of every [A]breath we could ever breathe
 We live for [E/G#]You
@@ -43,7 +43,7 @@ We live for [A]You
 
 {section Chorus}
 [A]Holy, there is no one [F#m]like you
-There is none be[E]side you
+There is none be-[E]side you
 Open up my [C#m]eyes in wonder
 [A]Show me who You are and [F#m]fill me with Your heart
 And [E]lead me in Your love to [C#m]those around me
