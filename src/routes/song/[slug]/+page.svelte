@@ -74,4 +74,8 @@
     gap: 1rem;
     border: 4px double var(--primary);
   }
+
+  .song-key {
+    white-space: nowrap;
+  }
 </style>
