@@ -28,7 +28,7 @@
 
 <p>
   <a class="backlink" href={resolve("/")}>
-    <ArrowLeftAltIcon height="1em" />
+    <ArrowLeftAltIcon height="1em" aria-hidden />
     Back to song list
   </a>
 </p>

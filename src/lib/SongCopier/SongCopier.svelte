@@ -39,7 +39,9 @@
 <div class="container">
   <button class="copy" onclick={form.onsubmit}>Copy</button>
   <Popover.Root>
-    <Popover.Trigger class="settings"><SettingsIcon height="1em" /></Popover.Trigger>
+    <Popover.Trigger class="settings">
+      <SettingsIcon height="1em" role="img" aria-label="settings" />
+    </Popover.Trigger>
     <Popover.Portal>
       <Popover.Content align="end" alignOffset={-34} sideOffset={5}>
         <Form.Form>
