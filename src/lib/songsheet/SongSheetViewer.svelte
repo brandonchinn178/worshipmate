@@ -100,7 +100,7 @@
 {#snippet partGoto(part: SongSheetGoto)}
   <div class="goto">
     <p>
-      <ArrowRightAltRoundedIcon height="1em" />
+      <ArrowRightAltRoundedIcon height="1em" aria-label="Go to" />
       {@render label(part.label, part.meta)}
     </p>
   </div>

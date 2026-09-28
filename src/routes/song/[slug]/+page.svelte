@@ -28,17 +28,12 @@
 
 <p>
   <a class="backlink" href={resolve("/")}>
-    <ArrowLeftAltIcon height="1em" />
+    <ArrowLeftAltIcon height="1em" aria-hidden />
     Back to song list
   </a>
 </p>
 <div class="main-container">
-  <main>
-    <h1>{song.title}</h1>
-    <h2>{song.artist}</h2>
-    <SongSheetViewer sheet={song.sheet} key={song.key.root} />
-  </main>
-  <div class="song-metadata">
+  <aside class="song-actions">
     <div class="song-key">
       Key:
       <Transposer bind:song />
@@ -46,7 +41,12 @@
     <div class="copy">
       <SongCopier {song} />
     </div>
-  </div>
+  </aside>
+  <main>
+    <h1>{song.title}</h1>
+    <h2>{song.artist}</h2>
+    <SongSheetViewer sheet={song.sheet} key={song.key.root} />
+  </main>
 </div>
 
 <style>
@@ -58,14 +58,13 @@
 
   .main-container {
     margin: 2rem;
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    justify-content: space-between;
-    align-items: start;
   }
 
-  .song-metadata {
+  .song-actions {
+    float: right;
+    margin-left: 2rem;
+    z-index: 100;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -73,5 +72,9 @@
     padding: 1rem;
     gap: 1rem;
     border: 4px double var(--primary);
+  }
+
+  .song-key {
+    white-space: nowrap;
   }
 </style>

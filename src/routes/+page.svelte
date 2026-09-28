@@ -26,10 +26,14 @@
 </script>
 
 <main>
-  <form class="searchbar" onsubmit={setSearch}>
-    <input bind:value={searchInput} />
+  <form class="searchbar" onsubmit={setSearch} role="search">
+    <input
+      bind:value={searchInput}
+      placeholder="Search for a song..."
+      aria-label="Search for a song"
+    />
     <button>
-      <SearchIcon width="20px" />
+      <SearchIcon width="20px" role="img" aria-label="Search" />
     </button>
   </form>
   <div class="table-meta">
@@ -69,6 +73,10 @@
     display: grid;
     grid-template-columns: auto min-content;
     gap: 0.5rem;
+
+    input::placeholder {
+      font-style: italic;
+    }
 
     button {
       padding: 2px 5px 0;
