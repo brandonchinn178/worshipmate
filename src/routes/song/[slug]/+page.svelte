@@ -45,7 +45,7 @@
   <main>
     <h1>{song.title}</h1>
     <h2>{song.artist}</h2>
-    <SongSheetViewer sheet={song.sheet} key={song.key.root} />
+    <SongSheetViewer sheet={song.sheet} key={song.key} />
   </main>
 </div>
 

@@ -1,10 +1,10 @@
 import type { QueryData } from "@supabase/supabase-js"
+import slugify from "slugify"
 
+import { renderChord, transposeChord } from "$lib/songsheet/chord"
 import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
 import { type Chord, type SongSheet, transposeSongSheet } from "$lib/songsheet/sheet"
 import * as supabase from "$lib/supabase"
-
-import { transposeChord } from "./songsheet/chord"
 
 export type Song = {
   id: string
@@ -48,6 +48,39 @@ export const getSong = async (slug: string) => {
     .maybeSingle()
   if (error) throw error
   return song && SongQuery.deserialize(song)
+}
+
+export type AddSongInput = {
+  title: string
+  artist: string
+  key: Chord
+  sheet: string
+}
+export const addSong = async (input: AddSongInput): Promise<Song> => {
+  const client = supabase.getClient()
+  const { data: artist, error: artistError } = await client
+    .from("artists")
+    .upsert({ name: input.artist }, { onConflict: "name", ignoreDuplicates: true })
+    .select("id")
+    .single()
+  if (artistError) throw artistError
+
+  // TODO: handle duplicate slugs
+  const slug = slugify(input.title, { lower: true })
+
+  const { data: song, error: songError } = await client
+    .from("songs")
+    .insert({
+      slug,
+      title: input.title,
+      artist: artist.id,
+      key: renderChord(input.key),
+      sheet: input.sheet,
+    })
+    .select(SongQuery.cols)
+    .single()
+  if (songError) throw songError
+  return SongQuery.deserialize(song)
 }
 
 type SongQueryRow = QueryData<ReturnType<typeof SongQuery._rowShape>>
