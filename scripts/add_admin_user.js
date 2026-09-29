@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { execFileSync } from "node:child_process"
 import { exit } from "node:process"
 
@@ -13,6 +15,9 @@ const main = async () => {
   const supabase = createClient(conf.API_URL, conf.SERVICE_ROLE_KEY)
 
   const [email, password] = process.argv.slice(2)
+  if (!email || !password) {
+    throw new Error("email and password are required")
+  }
 
   const userCreate = await supabase.auth.admin.createUser({
     email,

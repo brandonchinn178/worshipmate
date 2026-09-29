@@ -1,8 +1,3 @@
-defaults {
-    files \
-        "!/src/lib/supabase/types.ts"
-}
-
 hook hooky {
     command hooky lint {
         fix_args --fix

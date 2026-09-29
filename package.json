@@ -11,6 +11,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test": "vitest --run",
+		"gen-supabase-types": "scripts/gen_supabase_types.sh",
+		"add-admin-user": "scripts/add_admin_user.js",
 		"regen-keys-data": "scripts/regen_keys_data.py"
 	},
 	"dependencies": {
@@ -42,7 +44,7 @@
 		"playwright": "^1.60.0",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.1.0",
-		"supabase": "^2.109.1",
+		"supabase": "^2.118.0",
 		"svelte": "^5.56.1",
 		"svelte-check": "^4.6.0",
 		"typescript": "^6.0.3",

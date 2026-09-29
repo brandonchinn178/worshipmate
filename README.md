@@ -7,7 +7,7 @@ A website for worship leaders to browse songs for worshipping individually or co
 1. `npm install`
 2. `npm run dev`
 3. `npx supabase start`
-4. `node scripts/add_admin_user.js admin@example.com testpassword`
+4. `npm run add-admin-user admin@example.com testpassword`
 
 This runs the following services:
 * UI: http://localhost:5173
@@ -23,4 +23,4 @@ PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
 
 1. `npx supabase migration new my_new_migration`
 2. `npx supabase db reset`
-3. `npx supabase gen types --lang typescript --local > src/lib/supabase/types.ts`
+3. `npm run gen-supabase-types`
