@@ -4,7 +4,7 @@
   import { goto } from "$app/navigation"
   import { resolve } from "$app/paths"
   import * as Form from "$lib/form"
-  import { addSong } from "$lib/song"
+  import { addSong } from "$lib/song/queries"
   import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
   import type { Chord, SongSheet } from "$lib/songsheet/sheet"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"

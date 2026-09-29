@@ -1,19 +1,12 @@
 import type { QueryData } from "@supabase/supabase-js"
 import slugify from "slugify"
 
-import { renderChord, transposeChord } from "$lib/songsheet/chord"
+import { renderChord } from "$lib/songsheet/chord"
 import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
-import { type Chord, type SongSheet, transposeSongSheet } from "$lib/songsheet/sheet"
+import { type Chord } from "$lib/songsheet/sheet"
 import * as supabase from "$lib/supabase"
 
-export type Song = {
-  id: string
-  slug: string
-  title: string
-  artist: string
-  key: Chord
-  sheet: SongSheet
-}
+import type { Song } from "./model"
 
 export type ListSongsOpts = {
   search?: string | null
@@ -103,14 +96,5 @@ class SongQuery {
       key: parseChord(song.key),
       sheet: parseSongSheet(song.sheet),
     }
-  }
-}
-
-export const transposeSong = (song: Song, n: number): Song => {
-  return {
-    ...song,
-    // TODO: key of song should use "standard names", e.g. Bb instead of A#
-    key: transposeChord(song.key, n),
-    sheet: transposeSongSheet(song.sheet, n),
   }
 }

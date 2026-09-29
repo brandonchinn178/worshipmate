@@ -1,5 +1,5 @@
 import { getSearchFilters } from "$lib/search.js"
-import { listSongs } from "$lib/song"
+import { listSongs } from "$lib/song/queries"
 
 export const load = async ({ url }) => {
   const search = getSearchFilters(url)

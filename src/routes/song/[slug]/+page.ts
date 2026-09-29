@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit"
 
-import { getSong } from "$lib/song"
+import { getSong } from "$lib/song/queries"
 
 export const load = async ({ params }) => {
   const song = await getSong(params.slug)
