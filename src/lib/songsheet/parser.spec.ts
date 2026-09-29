@@ -88,6 +88,27 @@ describe("p_SongSheetSection", () => {
     expect(() => parseSongSheet(input)).toThrow()
   })
 
+  it("supports common labels", () => {
+    const input = `
+      {section Verse 1}
+      {/section}
+      {section Pre-Chorus}
+      {/section}
+      {section Chorus}
+      {/section}
+      {section Bridge}
+      {/section}
+    `
+    expect(parseSongSheet(input)).toMatchObject({
+      parts: [
+        { type: "section", label: "Verse 1" },
+        { type: "section", label: "Pre-Chorus" },
+        { type: "section", label: "Chorus" },
+        { type: "section", label: "Bridge" },
+      ],
+    })
+  })
+
   it("fails with meta without label", () => {
     const input = `
       {section #repeat=1}

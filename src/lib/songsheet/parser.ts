@@ -162,4 +162,4 @@ const p_Key: P.Parser<Key> = P.lazy(() => {
 const p_newline: P.Parser<string> = P.string("\n").desc("newline")
 
 // Space separated words, where each word does not start with #
-const p_label: P.Parser<string> = P.regexp(/(?!#)\w+(\s+(?!#)\w+)*/).desc("label")
+const p_label: P.Parser<string> = P.regexp(/(?!#)[\w-]+(\s+(?!#)[\w-]+)*/).desc("label")
