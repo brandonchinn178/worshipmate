@@ -32,3 +32,11 @@ PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
 ```sql
 SELECT vault.create_secret('<api key>', 'anthropic_api_key');
 ```
+
+### Backup
+
+Regularly back up database:
+
+```sh
+npx supabase db dump --linked --use-copy --data-only > worshipmate-backup-$(date +%Y%M%d).sql
+```
