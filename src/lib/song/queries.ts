@@ -1,5 +1,6 @@
 import type { QueryData } from "@supabase/supabase-js"
 import slugify from "slugify"
+import { toast } from "svelte-sonner"
 
 import { renderChord } from "$lib/songsheet/chord"
 import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
@@ -7,6 +8,7 @@ import { type Chord } from "$lib/songsheet/sheet"
 import * as supabase from "$lib/supabase"
 
 import type { Song } from "./model"
+import { Renderer } from "./render"
 
 export type ListSongsOpts = {
   search?: string | null
@@ -22,25 +24,25 @@ export const listSongs = async ({ search }: ListSongsOpts) => {
     .select(SongQuery.cols)
     .order("title")
 
-  const { data: songs, error } = await query
+  const { data, error } = await query
   if (error) throw error
 
   // search_songs is a VIEW, which doesn't propagate NOT NULL constraints.
   // Just cast it to the correct type
-  const notNullSongs = songs as SongQueryRow[]
+  const songRows = data as SongQueryRow[]
 
-  return notNullSongs.map(SongQuery.deserialize)
+  return songRows.map(SongQuery.deserialize)
 }
 
 export const getSong = async (slug: string) => {
   const client = supabase.getClient()
-  const { data: song, error } = await client
+  const { data, error } = await client
     .from("songs")
     .select(SongQuery.cols)
     .eq("slug", slug)
     .maybeSingle()
   if (error) throw error
-  return song && SongQuery.deserialize(song)
+  return data && SongQuery.deserialize(data)
 }
 
 export type AddSongInput = {
@@ -61,7 +63,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
   // TODO: handle duplicate slugs
   const slug = slugify(input.title, { lower: true })
 
-  const { data: song, error: songError } = await client
+  const { data, error: songError } = await client
     .from("songs")
     .insert({
       slug,
@@ -73,7 +75,26 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
     .select(SongQuery.cols)
     .single()
   if (songError) throw songError
-  return SongQuery.deserialize(song)
+
+  const song = SongQuery.deserialize(data)
+
+  // Don't await; run in background
+  void (async () => {
+    const { error } = await client.rpc("generate_keywords", {
+      song_id: song.id,
+      lyrics: Renderer.renderSong(song, {
+        includeHeader: false,
+        includeLabels: false,
+        includeChords: false,
+      }),
+    })
+    if (error) {
+      console.error(error)
+      toast.error(`Failed to generate keywords: ${error.message}`)
+    }
+  })()
+
+  return song
 }
 
 type SongQueryRow = QueryData<ReturnType<typeof SongQuery._rowShape>>

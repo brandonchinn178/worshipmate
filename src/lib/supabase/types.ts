@@ -58,6 +58,7 @@ export type Database = {
           artist: string
           id: string
           key: string
+          keywords: string | null
           sheet: string
           slug: string
           title: string
@@ -66,6 +67,7 @@ export type Database = {
           artist: string
           id?: string
           key: string
+          keywords?: string | null
           sheet?: string
           slug: string
           title: string
@@ -74,6 +76,7 @@ export type Database = {
           artist?: string
           id?: string
           key?: string
+          keywords?: string | null
           sheet?: string
           slug?: string
           title?: string
@@ -95,6 +98,7 @@ export type Database = {
           artist: string | null
           id: string | null
           key: string | null
+          keywords: string | null
           search_vector: unknown
           sheet: string | null
           slug: string | null
@@ -112,6 +116,7 @@ export type Database = {
       }
     }
     Functions: {
+      generate_keywords: { Args: { lyrics: string; song_id: string }; Returns: undefined }
       is_admin: { Args: Record<PropertyKey, never>; Returns: boolean }
       search_songs: {
         Args: { q: string }
@@ -119,6 +124,7 @@ export type Database = {
           artist: string | null
           id: string | null
           key: string | null
+          keywords: string | null
           search_vector: unknown
           sheet: string | null
           slug: string | null
