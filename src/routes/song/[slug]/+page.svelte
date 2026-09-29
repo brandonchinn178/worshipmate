@@ -63,7 +63,6 @@
   .song-actions {
     float: right;
     margin-left: 2rem;
-    z-index: 100;
 
     display: flex;
     flex-direction: column;
@@ -72,6 +71,7 @@
     padding: 1rem;
     gap: 1rem;
     border: 4px double var(--primary);
+    background: var(--white);
   }
 
   .song-key {
