@@ -12,6 +12,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"test": "vitest --run",
 		"gen-supabase-types": "scripts/gen_supabase_types.sh",
+		"add-admin-user": "scripts/add_admin_user.js",
 		"regen-keys-data": "scripts/regen_keys_data.py"
 	},
 	"dependencies": {
