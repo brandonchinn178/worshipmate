@@ -53,7 +53,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
   const client = supabase.getClient()
   const { data: artist, error: artistError } = await client
     .from("artists")
-    .upsert({ name: input.artist }, { onConflict: "name", ignoreDuplicates: true })
+    .upsert({ name: input.artist }, { onConflict: "name" })
     .select("id")
     .single()
   if (artistError) throw artistError
