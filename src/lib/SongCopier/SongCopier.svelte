@@ -16,6 +16,8 @@
   const form = Form.init<RenderOptions>({
     id: formId,
     fields: {
+      includeHeader: { initial: initialOptions.includeHeader },
+      includeLabels: { initial: initialOptions.includeLabels },
       includeChords: { initial: initialOptions.includeChords },
     },
     onSubmit: async (values) => {

@@ -12,10 +12,14 @@ import type {
 } from "$lib/songsheet/sheet"
 
 export type RenderOptions = {
+  includeHeader: boolean
+  includeLabels: boolean
   includeChords: boolean
 }
 
 export const DEFAULT_OPTIONS = {
+  includeHeader: true,
+  includeLabels: true,
   includeChords: true,
 }
 
@@ -26,6 +30,8 @@ export class Renderer {
   constructor(songKey: Key, options: Partial<RenderOptions> = {}) {
     this.songKey = songKey
     this.options = {
+      includeHeader: options.includeHeader ?? DEFAULT_OPTIONS.includeHeader,
+      includeLabels: options.includeLabels ?? DEFAULT_OPTIONS.includeLabels,
       includeChords: options.includeChords ?? DEFAULT_OPTIONS.includeChords,
     }
   }
@@ -35,13 +41,15 @@ export class Renderer {
   }
 
   renderSong(song: Song): string {
-    return [
-      // keep-multiline
-      song.title,
-      song.artist,
-      "",
-      this.renderSheet(song.sheet),
-    ].join("\n")
+    const header = this.options.includeHeader
+      ? [
+          // keep-multiline
+          song.title,
+          song.artist,
+          "",
+        ]
+      : []
+    return [...header, this.renderSheet(song.sheet)].join("\n")
   }
 
   renderSheet(sheet: SongSheet): string {
@@ -68,12 +76,16 @@ export class Renderer {
   }
 
   renderSection(section: SongSheetSection): string {
-    const label = `[${section.label}${this.renderPartMeta(section.meta)}]`
+    const label = this.options.includeLabels
+      ? [`[${section.label}${this.renderPartMeta(section.meta)}]`]
+      : []
     const lines = section.lines.flatMap((line) => this.renderLine(line))
-    return lines.length > 0 ? [label, ...lines].join("\n") : ""
+    return lines.length > 0 ? [...label, ...lines].join("\n") : ""
   }
 
   renderGoto(goto: SongSheetGoto): string {
+    if (!this.options.includeLabels) return ""
+
     return `[→ ${goto.label}${this.renderPartMeta(goto.meta)}]`
   }
 

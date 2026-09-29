@@ -71,7 +71,7 @@ describe("Renderer", () => {
     `)
   })
 
-  it("renders a song with just lyrics", () => {
+  it("renders a song without chords", () => {
     const options = { includeChords: false }
     const song = {
       ...BASE_SONG,
@@ -114,6 +114,47 @@ describe("Renderer", () => {
       [→ Verse]
 
       [→ Chorus (2x)]"
+    `)
+  })
+
+  it("renders a song with only lyrics", () => {
+    const options = {
+      includeHeader: false,
+      includeLabels: false,
+      includeChords: false,
+    }
+    const song = {
+      ...BASE_SONG,
+      sheet: parseSongSheet(`
+        {section Intro}
+        [G] [D] [G]
+        [Em] [D] [C]
+        {/section}
+
+        {section Verse #repeat=2}
+        [G]This is a [D]line in the [G]verse
+        This has no chords
+        [G]This is [C#m7/E]a [G]big chord
+        [G]_ This has a space
+        {/section}
+
+        {section Chorus}
+        [G]This is a [D]line in the [G]chorus
+        This has no chords again
+        {/section}
+
+        {goto Verse}
+        {goto Chorus #repeat=2}
+      `),
+    }
+    expect(Renderer.renderSong(song, options)).toMatchInlineSnapshot(`
+      "This is a line in the verse
+      This has no chords
+      This is a big chord
+      This has a space
+
+      This is a line in the chorus
+      This has no chords again"
     `)
   })
 
