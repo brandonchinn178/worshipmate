@@ -5,8 +5,8 @@
 
   import * as Form from "$lib/form"
   import type { Song } from "$lib/song"
+  import { Renderer, type RenderOptions } from "$lib/song/render"
 
-  import { Renderer, type RenderOptions } from "./render"
   import { getOptions, setOptions } from "./storage"
 
   let { song }: { song: Song } = $props()
