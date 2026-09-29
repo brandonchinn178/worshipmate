@@ -23,4 +23,4 @@ PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
 
 1. `npx supabase migration new my_new_migration`
 2. `npx supabase db reset`
-3. `npx supabase gen types --lang typescript --local > src/lib/supabase/types.ts`
+3. `npm run gen-supabase-types`
