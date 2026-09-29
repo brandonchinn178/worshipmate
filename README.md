@@ -24,3 +24,19 @@ PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
 1. `npx supabase migration new my_new_migration`
 2. `npx supabase db reset`
 3. `npm run gen-supabase-types`
+
+## Deployment
+
+### Set Anthropic API Key
+
+```sql
+SELECT vault.create_secret('<api key>', 'anthropic_api_key');
+```
+
+### Backup
+
+Regularly back up database:
+
+```sh
+npx supabase db dump --linked --use-copy --data-only > worshipmate-backup-$(date +%Y%M%d).sql
+```

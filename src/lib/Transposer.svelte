@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type Song, transposeSong } from "$lib/song"
+  import { type Song, transposeSong } from "$lib/song/model"
 
   import { renderChord } from "./songsheet/chord"
 

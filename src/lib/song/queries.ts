@@ -1,0 +1,121 @@
+import type { QueryData } from "@supabase/supabase-js"
+import slugify from "slugify"
+import { toast } from "svelte-sonner"
+
+import { renderChord } from "$lib/songsheet/chord"
+import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
+import { type Chord } from "$lib/songsheet/sheet"
+import * as supabase from "$lib/supabase"
+
+import type { Song } from "./model"
+import { Renderer } from "./render"
+
+export type ListSongsOpts = {
+  search?: string | null
+}
+
+export const listSongs = async ({ search }: ListSongsOpts) => {
+  const client = supabase.getClient()
+  const query = (
+    search // keep-multiline
+      ? client.rpc("search_songs", { q: search })
+      : client.from("songs")
+  )
+    .select(SongQuery.cols)
+    .order("title")
+
+  const { data, error } = await query
+  if (error) throw error
+
+  // search_songs is a VIEW, which doesn't propagate NOT NULL constraints.
+  // Just cast it to the correct type
+  const songRows = data as SongQueryRow[]
+
+  return songRows.map(SongQuery.deserialize)
+}
+
+export const getSong = async (slug: string) => {
+  const client = supabase.getClient()
+  const { data, error } = await client
+    .from("songs")
+    .select(SongQuery.cols)
+    .eq("slug", slug)
+    .maybeSingle()
+  if (error) throw error
+  return data && SongQuery.deserialize(data)
+}
+
+export type AddSongInput = {
+  title: string
+  artist: string
+  key: Chord
+  sheet: string
+}
+export const addSong = async (input: AddSongInput): Promise<Song> => {
+  const client = supabase.getClient()
+  const { data: artist, error: artistError } = await client
+    .from("artists")
+    .upsert({ name: input.artist }, { onConflict: "name" })
+    .select("id")
+    .single()
+  if (artistError) throw artistError
+
+  // TODO: handle duplicate slugs
+  const slug = slugify(input.title, { lower: true })
+
+  const { data, error: songError } = await client
+    .from("songs")
+    .insert({
+      slug,
+      title: input.title,
+      artist: artist.id,
+      key: renderChord(input.key),
+      sheet: input.sheet,
+    })
+    .select(SongQuery.cols)
+    .single()
+  if (songError) throw songError
+
+  const song = SongQuery.deserialize(data)
+
+  // Don't await; run in background
+  void (async () => {
+    const { error } = await client.rpc("generate_keywords", {
+      song_id: song.id,
+      lyrics: Renderer.renderSong(song, {
+        includeHeader: false,
+        includeLabels: false,
+        includeChords: false,
+      }),
+    })
+    if (error) {
+      console.error(error)
+      toast.error(`Failed to generate keywords: ${error.message}`)
+    }
+  })()
+
+  return song
+}
+
+type SongQueryRow = QueryData<ReturnType<typeof SongQuery._rowShape>>
+class SongQuery {
+  static cols = `
+    id,
+    slug,
+    title,
+    artist (name),
+    key,
+    sheet
+  ` as const
+
+  static _rowShape = () => supabase.nullClient.from("songs").select(this.cols).single()
+
+  static deserialize(song: SongQueryRow): Song {
+    return {
+      ...song,
+      artist: song.artist.name,
+      key: parseChord(song.key),
+      sheet: parseSongSheet(song.sheet),
+    }
+  }
+}

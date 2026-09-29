@@ -1,20 +1,18 @@
 <script lang="ts">
-  import slugify from "slugify"
   import { toast } from "svelte-sonner"
 
   import { goto } from "$app/navigation"
   import { resolve } from "$app/paths"
   import * as Form from "$lib/form"
-  import type { Key } from "$lib/songsheet/key"
-  import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
-  import type { SongSheet } from "$lib/songsheet/sheet"
+  import { addSong } from "$lib/song/queries"
+  import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
+  import type { Chord, SongSheet } from "$lib/songsheet/sheet"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
-  import { getClient } from "$lib/supabase"
 
   type AddSongForm = {
     title: string
     artist: string
-    key: Key
+    key: Chord
     sheet: { raw: string; parsed: SongSheet }
   }
   const formId = $props.id()
@@ -32,7 +30,7 @@
       key: {
         initial: "",
         required: true,
-        parse: parseKey,
+        parse: parseChord,
       },
       sheet: {
         initial: "",
@@ -43,28 +41,15 @@
       },
     },
     onSubmit: async (values) => {
-      const supabase = getClient()
       try {
-        const { data: artist, error: artistError } = await supabase
-          .from("artists")
-          .upsert({ name: values.artist }, { onConflict: "name", ignoreDuplicates: true })
-          .select("id")
-          .single()
-        if (artistError) throw artistError
-
-        // TODO: handle duplicate slugs
-        const slug = slugify(values.title, { lower: true })
-
-        const { error: songError } = await supabase.from("songs").insert({
-          slug,
+        const song = await addSong({
           title: values.title,
-          artist: artist.id,
+          artist: values.artist,
           key: values.key,
           sheet: values.sheet.raw,
         })
-        if (songError) throw songError
 
-        goto(resolve("/song/[slug]", { slug }))
+        goto(resolve("/song/[slug]", { slug: song.slug }))
       } catch (e) {
         toast.error((e as Error).message)
       }

@@ -3,7 +3,7 @@
 
   import { renderChord } from "./chord"
   import type {
-    Key,
+    Chord,
     SongSheet,
     SongSheetGoto,
     SongSheetLine,
@@ -11,7 +11,7 @@
     SongSheetSection,
   } from "./sheet"
 
-  let { sheet, key }: { sheet: SongSheet; key: Key } = $props()
+  let { sheet, key }: { sheet: SongSheet; key: Chord } = $props()
 
   const setWidths = (line: SongSheetLine) => (songLine: HTMLDivElement) => {
     // Just register `line` as a dependency, to rerun whenever it changes, e.g.
@@ -72,7 +72,7 @@
             <span class="chord">
               {#if "chord" in piece}
                 <span class={{ leading: "space" in piece }}>
-                  {renderChord(piece.chord, { base: key })}
+                  {renderChord(piece.chord, { base: key.root })}
                 </span>
               {/if}
             </span>

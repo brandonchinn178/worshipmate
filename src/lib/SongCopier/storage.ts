@@ -1,4 +1,4 @@
-import { DEFAULT_OPTIONS, type RenderOptions } from "./render"
+import { DEFAULT_OPTIONS, type RenderOptions } from "$lib/song/render"
 
 const STORAGE_KEY = "song-copier-options"
 
