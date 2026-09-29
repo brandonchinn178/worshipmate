@@ -47,6 +47,12 @@
     <Popover.Portal>
       <Popover.Content align="end" alignOffset={-34} sideOffset={5}>
         <Form.Form>
+          <Form.Field name="includeHeader" label="Include header" direction="row">
+            <Form.Checkbox {...form.field("includeHeader")} />
+          </Form.Field>
+          <Form.Field name="includeLabels" label="Include labels" direction="row">
+            <Form.Checkbox {...form.field("includeLabels")} />
+          </Form.Field>
           <Form.Field name="includeChords" label="Include chords" direction="row">
             <Form.Checkbox {...form.field("includeChords")} />
           </Form.Field>
