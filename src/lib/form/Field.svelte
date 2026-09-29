@@ -35,6 +35,7 @@
 <style>
   .field {
     display: flex;
+    justify-content: space-between;
   }
 
   label {

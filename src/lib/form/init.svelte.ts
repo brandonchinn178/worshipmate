@@ -162,7 +162,8 @@ const initField = <T, K extends FieldName<T>>(
     case "boolean":
       return initFieldBoolean<T, K>(name, options as FieldOptionsBoolean)
     default:
-      return options.initial satisfies never
+      void (options.initial satisfies never)
+      throw new Error(`Unexpected initial value: ${options.initial}`)
   }
 }
 
