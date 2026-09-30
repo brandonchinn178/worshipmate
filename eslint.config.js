@@ -13,7 +13,7 @@ const gitignorePath = path.resolve(import.meta.dirname, ".gitignore")
 export default defineConfig(
   includeIgnoreFile(gitignorePath),
   js.configs.recommended,
-  ts.configs.strict,
+  ts.configs.strictTypeChecked,
   svelte.configs.recommended,
   prettier,
   svelte.configs.prettier,
@@ -35,7 +35,7 @@ export default defineConfig(
     },
   },
   {
-    files: ["**/*.svelte", "**/*.svelte.ts", "**/*.svelte.js"],
+    files: ["**/*.ts", "**/*.svelte", "**/*.svelte.ts", "**/*.svelte.js"],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -43,6 +43,10 @@ export default defineConfig(
         parser: ts.parser,
       },
     },
+  },
+  {
+    files: ["**/*.js"],
+    extends: [ts.configs.disableTypeChecked],
   },
   {
     plugins: {
