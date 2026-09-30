@@ -71,7 +71,7 @@ export class Renderer {
   renderPartMeta(meta: SongSheetPartMeta): string {
     return [
       // keep-multiline
-      meta.repeat === undefined ? "" : ` (${meta.repeat}x)`,
+      meta.repeat === undefined ? "" : ` (${meta.repeat.toString()}x)`,
     ].join("")
   }
 

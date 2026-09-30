@@ -27,11 +27,7 @@ export const listSongs = async ({ search }: ListSongsOpts) => {
   const { data, error } = await query
   if (error) throw error
 
-  // search_songs is a VIEW, which doesn't propagate NOT NULL constraints.
-  // Just cast it to the correct type
-  const songRows = data as SongQueryRow[]
-
-  return songRows.map(SongQuery.deserialize)
+  return data.map((row) => SongQuery.deserialize(row))
 }
 
 export const listArtists = async () => {

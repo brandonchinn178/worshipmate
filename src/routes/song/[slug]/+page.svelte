@@ -6,7 +6,9 @@
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
 
-  let { data } = $props()
+  import type { PageProps } from "./$types"
+
+  let { data }: PageProps = $props()
   // svelte-ignore state_referenced_locally
   let song = $state(data.song)
 

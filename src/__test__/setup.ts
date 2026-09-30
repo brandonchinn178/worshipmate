@@ -3,7 +3,7 @@ import "@testing-library/jest-dom/vitest"
 import { beforeEach, vi } from "vitest"
 
 beforeEach(() => {
-  window.matchMedia = vi.fn().mockImplementation((query) => ({
+  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
     matches: false,
     media: query,
     onchange: null,

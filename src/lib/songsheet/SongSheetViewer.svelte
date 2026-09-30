@@ -1,6 +1,8 @@
 <script lang="ts">
   import ArrowRightAltRoundedIcon from "@iconify-svelte/material-symbols/arrow-right-alt-rounded"
 
+  import { assertNever } from "$lib/utils/lang"
+
   import { renderChord } from "./chord"
   import type {
     Chord,
@@ -32,11 +34,11 @@
           chordDiv.getBoundingClientRect().width,
           lyricDiv.getBoundingClientRect().width,
         )
-        chordDiv.style.width = `${width}px`
-        lyricDiv.style.width = `${width}px`
+        chordDiv.style.width = `${width.toString()}px`
+        lyricDiv.style.width = `${width.toString()}px`
       })
     }
-    run()
+    void run()
 
     return () => {
       divs.forEach(([chordDiv, lyricDiv]) => {
@@ -57,7 +59,7 @@
   {:else if part.type === "goto"}
     {@render partGoto(part)}
   {:else}
-    {void (part satisfies never)}
+    {assertNever(part)}
   {/if}
 {/each}
 

@@ -10,6 +10,8 @@ declare global {
     interface PageData {
       header?: boolean
       session: Session | null
+      title?: string
+      description?: string
     }
     // interface PageState {}
     // interface Platform {}

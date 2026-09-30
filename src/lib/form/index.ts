@@ -1,6 +1,7 @@
 export { default as Checkbox } from "./Checkbox.svelte"
 export { default as Combobox } from "./Combobox.svelte"
+export { initComboboxOutputs } from "./Combobox.ts"
 export { default as Field } from "./Field.svelte"
 export { default as Form } from "./Form.svelte"
-export { init } from "./init.svelte"
+export { init } from "./init.svelte.ts"
 export { default as SubmitButton } from "./SubmitButton.svelte"

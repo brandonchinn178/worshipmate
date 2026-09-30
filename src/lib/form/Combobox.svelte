@@ -1,22 +1,8 @@
 <script module lang="ts">
-  export type Option = {
-    label: string
-    value: string
-  }
-
   const CREATE_PREFIX = "__create__:"
   const toCreateOption = (input: string): string => CREATE_PREFIX + input
   const fromCreateOption = (input: string): [string, boolean] =>
     input.startsWith(CREATE_PREFIX) ? [input.slice(CREATE_PREFIX.length), true] : [input, false]
-
-  export type Outputs = {
-    isNew: boolean
-  }
-  export const initComboboxOutputs = (): Outputs => {
-    return {
-      isNew: false,
-    }
-  }
 </script>
 
 <script lang="ts">
@@ -27,6 +13,8 @@
   import type { FormEventHandler } from "svelte/elements"
 
   import Spinner from "$lib/Spinner.svelte"
+
+  import type { Option, Outputs } from "./Combobox"
 
   let {
     id,

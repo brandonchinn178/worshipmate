@@ -1,7 +1,7 @@
 import path from "node:path"
 
 import js from "@eslint/js"
-import { defineConfig, includeIgnoreFile } from "eslint/config"
+import { defineConfig, globalIgnores, includeIgnoreFile } from "eslint/config"
 import prettier from "eslint-config-prettier"
 import simpleImportSort from "eslint-plugin-simple-import-sort"
 import svelte from "eslint-plugin-svelte"
@@ -12,6 +12,7 @@ const gitignorePath = path.resolve(import.meta.dirname, ".gitignore")
 
 export default defineConfig(
   includeIgnoreFile(gitignorePath),
+  globalIgnores(["src/lib/supabase/types.ts"]),
   js.configs.recommended,
   ts.configs.strictTypeChecked,
   svelte.configs.recommended,
@@ -42,6 +43,15 @@ export default defineConfig(
         extraFileExtensions: [".svelte"],
         parser: ts.parser,
       },
+    },
+  },
+  {
+    files: ["**/*.svelte"],
+    rules: {
+      // False positives with snippets
+      "@typescript-eslint/no-confusing-void-expression": "off",
+      // False positive with $bindable()
+      "@typescript-eslint/no-useless-default-assignment": "off",
     },
   },
   {

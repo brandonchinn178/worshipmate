@@ -18,7 +18,7 @@ export const initClient = (options: ClientOptions): Client => {
     return client
   }
 
-  const newClient = supabase.createClient(
+  const newClient = supabase.createClient<Database>(
     // keep-multiline
     PUBLIC_SUPABASE_URL,
     PUBLIC_SUPABASE_PUBLISHABLE_KEY,

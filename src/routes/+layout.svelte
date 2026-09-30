@@ -5,7 +5,9 @@
   import AppProviders from "$lib/AppProviders.svelte"
   import Header from "$lib/Header.svelte"
 
-  let { children } = $props()
+  import { type LayoutProps } from "./$types"
+
+  let { children }: LayoutProps = $props()
 
   let showHeader = $derived(page.data.header ?? true)
 </script>

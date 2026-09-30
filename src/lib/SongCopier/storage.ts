@@ -6,7 +6,7 @@ export const getOptions = (): RenderOptions => {
   const data = localStorage.getItem(STORAGE_KEY)
   if (data) {
     try {
-      const options = JSON.parse(data)
+      const options = JSON.parse(data) as RenderOptions
       return {
         // Merge if any new options were added
         ...DEFAULT_OPTIONS,

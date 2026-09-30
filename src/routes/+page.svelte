@@ -8,20 +8,22 @@
   import { renderChord } from "$lib/songsheet/chord"
   import { pluralize } from "$lib/utils/pluralize"
 
+  import type { PageProps } from "./$types"
+
   const search = getSearchFilters(page.url)
 
   const session = $derived(page.data.session)
-  let { data } = $props()
+  let { data }: PageProps = $props()
   let songs = $derived(data.songs)
 
   // Searchbar
   let searchInput = $state(search.query ?? "")
-  const setSearch = (e: Event) => {
+  const setSearch = async (e: Event) => {
     e.preventDefault()
     const url = setSearchFilters(page.url, {
       query: searchInput,
     })
-    goto(resolve(`/?${url.searchParams}`))
+    await goto(resolve(`/?${url.searchParams}`))
   }
 </script>
 
