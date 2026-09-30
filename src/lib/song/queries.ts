@@ -55,6 +55,9 @@ export type AddSongInput = {
   sheet: string
 }
 export const addSong = async (input: AddSongInput): Promise<Song> => {
+  // TODO: handle duplicate slugs
+  const slug = slugify(input.title, { lower: true })
+
   const client = supabase.getClient()
   const artist = await (async () => {
     if ("id" in input.artist) {
@@ -69,9 +72,6 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
     if (artistError) throw artistError
     return data
   })()
-
-  // TODO: handle duplicate slugs
-  const slug = slugify(input.title, { lower: true })
 
   const { data, error: songError } = await client
     .from("songs")
