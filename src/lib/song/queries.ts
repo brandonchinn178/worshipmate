@@ -34,6 +34,13 @@ export const listSongs = async ({ search }: ListSongsOpts) => {
   return songRows.map(SongQuery.deserialize)
 }
 
+export const listArtists = async () => {
+  const client = supabase.getClient()
+  const { data, error } = await client.from("artists").select("id, name")
+  if (error) throw error
+  return data
+}
+
 export const getSong = async (slug: string) => {
   const client = supabase.getClient()
   const { data, error } = await client
@@ -47,18 +54,25 @@ export const getSong = async (slug: string) => {
 
 export type AddSongInput = {
   title: string
-  artist: string
+  artist: { name: string } | { id: string }
   key: Chord
   sheet: string
 }
 export const addSong = async (input: AddSongInput): Promise<Song> => {
   const client = supabase.getClient()
-  const { data: artist, error: artistError } = await client
-    .from("artists")
-    .upsert({ name: input.artist }, { onConflict: "name" })
-    .select("id")
-    .single()
-  if (artistError) throw artistError
+  const artist = await (async () => {
+    if ("id" in input.artist) {
+      return input.artist
+    }
+
+    const { data, error: artistError } = await client
+      .from("artists")
+      .upsert({ name: input.artist.name }, { onConflict: "name" })
+      .select("id")
+      .single()
+    if (artistError) throw artistError
+    return data
+  })()
 
   // TODO: handle duplicate slugs
   const slug = slugify(input.title, { lower: true })
