@@ -5,7 +5,7 @@
 
   import * as Form from "$lib/form"
   import type { Song } from "$lib/song"
-  import { Renderer, type RenderOptions } from "$lib/song/render"
+  import { type RenderOptions, SongRenderer } from "$lib/song/render"
 
   import { getOptions, setOptions } from "./storage"
 
@@ -22,7 +22,7 @@
     },
     onSubmit: async (values) => {
       try {
-        await navigator.clipboard.writeText(Renderer.renderSong(song, values))
+        await navigator.clipboard.writeText(SongRenderer.renderSong(song, values))
         toast.success("Copied to clipboard!")
       } catch (e) {
         console.error(e)

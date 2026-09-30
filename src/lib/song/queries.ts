@@ -8,7 +8,7 @@ import { type Chord } from "$lib/songsheet/sheet"
 import * as supabase from "$lib/supabase"
 
 import type { Song } from "./model"
-import { Renderer } from "./render"
+import { SongRenderer } from "./render"
 
 export type ListSongsOpts = {
   search?: string | null
@@ -92,7 +92,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
   void (async () => {
     const { error } = await client.rpc("generate_keywords", {
       song_id: song.id,
-      lyrics: Renderer.renderSong(song, {
+      lyrics: SongRenderer.renderSong(song, {
         includeHeader: false,
         includeLabels: false,
         includeChords: false,

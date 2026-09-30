@@ -23,7 +23,7 @@ export const DEFAULT_OPTIONS = {
   includeChords: true,
 }
 
-export class Renderer {
+export class SongRenderer {
   private readonly options: RenderOptions
   private readonly songKey: Key
 
@@ -37,7 +37,7 @@ export class Renderer {
   }
 
   static renderSong(song: Song, options: Partial<RenderOptions> = {}): string {
-    return new Renderer(song.key.root, options).renderSong(song)
+    return new SongRenderer(song.key.root, options).renderSong(song)
   }
 
   renderSong(song: Song): string {
