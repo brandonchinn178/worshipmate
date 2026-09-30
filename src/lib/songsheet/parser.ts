@@ -33,7 +33,7 @@ const p_SongSheet: P.Parser<SongSheet> = P.lazy(() => {
 })
 
 const p_SongSheetPart: P.Parser<SongSheetPart> = P.lazy(() => {
-  return P.alt(p_SongSheetSection, p_SongSheetGoto)
+  return P.alt<SongSheetPart>(p_SongSheetSection, p_SongSheetGoto)
 })
 
 const p_SongSheetPartMeta: P.Parser<SongSheetPartMeta> = P.lazy(() => {
@@ -49,7 +49,7 @@ const p_SongSheetPartMeta: P.Parser<SongSheetPartMeta> = P.lazy(() => {
     ),
   )
     .sepBy(P.whitespace)
-    .map((metas) => metas.reduce((acc, meta) => ({ ...acc, ...meta }), {} as SongSheetPartMeta))
+    .map((metas) => metas.reduce((acc, meta) => ({ ...acc, ...meta }), {}))
 })
 
 const p_SongSheetSection: P.Parser<SongSheetSection> = P.lazy(() => {
@@ -104,7 +104,7 @@ const p_SongSheetLinePiece: P.Parser<SongSheetLinePiece> = P.lazy(() => {
   const p_chordTag = p_Chord.wrap(P.string("["), P.string("]"))
   const p_lyrics = P.regexp(/[^{[\n]+/).desc("lyrics")
 
-  return P.alt(
+  return P.alt<SongSheetLinePiece>(
     P.seqMap(p_chordTag, P.string("_").skip(P.string(" ").many()), (chord) => {
       return { chord, space: true }
     }),

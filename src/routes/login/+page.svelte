@@ -2,18 +2,8 @@
   import { AuthError } from "@supabase/supabase-js"
   import { toast } from "svelte-sonner"
 
-  import { goto } from "$app/navigation"
-  import { resolve } from "$app/paths"
-  import { page } from "$app/state"
   import { login, type LoginInput } from "$lib/auth.svelte"
   import * as Form from "$lib/form"
-
-  const session = $derived(page.data.session)
-  $effect(() => {
-    if (session !== null) {
-      goto(resolve("/"))
-    }
-  })
 
   const formId = $props.id()
   const form = Form.init<LoginInput>({
@@ -26,7 +16,7 @@
       try {
         await login(values)
       } catch (e) {
-        toast.error(e instanceof AuthError ? e.message : `${e}`)
+        toast.error(e instanceof AuthError ? e.message : `${e as Error}`)
       }
     },
   })

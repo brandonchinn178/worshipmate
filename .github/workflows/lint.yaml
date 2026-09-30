@@ -20,9 +20,14 @@ jobs:
       - name: Install hooky
         run: |
           curl -fsSL \
-            https://github.com/brandonchinn178/hooky/releases/download/v1.0.4/hooky-1.0.4-linux-x86_64 \
+            https://github.com/brandonchinn178/hooky/releases/download/v1.0.6/hooky-1.0.6-linux-x86_64 \
             -o /usr/local/bin/hooky
           chmod +x /usr/local/bin/hooky
+
+      - run: npx svelte-kit sync
+        env:
+          PUBLIC_SUPABASE_PUBLISHABLE_KEY: ""
+          PUBLIC_SUPABASE_URL: ""
 
       - name: Run hooky
         run: hooky run --all --format=verbose

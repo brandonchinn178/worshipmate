@@ -4,7 +4,6 @@
   import { goto } from "$app/navigation"
   import { resolve } from "$app/paths"
   import * as Form from "$lib/form"
-  import { initComboboxOutputs } from "$lib/form/Combobox.svelte"
   import { addSong, listArtists } from "$lib/song/queries"
   import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
   import type { Chord, SongSheet } from "$lib/songsheet/sheet"
@@ -50,14 +49,14 @@
           sheet: values.sheet.raw,
         })
 
-        goto(resolve("/song/[slug]", { slug: song.slug }))
+        await goto(resolve("/song/[slug]", { slug: song.slug }))
       } catch (e) {
         toast.error((e as Error).message)
       }
     },
   })
 
-  let artistSelector = $state(initComboboxOutputs())
+  let artistSelector = $state(Form.initComboboxOutputs())
   const loadArtistChoices = async () => {
     const artists = await listArtists()
     return artists.map(({ id, name }) => ({ label: name, value: id }))

@@ -1,3 +1,3 @@
-export const load = async () => {
+export const load = () => {
   return { title: "Dashboard" }
 }

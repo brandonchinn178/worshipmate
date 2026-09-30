@@ -1,6 +1,8 @@
 import { createContext } from "svelte"
 import type { HTMLInputAttributes, HTMLTextareaAttributes } from "svelte/elements"
 
+import { assertNever } from "$lib/utils/lang"
+
 // All Form values types should subclass this
 export type BaseFormValues = Record<string, unknown>
 
@@ -147,7 +149,7 @@ export const init = <T extends BaseFormValues>({
     onsubmit,
   }
 
-  setFormContext(form as FormState<BaseFormValues>)
+  setFormContext(form)
   return form
 }
 
@@ -162,8 +164,7 @@ const initField = <T, K extends FieldName<T>>(
     case "boolean":
       return initFieldBoolean<T, K>(name, options as FieldOptionsBoolean)
     default:
-      void (options.initial satisfies never)
-      throw new Error(`Unexpected initial value: ${options.initial}`)
+      return assertNever(options.initial)
   }
 }
 

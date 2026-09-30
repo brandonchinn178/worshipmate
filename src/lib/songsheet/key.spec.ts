@@ -1,7 +1,7 @@
 import * as fc from "fast-check"
 import { describe, expect, it } from "vitest"
 
-import { KEYS, renderKey, transposeKey } from "./key"
+import { type Key, KEYS, renderKey, transposeKey } from "./key"
 
 describe("renderKey", () => {
   it.each`
@@ -12,9 +12,12 @@ describe("renderKey", () => {
     ${"C"}  | ${"E"}  | ${"C"}
     ${"C"}  | ${"Bb"} | ${"C"}
     ${"C"}  | ${"C"}  | ${"C"}
-  `("renderKey($key, { base: $base }) == $expected", ({ key, base, expected }) => {
-    expect(renderKey(key, { base })).toBe(expected)
-  })
+  `(
+    "renderKey($key, { base: $base }) == $expected",
+    ({ key, base, expected }: { key: Key; base: Key; expected: string }) => {
+      expect(renderKey(key, { base })).toBe(expected)
+    },
+  )
 })
 
 describe("transposeKey", () => {
@@ -31,9 +34,12 @@ describe("transposeKey", () => {
     ${"C"}  | ${1}  | ${"Db"}
     ${"Db"} | ${1}  | ${"D"}
     ${"C"}  | ${2}  | ${"D"}
-  `("transposeKey($input, $count) == $expected", ({ input, count, expected }) => {
-    expect(transposeKey(input, count)).toBe(expected)
-  })
+  `(
+    "transposeKey($input, $count) == $expected",
+    ({ input, count, expected }: { input: Key; count: number; expected: string }) => {
+      expect(transposeKey(input, count)).toBe(expected)
+    },
+  )
 
   it("wraps around", () => {
     expect(transposeKey("B", 11)).toBe("Bb")

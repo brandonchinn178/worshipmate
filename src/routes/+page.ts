@@ -1,7 +1,9 @@
 import { getSearchFilters } from "$lib/search.js"
 import { listSongs } from "$lib/song/queries"
 
-export const load = async ({ url }) => {
+import type { PageLoad } from "./$types"
+
+export const load: PageLoad = async ({ url }) => {
   const search = getSearchFilters(url)
   const songs = await listSongs({ search: search.query })
   return { songs }
