@@ -109,9 +109,12 @@
 <style>
   main {
     display: grid;
-    grid-template-columns: 50% 50%;
-    gap: 1rem;
+    grid-template-columns: 20rem 1fr;
+    gap: 3rem;
     align-items: start;
+
+    max-width: 70rem;
+    margin: 0 auto;
   }
 
   .sheet-input {
