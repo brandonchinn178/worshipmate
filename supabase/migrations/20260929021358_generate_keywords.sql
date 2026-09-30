@@ -36,7 +36,10 @@ BEGIN
         || 'Extract a space-separated list of keywords or themes from these '
         || 'song lyrics. Return a maximum of 30. The keywords or themes should '
         || 'NOT be already present in the song lyrics. They should be specific '
-        || 'enough to be useful for search, and not too generic. '
+        || 'enough to be useful for search, and not too generic. "God" and '
+        || '"Jesus" are too generic, so they should be excluded. '
+        || 'This will be passed to TO_TSVECTOR, so it should be optimized for '
+        || 'that; for example, keywords should each be one word. '
         || 'Respond with ONLY the keywords, nothing else.';
 
     request := (
