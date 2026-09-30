@@ -24,6 +24,11 @@ jobs:
             -o /usr/local/bin/hooky
           chmod +x /usr/local/bin/hooky
 
+      - run: npx svelte-kit sync
+        env:
+          PUBLIC_SUPABASE_PUBLISHABLE_KEY: ""
+          PUBLIC_SUPABASE_URL: ""
+
       - name: Run hooky
         run: hooky run --all --format=verbose
         env:
