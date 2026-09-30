@@ -97,14 +97,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
 
   // Don't await; run in background
   void (async () => {
-    const { error } = await client.rpc("generate_keywords", {
-      song_id: song.id,
-      lyrics: SongRenderer.renderSong(song, {
-        includeHeader: false,
-        includeLabels: false,
-        includeChords: false,
-      }),
-    })
+    const { error } = await client.rpc("generate_keywords", { song_id: song.id })
     if (error) {
       console.error(error)
       toast.error(`Failed to generate keywords: ${error.message}`)

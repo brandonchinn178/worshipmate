@@ -120,8 +120,7 @@ export type Database = {
       }
     }
     Functions: {
-      generate_keywords: { Args: { lyrics: string; song_id: string }; Returns: undefined }
-      is_admin: { Args: Record<PropertyKey, never>; Returns: boolean }
+      generate_keywords: { Args: { song_id: string }; Returns: undefined }
       search_songs: {
         Args: { q: string }
         Returns: {

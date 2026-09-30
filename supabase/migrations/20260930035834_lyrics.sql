@@ -2,7 +2,7 @@ ALTER TABLE songs ADD COLUMN lyrics TEXT NOT NULL DEFAULT '';
 ALTER TABLE songs ALTER COLUMN lyrics DROP DEFAULT;
 
 -- Recreate songs_search materialized view and functions,
--- copied/adapted from 20260907235412_search
+-- copied/adapted from 20260929021358_generate_keywords
 
 DROP FUNCTION search_songs(q text);
 DROP MATERIALIZED VIEW songs_search;
@@ -12,7 +12,7 @@ SELECT
     songs.*,
     SETWEIGHT(TO_TSVECTOR('english', songs.title), 'A')
         || SETWEIGHT(TO_TSVECTOR('english', artists.name), 'B')
---      || SETWEIGHT(TO_TSVECTOR('english', songs.sheet), 'C') -- OLD
+--      || SETWEIGHT(TO_TSVECTOR('english', songs.sheet ), 'C') -- OLD
         || SETWEIGHT(TO_TSVECTOR('english', songs.lyrics), 'C') -- NEW
         || SETWEIGHT(TO_TSVECTOR('english', COALESCE(songs.keywords, '')), 'D')
         AS search_vector
