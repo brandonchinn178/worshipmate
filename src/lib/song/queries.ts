@@ -55,6 +55,12 @@ export type AddSongInput = {
   sheet: string
 }
 export const addSong = async (input: AddSongInput): Promise<Song> => {
+  const parsedSheet = parseSongSheet(input.sheet)
+  const lyrics = new SongRenderer(input.key.root, {
+    includeChords: false,
+    includeLabels: false,
+  }).renderSheet(parsedSheet)
+
   // TODO: handle duplicate slugs
   const slug = slugify(input.title, { lower: true })
 
@@ -81,6 +87,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
       artist: artist.id,
       key: renderChord(input.key),
       sheet: input.sheet,
+      lyrics,
     })
     .select(SongQuery.cols)
     .single()
