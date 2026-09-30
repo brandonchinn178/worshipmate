@@ -1,7 +1,9 @@
 :root {
   /* Base colors */
   --dark-teal: #134b4e;
-  --pink: #ff9797;
+  --sage: #b0ddbf;
+  --pink: #ec8f8f;
+  --light-pink: #fdcfcf;
   --red: #a8201a;
   --white: #fff;
   --black: #000;
@@ -9,7 +11,8 @@
 
   /* Theme colors */
   --primary: var(--dark-teal);
-  --secondary: var(--pink);
+  --secondary: var(--sage);
+  --highlight: var(--light-pink);
   --error: var(--red);
 
   /* Fonts */
@@ -35,7 +38,7 @@ a {
   font-weight: bold;
   text-decoration: none;
   &:hover {
-    color: var(--secondary);
+    color: var(--pink);
   }
 }
 

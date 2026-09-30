@@ -4,10 +4,10 @@
   const props = $props()
 </script>
 
-<ProgressActivityIcon class="spinner" {...props} />
+<ProgressActivityIcon class="spinner-icon" role="status" aria-label="Loading..." {...props} />
 
 <style>
-  :global(.spinner) {
+  :global(.spinner-icon) {
     animation: animate-spinner 2s linear infinite;
     transform-origin: center;
 

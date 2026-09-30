@@ -84,9 +84,8 @@
   }
 
   :global([data-popover-content]) {
-    /*border: 2px solid var(--light-gray);*/
     border-radius: 5px;
-    background: var(--pink);
+    background: var(--secondary);
     padding: 0.5rem 1rem;
   }
 </style>
