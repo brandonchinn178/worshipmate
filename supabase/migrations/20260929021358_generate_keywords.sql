@@ -34,9 +34,10 @@ BEGIN
     prompt := '<lyrics>' || E'\n' || lyrics || E'\n' || '</lyrics>'
         || E'\n\n'
         || 'Extract a space-separated list of keywords or themes from these '
-        || 'song lyrics. Return a maximum of 100. The keywords or themes should '
-        || 'NOT be already present in the song lyrics. Respond with ONLY the '
-        || 'keywords, nothing else.';
+        || 'song lyrics. Return a maximum of 30. The keywords or themes should '
+        || 'NOT be already present in the song lyrics. They should be specific '
+        || 'enough to be useful for search, and not too generic. '
+        || 'Respond with ONLY the keywords, nothing else.';
 
     request := (
         'POST',
