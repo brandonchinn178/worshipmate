@@ -41,15 +41,15 @@ export type Database = {
       profiles: {
         Row: {
           id: string
-          is_admin: boolean | null
+          is_admin: boolean
         }
         Insert: {
           id: string
-          is_admin?: boolean | null
+          is_admin: boolean
         }
         Update: {
           id?: string
-          is_admin?: boolean | null
+          is_admin?: boolean
         }
         Relationships: []
       }
