@@ -18,6 +18,7 @@
 		"bits-ui": "^2.19.3",
 		"parsimmon": "^1.18.1",
 		"slugify": "^1.6.9",
+		"svelecte": "^5.3.0",
 		"svelte-sonner": "^1.1.1"
 	},
 	"devDependencies": {

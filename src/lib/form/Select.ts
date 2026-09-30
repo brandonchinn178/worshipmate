@@ -7,7 +7,7 @@ export type Outputs = {
   isNew: boolean
 }
 
-export const initComboboxOutputs = (): Outputs => {
+export const initSelectOutputs = (): Outputs => {
   return {
     isNew: false,
   }
