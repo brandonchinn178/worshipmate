@@ -6,6 +6,8 @@ export type Chord = {
   bass?: Key
 }
 
+export const toChord = (key: Key): Chord => ({ root: key })
+
 export const renderChord = (chord: Chord, options: { base?: Key } = {}): string => {
   const renderKey = (k: Key) => renderKey_(k, options)
   return [

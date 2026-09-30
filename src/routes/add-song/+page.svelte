@@ -5,6 +5,7 @@
   import { resolve } from "$app/paths"
   import * as Form from "$lib/form"
   import { addSong, listArtists } from "$lib/song/queries"
+  import { toChord } from "$lib/songsheet/chord"
   import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
   import type { Chord, SongSheet } from "$lib/songsheet/sheet"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
@@ -87,9 +88,9 @@
     </Form.Field>
     <Form.SubmitButton />
   </Form.Form>
-  {#if form.values.sheet && form.values.key}
+  {#if form.values.sheet}
     <div>
-      <SongSheetViewer sheet={form.values.sheet.parsed} key={form.values.key} />
+      <SongSheetViewer sheet={form.values.sheet.parsed} key={form.values.key ?? toChord("C")} />
     </div>
   {:else if sheetErrors || keyErrors}
     <div class="song-sheet-error">
@@ -97,10 +98,6 @@
       {#if sheetErrors}
         <b><pre>- Sheet</pre></b>
         <pre>{sheetErrors}</pre>
-      {/if}
-      {#if keyErrors}
-        <b><pre>- Key</pre></b>
-        <pre>{keyErrors}</pre>
       {/if}
     </div>
   {/if}
