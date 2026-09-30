@@ -54,8 +54,8 @@ const p_SongSheetPartMeta: P.Parser<SongSheetPartMeta> = P.lazy(() => {
 
 const p_SongSheetSection: P.Parser<SongSheetSection> = P.lazy(() => {
   return P.seqMap(
-    p_labelTag("section"),
-    p_SongSheetLine.sepBy(p_newline).skip(p_newline),
+    p_labelTag("section").skip(p_newline),
+    p_SongSheetLine.skip(p_newline).many(),
     P.optWhitespace.then(P.string("{/section}")),
     ({ label, meta }, lines) => ({
       type: "section",
@@ -89,12 +89,12 @@ const p_labelTag = (name: string): P.Parser<{ label: string; meta: SongSheetPart
 /* ----- Section ----- */
 
 const p_SongSheetLine: P.Parser<SongSheetLine> = P.lazy(() => {
-  return P.optWhitespace
+  return P.regex(/[ ]*/)
     .then(
       P.alt(
         // At least one line piece must exist, or the line must be completely empty
         p_SongSheetLinePiece.atLeast(1),
-        P.regexp(/^$/).result([]),
+        P.lookahead(p_newline).result([]),
       ),
     )
     .map((pieces) => ({ pieces }))

@@ -92,6 +92,8 @@
               {/if}
             </span>
             {SPACE}
+          {:else}
+            <span><br /></span>
           {/each}
         </div>
       </div>

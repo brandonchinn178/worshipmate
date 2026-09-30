@@ -136,6 +136,27 @@ describe("p_SongSheetSection", () => {
       ],
     })
   })
+
+  it("preserves empty lines", () => {
+    const input = `
+      {section Intro}
+      Line 1
+
+      Line 2
+      {/section}
+    `
+    expect(parseSongSheet(input)).toMatchObject({
+      parts: [
+        {
+          lines: [
+            { pieces: [{ lyrics: "Line 1" }] },
+            { pieces: [] },
+            { pieces: [{ lyrics: "Line 2" }] },
+          ],
+        },
+      ],
+    })
+  })
 })
 
 describe("p_SongSheetLinePiece", () => {
