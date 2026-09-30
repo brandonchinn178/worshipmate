@@ -8,7 +8,7 @@ import { type Chord } from "$lib/songsheet/sheet"
 import * as supabase from "$lib/supabase"
 
 import type { Song } from "./model"
-import { Renderer } from "./render"
+import { SongRenderer } from "./render"
 
 export type ListSongsOpts = {
   search?: string | null
@@ -55,6 +55,15 @@ export type AddSongInput = {
   sheet: string
 }
 export const addSong = async (input: AddSongInput): Promise<Song> => {
+  const parsedSheet = parseSongSheet(input.sheet)
+  const lyrics = new SongRenderer(input.key.root, {
+    includeChords: false,
+    includeLabels: false,
+  }).renderSheet(parsedSheet)
+
+  // TODO: handle duplicate slugs
+  const slug = slugify(input.title, { lower: true })
+
   const client = supabase.getClient()
   const artist = await (async () => {
     if ("id" in input.artist) {
@@ -70,9 +79,6 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
     return data
   })()
 
-  // TODO: handle duplicate slugs
-  const slug = slugify(input.title, { lower: true })
-
   const { data, error: songError } = await client
     .from("songs")
     .insert({
@@ -81,6 +87,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
       artist: artist.id,
       key: renderChord(input.key),
       sheet: input.sheet,
+      lyrics,
     })
     .select(SongQuery.cols)
     .single()
@@ -92,7 +99,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
   void (async () => {
     const { error } = await client.rpc("generate_keywords", {
       song_id: song.id,
-      lyrics: Renderer.renderSong(song, {
+      lyrics: SongRenderer.renderSong(song, {
         includeHeader: false,
         includeLabels: false,
         includeChords: false,

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import type { Song } from "$lib/song"
 import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
 
-import { Renderer } from "./render"
+import { SongRenderer } from "./render"
 
 const BASE_SONG: Song = {
   id: "song1",
@@ -41,7 +41,7 @@ describe("Renderer", () => {
         {goto Chorus #repeat=2}
       `),
     }
-    expect(Renderer.renderSong(song, options)).toMatchInlineSnapshot(`
+    expect(SongRenderer.renderSong(song, options)).toMatchInlineSnapshot(`
       "My Song
       John Singer
 
@@ -97,7 +97,7 @@ describe("Renderer", () => {
         {goto Chorus #repeat=2}
       `),
     }
-    expect(Renderer.renderSong(song, options)).toMatchInlineSnapshot(`
+    expect(SongRenderer.renderSong(song, options)).toMatchInlineSnapshot(`
       "My Song
       John Singer
 
@@ -147,7 +147,7 @@ describe("Renderer", () => {
         {goto Chorus #repeat=2}
       `),
     }
-    expect(Renderer.renderSong(song, options)).toMatchInlineSnapshot(`
+    expect(SongRenderer.renderSong(song, options)).toMatchInlineSnapshot(`
       "This is a line in the verse
       This has no chords
       This is a big chord
@@ -168,7 +168,7 @@ describe("Renderer", () => {
         {/section}
       `),
     }
-    const outSharp = Renderer.renderSong(songSharp, {})
+    const outSharp = SongRenderer.renderSong(songSharp, {})
     expect(outSharp).toContain("C#m")
     expect(outSharp).not.toContain("Dbm")
 
@@ -176,7 +176,7 @@ describe("Renderer", () => {
       ...songSharp,
       key: parseChord("Ab"),
     }
-    const outFlat = Renderer.renderSong(songFlat, {})
+    const outFlat = SongRenderer.renderSong(songFlat, {})
     expect(outFlat).toContain("Dbm")
     expect(outFlat).not.toContain("C#m")
   })

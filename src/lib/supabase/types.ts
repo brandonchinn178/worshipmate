@@ -41,15 +41,15 @@ export type Database = {
       profiles: {
         Row: {
           id: string
-          is_admin: boolean | null
+          is_admin: boolean
         }
         Insert: {
           id: string
-          is_admin?: boolean | null
+          is_admin: boolean
         }
         Update: {
           id?: string
-          is_admin?: boolean | null
+          is_admin?: boolean
         }
         Relationships: []
       }
@@ -59,6 +59,7 @@ export type Database = {
           id: string
           key: string
           keywords: string | null
+          lyrics: string
           sheet: string
           slug: string
           title: string
@@ -68,6 +69,7 @@ export type Database = {
           id?: string
           key: string
           keywords?: string | null
+          lyrics: string
           sheet?: string
           slug: string
           title: string
@@ -77,6 +79,7 @@ export type Database = {
           id?: string
           key?: string
           keywords?: string | null
+          lyrics?: string
           sheet?: string
           slug?: string
           title?: string
@@ -99,6 +102,7 @@ export type Database = {
           id: string | null
           key: string | null
           keywords: string | null
+          lyrics: string | null
           search_vector: unknown
           sheet: string | null
           slug: string | null
@@ -125,6 +129,7 @@ export type Database = {
           id: string | null
           key: string | null
           keywords: string | null
+          lyrics: string | null
           search_vector: unknown
           sheet: string | null
           slug: string | null

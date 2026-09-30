@@ -1,24 +1,12 @@
 INSERT INTO artists (id, name) VALUES
-    ('00000000-0000-0000-0000-000000000000', 'Matt Redman'),
-    ('00000000-0000-0000-0000-000000000001', 'Housefires'),
-    ('00000000-0000-0000-0000-000000000002', 'Bethel Music'),
-    ('00000000-0000-0000-0000-000000000003', 'All Sons and Daughters'),
-    ('00000000-0000-0000-0000-000000000004', 'Maverick City Music');
+    ('00000000-0000-0000-0000-000000000000', 'Housefires');
 
-INSERT INTO songs (id, slug, title, artist, key, sheet) VALUES
+INSERT INTO songs (id, slug, title, artist, key, sheet, lyrics, keywords) VALUES
     (
         '00000000-0000-0000-0000-000000000000',
-        'blessed-be-your-name',
-        'Blessed Be Your Name',
-        '00000000-0000-0000-0000-000000000000',
-        'A',
-        ''
-    ),
-    (
-        '00000000-0000-0000-0000-000000000001',
         'build-my-life',
         'Build My Life',
-        '00000000-0000-0000-0000-000000000001',
+        '00000000-0000-0000-0000-000000000000',
         'E',
         $$
 {section Intro}
@@ -66,39 +54,31 @@ And I will [E/G#]not be shaken
 
 {goto Chorus #repeat=2}
 {goto Bridge}
+        $$,
         $$
-    ),
-    (
-        '00000000-0000-0000-0000-000000000002',
-        'ever-be',
-        'Ever Be',
-        '00000000-0000-0000-0000-000000000002',
-        'E',
-        ''
-    ),
-    (
-        '00000000-0000-0000-0000-000000000003',
-        'great-are-you-lord',
-        'Great Are You Lord',
-        '00000000-0000-0000-0000-000000000003',
-        'A',
-        ''
-    ),
-    (
-        '00000000-0000-0000-0000-000000000004',
-        'jireh',
-        'Jireh',
-        '00000000-0000-0000-0000-000000000004',
-        'A',
-        ''
-    ),
-    (
-        '00000000-0000-0000-0000-000000000005',
-        'man-of-your-word',
-        'Man of Your Word',
-        '00000000-0000-0000-0000-000000000004',
-        'A',
-        ''
+Worthy of every song we could ever sing
+Worthy of all the praise we could ever bring
+Worthy of every breath we could ever breathe
+We live for You
+
+Jesus the name a-bove every other name
+Jesus the only One who could ever save
+Worthy of every breath we could ever breathe
+We live for You
+We live for You
+
+Holy, there is no one like you
+There is none be-side you
+Open up my eyes in wonder
+Show me who You are and fill me with Your heart
+And lead me in Your love to those around me
+
+I will build my life upon Your love
+It is a firm foundation
+I will put my trust in You alone
+And I will not be shaken
+        $$,
+        'worship devotion faith surrender praise holiness trust foundation spiritual transformation redemption grace gratitude adoration commitment discipleship purpose eternal values kingdom intimacy prayer consecration renewal dedication reverence love service mission'
     );
 
 REFRESH MATERIALIZED VIEW CONCURRENTLY songs_search;
