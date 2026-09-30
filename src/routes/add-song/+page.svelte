@@ -4,7 +4,8 @@
   import { goto } from "$app/navigation"
   import { resolve } from "$app/paths"
   import * as Form from "$lib/form"
-  import { addSong } from "$lib/song/queries"
+  import { initComboboxOutputs } from "$lib/form/Combobox.svelte"
+  import { addSong, listArtists } from "$lib/song/queries"
   import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
   import type { Chord, SongSheet } from "$lib/songsheet/sheet"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
@@ -44,7 +45,7 @@
       try {
         const song = await addSong({
           title: values.title,
-          artist: values.artist,
+          artist: artistSelector.isNew ? { name: values.artist } : { id: values.artist },
           key: values.key,
           sheet: values.sheet.raw,
         })
@@ -56,6 +57,12 @@
     },
   })
 
+  let artistSelector = $state(initComboboxOutputs())
+  const loadArtistChoices = async () => {
+    const artists = await listArtists()
+    return artists.map(({ id, name }) => ({ label: name, value: id }))
+  }
+
   const sheetErrors = $derived(form.errors.sheet?.trim())
   const keyErrors = $derived(form.errors.key?.trim())
 </script>
@@ -66,7 +73,12 @@
       <input {...form.field("title")} />
     </Form.Field>
     <Form.Field name="artist" label="Artist">
-      <input {...form.field("artist")} />
+      <Form.Combobox
+        {...form.field("artist")}
+        choices={loadArtistChoices()}
+        allowNew
+        bind:outputs={artistSelector}
+      />
     </Form.Field>
     <Form.Field name="key" label="Key">
       <input {...form.field("key")} />
