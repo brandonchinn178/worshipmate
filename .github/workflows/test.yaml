@@ -21,6 +21,7 @@ jobs:
           PUBLIC_SUPABASE_URL: ""
           PUBLIC_SUPABASE_PUBLISHABLE_KEY: ""
 
+      - run: npx playwright install
       - run: npm run test
 
       - run: npm run regen-keys-data
