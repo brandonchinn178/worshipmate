@@ -54,11 +54,16 @@ table {
   border-collapse: collapse;
 }
 
-input {
+input, textarea {
   height: 100%;
   padding: 0.25rem;
+  font-family: var(--font-noto-serif);
   font-size: 1em;
-  border: 1px solid var(--black);
+  border: 1px solid var(--light-gray);
+
+  &:focus {
+    outline: 1px solid var(--highlight);
+  }
 }
 
 button {
@@ -76,9 +81,12 @@ button {
   transition-property: background, color;
   transition-duration: 200ms;
   transition-timing-function: ease;
-  &:hover {
+  &:hover, &:focus {
     color: var(--white);
     background: var(--primary);
+  }
+  &:focus {
+    outline: none;
   }
 }
 

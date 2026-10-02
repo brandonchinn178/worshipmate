@@ -57,7 +57,7 @@
     },
   })
 
-  let artistSelector = $state(Form.initComboboxOutputs())
+  let artistSelector = $state(Form.initSelectOutputs())
   const loadArtistChoices = async () => {
     const artists = await listArtists()
     return artists.map(({ id, name }) => ({ label: name, value: id }))
@@ -73,10 +73,10 @@
       <input {...form.field("title")} />
     </Form.Field>
     <Form.Field name="artist" label="Artist">
-      <Form.Combobox
+      <Form.Select
         {...form.field("artist")}
         choices={loadArtistChoices()}
-        allowNew
+        creatable
         bind:outputs={artistSelector}
       />
     </Form.Field>
@@ -117,6 +117,7 @@
   .sheet-input {
     height: 20rem;
     resize: none;
+    font-family: monospace;
   }
 
   .song-sheet-error {
