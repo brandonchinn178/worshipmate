@@ -45,7 +45,7 @@
 
   .container {
     padding: 2rem 3rem;
-    border: 1px solid var(--black);
+    border: 4px double var(--primary);
     width: 500px;
   }
 </style>

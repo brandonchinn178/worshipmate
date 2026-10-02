@@ -117,6 +117,7 @@
   .sheet-input {
     height: 20rem;
     resize: none;
+    font-family: monospace;
   }
 
   .song-sheet-error {
