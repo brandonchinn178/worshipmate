@@ -16,7 +16,7 @@
     children: Snippet
   } = $props()
 
-  const errors = $derived(form.errors[name])
+  const error = $derived(form.errors[name])
 
   const style = $derived(`
     flex-direction: ${direction};
@@ -27,8 +27,8 @@
 <div class="field" {style}>
   <label for={form.fieldId(name)}>{label}</label>
   {@render children()}
-  {#if form.touched[name] && errors}
-    <p class="error">{errors}</p>
+  {#if form.touched[name] && error}
+    <p class="error">{error}</p>
   {/if}
 </div>
 

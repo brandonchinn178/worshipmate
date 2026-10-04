@@ -1,3 +1,5 @@
+import { divMod } from "$lib/utils/math"
+
 import {
   BASE_KEYS,
   KEY_ACCIDENTALS,
@@ -36,15 +38,44 @@ export const renderNote = (note: Note, options: RenderNoteOptions = {}): string 
   }
 }
 
+export const toScaleDegree = (note: Note): number => {
+  return SCALE_DEGREES[note]
+}
+
+export const fromScaleDegree = (degree: number): Note => {
+  return NOTES[degree % NOTES.length]
+}
+
 export const transposeNote = (note: Note, n: number): Note => {
-  const oldNote = SCALE_DEGREES[note]
+  const result = transposeAbsNote({ base: note, octave: 0 }, n)
+  return result.base
+}
 
-  let newNote = (oldNote + n) % NOTES.length
-  if (newNote < 0) {
-    newNote += NOTES.length
+/***** AbsNote *****/
+
+export type AbsNote = {
+  base: Note
+  octave: number
+}
+
+export const renderAbsNote = (note: AbsNote): string => {
+  return note.base + note.octave.toString()
+}
+
+export const toAbsNoteOffset = (note: AbsNote): number => {
+  return note.octave * NOTES.length + toScaleDegree(note.base)
+}
+
+export const transposeAbsNote = (note: AbsNote, n: number): AbsNote => {
+  const oldDegree = toScaleDegree(note.base)
+
+  const [octaveDiff, rem] = divMod(oldDegree + n, NOTES.length)
+  const newDegree = fromScaleDegree(rem >= 0 ? rem : rem + NOTES.length)
+
+  return {
+    base: newDegree,
+    octave: note.octave + octaveDiff,
   }
-
-  return NOTES[newNote]
 }
 
 /***** ScaleMode *****/

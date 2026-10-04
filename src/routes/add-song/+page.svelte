@@ -9,11 +9,13 @@
   import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
   import type { Key, SongSheet } from "$lib/songsheet/sheet"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
+  import { parseVocalRangeInput, type VocalRange, VocalRangeInput } from "$lib/VocalRange"
 
   type AddSongForm = {
     title: string
     artist: string
     key: Key
+    vocalRange: VocalRange
     sheet: { raw: string; parsed: SongSheet }
   }
   const formId = $props.id()
@@ -33,6 +35,11 @@
         required: true,
         parse: parseKey,
       },
+      vocalRange: {
+        initial: "",
+        required: true,
+        parse: parseVocalRangeInput,
+      },
       sheet: {
         initial: "",
         required: true,
@@ -47,6 +54,7 @@
           title: values.title,
           artist: artistSelector.isNew ? { name: values.artist } : { id: values.artist },
           key: values.key,
+          vocalRange: values.vocalRange,
           sheet: values.sheet.raw,
         })
 
@@ -82,6 +90,9 @@
     </Form.Field>
     <Form.Field name="key" label="Key">
       <input {...form.field("key")} />
+    </Form.Field>
+    <Form.Field name="vocalRange" label="Vocal range">
+      <VocalRangeInput {...form.field("vocalRange")} />
     </Form.Field>
     <Form.Field name="sheet" label="Sheet">
       <textarea class="sheet-input" {...form.field("sheet")} wrap="off"></textarea>

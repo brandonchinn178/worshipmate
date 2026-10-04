@@ -1,6 +1,6 @@
 import P from "parsimmon"
 
-import { BASE_KEYS, type Note, resolveNote, type ScaleMode } from "./key"
+import { type AbsNote, BASE_KEYS, type Note, resolveNote, type ScaleMode } from "./key"
 import {
   type Chord,
   type Key,
@@ -27,6 +27,10 @@ export const parseKey = (input: string): Key => {
 
 export const parseNote = (input: string): Note => {
   return p_Note.skip(P.eof).tryParse(input)
+}
+
+export const parseAbsNote = (input: string): AbsNote => {
+  return p_AbsNote.skip(P.eof).tryParse(input)
 }
 
 const p_SongSheet: P.Parser<SongSheet> = P.lazy(() => {
@@ -173,6 +177,10 @@ const p_Note: P.Parser<Note> = P.lazy(() => {
     ...BASE_KEYS.map(P.string),
   ]
   return P.alt(...allKeys)
+})
+
+const p_AbsNote: P.Parser<AbsNote> = P.lazy(() => {
+  return P.seqMap(p_Note, P.digit, (base, octave) => ({ base, octave: parseInt(octave, 10) }))
 })
 
 /* ----- Utilities ----- */

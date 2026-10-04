@@ -3,9 +3,10 @@ import slugify from "slugify"
 import { toast } from "svelte-sonner"
 
 import { renderKey } from "$lib/songsheet/key"
-import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
+import { parseAbsNote, parseKey, parseSongSheet } from "$lib/songsheet/parser"
 import { type Key } from "$lib/songsheet/sheet"
 import * as supabase from "$lib/supabase"
+import { renderVocalRange, type VocalRange } from "$lib/VocalRange"
 
 import type { Song } from "./model"
 import { SongRenderer } from "./render"
@@ -52,6 +53,7 @@ export type AddSongInput = {
   title: string
   artist: { name: string } | { id: string }
   key: Key
+  vocalRange: VocalRange
   sheet: string
 }
 export const addSong = async (input: AddSongInput): Promise<Song> => {
@@ -86,6 +88,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
       title: input.title,
       artist: artist.id,
       key: renderKey(input.key),
+      vocal_range: renderVocalRange(input.vocalRange),
       sheet: input.sheet,
       lyrics,
     })
@@ -115,16 +118,19 @@ class SongQuery {
     title,
     artist (name),
     key,
+    vocal_range,
     sheet
   ` as const
 
   static _rowShape = () => supabase.nullClient.from("songs").select(this.cols).single()
 
   static deserialize(song: SongQueryRow): Song {
+    const [lo, hi] = song.vocal_range
     return {
       ...song,
       artist: song.artist.name,
       key: parseKey(song.key),
+      vocalRange: [parseAbsNote(lo), parseAbsNote(hi)],
       sheet: parseSongSheet(song.sheet),
     }
   }
