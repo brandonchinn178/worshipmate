@@ -35,7 +35,16 @@
   </a>
 </p>
 <div class="main-container">
-  <aside class="song-actions">
+  {@render songSidebar()}
+  <main>
+    <h1>{song.title}</h1>
+    <h2>{song.artist}</h2>
+    <SongSheetViewer sheet={song.sheet} key={song.key} />
+  </main>
+</div>
+
+{#snippet songSidebar()}
+  <aside class="song-sidebar">
     <div class="song-key">
       Key:
       <Transposer bind:song />
@@ -44,12 +53,7 @@
       <SongCopier {song} />
     </div>
   </aside>
-  <main>
-    <h1>{song.title}</h1>
-    <h2>{song.artist}</h2>
-    <SongSheetViewer sheet={song.sheet} key={song.key} />
-  </main>
-</div>
+{/snippet}
 
 <style>
   .backlink {
@@ -62,7 +66,7 @@
     margin: 2rem;
   }
 
-  .song-actions {
+  .song-sidebar {
     float: right;
     margin-left: 2rem;
 
