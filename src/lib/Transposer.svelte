@@ -1,7 +1,7 @@
 <script lang="ts">
   import { type Song, transposeSong } from "$lib/song/model"
 
-  import { renderChord } from "./songsheet/chord"
+  import { renderKey } from "./songsheet/key"
 
   let { song = $bindable() }: { song: Song } = $props()
   const transpose = (n: number) => () => {
@@ -11,7 +11,7 @@
 
 <div class="container">
   <button onclick={transpose(-1)}>-</button>
-  <span class="key">{renderChord(song.key)}</span>
+  <span class="key">{renderKey(song.key)}</span>
   <button onclick={transpose(1)}>+</button>
 </div>
 

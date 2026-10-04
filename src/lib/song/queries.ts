@@ -2,9 +2,9 @@ import type { QueryData } from "@supabase/supabase-js"
 import slugify from "slugify"
 import { toast } from "svelte-sonner"
 
-import { renderChord } from "$lib/songsheet/chord"
-import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
-import { type Chord } from "$lib/songsheet/sheet"
+import { renderKey } from "$lib/songsheet/key"
+import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
+import { type Key } from "$lib/songsheet/sheet"
 import * as supabase from "$lib/supabase"
 
 import type { Song } from "./model"
@@ -51,12 +51,12 @@ export const getSong = async (slug: string) => {
 export type AddSongInput = {
   title: string
   artist: { name: string } | { id: string }
-  key: Chord
+  key: Key
   sheet: string
 }
 export const addSong = async (input: AddSongInput): Promise<Song> => {
   const parsedSheet = parseSongSheet(input.sheet)
-  const lyrics = new SongRenderer(input.key.root, {
+  const lyrics = new SongRenderer(input.key, {
     includeChords: false,
     includeLabels: false,
   }).renderSheet(parsedSheet)
@@ -85,7 +85,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
       slug,
       title: input.title,
       artist: artist.id,
-      key: renderChord(input.key),
+      key: renderKey(input.key),
       sheet: input.sheet,
       lyrics,
     })
@@ -124,7 +124,7 @@ class SongQuery {
     return {
       ...song,
       artist: song.artist.name,
-      key: parseChord(song.key),
+      key: parseKey(song.key),
       sheet: parseSongSheet(song.sheet),
     }
   }

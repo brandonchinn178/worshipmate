@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import type { Song } from "$lib/song"
-import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
+import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
 
 import { SongRenderer } from "./render"
 
@@ -10,7 +10,7 @@ const BASE_SONG: Song = {
   slug: "song1",
   title: "My Song",
   artist: "John Singer",
-  key: parseChord("D"),
+  key: parseKey("D"),
   sheet: parseSongSheet(""),
 }
 
@@ -161,7 +161,7 @@ describe("Renderer", () => {
   it("renders chords in the key", () => {
     const songSharp = {
       ...BASE_SONG,
-      key: parseChord("E"),
+      key: parseKey("E"),
       sheet: parseSongSheet(`
         {section Intro}
         [Dbm] [C#m]
@@ -174,7 +174,7 @@ describe("Renderer", () => {
 
     const songFlat = {
       ...songSharp,
-      key: parseChord("Ab"),
+      key: parseKey("Ab"),
     }
     const outFlat = SongRenderer.renderSong(songFlat, {})
     expect(outFlat).toContain("Dbm")

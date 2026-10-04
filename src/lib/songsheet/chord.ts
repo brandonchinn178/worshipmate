@@ -1,26 +1,36 @@
-import { type Key, renderKey as renderKey_, transposeKey } from "./key"
+import {
+  type Note,
+  renderNote,
+  type RenderNoteOptions,
+  renderScaleMode,
+  type ScaleMode,
+  transposeNote,
+} from "./key"
 
 export type Chord = {
-  root: Key
+  root: Note
+  mode: ScaleMode
   ext?: string
-  bass?: Key
+  bass?: Note
 }
 
-export const toChord = (key: Key): Chord => ({ root: key })
+export const toChord = (key: Note): Chord => {
+  return { root: key, mode: "major" }
+}
 
-export const renderChord = (chord: Chord, options: { base?: Key } = {}): string => {
-  const renderKey = (k: Key) => renderKey_(k, options)
+export const renderChord = (chord: Chord, options: RenderNoteOptions = {}): string => {
   return [
-    renderKey(chord.root),
+    renderNote(chord.root, options),
+    renderScaleMode(chord.mode),
     chord.ext ?? "",
-    chord.bass ? `/${renderKey(chord.bass)}` : "",
+    chord.bass ? `/${renderNote(chord.bass)}` : "",
   ].join("")
 }
 
 export const transposeChord = (chord: Chord, n: number): Chord => {
   return {
     ...chord,
-    root: transposeKey(chord.root, n),
-    ...(chord.bass !== undefined && { bass: transposeKey(chord.bass, n) }),
+    root: transposeNote(chord.root, n),
+    ...(chord.bass !== undefined && { bass: transposeNote(chord.bass, n) }),
   }
 }

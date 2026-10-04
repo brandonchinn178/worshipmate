@@ -5,7 +5,7 @@
   import { resolve } from "$app/paths"
   import { page } from "$app/state"
   import { getSearchFilters, setSearchFilters } from "$lib/search.js"
-  import { renderChord } from "$lib/songsheet/chord"
+  import { renderKey } from "$lib/songsheet/key"
   import { pluralize } from "$lib/utils/pluralize"
 
   import type { PageProps } from "./$types"
@@ -55,7 +55,7 @@
         <tr>
           <td><a href={resolve("/song/[slug]", { slug: song.slug })}>{song.title}</a></td>
           <td>{song.artist}</td>
-          <td>{renderChord(song.key)}</td>
+          <td>{renderKey(song.key)}</td>
         </tr>
       {/each}
     </tbody>

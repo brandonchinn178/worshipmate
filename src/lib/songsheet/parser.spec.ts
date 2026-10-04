@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 
+import { toChord } from "./chord"
 import { parseSongSheet } from "./parser"
 
 describe("parse", () => {
@@ -22,9 +23,7 @@ describe("parse", () => {
             {
               pieces: [
                 {
-                  chord: {
-                    root: "C",
-                  },
+                  chord: toChord("C"),
                   lyrics: "This is verse 1",
                 },
               ],
@@ -39,9 +38,7 @@ describe("parse", () => {
             {
               pieces: [
                 {
-                  chord: {
-                    root: "C",
-                  },
+                  chord: toChord("C"),
                   lyrics: "This is verse 2",
                 },
               ],
@@ -129,8 +126,8 @@ describe("p_SongSheetSection", () => {
         {
           lines: [
             // keep-multiline
-            { pieces: [{ chord: { root: "C" } }] },
-            { pieces: [{ chord: { root: "F" } }] },
+            { pieces: [{ chord: toChord("C") }] },
+            { pieces: [{ chord: toChord("F") }] },
           ],
         },
       ],
@@ -172,7 +169,7 @@ describe("p_SongSheetLinePiece", () => {
           lines: [
             {
               pieces: [
-                { chord: { root: "G" }, space: true },
+                { chord: toChord("G"), space: true },
                 { lyrics: "This has a space in the beginning" },
               ],
             },
@@ -196,9 +193,10 @@ describe("p_Key", () => {
           lines: [
             {
               pieces: [
-                { chord: { root: "C" } },
-                { chord: { root: "D" } },
-                { chord: { root: "E" } },
+                // keep-multiline
+                { chord: toChord("C") },
+                { chord: toChord("D") },
+                { chord: toChord("E") },
               ],
             },
           ],
@@ -219,10 +217,10 @@ describe("p_Key", () => {
           lines: [
             {
               pieces: [
-                { chord: { root: "Gb" } },
-                { chord: { root: "Gb" } },
-                { chord: { root: "Bb" } },
-                { chord: { root: "Bb" } },
+                { chord: toChord("Gb") },
+                { chord: toChord("Gb") },
+                { chord: toChord("Bb") },
+                { chord: toChord("Bb") },
               ],
             },
           ],
@@ -243,10 +241,10 @@ describe("p_Key", () => {
           lines: [
             {
               pieces: [
-                { chord: { root: "F" } },
-                { chord: { root: "C" } },
-                { chord: { root: "E" } },
-                { chord: { root: "B" } },
+                { chord: toChord("F") },
+                { chord: toChord("C") },
+                { chord: toChord("E") },
+                { chord: toChord("B") },
               ],
             },
           ],

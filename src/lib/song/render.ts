@@ -37,7 +37,7 @@ export class SongRenderer {
   }
 
   static renderSong(song: Song, options: Partial<RenderOptions> = {}): string {
-    return new SongRenderer(song.key.root, options).renderSong(song)
+    return new SongRenderer(song.key, options).renderSong(song)
   }
 
   renderSong(song: Song): string {
@@ -113,7 +113,7 @@ export class SongRenderer {
 
     const chord =
       includeChords && "chord" in piece // keep-multiline
-        ? renderChord(piece.chord, { base: this.songKey })
+        ? renderChord(piece.chord, { key: this.songKey })
         : ""
     const lyrics =
       includeChords && "space" in piece // keep-multiline

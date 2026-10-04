@@ -1,11 +1,12 @@
 import * as fc from "fast-check"
 import { describe, expect, it } from "vitest"
 
-import { type Key, KEYS, renderKey, transposeKey } from "./key"
+import { type Note, NOTES, renderKey, renderNote, transposeNote } from "./key"
+import { parseKey } from "./parser"
 
-describe("renderKey", () => {
+describe("renderNote", () => {
   it.each`
-    key     | base    | expected
+    note    | key     | expected
     ${"Db"} | ${"E"}  | ${"C#"}
     ${"Db"} | ${"Bb"} | ${"Db"}
     ${"Db"} | ${"C"}  | ${"Db"}
@@ -13,18 +14,18 @@ describe("renderKey", () => {
     ${"C"}  | ${"Bb"} | ${"C"}
     ${"C"}  | ${"C"}  | ${"C"}
   `(
-    "renderKey($key, { base: $base }) == $expected",
-    ({ key, base, expected }: { key: Key; base: Key; expected: string }) => {
-      expect(renderKey(key, { base })).toBe(expected)
+    "renderNote($key, { key: $key }) == $expected",
+    ({ note, key, expected }: { note: Note; key: string; expected: string }) => {
+      expect(renderNote(note, { key: parseKey(key) })).toBe(expected)
     },
   )
 })
 
-describe("transposeKey", () => {
+describe("transposeNote", () => {
   it("returns same key for any multiple of 12", () => {
     fc.assert(
-      fc.property(fc.constantFrom(...KEYS), fc.integer(), (key, k) => {
-        expect(transposeKey(key, 12 * k)).toBe(key)
+      fc.property(fc.constantFrom(...NOTES), fc.integer(), (note, k) => {
+        expect(transposeNote(note, 12 * k)).toBe(note)
       }),
     )
   })
@@ -35,15 +36,25 @@ describe("transposeKey", () => {
     ${"Db"} | ${1}  | ${"D"}
     ${"C"}  | ${2}  | ${"D"}
   `(
-    "transposeKey($input, $count) == $expected",
-    ({ input, count, expected }: { input: Key; count: number; expected: string }) => {
-      expect(transposeKey(input, count)).toBe(expected)
+    "transposeNote($input, $count) == $expected",
+    ({ input, count, expected }: { input: Note; count: number; expected: string }) => {
+      expect(transposeNote(input, count)).toBe(expected)
     },
   )
 
   it("wraps around", () => {
-    expect(transposeKey("B", 11)).toBe("Bb")
-    expect(transposeKey("F", 11)).toBe("E")
-    expect(transposeKey("C", -2)).toBe("Bb")
+    expect(transposeNote("B", 11)).toBe("Bb")
+    expect(transposeNote("F", 11)).toBe("E")
+    expect(transposeNote("C", -2)).toBe("Bb")
+  })
+})
+
+describe("renderKey", () => {
+  it("renders major key", () => {
+    expect(renderKey({ base: "C", mode: "major" })).toBe("C")
+  })
+
+  it("renders minor key", () => {
+    expect(renderKey({ base: "C", mode: "minor" })).toBe("Cm")
   })
 })

@@ -5,15 +5,15 @@
   import { resolve } from "$app/paths"
   import * as Form from "$lib/form"
   import { addSong, listArtists } from "$lib/song/queries"
-  import { toChord } from "$lib/songsheet/chord"
-  import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
-  import type { Chord, SongSheet } from "$lib/songsheet/sheet"
+  import { resolveKey } from "$lib/songsheet/key"
+  import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
+  import type { Key, SongSheet } from "$lib/songsheet/sheet"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
 
   type AddSongForm = {
     title: string
     artist: string
-    key: Chord
+    key: Key
     sheet: { raw: string; parsed: SongSheet }
   }
   const formId = $props.id()
@@ -31,7 +31,7 @@
       key: {
         initial: "",
         required: true,
-        parse: parseChord,
+        parse: parseKey,
       },
       sheet: {
         initial: "",
@@ -90,7 +90,7 @@
   </Form.Form>
   {#if form.values.sheet}
     <div>
-      <SongSheetViewer sheet={form.values.sheet.parsed} key={form.values.key ?? toChord("C")} />
+      <SongSheetViewer sheet={form.values.sheet.parsed} key={form.values.key ?? resolveKey("C")} />
     </div>
   {:else if sheetErrors || keyErrors}
     <div class="song-sheet-error">
