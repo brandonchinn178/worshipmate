@@ -16,7 +16,7 @@ export type ListSongsOpts = {
 }
 
 export const listSongs = async ({ search }: ListSongsOpts) => {
-  const client = supabase.getClient()
+  const client = await supabase.getClient()
   const query = (
     search // keep-multiline
       ? client.rpc("search_songs", { q: search })
@@ -32,14 +32,14 @@ export const listSongs = async ({ search }: ListSongsOpts) => {
 }
 
 export const listArtists = async () => {
-  const client = supabase.getClient()
+  const client = await supabase.getClient()
   const { data, error } = await client.from("artists").select("id, name")
   if (error) throw error
   return data
 }
 
 export const getSong = async (slug: string) => {
-  const client = supabase.getClient()
+  const client = await supabase.getClient()
   const { data, error } = await client
     .from("songs")
     .select(SongQuery.cols)
@@ -66,7 +66,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
   // TODO: handle duplicate slugs
   const slug = slugify(input.title, { lower: true })
 
-  const client = supabase.getClient()
+  const client = await supabase.getClient()
   const artist = await (async () => {
     if ("id" in input.artist) {
       return input.artist

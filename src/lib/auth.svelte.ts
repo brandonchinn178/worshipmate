@@ -11,7 +11,7 @@ export type AuthSessionLoader = {
 
 export const getAuthSession = async ({ depends }: AuthSessionLoader): Promise<Session | null> => {
   depends(AUTH_KEY)
-  const client = supabase.getClient()
+  const client = await supabase.getClient()
   const { data } = await client.auth.getSession()
   return data.session
 }
@@ -22,7 +22,7 @@ export type LoginInput = {
 }
 
 export const login = async (input: LoginInput) => {
-  const client = supabase.getClient()
+  const client = await supabase.getClient()
   const { error } = await client.auth.signInWithPassword(input)
   if (error) {
     throw error

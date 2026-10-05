@@ -7,7 +7,7 @@ export const prerender = false
 export const ssr = false
 
 export const load: LayoutLoad = async ({ fetch, depends }) => {
-  supabase.initClient({ fetch })
+  await supabase.initClient({ fetch })
   const session = await getAuthSession({ depends })
   return { session }
 }
