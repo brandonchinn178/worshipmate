@@ -52,7 +52,7 @@
     </div>
     <div class="song-vocal-range">
       <label for="">Vocal Range</label>
-      <VocalRangeDiagram range={song.vocalRange} key={song.key} height="10rem" />
+      <VocalRangeDiagram range={song.vocalRange} key={song.key} width="12rem" />
     </div>
     <div class="copy">
       <SongCopier {song} />
@@ -88,6 +88,10 @@
       color: var(--primary);
       font-size: 1.5em;
     }
+  }
+
+  .song-vocal-range {
+    text-align: center;
   }
 
   .song-key {

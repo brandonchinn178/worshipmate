@@ -5,7 +5,12 @@
   import { type VocalRange } from "./model.ts"
   import { type DiagramPart, toDiagram } from "./VocalRangeDiagram.ts"
 
-  const { range, key, height }: { range: VocalRange; key: Key; height?: string } = $props()
+  const {
+    range,
+    key,
+    width,
+    height,
+  }: { range: VocalRange; key: Key; width?: string; height?: string } = $props()
   const diagram = $derived(toDiagram(range, { key }))
 
   const [loStr, hiStr] = $derived(map2(range, (note) => renderAbsNote(note, { key })))
@@ -36,6 +41,7 @@
 
 <svg
   viewBox="0 0 {svgWidth} {svgHeight}"
+  {width}
   {height}
   role="img"
   aria-label="Vocal range from {loStr} to {hiStr}"
