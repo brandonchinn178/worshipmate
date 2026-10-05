@@ -60,7 +60,8 @@ label {
   user-select: none;
 }
 
-input, textarea {
+input,
+textarea {
   height: 100%;
   padding: 0.25rem;
   font-family: var(--font-noto-serif);
@@ -72,7 +73,10 @@ input, textarea {
   }
 }
 
-button {
+button:not(:where( /* keep-multiline */
+  .sv_dropdown button.creatable-row,
+  button.sv-btn-indicator,
+)) {
   padding: 0.2rem 1rem;
 
   font-family: var(--font-alegreya-sc);
@@ -87,7 +91,8 @@ button {
   transition-property: background, color;
   transition-duration: 200ms;
   transition-timing-function: ease;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: var(--white);
     background: var(--primary);
   }
