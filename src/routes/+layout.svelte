@@ -6,6 +6,7 @@
   import { page } from "$app/state"
   import AppProviders from "$lib/AppProviders.svelte"
   import Header from "$lib/Header.svelte"
+  import { setClass } from "$lib/utils/dom"
 
   import { type LayoutProps } from "./$types"
 
@@ -14,15 +15,9 @@
   let showHeader = $derived(page.data.header ?? true)
 
   onMount(() => {
-    const body = document.body
     const mq = window.matchMedia("(max-width: 680px)")
-    const mobileClass = "mobile"
     const update = () => {
-      if (mq.matches) {
-        body.classList.add(mobileClass)
-      } else {
-        body.classList.remove(mobileClass)
-      }
+      setClass(document.body, "mobile", mq.matches)
     }
     update()
     mq.addEventListener("change", update)
