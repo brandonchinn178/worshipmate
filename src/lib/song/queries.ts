@@ -2,10 +2,11 @@ import type { QueryData } from "@supabase/supabase-js"
 import slugify from "slugify"
 import { toast } from "svelte-sonner"
 
-import { renderChord } from "$lib/songsheet/chord"
-import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
-import { type Chord } from "$lib/songsheet/sheet"
+import { renderKey } from "$lib/songsheet/key"
+import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
+import { type Key } from "$lib/songsheet/sheet"
 import * as supabase from "$lib/supabase"
+import { parseVocalRange, renderVocalRange, type VocalRange } from "$lib/VocalRange"
 
 import type { Song } from "./model"
 import { SongRenderer } from "./render"
@@ -51,12 +52,13 @@ export const getSong = async (slug: string) => {
 export type AddSongInput = {
   title: string
   artist: { name: string } | { id: string }
-  key: Chord
+  key: Key
+  vocalRange: VocalRange
   sheet: string
 }
 export const addSong = async (input: AddSongInput): Promise<Song> => {
   const parsedSheet = parseSongSheet(input.sheet)
-  const lyrics = new SongRenderer(input.key.root, {
+  const lyrics = new SongRenderer(input.key, {
     includeChords: false,
     includeLabels: false,
   }).renderSheet(parsedSheet)
@@ -85,7 +87,8 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
       slug,
       title: input.title,
       artist: artist.id,
-      key: renderChord(input.key),
+      key: renderKey(input.key),
+      vocal_range: renderVocalRange(input.vocalRange),
       sheet: input.sheet,
       lyrics,
     })
@@ -115,6 +118,7 @@ class SongQuery {
     title,
     artist (name),
     key,
+    vocal_range,
     sheet
   ` as const
 
@@ -124,7 +128,8 @@ class SongQuery {
     return {
       ...song,
       artist: song.artist.name,
-      key: parseChord(song.key),
+      key: parseKey(song.key),
+      vocalRange: parseVocalRange(song.vocal_range as [string, string]),
       sheet: parseSongSheet(song.sheet),
     }
   }

@@ -5,15 +5,17 @@
   import { resolve } from "$app/paths"
   import * as Form from "$lib/form"
   import { addSong, listArtists } from "$lib/song/queries"
-  import { toChord } from "$lib/songsheet/chord"
-  import { parseChord, parseSongSheet } from "$lib/songsheet/parser"
-  import type { Chord, SongSheet } from "$lib/songsheet/sheet"
+  import { toKey } from "$lib/songsheet/key"
+  import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
+  import type { Key, SongSheet } from "$lib/songsheet/sheet"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
+  import { parseVocalRangeInput, type VocalRange, VocalRangeInput } from "$lib/VocalRange"
 
   type AddSongForm = {
     title: string
     artist: string
-    key: Chord
+    key: Key
+    vocalRange: VocalRange
     sheet: { raw: string; parsed: SongSheet }
   }
   const formId = $props.id()
@@ -31,7 +33,12 @@
       key: {
         initial: "",
         required: true,
-        parse: parseChord,
+        parse: parseKey,
+      },
+      vocalRange: {
+        initial: "",
+        required: true,
+        parse: parseVocalRangeInput,
       },
       sheet: {
         initial: "",
@@ -47,6 +54,7 @@
           title: values.title,
           artist: artistSelector.isNew ? { name: values.artist } : { id: values.artist },
           key: values.key,
+          vocalRange: values.vocalRange,
           sheet: values.sheet.raw,
         })
 
@@ -83,6 +91,9 @@
     <Form.Field name="key" label="Key">
       <input {...form.field("key")} />
     </Form.Field>
+    <Form.Field name="vocalRange" label="Vocal range">
+      <VocalRangeInput {...form.field("vocalRange")} />
+    </Form.Field>
     <Form.Field name="sheet" label="Sheet">
       <textarea class="sheet-input" {...form.field("sheet")} wrap="off"></textarea>
     </Form.Field>
@@ -90,7 +101,7 @@
   </Form.Form>
   {#if form.values.sheet}
     <div>
-      <SongSheetViewer sheet={form.values.sheet.parsed} key={form.values.key ?? toChord("C")} />
+      <SongSheetViewer sheet={form.values.sheet.parsed} key={form.values.key ?? toKey("C")} />
     </div>
   {:else if sheetErrors || keyErrors}
     <div class="song-sheet-error">

@@ -5,6 +5,7 @@
   import SongCopier from "$lib/SongCopier"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
+  import { VocalRangeDiagram } from "$lib/VocalRange"
 
   import type { PageProps } from "./$types"
 
@@ -35,21 +36,29 @@
   </a>
 </p>
 <div class="main-container">
-  <aside class="song-actions">
-    <div class="song-key">
-      Key:
-      <Transposer bind:song />
-    </div>
-    <div class="copy">
-      <SongCopier {song} />
-    </div>
-  </aside>
+  {@render songSidebar()}
   <main>
     <h1>{song.title}</h1>
     <h2>{song.artist}</h2>
     <SongSheetViewer sheet={song.sheet} key={song.key} />
   </main>
 </div>
+
+{#snippet songSidebar()}
+  <aside class="song-sidebar">
+    <div class="song-key">
+      <label for="">Key</label>
+      <Transposer bind:song />
+    </div>
+    <div class="song-vocal-range">
+      <label for="">Vocal Range</label>
+      <VocalRangeDiagram range={song.vocalRange} key={song.key} height="10rem" />
+    </div>
+    <div class="copy">
+      <SongCopier {song} />
+    </div>
+  </aside>
+{/snippet}
 
 <style>
   .backlink {
@@ -62,7 +71,7 @@
     margin: 2rem;
   }
 
-  .song-actions {
+  .song-sidebar {
     float: right;
     margin-left: 2rem;
 
@@ -74,6 +83,11 @@
     gap: 1rem;
     border: 4px double var(--primary);
     background: var(--white);
+
+    label {
+      color: var(--primary);
+      font-size: 1.5em;
+    }
   }
 
   .song-key {

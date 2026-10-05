@@ -1,6 +1,6 @@
 import P from "parsimmon"
 
-import { BASE_KEYS, resolveKey } from "./key"
+import { type AbsNote, BASE_KEYS, type Note, resolveNote, type ScaleMode } from "./key"
 import {
   type Chord,
   type Key,
@@ -23,6 +23,14 @@ export const parseChord = (input: string): Chord => {
 
 export const parseKey = (input: string): Key => {
   return p_Key.skip(P.eof).tryParse(input)
+}
+
+export const parseNote = (input: string): Note => {
+  return p_Note.skip(P.eof).tryParse(input)
+}
+
+export const parseAbsNote = (input: string): AbsNote => {
+  return p_AbsNote.skip(P.eof).tryParse(input)
 }
 
 const p_SongSheet: P.Parser<SongSheet> = P.lazy(() => {
@@ -129,11 +137,13 @@ const p_SongSheetLinePiece: P.Parser<SongSheetLinePiece> = P.lazy(() => {
 
 const p_Chord: P.Parser<Chord> = P.lazy(() => {
   return P.seqMap(
-    p_Key,
+    p_Note,
+    p_ScaleMode,
     P.regexp(/\w*/),
-    P.string("/").then(p_Key).or(P.of(null)),
-    (root, ext, bass) => ({
+    P.string("/").then(p_Note).or(P.of(null)),
+    (root, mode, ext, bass) => ({
       root,
+      mode,
       ...(ext !== "" ? { ext } : {}),
       ...(bass && { bass }),
     }),
@@ -141,20 +151,36 @@ const p_Chord: P.Parser<Chord> = P.lazy(() => {
 })
 
 const p_Key: P.Parser<Key> = P.lazy(() => {
+  return P.seqMap(p_Note, p_ScaleMode, (base, mode) => ({ base, mode }))
+})
+
+const p_ScaleMode: P.Parser<ScaleMode> = P.lazy(() => {
+  return P.alt(
+    // keep-multiline
+    P.string("m").result("minor"),
+    P.succeed("major"),
+  )
+})
+
+const p_Note: P.Parser<Note> = P.lazy(() => {
   const allKeys = [
     // Make sure to parse accidentals before base keys, or else the base keys
     // will take precedence
     ...BASE_KEYS.map((k) => {
       const k2 = `${k}#` as const
-      return P.string(k2).map(resolveKey)
+      return P.string(k2).map(resolveNote)
     }),
     ...BASE_KEYS.map((k) => {
       const k2 = `${k}b` as const
-      return P.string(k2).map(resolveKey)
+      return P.string(k2).map(resolveNote)
     }),
     ...BASE_KEYS.map(P.string),
   ]
   return P.alt(...allKeys)
+})
+
+const p_AbsNote: P.Parser<AbsNote> = P.lazy(() => {
+  return P.seqMap(p_Note, P.digit, (base, octave) => ({ base, octave: parseInt(octave, 10) }))
 })
 
 /* ----- Utilities ----- */

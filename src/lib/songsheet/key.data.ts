@@ -1,6 +1,6 @@
 /* Generated with `npm run regen-keys-data` */
 
-export const KEYS = [
+export const NOTES = [
   "C",
   "Db",
   "D",
@@ -23,7 +23,7 @@ export const BASE_KEYS = [
   "A",
   "B"
 ] as const
-export const KEY_DEGREES = {
+export const SCALE_DEGREES = {
   "C": 0,
   "Db": 1,
   "C#": 1,
@@ -42,7 +42,7 @@ export const KEY_DEGREES = {
   "A#": 10,
   "B": 11
 } as const
-export const KEY_ALIASES = {
+export const NOTE_ALIASES = {
   "B#": "C",
   "C#": "Db",
   "D#": "Eb",
@@ -53,7 +53,7 @@ export const KEY_ALIASES = {
   "A#": "Bb",
   "Cb": "B"
 } as const
-export const ACCIDENTALS = {
+export const KEY_ACCIDENTALS = {
   "C": null,
   "B#": "sharps",
   "Db": "flats",

@@ -1,11 +1,11 @@
 <script lang="ts">
   import ArrowRightAltRoundedIcon from "@iconify-svelte/material-symbols/arrow-right-alt-rounded"
 
-  import { assertNever } from "$lib/utils/lang"
+  import { assertNever, range } from "$lib/utils/lang"
 
   import { renderChord } from "./chord"
   import type {
-    Chord,
+    Key,
     SongSheet,
     SongSheetGoto,
     SongSheetLine,
@@ -13,7 +13,7 @@
     SongSheetSection,
   } from "./sheet"
 
-  let { sheet, key }: { sheet: SongSheet; key: Chord } = $props()
+  let { sheet, key }: { sheet: SongSheet; key: Key } = $props()
 
   const setWidths = (line: SongSheetLine) => (songLine: HTMLDivElement) => {
     // Just register `line` as a dependency, to rerun whenever it changes, e.g.
@@ -21,7 +21,7 @@
     void line
 
     const [chordsTrack, lyricsTrack] = songLine.children
-    const divs = [...Array(chordsTrack.children.length).keys()].map(
+    const divs = [...range(0, chordsTrack.children.length)].map(
       (i) =>
         [chordsTrack.children[i], lyricsTrack.children[i]] as [HTMLSpanElement, HTMLSpanElement],
     )
@@ -74,7 +74,7 @@
             <span class="chord">
               {#if "chord" in piece}
                 <span class={{ leading: "space" in piece }}>
-                  {renderChord(piece.chord, { base: key.root })}
+                  {renderChord(piece.chord, { key })}
                 </span>
               {/if}
             </span>

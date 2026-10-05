@@ -63,6 +63,7 @@ export type Database = {
           sheet: string
           slug: string
           title: string
+          vocal_range: string[]
         }
         Insert: {
           artist: string
@@ -73,6 +74,7 @@ export type Database = {
           sheet?: string
           slug: string
           title: string
+          vocal_range: string[]
         }
         Update: {
           artist?: string
@@ -83,6 +85,7 @@ export type Database = {
           sheet?: string
           slug?: string
           title?: string
+          vocal_range?: string[]
         }
         Relationships: [
           {
