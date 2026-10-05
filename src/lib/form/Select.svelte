@@ -86,14 +86,8 @@
 
   :global(.sv_dropdown) {
     :global(button.creatable-row) {
-      /* Undo all the default button elements */
       font-family: inherit;
       font-size: 1em;
-      text-transform: none;
-      color: initial;
-      &:hover {
-        color: initial;
-      }
     }
   }
 </style>

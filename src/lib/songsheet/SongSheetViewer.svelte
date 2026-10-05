@@ -120,11 +120,11 @@
 <style>
   section {
     margin: 1em 0;
+    width: min-content;
 
     .song-line {
       .track {
         display: flex;
-        flex-wrap: wrap;
       }
 
       .chord {
@@ -136,6 +136,7 @@
       .lyrics {
         span {
           white-space: pre-wrap;
+          text-wrap: nowrap;
         }
         .space {
           display: inline-block;
