@@ -76,6 +76,7 @@ textarea {
 button:not(:where( /* keep-multiline */
   .sv_dropdown button.creatable-row,
   button.sv-btn-indicator,
+  [data-dropdown-menu-trigger]
 )) {
   padding: 0.2rem 1rem;
 

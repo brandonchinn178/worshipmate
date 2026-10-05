@@ -1,23 +1,42 @@
 <script lang="ts">
+  import MoreVertIcon from "@iconify-svelte/material-symbols/more-vert"
+  import { DropdownMenu } from "bits-ui"
+
   import { resolve } from "$app/paths"
   import { page } from "$app/state"
 
   const session = $derived(page.data.session)
+
+  const items = $derived([
+    { label: "About", link: resolve("/about") },
+    ...(session ? [{ label: "Dashboard", link: resolve("/dashboard") }] : []),
+    ...(!session ? [{ label: "Login", link: resolve("/login") }] : []),
+  ])
 </script>
 
 <header>
   <h1><a href={resolve("/")}>WorshipMate</a></h1>
-  <nav>
+  <nav class="expanded">
     <ul>
-      <li><a href={resolve("/about")}>About</a></li>
-      {#if session !== null}
-        <li><a href={resolve("/dashboard")}>Dashboard</a></li>
-      {/if}
-      {#if session === null}
-        <li><a href={resolve("/login")}>Login</a></li>
-      {/if}
+      {#each items as { label, link }, i (i)}
+        <li><a href={link}>{label}</a></li>
+      {/each}
     </ul>
   </nav>
+  <DropdownMenu.Root>
+    <DropdownMenu.Trigger>
+      <MoreVertIcon height="2.5em" />
+    </DropdownMenu.Trigger>
+    <DropdownMenu.Portal>
+      <DropdownMenu.Content class="nav-dropdown-menu" align="end" sideOffset={-10}>
+        {#each items as { label, link }, i (i)}
+          <DropdownMenu.Item>
+            <a href={link}>{label}</a>
+          </DropdownMenu.Item>
+        {/each}
+      </DropdownMenu.Content>
+    </DropdownMenu.Portal>
+  </DropdownMenu.Root>
 </header>
 
 <style>
@@ -56,9 +75,9 @@
     }
   }
 
-  nav ul {
-    display: grid;
-    grid-auto-flow: column;
+  nav.expanded ul,
+  :global(.nav-dropdown-menu) {
+    display: flex;
     gap: 2rem;
 
     font-family: var(--font-alegreya-sc);
@@ -71,8 +90,55 @@
 
   ul {
     margin: 0;
+    padding: 0;
     li {
       list-style: none;
+    }
+  }
+
+  :global([data-dropdown-menu-trigger]) {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--white);
+
+    /* Icon has unwanted right padding */
+    :global(svg) {
+      position: relative;
+      right: -20px;
+    }
+  }
+
+  :global(.nav-dropdown-menu[data-dropdown-menu-content]) {
+    background: #eee;
+    box-shadow: 0 0 8px var(--black);
+
+    flex-direction: column;
+    gap: 0;
+
+    text-align: right;
+
+    :global([data-dropdown-menu-item]) {
+      padding: 0.5rem 1rem;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--primary);
+      }
+    }
+  }
+
+  /***** Mobile *****/
+
+  @media (max-width: 680px) {
+    header h1 {
+      font-size: 2.5rem;
+    }
+
+    nav.expanded {
+      display: none;
+    }
+    :global([data-dropdown-menu-trigger]) {
+      display: initial;
     }
   }
 </style>
