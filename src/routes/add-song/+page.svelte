@@ -5,7 +5,7 @@
   import { resolve } from "$app/paths"
   import * as Form from "$lib/form"
   import { addSong, listArtists } from "$lib/song/queries"
-  import { resolveKey } from "$lib/songsheet/key"
+  import { toKey } from "$lib/songsheet/key"
   import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
   import type { Key, SongSheet } from "$lib/songsheet/sheet"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
@@ -101,7 +101,7 @@
   </Form.Form>
   {#if form.values.sheet}
     <div>
-      <SongSheetViewer sheet={form.values.sheet.parsed} key={form.values.key ?? resolveKey("C")} />
+      <SongSheetViewer sheet={form.values.sheet.parsed} key={form.values.key ?? toKey("C")} />
     </div>
   {:else if sheetErrors || keyErrors}
     <div class="song-sheet-error">

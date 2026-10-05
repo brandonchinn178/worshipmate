@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import type { Song } from "$lib/song"
-import { parseAbsNote, parseKey, parseSongSheet } from "$lib/songsheet/parser"
+import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
+import { parseVocalRange } from "$lib/VocalRange"
 
 import { SongRenderer } from "./render"
 
@@ -11,7 +12,7 @@ const BASE_SONG: Song = {
   title: "My Song",
   artist: "John Singer",
   key: parseKey("D"),
-  vocalRange: [parseAbsNote("D3"), parseAbsNote("D4")],
+  vocalRange: parseVocalRange(["D3", "D4"]),
   sheet: parseSongSheet(""),
 }
 

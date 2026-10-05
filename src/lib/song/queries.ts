@@ -3,10 +3,10 @@ import slugify from "slugify"
 import { toast } from "svelte-sonner"
 
 import { renderKey } from "$lib/songsheet/key"
-import { parseAbsNote, parseKey, parseSongSheet } from "$lib/songsheet/parser"
+import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
 import { type Key } from "$lib/songsheet/sheet"
 import * as supabase from "$lib/supabase"
-import { renderVocalRange, type VocalRange } from "$lib/VocalRange"
+import { parseVocalRange, renderVocalRange, type VocalRange } from "$lib/VocalRange"
 
 import type { Song } from "./model"
 import { SongRenderer } from "./render"
@@ -125,12 +125,11 @@ class SongQuery {
   static _rowShape = () => supabase.nullClient.from("songs").select(this.cols).single()
 
   static deserialize(song: SongQueryRow): Song {
-    const [lo, hi] = song.vocal_range
     return {
       ...song,
       artist: song.artist.name,
       key: parseKey(song.key),
-      vocalRange: [parseAbsNote(lo), parseAbsNote(hi)],
+      vocalRange: parseVocalRange(song.vocal_range as [string, string]),
       sheet: parseSongSheet(song.sheet),
     }
   }

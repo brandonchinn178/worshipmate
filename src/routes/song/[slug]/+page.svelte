@@ -5,6 +5,7 @@
   import SongCopier from "$lib/SongCopier"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
+  import { VocalRangeDiagram } from "$lib/VocalRange"
 
   import type { PageProps } from "./$types"
 
@@ -46,8 +47,12 @@
 {#snippet songSidebar()}
   <aside class="song-sidebar">
     <div class="song-key">
-      Key:
+      <label for="">Key</label>
       <Transposer bind:song />
+    </div>
+    <div class="song-vocal-range">
+      <label for="">Vocal Range</label>
+      <VocalRangeDiagram range={song.vocalRange} key={song.key} height="10rem" />
     </div>
     <div class="copy">
       <SongCopier {song} />
@@ -78,6 +83,11 @@
     gap: 1rem;
     border: 4px double var(--primary);
     background: var(--white);
+
+    label {
+      color: var(--primary);
+      font-size: 1.5em;
+    }
   }
 
   .song-key {

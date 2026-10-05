@@ -58,8 +58,8 @@ export type AbsNote = {
   octave: number
 }
 
-export const renderAbsNote = (note: AbsNote): string => {
-  return note.base + note.octave.toString()
+export const renderAbsNote = (note: AbsNote, options: RenderNoteOptions = {}): string => {
+  return renderNote(note.base, options) + note.octave.toString()
 }
 
 export const toAbsNoteOffset = (note: AbsNote): number => {
@@ -100,7 +100,7 @@ export type Key = {
 
 export { BASE_KEYS }
 
-export const resolveKey = (arg: Note | Key): Key => {
+export const toKey = (arg: Note | Key): Key => {
   return typeof arg === "string" ? { base: arg, mode: "major" } : arg
 }
 

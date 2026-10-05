@@ -1,7 +1,7 @@
 <script lang="ts">
   import ArrowRightAltRoundedIcon from "@iconify-svelte/material-symbols/arrow-right-alt-rounded"
 
-  import { assertNever } from "$lib/utils/lang"
+  import { assertNever, range } from "$lib/utils/lang"
 
   import { renderChord } from "./chord"
   import type {
@@ -21,7 +21,7 @@
     void line
 
     const [chordsTrack, lyricsTrack] = songLine.children
-    const divs = [...Array(chordsTrack.children.length).keys()].map(
+    const divs = [...range(0, chordsTrack.children.length)].map(
       (i) =>
         [chordsTrack.children[i], lyricsTrack.children[i]] as [HTMLSpanElement, HTMLSpanElement],
     )

@@ -54,6 +54,12 @@ table {
   border-collapse: collapse;
 }
 
+label {
+  font-family: var(--font-alegreya-sc);
+  text-transform: lowercase;
+  user-select: none;
+}
+
 input, textarea {
   height: 100%;
   padding: 0.25rem;
