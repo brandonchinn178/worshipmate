@@ -1,6 +1,8 @@
 <script lang="ts">
   import "../app.css"
 
+  import { onMount } from "svelte"
+
   import { page } from "$app/state"
   import AppProviders from "$lib/AppProviders.svelte"
   import Header from "$lib/Header.svelte"
@@ -10,6 +12,22 @@
   let { children }: LayoutProps = $props()
 
   let showHeader = $derived(page.data.header ?? true)
+
+  onMount(() => {
+    const body = document.body
+    const mq = window.matchMedia("(max-width: 680px)")
+    const mobileClass = "mobile"
+    const update = () => {
+      if (mq.matches) {
+        body.classList.add(mobileClass)
+      } else {
+        body.classList.remove(mobileClass)
+      }
+    }
+    update()
+    mq.addEventListener("change", update)
+    return () => mq.removeEventListener("change", update)
+  })
 </script>
 
 <svelte:head>

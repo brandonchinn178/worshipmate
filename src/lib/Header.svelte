@@ -129,7 +129,7 @@
 
   /***** Mobile *****/
 
-  @media (max-width: 680px) {
+  :global(body.mobile) {
     header h1 {
       font-size: 2.5rem;
     }

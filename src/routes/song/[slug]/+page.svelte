@@ -97,4 +97,17 @@
   .song-key {
     white-space: nowrap;
   }
+
+  :global(body.mobile) {
+    .main-container {
+      margin-top: 0;
+    }
+
+    .song-sidebar {
+      margin: 1rem 0;
+      float: none;
+      width: calc(100vw - 6rem);
+      min-width: min-content;
+    }
+  }
 </style>
