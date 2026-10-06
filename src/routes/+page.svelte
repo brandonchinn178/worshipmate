@@ -49,13 +49,13 @@
       <tr>
         <th>Title</th>
         <th>Artist</th>
-        <th>Key</th>
+        <th class="key">Key</th>
       </tr>
       {#each songs as song (song.slug)}
         <tr>
           <td><a href={resolve("/song/[slug]", { slug: song.slug })}>{song.title}</a></td>
           <td>{song.artist}</td>
-          <td>{renderKey(song.key)}</td>
+          <td class="key">{renderKey(song.key)}</td>
         </tr>
       {/each}
     </tbody>
@@ -112,6 +112,15 @@
     th,
     td {
       border-top: var(--border);
+    }
+  }
+
+  :global(body.mobile) {
+    font-size: 0.8em;
+
+    th.key,
+    td.key {
+      display: none;
     }
   }
 </style>
