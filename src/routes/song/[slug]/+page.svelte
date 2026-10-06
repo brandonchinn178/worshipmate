@@ -1,13 +1,10 @@
 <script lang="ts">
   import ArrowLeftAltIcon from "@iconify-svelte/material-symbols/arrow-left-alt"
-  import { onMount } from "svelte"
-  import { innerWidth } from "svelte/reactivity/window"
 
   import { resolve } from "$app/paths"
   import SongCopier from "$lib/SongCopier"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
-  import { takeWhile } from "$lib/utils/lang"
   import { VocalRangeDiagram } from "$lib/VocalRange"
 
   import type { PageProps } from "./$types"
@@ -27,53 +24,6 @@
       ${JSON.stringify(metadata).replace(/</g, "\\u003c")}
     </${"script>" /* Need to obfuscate to avoid Svelte parser from ending script block */}
   `)
-
-  // Force sidebar to the top if it would cover any of the song sections
-  const bodyWidth = $derived.by(() => {
-    const width = innerWidth.current
-    if (width === undefined) {
-      // shouldn't happen; it's only undefined on the server
-      throw new Error("innerWidth not defined")
-    }
-    return width
-  })
-  let sidebar = $state<HTMLElement | null>(null)
-  const sidebarRect = $derived(sidebar?.getBoundingClientRect())
-  let mountData = $state<null | {
-    // keep-multiline
-    numOverlappableSections: number
-    sidebarLeftFromEnd: number
-  }>(null)
-  const updateSidebar = () => {
-    if (!mountData) return
-
-    const boundary = bodyWidth - mountData.sidebarLeftFromEnd
-    const sidebarWouldOverlap = document
-      .querySelectorAll("section")
-      .values()
-      .take(mountData.numOverlappableSections)
-      .some((section) => section.getBoundingClientRect().right >= boundary)
-    document.body.classList.toggle("sidebar-overlaps", sidebarWouldOverlap)
-  }
-  onMount(() => {
-    if (!sidebarRect) {
-      throw new Error("sidebar not set on mount")
-    }
-
-    const overlappableSections = takeWhile(
-      document.querySelectorAll("section"),
-      (section) => section.getBoundingClientRect().top < sidebarRect.bottom,
-    )
-    mountData = {
-      numOverlappableSections: overlappableSections.toArray().length,
-      sidebarLeftFromEnd: bodyWidth - sidebarRect.left,
-    }
-    updateSidebar()
-  })
-  $effect(() => {
-    void bodyWidth
-    updateSidebar()
-  })
 </script>
 
 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -86,16 +36,16 @@
   </a>
 </p>
 <div class="main-container">
-  {@render songSidebar()}
   <main>
     <h1>{song.title}</h1>
     <h2>{song.artist}</h2>
-    <SongSheetViewer sheet={song.sheet} key={song.key} onSongLineInit={updateSidebar} />
+    <SongSheetViewer sheet={song.sheet} key={song.key} />
   </main>
+  {@render songSidebar()}
 </div>
 
 {#snippet songSidebar()}
-  <aside bind:this={sidebar} class="song-sidebar">
+  <aside class="song-sidebar">
     <div class="song-key">
       <label for="">Key</label>
       <Transposer bind:song />
@@ -118,13 +68,16 @@
   }
 
   .main-container {
-    position: relative;
-    margin: 2rem;
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    align-items: start;
+
+    h1 {
+      margin-top: 2rem;
+    }
   }
 
   .song-sidebar {
-    position: absolute;
-    right: 0;
     margin-left: 2rem;
 
     display: flex;
@@ -150,15 +103,19 @@
     white-space: nowrap;
   }
 
-  :global(body.mobile, body.sidebar-overlaps) {
+  :global(body.mobile) {
     .main-container {
-      margin-top: 0;
+      grid-template-columns: none;
+      grid-template-areas:
+        "sidebar"
+        "main";
+      grid-template-rows: min-content 1fr;
     }
 
     .song-sidebar {
-      position: static;
-      float: none;
-      margin: 1rem 0;
+      grid-area: sidebar;
+      margin-top: 1rem;
+      margin-left: 0;
       width: min-content;
     }
   }

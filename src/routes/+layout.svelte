@@ -44,11 +44,10 @@
   }
 
   .content {
-    padding: 1rem;
-  }
+    max-width: 70rem;
+    margin: 0 auto;
 
-  :global(body.mobile) .content {
-    width: 100vw;
+    padding: 1rem 3rem;
     overflow-x: auto;
   }
 </style>
