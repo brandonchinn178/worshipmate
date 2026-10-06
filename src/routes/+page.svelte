@@ -64,9 +64,6 @@
 
 <style>
   main {
-    max-width: 50rem;
-    margin: 0 auto;
-
     display: grid;
     gap: 0.5rem;
   }
