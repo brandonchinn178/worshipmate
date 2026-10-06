@@ -6,19 +6,21 @@ import type { Database } from "./types"
 
 export type Client = supabase.SupabaseClient<Database>
 
-let client: Client | null = null
+const { promise: clientPromise, resolve: setClient } = Promise.withResolvers<Client>()
+let clientInitialized = false
 
 export type ClientOptions = {
   fetch: typeof fetch
 }
 
-export const initClient = (options: ClientOptions): Client => {
+export const initClient = async (options: ClientOptions): Promise<Client> => {
   // Client shows warning if multiple clients are initialized; reuse same one
-  if (client !== null) {
-    return client
+  if (clientInitialized) {
+    return await clientPromise
   }
+  clientInitialized = true
 
-  const newClient = supabase.createClient<Database>(
+  const client = supabase.createClient<Database>(
     // keep-multiline
     PUBLIC_SUPABASE_URL,
     PUBLIC_SUPABASE_PUBLISHABLE_KEY,
@@ -28,16 +30,11 @@ export const initClient = (options: ClientOptions): Client => {
       },
     },
   )
-  client = newClient
-  return newClient
-}
-
-export const getClient = (): Client => {
-  if (client === null) {
-    throw new Error("getClient called before initClient")
-  }
+  setClient(client)
   return client
 }
+
+export const getClient = (): Promise<Client> => clientPromise
 
 /* A client that errors at runtime, but can be used to extract types. */
 export const nullClient = null as unknown as Client

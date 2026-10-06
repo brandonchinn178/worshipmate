@@ -1,12 +1,11 @@
 <script lang="ts">
   import "../app.css"
 
-  import { onMount } from "svelte"
+  import { MediaQuery } from "svelte/reactivity"
 
   import { page } from "$app/state"
   import AppProviders from "$lib/AppProviders.svelte"
   import Header from "$lib/Header.svelte"
-  import { setClass } from "$lib/utils/dom"
 
   import { type LayoutProps } from "./$types"
 
@@ -14,14 +13,9 @@
 
   let showHeader = $derived(page.data.header ?? true)
 
-  onMount(() => {
-    const mq = window.matchMedia("(max-width: 680px)")
-    const update = () => {
-      setClass(document.body, "mobile", mq.matches)
-    }
-    update()
-    mq.addEventListener("change", update)
-    return () => mq.removeEventListener("change", update)
+  const isMobile = new MediaQuery("max-width: 680px")
+  $effect(() => {
+    document.body.classList.toggle("mobile", isMobile.current)
   })
 </script>
 
@@ -50,6 +44,10 @@
   }
 
   .content {
-    padding: 1rem;
+    max-width: 70rem;
+    margin: 0 auto;
+
+    padding: 1rem 3rem;
+    overflow-x: auto;
   }
 </style>

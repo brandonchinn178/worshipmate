@@ -5,7 +5,6 @@
   import SongCopier from "$lib/SongCopier"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
-  import { setClass } from "$lib/utils/dom"
   import { VocalRangeDiagram } from "$lib/VocalRange"
 
   import type { PageProps } from "./$types"
@@ -25,37 +24,6 @@
       ${JSON.stringify(metadata).replace(/</g, "\\u003c")}
     </${"script>" /* Need to obfuscate to avoid Svelte parser from ending script block */}
   `)
-
-  // Force sidebar to the top if it would cover any of the song sections
-  let sidebar = $state<HTMLElement | null>(null)
-  $effect(() => {
-    if (!sidebar) return
-
-    const getBodyWidth = () => document.body.getBoundingClientRect().width
-    const sidebarRect = sidebar.getBoundingClientRect()
-    const sidebarLeftFromEnd = getBodyWidth() - sidebarRect.left
-
-    // On mount, get the sections that are on the same horizontal line
-    // as the sidebar
-    const sections = [...document.querySelectorAll("section")]
-      .map((section) => section.getBoundingClientRect())
-      .filter((rect) => rect.top < sidebarRect.bottom)
-
-    // On mount + window resize, check if any sections would be covered
-    const update = () => {
-      const boundary = getBodyWidth() - sidebarLeftFromEnd
-      const covering = sections.some((rect) => rect.right >= boundary)
-      setClass(document.body, "sidebar-covers", covering)
-    }
-
-    update() // initial check on mount
-
-    const observer = new ResizeObserver(update)
-    observer.observe(document.body)
-    observer.observe(sidebar)
-
-    return () => observer.disconnect()
-  })
 </script>
 
 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
@@ -68,16 +36,16 @@
   </a>
 </p>
 <div class="main-container">
-  {@render songSidebar()}
   <main>
     <h1>{song.title}</h1>
     <h2>{song.artist}</h2>
     <SongSheetViewer sheet={song.sheet} key={song.key} />
   </main>
+  {@render songSidebar()}
 </div>
 
 {#snippet songSidebar()}
-  <aside bind:this={sidebar} class="song-sidebar">
+  <aside class="song-sidebar">
     <div class="song-key">
       <label for="">Key</label>
       <Transposer bind:song />
@@ -100,13 +68,16 @@
   }
 
   .main-container {
-    position: relative;
-    margin: 2rem;
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    align-items: start;
+
+    h1 {
+      margin-top: 2rem;
+    }
   }
 
   .song-sidebar {
-    position: absolute;
-    right: 0;
     margin-left: 2rem;
 
     display: flex;
@@ -132,17 +103,20 @@
     white-space: nowrap;
   }
 
-  :global(body.mobile, body.sidebar-covers) {
+  :global(body.mobile) {
     .main-container {
-      margin-top: 0;
+      grid-template-columns: none;
+      grid-template-areas:
+        "sidebar"
+        "main";
+      grid-template-rows: min-content 1fr;
     }
 
     .song-sidebar {
-      position: static;
-      margin: 1rem 0;
-      float: none;
-      width: calc(100vw - 6rem);
-      min-width: min-content;
+      grid-area: sidebar;
+      margin-top: 1rem;
+      margin-left: 0;
+      width: min-content;
     }
   }
 </style>

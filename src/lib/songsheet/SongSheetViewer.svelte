@@ -13,7 +13,18 @@
     SongSheetSection,
   } from "./sheet"
 
-  let { sheet, key }: { sheet: SongSheet; key: Key } = $props()
+  let {
+    sheet,
+    key,
+    onSongLineInit = () => {},
+  }: {
+    sheet: SongSheet
+    key: Key
+    onSongLineInit?: (songLine: HTMLElement) => void
+  } = $props()
+
+  // Minimum amount of space needed after a chord
+  const CHORD_SPACE = 20
 
   const setWidths = (line: SongSheetLine) => (songLine: HTMLDivElement) => {
     // Just register `line` as a dependency, to rerun whenever it changes, e.g.
@@ -29,21 +40,25 @@
     const run = async () => {
       await document.fonts.ready
 
-      divs.forEach(([chordDiv, lyricDiv]) => {
+      divs.forEach(([chordSpan, lyricSpan]) => {
+        const leading = chordSpan.classList.contains("leading")
         const width = Math.max(
-          chordDiv.getBoundingClientRect().width,
-          lyricDiv.getBoundingClientRect().width,
+          chordSpan.getBoundingClientRect().width + (leading ? 0 : CHORD_SPACE),
+          lyricSpan.getBoundingClientRect().width,
         )
-        chordDiv.style.width = `${width.toString()}px`
-        lyricDiv.style.width = `${width.toString()}px`
+        chordSpan.style.width = `${width.toString()}px`
+        lyricSpan.style.width = `${width.toString()}px`
       })
     }
-    void run()
+    const promise = run()
+    void promise.then(() => onSongLineInit(songLine))
 
     return () => {
-      divs.forEach(([chordDiv, lyricDiv]) => {
-        chordDiv.style.width = "initial"
-        lyricDiv.style.width = "initial"
+      void promise.then(() => {
+        divs.forEach(([chordSpan, lyricSpan]) => {
+          chordSpan.style.width = "initial"
+          lyricSpan.style.width = "initial"
+        })
       })
     }
   }
@@ -125,12 +140,6 @@
     .song-line {
       .track {
         display: flex;
-      }
-
-      .chord {
-        span:not(.leading) {
-          padding-right: 1em;
-        }
       }
 
       .lyrics {
