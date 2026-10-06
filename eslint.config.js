@@ -12,7 +12,7 @@ const gitignorePath = path.resolve(import.meta.dirname, ".gitignore")
 
 export default defineConfig(
   includeIgnoreFile(gitignorePath),
-  globalIgnores(["src/lib/supabase/types.ts"]),
+  globalIgnores(["src/lib/supabase/schema/_generated.ts"]),
   js.configs.recommended,
   ts.configs.strictTypeChecked,
   svelte.configs.recommended,
