@@ -23,11 +23,6 @@ Some features that may be added in the future:
 </main>
 
 <style>
-main {
-  max-width: 40rem;
-  margin: 2rem auto;
-}
-
 h1, h2, h3 {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
