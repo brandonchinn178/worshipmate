@@ -3,6 +3,13 @@ import { type Key, type SongSheet, transposeSongSheet } from "$lib/songsheet/she
 import type { VocalRange } from "$lib/VocalRange"
 import { transposeVocalRange } from "$lib/VocalRange"
 
+export type SongSearch = {
+  slug: string
+  title: string
+  artist: string
+  key: Key
+}
+
 export type Song = {
   id: string
   slug: string

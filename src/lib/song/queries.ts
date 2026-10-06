@@ -8,26 +8,35 @@ import { type Key } from "$lib/songsheet/sheet"
 import * as supabase from "$lib/supabase"
 import { parseVocalRange, renderVocalRange, type VocalRange } from "$lib/VocalRange"
 
-import type { Song } from "./model"
+import type { Song, SongSearch } from "./model"
 import { SongRenderer } from "./render"
 
 export type ListSongsOpts = {
   search?: string | null
 }
 
-export const listSongs = async ({ search }: ListSongsOpts) => {
+export const listSongs = async ({ search }: ListSongsOpts): Promise<SongSearch[]> => {
   const client = await supabase.getClient()
+  const cols = `
+    slug,
+    title,
+    artist,
+    key
+  ` as const
   const query =
-    // Important: don't factor out .select(SongQuery.cols), as it
+    // Important: don't factor out .select(cols), as it
     // destroys type inference differences between the two branches
     search
-      ? client.rpc("search_songs", { q: search }).select(SongQuery.cols)
-      : client.from("songs").select(SongQuery.cols)
+      ? client.rpc("search_songs", { q: search }).select(cols)
+      : client.from("songs").select(cols)
 
   const { data, error } = await query.order("title")
   if (error) throw error
 
-  return data.map((row) => SongQuery.deserialize(row))
+  return data.map((row) => ({
+    ...row,
+    key: parseKey(row.key),
+  }))
 }
 
 export const listArtists = async () => {
