@@ -4,7 +4,7 @@
 
 WorshipMate is a website built by and for worship leaders. It's completely [open source](https://github.com/brandonchinn178/worshipmate) and will always be free with zero ads.
 
-Song sheets are manually curated, with care taken to balance simple chords with accurate chords. Song keys are chosen to match a typical congregation's singing range.
+Song sheets are manually curated, with care taken to balance simple chords with accurate chords. Song keys are chosen to match a typical congregation's singing range (around C4-C5). Each song also displays the vocal range of the melody, which may be outside this range if the majority of the song fits within a good range, with only a couple notes in the Bridge on the high end of the range.
 
 ## Features
 
