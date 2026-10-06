@@ -46,4 +46,9 @@
   .content {
     padding: 1rem;
   }
+
+  :global(body.mobile) .content {
+    width: 100vw;
+    overflow-x: auto;
+  }
 </style>

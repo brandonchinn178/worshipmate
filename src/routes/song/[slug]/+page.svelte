@@ -157,10 +157,9 @@
 
     .song-sidebar {
       position: static;
-      margin: 1rem 0;
       float: none;
-      width: calc(100vw - 6rem);
-      min-width: min-content;
+      margin: 1rem 0;
+      width: min-content;
     }
   }
 </style>
