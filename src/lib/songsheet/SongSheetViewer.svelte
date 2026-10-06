@@ -13,7 +13,15 @@
     SongSheetSection,
   } from "./sheet"
 
-  let { sheet, key }: { sheet: SongSheet; key: Key } = $props()
+  let {
+    sheet,
+    key,
+    onSongLineInit = () => {},
+  }: {
+    sheet: SongSheet
+    key: Key
+    onSongLineInit?: (songLine: HTMLElement) => void
+  } = $props()
 
   // Minimum amount of space needed after a chord
   const CHORD_SPACE = 20
@@ -42,12 +50,15 @@
         lyricSpan.style.width = `${width.toString()}px`
       })
     }
-    void run()
+    const promise = run()
+    void promise.then(() => onSongLineInit(songLine))
 
     return () => {
-      divs.forEach(([chordSpan, lyricSpan]) => {
-        chordSpan.style.width = "initial"
-        lyricSpan.style.width = "initial"
+      void promise.then(() => {
+        divs.forEach(([chordSpan, lyricSpan]) => {
+          chordSpan.style.width = "initial"
+          lyricSpan.style.width = "initial"
+        })
       })
     }
   }

@@ -12,3 +12,10 @@ export function* range(start: number, end: number): Generator<number> {
     yield n
   }
 }
+
+export function* takeWhile<T>(arr: Iterable<T>, func: (value: T) => boolean): Generator<T> {
+  for (const val of arr) {
+    if (!func(val)) return
+    yield val
+  }
+}

@@ -1,10 +1,13 @@
 <script lang="ts">
   import ArrowLeftAltIcon from "@iconify-svelte/material-symbols/arrow-left-alt"
+  import { onMount } from "svelte"
+  import { innerWidth } from "svelte/reactivity/window"
 
   import { resolve } from "$app/paths"
   import SongCopier from "$lib/SongCopier"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
+  import { takeWhile } from "$lib/utils/lang"
   import { VocalRangeDiagram } from "$lib/VocalRange"
 
   import type { PageProps } from "./$types"
@@ -26,34 +29,50 @@
   `)
 
   // Force sidebar to the top if it would cover any of the song sections
+  const bodyWidth = $derived.by(() => {
+    const width = innerWidth.current
+    if (width === undefined) {
+      // shouldn't happen; it's only undefined on the server
+      throw new Error("innerWidth not defined")
+    }
+    return width
+  })
   let sidebar = $state<HTMLElement | null>(null)
-  $effect(() => {
-    if (!sidebar) return
+  const sidebarRect = $derived(sidebar?.getBoundingClientRect())
+  let mountData = $state<null | {
+    // keep-multiline
+    numOverlappableSections: number
+    sidebarLeftFromEnd: number
+  }>(null)
+  const updateSidebar = () => {
+    if (!mountData) return
 
-    const getBodyWidth = () => document.body.getBoundingClientRect().width
-    const sidebarRect = sidebar.getBoundingClientRect()
-    const sidebarLeftFromEnd = getBodyWidth() - sidebarRect.left
-
-    // On mount, get the sections that are on the same horizontal line
-    // as the sidebar
-    const sections = [...document.querySelectorAll("section")]
-      .map((section) => section.getBoundingClientRect())
-      .filter((rect) => rect.top < sidebarRect.bottom)
-
-    // On mount + window resize, check if any sections would be covered
-    const update = () => {
-      const boundary = getBodyWidth() - sidebarLeftFromEnd
-      const covering = sections.some((rect) => rect.right >= boundary)
-      document.body.classList.toggle("sidebar-covers", covering)
+    const boundary = bodyWidth - mountData.sidebarLeftFromEnd
+    const sidebarWouldOverlap = document
+      .querySelectorAll("section")
+      .values()
+      .take(mountData.numOverlappableSections)
+      .some((section) => section.getBoundingClientRect().right >= boundary)
+    document.body.classList.toggle("sidebar-overlaps", sidebarWouldOverlap)
+  }
+  onMount(() => {
+    if (!sidebarRect) {
+      throw new Error("sidebar not set on mount")
     }
 
-    update() // initial check on mount
-
-    const observer = new ResizeObserver(update)
-    observer.observe(document.body)
-    observer.observe(sidebar)
-
-    return () => observer.disconnect()
+    const overlappableSections = takeWhile(
+      document.querySelectorAll("section"),
+      (section) => section.getBoundingClientRect().top < sidebarRect.bottom,
+    )
+    mountData = {
+      numOverlappableSections: overlappableSections.toArray().length,
+      sidebarLeftFromEnd: bodyWidth - sidebarRect.left,
+    }
+    updateSidebar()
+  })
+  $effect(() => {
+    void bodyWidth
+    updateSidebar()
   })
 </script>
 
@@ -71,7 +90,7 @@
   <main>
     <h1>{song.title}</h1>
     <h2>{song.artist}</h2>
-    <SongSheetViewer sheet={song.sheet} key={song.key} />
+    <SongSheetViewer sheet={song.sheet} key={song.key} onSongLineInit={updateSidebar} />
   </main>
 </div>
 
@@ -131,7 +150,7 @@
     white-space: nowrap;
   }
 
-  :global(body.mobile, body.sidebar-covers) {
+  :global(body.mobile, body.sidebar-overlaps) {
     .main-container {
       margin-top: 0;
     }
