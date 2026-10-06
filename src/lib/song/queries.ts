@@ -17,15 +17,14 @@ export type ListSongsOpts = {
 
 export const listSongs = async ({ search }: ListSongsOpts) => {
   const client = await supabase.getClient()
-  const query = (
-    search // keep-multiline
-      ? client.rpc("search_songs", { q: search })
-      : client.from("songs")
-  )
-    .select(SongQuery.cols)
-    .order("title")
+  const query =
+    // Important: don't factor out .select(SongQuery.cols), as it
+    // destroys type inference differences between the two branches
+    search
+      ? client.rpc("search_songs", { q: search }).select(SongQuery.cols)
+      : client.from("songs").select(SongQuery.cols)
 
-  const { data, error } = await query
+  const { data, error } = await query.order("title")
   if (error) throw error
 
   return data.map((row) => SongQuery.deserialize(row))
