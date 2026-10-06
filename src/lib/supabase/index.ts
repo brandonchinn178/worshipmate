@@ -2,7 +2,7 @@ import * as supabase from "@supabase/supabase-js"
 
 import { PUBLIC_SUPABASE_PUBLISHABLE_KEY, PUBLIC_SUPABASE_URL } from "$env/static/public"
 
-import type { Database } from "./types"
+import type { Database } from "./schema"
 
 export type Client = supabase.SupabaseClient<Database>
 

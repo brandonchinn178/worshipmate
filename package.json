@@ -45,6 +45,7 @@
 		"supabase": "^2.118.0",
 		"svelte": "^5.56.1",
 		"svelte-check": "^4.6.0",
+		"type-fest": "^5.10.0",
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.60.1",
 		"vite": "^8.0.16",
