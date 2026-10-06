@@ -5,7 +5,6 @@
   import SongCopier from "$lib/SongCopier"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
-  import { setClass } from "$lib/utils/dom"
   import { VocalRangeDiagram } from "$lib/VocalRange"
 
   import type { PageProps } from "./$types"
@@ -45,7 +44,7 @@
     const update = () => {
       const boundary = getBodyWidth() - sidebarLeftFromEnd
       const covering = sections.some((rect) => rect.right >= boundary)
-      setClass(document.body, "sidebar-covers", covering)
+      document.body.classList.toggle("sidebar-covers", covering)
     }
 
     update() // initial check on mount
