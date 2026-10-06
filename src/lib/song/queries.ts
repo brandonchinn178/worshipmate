@@ -20,7 +20,7 @@ export const listSongs = async ({ search }: ListSongsOpts): Promise<SongSearch[]
   const cols = `
     slug,
     title,
-    artist,
+    ...artist (artist: name),
     key
   ` as const
   const query =
