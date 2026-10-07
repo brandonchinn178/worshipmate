@@ -38,5 +38,5 @@ SELECT vault.create_secret('<api key>', 'anthropic_api_key');
 Regularly back up database:
 
 ```sh
-npx supabase db dump --linked --use-copy --data-only > worshipmate-backup-$(date +%Y%M%d).sql
+npx supabase db dump --linked --use-copy --data-only > worshipmate-backup-$(date +%Y%m%d).sql
 ```
