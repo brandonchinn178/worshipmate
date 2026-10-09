@@ -18,6 +18,7 @@ export type Song = {
   key: Key
   vocalRange: VocalRange
   sheet: SongSheet
+  link: string
 }
 
 export const transposeSong = (song: Song, n: number): Song => {

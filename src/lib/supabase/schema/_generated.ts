@@ -59,6 +59,7 @@ export type Database = {
           id: string
           key: string
           keywords: string | null
+          link: string
           lyrics: string
           sheet: string
           slug: string
@@ -70,6 +71,7 @@ export type Database = {
           id?: string
           key: string
           keywords?: string | null
+          link: string
           lyrics: string
           sheet?: string
           slug: string
@@ -81,6 +83,7 @@ export type Database = {
           id?: string
           key?: string
           keywords?: string | null
+          link?: string
           lyrics?: string
           sheet?: string
           slug?: string

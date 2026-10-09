@@ -62,6 +62,7 @@ export type AddSongInput = {
   artist: { name: string } | { id: string }
   key: Key
   vocalRange: VocalRange
+  link: string
   sheet: string
 }
 export const addSong = async (input: AddSongInput): Promise<Song> => {
@@ -97,6 +98,7 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
       artist: artist.id,
       key: renderKey(input.key),
       vocal_range: renderVocalRange(input.vocalRange),
+      link: input.link,
       sheet: input.sheet,
       lyrics,
     })
@@ -127,7 +129,8 @@ class SongQuery {
     artist (name),
     key,
     vocal_range,
-    sheet
+    sheet,
+    link
   ` as const
 
   static _rowShape = () => supabase.nullClient.from("songs").select(this.cols).single()

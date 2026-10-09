@@ -16,6 +16,7 @@
     artist: string
     key: Key
     vocalRange: VocalRange
+    link: string
     sheet: { raw: string; parsed: SongSheet }
   }
   const formId = $props.id()
@@ -40,6 +41,10 @@
         required: true,
         parse: parseVocalRangeInput,
       },
+      link: {
+        initial: "",
+        required: true,
+      },
       sheet: {
         initial: "",
         required: true,
@@ -55,6 +60,7 @@
           artist: artistSelector.isNew ? { name: values.artist } : { id: values.artist },
           key: values.key,
           vocalRange: values.vocalRange,
+          link: values.link,
           sheet: values.sheet.raw,
         })
 
@@ -93,6 +99,9 @@
     </Form.Field>
     <Form.Field name="vocalRange" label="Vocal range">
       <VocalRangeInput {...form.field("vocalRange")} />
+    </Form.Field>
+    <Form.Field name="link" label="Link">
+      <input {...form.field("link")} />
     </Form.Field>
     <Form.Field name="sheet" label="Sheet">
       <textarea class="sheet-input" {...form.field("sheet")} wrap="off"></textarea>

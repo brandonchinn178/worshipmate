@@ -1,5 +1,6 @@
 <script lang="ts">
   import ArrowLeftAltIcon from "@iconify-svelte/material-symbols/arrow-left-alt"
+  import OpenInNewIcon from "@iconify-svelte/material-symbols/open-in-new"
 
   import { resolve } from "$app/paths"
   import SongCopier from "$lib/SongCopier"
@@ -46,6 +47,12 @@
 
 {#snippet songSidebar()}
   <aside class="song-sidebar">
+    <div class="song-link">
+      <a href={song.link} rel="external">
+        Link to song
+        <span class="open-link-icon"><OpenInNewIcon height="1em" /></span>
+      </a>
+    </div>
     <div class="song-key">
       <label for="">Key</label>
       <Transposer bind:song />
@@ -93,6 +100,10 @@
       color: var(--primary);
       font-size: 1.5em;
     }
+  }
+
+  .song-link .open-link-icon {
+    margin-left: 0.3rem;
   }
 
   .song-vocal-range {

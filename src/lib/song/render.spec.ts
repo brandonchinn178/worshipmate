@@ -13,6 +13,7 @@ const BASE_SONG: Song = {
   artist: "John Singer",
   key: parseKey("D"),
   vocalRange: parseVocalRange(["D3", "D4"]),
+  link: "http://example.com",
   sheet: parseSongSheet(""),
 }
 

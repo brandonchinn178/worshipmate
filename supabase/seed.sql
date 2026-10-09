@@ -1,7 +1,7 @@
 INSERT INTO artists (id, name) VALUES
     ('00000000-0000-0000-0000-000000000000', 'Housefires');
 
-INSERT INTO songs (id, slug, title, artist, key, vocal_range, sheet, lyrics, keywords) VALUES
+INSERT INTO songs (id, slug, title, artist, key, vocal_range, link, sheet, lyrics, keywords) VALUES
     (
         '00000000-0000-0000-0000-000000000000',
         'build-my-life',
@@ -9,6 +9,7 @@ INSERT INTO songs (id, slug, title, artist, key, vocal_range, sheet, lyrics, key
         '00000000-0000-0000-0000-000000000000',
         'E',
         ARRAY['C#3', 'C#4'],
+        'https://www.youtube.com/watch?v=G2bGxCJHnkM',
         $$
 {section Intro}
 [E] [A]
