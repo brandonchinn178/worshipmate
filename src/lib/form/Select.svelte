@@ -30,15 +30,10 @@
     resolvedChoices = await Promise.resolve(choices)
   })
 
-  let lastCreatedOption = $state<string | null>(null)
-  const onCreateOption = (option: Option) => {
-    lastCreatedOption = option.value
-  }
-
   const onChange = (option: Option | null) => {
     const value = option?.value ?? ""
     if (outputs) {
-      outputs.isNew = value === lastCreatedOption
+      outputs.isNew = !(resolvedChoices ?? []).some(({ label }) => label === value)
     }
     oninput?.({ currentTarget: { value } } as Event & { currentTarget: HTMLInputElement })
   }
@@ -58,7 +53,6 @@
     allowEditing
     placeholder={placeholder ?? undefined}
     {onChange}
-    {onCreateOption}
   />
 {/if}
 
