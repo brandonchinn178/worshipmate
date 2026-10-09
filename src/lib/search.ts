@@ -22,7 +22,6 @@ const getParam = (url: URL, key: string): string | null => {
 }
 
 const setParam = (url: URL, key: string, value: string | null): void => {
-  console.log(url.searchParams)
   if (value) {
     url.searchParams.set(key, value)
   } else {
