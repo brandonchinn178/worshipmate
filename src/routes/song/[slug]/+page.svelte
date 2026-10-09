@@ -1,8 +1,6 @@
 <script lang="ts">
-  import ArrowLeftAltIcon from "@iconify-svelte/material-symbols/arrow-left-alt"
   import OpenInNewIcon from "@iconify-svelte/material-symbols/open-in-new"
 
-  import { resolve } from "$app/paths"
   import SongCopier from "$lib/SongCopier"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
@@ -30,12 +28,6 @@
 <!-- eslint-disable-next-line svelte/no-at-html-tags -->
 <svelte:head>{@html jsonLd}</svelte:head>
 
-<p>
-  <a class="backlink" href={resolve("/")}>
-    <ArrowLeftAltIcon height="1em" aria-hidden />
-    Back to song list
-  </a>
-</p>
 <div class="main-container">
   <main>
     <h1>{song.title}</h1>
@@ -68,20 +60,10 @@
 {/snippet}
 
 <style>
-  .backlink {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.2em;
-  }
-
   .main-container {
     display: grid;
     grid-template-columns: 1fr min-content;
     align-items: start;
-
-    h1 {
-      margin-top: 2rem;
-    }
   }
 
   .song-sidebar {
@@ -125,8 +107,7 @@
 
     .song-sidebar {
       grid-area: sidebar;
-      margin-top: 1rem;
-      margin-left: 0;
+      margin: 1rem 0;
       width: min-content;
     }
   }
