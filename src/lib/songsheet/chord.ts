@@ -23,7 +23,7 @@ export const renderChord = (chord: Chord, options: RenderNoteOptions = {}): stri
     renderNote(chord.root, options),
     renderScaleMode(chord.mode),
     chord.ext ?? "",
-    chord.bass ? `/${renderNote(chord.bass)}` : "",
+    chord.bass ? `/${renderNote(chord.bass, options)}` : "",
   ].join("")
 }
 
