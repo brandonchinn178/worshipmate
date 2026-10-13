@@ -1,6 +1,6 @@
 import adapter from "@sveltejs/adapter-static"
 import { sveltekit } from "@sveltejs/kit/vite"
-import { svelteTesting } from "@testing-library/svelte/vite"
+import { playwright } from "@vitest/browser-playwright"
 import { mdsvex } from "mdsvex"
 import { defineConfig } from "vitest/config"
 
@@ -26,9 +26,9 @@ export default defineConfig({
 
       alias: {
         $testlib: "./src/__test__",
+        $src: "./src",
       },
     }),
-    svelteTesting(),
   ],
   ssr: {
     noExternal: ["svelte-sonner"],
@@ -39,14 +39,23 @@ export default defineConfig({
       {
         extends: "./vite.config.ts",
         test: {
-          name: "client",
-          environment: "jsdom",
+          name: "unit",
+          environment: "node",
           include: ["src/**/*.spec.ts"],
-          setupFiles: ["src/__test__/setup.ts"],
           mockReset: true,
         },
-        resolve: {
-          conditions: ["browser"],
+      },
+      {
+        extends: "./vite.config.ts",
+        test: {
+          name: "client",
+          include: ["src/**/*.spec.browser.ts"],
+          browser: {
+            provider: playwright(),
+            enabled: true,
+            headless: true,
+            instances: [{ browser: "chromium" }],
+          },
         },
       },
     ],
