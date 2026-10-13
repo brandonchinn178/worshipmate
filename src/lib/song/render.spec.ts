@@ -10,11 +10,12 @@ const BASE_SONG: Song = {
   id: "song1",
   slug: "song1",
   title: "My Song",
-  artist: "John Singer",
+  artist: { id: "", name: "John Singer" },
   key: parseKey("D"),
   vocalRange: parseVocalRange(["D3", "D4"]),
   link: "http://example.com",
   sheet: parseSongSheet(""),
+  rawSheet: "",
 }
 
 describe("Renderer", () => {

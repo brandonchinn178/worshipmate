@@ -45,7 +45,7 @@ export class SongRenderer {
       ? [
           // keep-multiline
           song.title,
-          song.artist,
+          song.artist.name,
           "",
         ]
       : []

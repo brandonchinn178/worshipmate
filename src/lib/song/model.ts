@@ -14,10 +14,14 @@ export type Song = {
   id: string
   slug: string
   title: string
-  artist: string
+  artist: {
+    id: string
+    name: string
+  }
   key: Key
   vocalRange: VocalRange
   sheet: SongSheet
+  rawSheet: string
   link: string
 }
 

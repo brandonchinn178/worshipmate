@@ -1,6 +1,8 @@
 <script lang="ts">
   import OpenInNewIcon from "@iconify-svelte/material-symbols/open-in-new"
 
+  import { resolve } from "$app/paths"
+  import { page } from "$app/state"
   import SongCopier from "$lib/SongCopier"
   import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
   import Transposer from "$lib/Transposer.svelte"
@@ -12,11 +14,13 @@
   // svelte-ignore state_referenced_locally
   let song = $state(data.song)
 
+  const session = $derived(page.data.session)
+
   const metadata = $derived({
     "@content": "https://schema.org",
     "@type": "SheetMusic",
     name: song.title,
-    producer: song.artist,
+    producer: song.artist.name,
   })
   const jsonLd = $derived(`
     <script type="application/ld+json">
@@ -30,8 +34,13 @@
 
 <div class="main-container">
   <main>
+    {#if session !== null}
+      <p class="edit-song-link">
+        <a href={resolve("/song/[slug]/edit", { slug: song.slug })}>Edit song</a>
+      </p>
+    {/if}
     <h1>{song.title}</h1>
-    <h2>{song.artist}</h2>
+    <h2>{song.artist.name}</h2>
     <SongSheetViewer sheet={song.sheet} key={song.key} />
   </main>
   {@render songSidebar()}
@@ -66,6 +75,10 @@
     align-items: start;
   }
 
+  .edit-song-link {
+    margin-bottom: 1rem;
+  }
+
   .song-sidebar {
     margin-left: 2rem;
 
@@ -88,12 +101,12 @@
     margin-left: 0.3rem;
   }
 
-  .song-vocal-range {
-    text-align: center;
-  }
-
   .song-key {
     white-space: nowrap;
+  }
+
+  .song-vocal-range {
+    text-align: center;
   }
 
   :global(body.mobile) {
