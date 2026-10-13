@@ -15,6 +15,7 @@ const BASE_SONG: Song = {
   vocalRange: parseVocalRange(["D3", "D4"]),
   link: "http://example.com",
   sheet: parseSongSheet(""),
+  rawSheet: "",
 }
 
 describe("Renderer", () => {

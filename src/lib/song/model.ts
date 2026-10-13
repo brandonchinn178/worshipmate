@@ -18,6 +18,7 @@ export type Song = {
   key: Key
   vocalRange: VocalRange
   sheet: SongSheet
+  rawSheet: string
   link: string
 }
 

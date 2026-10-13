@@ -1,0 +1,162 @@
+<script lang="ts">
+  import { toast } from "svelte-sonner"
+
+  import { goto } from "$app/navigation"
+  import { resolve } from "$app/paths"
+  import * as Form from "$lib/form"
+  import { type AddSongInput, listArtists } from "$lib/song/queries"
+  import { renderKey, toKey } from "$lib/songsheet/key"
+  import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
+  import type { Key, SongSheet } from "$lib/songsheet/sheet"
+  import SongSheetViewer from "$lib/songsheet/SongSheetViewer.svelte"
+  import {
+    parseVocalRangeInput,
+    renderVocalRange,
+    toVocalRangeRawInput,
+    type VocalRange,
+    VocalRangeInput,
+  } from "$lib/VocalRange"
+
+  import type { Song } from "./song"
+
+  const { song, save }: { song?: Song; save: (values: AddSongInput) => Promise<Song> } = $props()
+
+  // svelte-ignore state_referenced_locally
+  const initialValues: Partial<Song> = song ?? {}
+
+  type SongForm = {
+    title: string
+    artist: string
+    key: Key
+    vocalRange: VocalRange
+    link: string
+    sheet: { raw: string; parsed: SongSheet }
+  }
+  const formId = $props.id()
+  let form = Form.init<SongForm>({
+    id: formId,
+    fields: {
+      title: {
+        initial: initialValues.title ?? "",
+        required: true,
+      },
+      artist: {
+        initial: initialValues.artist ?? "",
+        required: true,
+      },
+      key: {
+        initial: initialValues.key ? renderKey(initialValues.key) : "",
+        required: true,
+        parse: parseKey,
+      },
+      vocalRange: {
+        initial: initialValues.vocalRange
+          ? toVocalRangeRawInput(renderVocalRange(initialValues.vocalRange))
+          : "",
+        required: true,
+        parse: parseVocalRangeInput,
+      },
+      link: {
+        initial: initialValues.link ?? "",
+        required: true,
+      },
+      sheet: {
+        initial: initialValues.rawSheet ?? "",
+        required: true,
+        parse: (value) => {
+          return { raw: value, parsed: parseSongSheet(value) }
+        },
+      },
+    },
+    onSubmit: async (values) => {
+      try {
+        const song = await save({
+          title: values.title,
+          artist: artistSelector.isNew ? { name: values.artist } : { id: values.artist },
+          key: values.key,
+          vocalRange: values.vocalRange,
+          link: values.link,
+          sheet: values.sheet.raw,
+        })
+
+        await goto(resolve("/song/[slug]", { slug: song.slug }))
+      } catch (e) {
+        toast.error((e as Error).message)
+      }
+    },
+  })
+
+  let artistSelector = $state(Form.initSelectOutputs())
+  const loadArtistChoices = async () => {
+    const artists = await listArtists()
+    return artists.map(({ id, name }) => ({ label: name, value: id }))
+  }
+
+  const sheetErrors = $derived(form.errors.sheet?.trim())
+  const keyErrors = $derived(form.errors.key?.trim())
+</script>
+
+<main>
+  <Form.Form>
+    <Form.Field name="title" label="Title">
+      <input {...form.field("title")} />
+    </Form.Field>
+    <Form.Field name="artist" label="Artist">
+      <Form.Select
+        {...form.field("artist")}
+        choices={loadArtistChoices()}
+        creatable
+        bind:outputs={artistSelector}
+      />
+    </Form.Field>
+    <Form.Field name="key" label="Key">
+      <input {...form.field("key")} />
+    </Form.Field>
+    <Form.Field name="vocalRange" label="Vocal range">
+      <VocalRangeInput {...form.field("vocalRange")} />
+    </Form.Field>
+    <Form.Field name="link" label="Link">
+      <input {...form.field("link")} />
+    </Form.Field>
+    <Form.Field name="sheet" label="Sheet">
+      <textarea class="sheet-input" {...form.field("sheet")} wrap="off"></textarea>
+    </Form.Field>
+    <Form.SubmitButton />
+  </Form.Form>
+  {#if form.values.sheet}
+    <div>
+      <SongSheetViewer sheet={form.values.sheet.parsed} key={form.values.key ?? toKey("C")} />
+    </div>
+  {:else if sheetErrors || keyErrors}
+    <div class="song-sheet-error">
+      <pre>Unable to render song sheet:</pre>
+      {#if sheetErrors}
+        <b><pre>- Sheet</pre></b>
+        <pre>{sheetErrors}</pre>
+      {/if}
+    </div>
+  {/if}
+</main>
+
+<style>
+  main {
+    display: grid;
+    grid-template-columns: 20rem 1fr;
+    gap: 3rem;
+    align-items: start;
+
+    max-width: 70rem;
+    margin: 0 auto;
+  }
+
+  .sheet-input {
+    height: 20rem;
+    resize: none;
+    font-family: monospace;
+  }
+
+  .song-sheet-error {
+    color: var(--red);
+    overflow-x: auto;
+  }
+</style>

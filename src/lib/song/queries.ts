@@ -142,6 +142,7 @@ class SongQuery {
       key: parseKey(song.key),
       vocalRange: parseVocalRange(song.vocal_range as [string, string]),
       sheet: parseSongSheet(song.sheet),
+      rawSheet: song.sheet,
     }
   }
 }
