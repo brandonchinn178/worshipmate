@@ -57,54 +57,20 @@ export const getSong = async (slug: string) => {
   return data && SongQuery.deserialize(data)
 }
 
-export type AddSongInput = {
-  title: string
-  artist: { name: string } | { id: string }
-  key: Key
-  vocalRange: VocalRange
-  link: string
-  sheet: string
-}
+export type AddSongInput = SongInput
 export const addSong = async (input: AddSongInput): Promise<Song> => {
-  const parsedSheet = parseSongSheet(input.sheet)
-  const lyrics = new SongRenderer(input.key, {
-    includeChords: false,
-    includeLabels: false,
-  }).renderSheet(parsedSheet)
-
   // TODO: handle duplicate slugs
   const slug = slugify(input.title, { lower: true })
 
+  const payload = await toSongPayload(input)
+
   const client = await supabase.getClient()
-  const artist = await (async () => {
-    if ("id" in input.artist) {
-      return input.artist
-    }
-
-    const { data, error: artistError } = await client
-      .from("artists")
-      .upsert({ name: input.artist.name }, { onConflict: "name" })
-      .select("id")
-      .single()
-    if (artistError) throw artistError
-    return data
-  })()
-
-  const { data, error: songError } = await client
+  const { data, error } = await client
     .from("songs")
-    .insert({
-      slug,
-      title: input.title,
-      artist: artist.id,
-      key: renderKey(input.key),
-      vocal_range: renderVocalRange(input.vocalRange),
-      link: input.link,
-      sheet: input.sheet,
-      lyrics,
-    })
+    .insert({ slug, ...payload })
     .select(SongQuery.cols)
     .single()
-  if (songError) throw songError
+  if (error) throw error
 
   const song = SongQuery.deserialize(data)
 
@@ -120,13 +86,27 @@ export const addSong = async (input: AddSongInput): Promise<Song> => {
   return song
 }
 
+export type SaveSongInput = SongInput & { id: string }
+export const saveSong = async (input: SaveSongInput): Promise<Song> => {
+  const payload = await toSongPayload(input)
+  const client = await supabase.getClient()
+  const { data, error } = await client
+    .from("songs")
+    .update(payload)
+    .eq("id", input.id)
+    .select(SongQuery.cols)
+    .single()
+  if (error) throw error
+  return SongQuery.deserialize(data)
+}
+
 type SongQueryRow = QueryData<ReturnType<typeof SongQuery._rowShape>>
 class SongQuery {
   static cols = `
     id,
     slug,
     title,
-    artist (name),
+    artist (id, name),
     key,
     vocal_range,
     sheet,
@@ -138,11 +118,54 @@ class SongQuery {
   static deserialize(song: SongQueryRow): Song {
     return {
       ...song,
-      artist: song.artist.name,
       key: parseKey(song.key),
       vocalRange: parseVocalRange(song.vocal_range as [string, string]),
       sheet: parseSongSheet(song.sheet),
       rawSheet: song.sheet,
     }
+  }
+}
+
+type ArtistInput = { name: string } | { id: string }
+const getOrCreateArtist = async (input: ArtistInput) => {
+  if ("id" in input) {
+    return input
+  }
+
+  const client = await supabase.getClient()
+  const { data, error } = await client
+    .from("artists")
+    .upsert({ name: input.name }, { onConflict: "name" })
+    .select("id")
+    .single()
+  if (error) throw error
+  return data
+}
+
+export type SongInput = {
+  title: string
+  artist: ArtistInput
+  key: Key
+  vocalRange: VocalRange
+  link: string
+  sheet: string
+}
+const toSongPayload = async (input: SongInput) => {
+  const parsedSheet = parseSongSheet(input.sheet)
+  const lyrics = new SongRenderer(input.key, {
+    includeChords: false,
+    includeLabels: false,
+  }).renderSheet(parsedSheet)
+
+  const artist = await getOrCreateArtist(input.artist)
+
+  return {
+    title: input.title,
+    artist: artist.id,
+    key: renderKey(input.key),
+    vocal_range: renderVocalRange(input.vocalRange),
+    link: input.link,
+    sheet: input.sheet,
+    lyrics,
   }
 }

@@ -4,7 +4,7 @@
   import { goto } from "$app/navigation"
   import { resolve } from "$app/paths"
   import * as Form from "$lib/form"
-  import { type AddSongInput, listArtists } from "$lib/song/queries"
+  import { listArtists, type SongInput } from "$lib/song/queries"
   import { renderKey, toKey } from "$lib/songsheet/key"
   import { parseKey, parseSongSheet } from "$lib/songsheet/parser"
   import type { Key, SongSheet } from "$lib/songsheet/sheet"
@@ -19,7 +19,7 @@
 
   import type { Song } from "./song"
 
-  const { song, save }: { song?: Song; save: (values: AddSongInput) => Promise<Song> } = $props()
+  const { song, save }: { song?: Song; save: (values: SongInput) => Promise<Song> } = $props()
 
   // svelte-ignore state_referenced_locally
   const initialValues: Partial<Song> = song ?? {}
@@ -41,7 +41,7 @@
         required: true,
       },
       artist: {
-        initial: initialValues.artist ?? "",
+        initial: initialValues.artist?.id ?? "",
         required: true,
       },
       key: {
