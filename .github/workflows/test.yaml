@@ -16,12 +16,12 @@ jobs:
 
       - run: npm ci
 
-      - run: npm run test
-
       - run: npm run check
         env:
           PUBLIC_SUPABASE_URL: ""
           PUBLIC_SUPABASE_PUBLISHABLE_KEY: ""
+
+      - run: npm run test
 
       - run: npm run regen-keys-data
 
