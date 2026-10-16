@@ -9,4 +9,6 @@ export const load: PageLoad = async ({ parent }) => {
   if (session !== null) {
     redirect(302, resolve("/"))
   }
+
+  return { title: "Login" }
 }
