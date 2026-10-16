@@ -75,6 +75,10 @@
     align-items: start;
   }
 
+  main {
+    padding-bottom: 5rem;
+  }
+
   .edit-song-link {
     margin-bottom: 1rem;
   }
