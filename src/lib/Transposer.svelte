@@ -4,14 +4,21 @@
   import { renderKey } from "./songsheet/key"
 
   let { song = $bindable() }: { song: Song } = $props()
-  const transpose = (n: number) => () => {
-    song = transposeSong(song, n)
+
+  let n = $state(0)
+  const originalSong = song
+
+  const transpose = (delta: number) => () => {
+    n += delta
+    song = transposeSong(originalSong, n)
   }
+
+  const transposeStr = $derived((n > 0 ? "+" : "") + n.toString())
 </script>
 
 <div class="container">
   <button onclick={transpose(-1)}>-</button>
-  <span class="key">{renderKey(song.key)}</span>
+  <span class="key" title={transposeStr}>{renderKey(song.key)}</span>
   <button onclick={transpose(1)}>+</button>
 </div>
 
